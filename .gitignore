@@ -2,3 +2,10 @@ ChongsCode/
 examples/
 temp_*
 *.root
+.sl*
+.sl73_gcc485/
+*.obj
+*.so
+*~*
+
+
