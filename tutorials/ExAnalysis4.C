@@ -1,4 +1,4 @@
-// Filename: ExAnalysis2.C
+// Filename: ExAnalysis3.C
 // Description: 
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Sun May 12 16:19:03 2019 (-0400)
@@ -7,13 +7,13 @@
 #include <TH1F.h>
 #include <TTree.h>
 #include <TObjArray.h>
-#include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StChain/StChain.h"
-#include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuDstMaker.h"
-#include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuEvent.h"
-#include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuDst.h"
-#include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuTrack.h"
+// #include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StChain/StChain.h"
+// #include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuDstMaker.h"
+// #include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuEvent.h"
+// #include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuDst.h"
+// #include "/afs/rhic.bnl.gov/star/packages/SL18h/StRoot/StMuDSTMaker/COMMON/StMuTrack.h"
 
-void ExAnalysis2()
+void ExAnalysis4()
 {
     // Uncomment these if you are NOT using rootlogon.C to load libraries
     // gROOT->Macro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
@@ -21,7 +21,9 @@ void ExAnalysis2()
     
     //---------------- Instantiate chain and MuDst reader ---------------//
     StChain *chain = new StChain;
-    StMuDstMaker* muDstMaker = new StMuDstMaker(0,0,"","/star/u/kabir/pwg/data/st_physics_12114059_raw_3010001.MuDst.root","");
+    //StMuDstMaker* muDstMaker = new StMuDstMaker(0,0,"","/star/u/kabir/pwg/data/st_physics_12114059_raw_3010001.MuDst.root","");
+    StMuDstMaker* muDstMaker = new StMuDstMaker(0,0,"","inFiles_hpss.list","");           //file list must have extension .list, HPSS file must be read through xrootd server
+    //tMuDstMaker* muDstMaker = new StMuDstMaker(0,0,"","fileList_local.list","");        //file list must have extension .list
     StMuDst *mDst = muDstMaker->muDst();   // Get StMuDst
     StMuEvent *ev = 0;
     StMuTrack *track = 0;
@@ -30,7 +32,7 @@ void ExAnalysis2()
     
     //-------------------- The STAR chain Event loop -------------------//
     chain->Init();
-    int nEvents = muDstMaker->tree()->GetEntries();
+    int nEvents = muDstMaker->tree()->GetEntries();  // Use muDstMaker->chain() if more than one root file is involved.
 	
     for (int iev = 0; iev < nEvents; iev++)
     {

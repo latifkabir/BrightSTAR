@@ -22,4 +22,7 @@
   gSystem->Load("StStrangeMuDstMaker");
   gSystem->Load("StMuDSTMaker");  
   cout << " loading of shared libraries done" << endl;
+
+  //An Alternative to the above block on STAR node
+  //gROOT->ProcessLine(".x $STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
  }

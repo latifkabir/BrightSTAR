@@ -22,8 +22,8 @@ Instruction()
     echo "          Syntax: star <OPTION>"
     echo "                   "			
     echo "          ------------------------------------- List of available options --------------------------------"
-    echo "          get-file          : Print File List"
-    echo "          jcache-status     : Get status for pending jcache jobs" 
+    echo "          file-list          : Print File List"
+    echo "          hpss-get           : Restore file from HPSS (tape)"
 
     echo "          ------------------------------------------------------------------------------------------------"
     echo "                    "    
@@ -62,21 +62,21 @@ case $OPTION in
 	Instruction
 	exit
 	;;	
-    get-file)
-	if [ "-h" == $2 ]
-	then
-	    echo "Syntax: star get-file <storage> <file_pattern> <trigger> <limit>"
-	    echo -e "Alternate Usage Example: get_file_list.pl -keys 'path,filename' -cond 'storage=hpss,filetype=daq_reco_muDst,filename~st_physics,production=P11id,trgsetupname=AuAu19_production' -limit 10 -distinct -delim '/'"
-	fi
-
-	if [ $# -eq 3 ]
-	then
-	    echo "3 args"
-#	else
-	fi
-	;;
-    jcache-status)
-	jcache pendingRequest -u `whoami`
+    file-list)
+	echo -e "
+                Syntax: get_file_list.pl -keys 'path,filename' -cond 'storage=XX,filetype=XX,filename~XX, production=XX,trgsetupname=XX' -limit NN -distinct -delim '/' \n
+	        Example-1: get_file_list.pl -keys 'path,filename' -cond 'storage=hpss,filetype=daq_reco_muDst,filename~st_physics,production=P11id,trgsetupname=AuAu19_production' -limit 10 -distinct -delim '/' \n
+	        Example-2: get_file_list.pl -keys path,filename -cond storage=local,trgsetupname=production_pp200trans_2015,filetype=daq_reco_mudst,filename~st_fms_16"
+	    ;;	
+    hpss-get)
+	echo -e "
+                 hpss_user.pl -r <output_dir> -f <file_list> 
+                 where <file_list> is just a list of files.\n
+                 hpss_user.pl <input_file_name> <output_file_name> \n
+                 hpss_user.pl -f <input_file_list> 
+                 where each line is space separated in and out file names. \n
+                 hpss_user.pl -h for details
+"
 	;;
     *)
 	echo "                                       "	   

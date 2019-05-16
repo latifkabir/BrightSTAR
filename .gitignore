@@ -1,3 +1,4 @@
 ChongsCode/
-examples
 examples/
+temp_*
+*.root

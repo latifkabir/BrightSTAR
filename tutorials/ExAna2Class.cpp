@@ -1,14 +1,14 @@
-#define TestClass_cxx
-#include "TestClass.h"
+#define ExAna2Class_cxx
+#include "ExAna2Class.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 
-void TestClass::Loop()
+void ExAna2Class::Loop()
 {
 //   In a ROOT session, you can do:
-//      Root > .L TestClass.C
-//      Root > TestClass t
+//      Root > .L ExAna2Class.cpp
+//      Root > ExAna2Class t
 //      Root > t.GetEntry(12); // Fill t data members with entry number 12
 //      Root > t.Show();       // Show values of entry 12
 //      Root > t.Show(16);     // Read and show values of entry 16
