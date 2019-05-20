@@ -9,4 +9,6 @@ STAR Data Analysis Tutorials. `root` is initialized using the provided `rootlogo
 
 - `ExAnalysis3.C and ExAnalysis4.C` : `StRoot` approach without using schedular.
 
+- `ExAnalysis5` : `StRoot` approach using SUMS schedular.
+
 

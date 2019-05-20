@@ -1,4 +1,6 @@
-void anaDeltaPhiMaker(TString inFile, TString outFile, int nEvents=50000)
+//anaDeltaPhiMaker
+
+void Analysis(TString inFile, TString outFile, int nEvents=50000)
 {
     gSystem->Load(".sl73_gcc485/lib/libDeltaPhiMaker.so");
     
