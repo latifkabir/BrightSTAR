@@ -15,7 +15,7 @@ void ExAnalysis1()
 { // Plots delta-Phi
     TFile mFile("/star/u/kabir/pwg/data/st_physics_12114059_raw_3010001.MuDst.root");
     TTree *tree = (TTree*) mFile.Get("MuDst");	
-    TClonesArray *array = new TClonesArray("StMuTrack",10000);
+    TClonesArray *array = new TClonesArray("StMuTrack",10000); //First argument is class name.
 
     TBranch *brTracks = tree->GetBranch("PrimaryTracks");
     tree->SetBranchAddress("PrimaryTracks",&array);	
