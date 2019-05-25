@@ -13,3 +13,5 @@ sched*.package.zip
 sched*.package
 sched*.dataset
 *.session.xml
+tutorials/
+temp_gccflags.c
