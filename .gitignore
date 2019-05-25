@@ -6,6 +6,7 @@ temp_*
 .sl73_gcc485/
 *.obj
 *.so
+*_Dict*
 *~*
 jobDir/
 sched*.package.zip

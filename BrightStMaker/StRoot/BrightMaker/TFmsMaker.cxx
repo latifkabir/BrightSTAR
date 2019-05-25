@@ -1,4 +1,4 @@
-#include "DeltaPhiMaker.h"
+#include "TFmsMaker.h"
 
 #include "TFile.h"
 #include "TH1.h"
@@ -9,9 +9,10 @@
 #include "StMuDSTMaker/COMMON/StMuTrack.h"
 #include "StMuDSTMaker/COMMON/StMuDstMaker.h"
 
-ClassImp(DeltaPhiMaker)
+ClassImp(TFmsMaker)
 
-DeltaPhiMaker::DeltaPhiMaker(StMuDstMaker *maker) : StMaker("DeltaPhiMaker") {
+TFmsMaker::TFmsMaker(StMuDstMaker *maker) : StMaker("TFmsMaker")
+{
     mNEventsPassed = mNEventsFailed = 0;
     mFileName = "";
     mRefMult[0] = 0; 
@@ -21,10 +22,9 @@ DeltaPhiMaker::DeltaPhiMaker(StMuDstMaker *maker) : StMaker("DeltaPhiMaker") {
 }
 
 //__________________________________________________________________//
-Int_t DeltaPhiMaker::Init() {
-
+Int_t TFmsMaker::Init()
+{
     //---- Track-wise histograms ----//
-    hDeltaPhi = new TH1F("hDeltaPhi","dPhi",64,-3.2,3.2);
     hPhi =  new TH1F("hPhi","Phi",64,-3.2,3.2);
     hPt = new TH1F("hPt","Pt",100,2.,10.);
 
@@ -36,11 +36,12 @@ Int_t DeltaPhiMaker::Init() {
 }
 
 //__________________________________________________________________//
-Int_t DeltaPhiMaker::Make() {
-
+Int_t TFmsMaker::Make()
+{
     StMuEvent *muEvent = mMuDstMaker->muDst()->event();
 
-    if(!accept(muEvent)) {
+    if(!accept(muEvent))
+    {
 	mNEventsFailed++;
 	return kStOk;
     }
@@ -55,8 +56,8 @@ Int_t DeltaPhiMaker::Make() {
     TList trigTracks, assocTracks;
 
     StMuTrack *track=0;
-    while ( (track = (StMuTrack*)next()) ) {
-
+    while ( (track = (StMuTrack*)next()) )
+    {
 	if(!accept(track)) continue;
 
 	//-------- Fill TList's with high-pT tracks --------//
@@ -68,36 +69,14 @@ Int_t DeltaPhiMaker::Make() {
 	hPt->Fill(track->pt());
     }
 
-    StMuTrack *trigPart = 0;
-    StMuTrack *assocPart = 0;
-	
-    TIter nextTrig(&trigTracks);
-    TIter nextAssoc(&assocTracks);
-
-    //-------- Loop over  --------//
-    while ( (trigPart = (StMuTrack*)nextTrig()) ) {
-
-	nextAssoc.Reset();
-	while ( (assocPart = (StMuTrack*)nextAssoc()) ) {
-
-	    if( trigPart->pt() > assocPart->pt() ) { 
- 
-		float dPhi = assocPart->phi() - trigPart->phi();
-		if (dPhi>TMath::Pi()) dPhi-=2*(TMath::Pi());
-		if (dPhi<-TMath::Pi()) dPhi+=2*(TMath::Pi());
-		hDeltaPhi->Fill( dPhi );
-	    }
-	}
-    }
-
     mNEventsPassed++;
     return kStOK;
 }
 
 
 //__________________________________________________________________//
-Int_t DeltaPhiMaker::Finish() {
-
+Int_t TFmsMaker::Finish()
+{
     //  Output file.
     TFile *mFile =  new TFile(mFileName, "RECREATE");
     cout << "The output filename is " << mFileName.Data() << endl;
@@ -107,7 +86,6 @@ Int_t DeltaPhiMaker::Finish() {
 
     hPhi->Write();
     hPt->Write(); 
-    hDeltaPhi->Write();
     hRefMult->Write();
     hVz->Write();
     mFile->Close();
@@ -115,21 +93,24 @@ Int_t DeltaPhiMaker::Finish() {
     return kStOK;
 }
 
-bool DeltaPhiMaker::accept(StMuEvent* muEvent) {
+bool TFmsMaker::accept(StMuEvent* muEvent)
+{
+    // float vertexZ = muEvent->primaryVertexPosition().z();
+    // int refMult = muEvent->refMult();  
 
-    float vertexZ = muEvent->primaryVertexPosition().z();
-    int refMult = muEvent->refMult();  
-
-    if( vertexZ==0. || fabs(vertexZ) > 25. || refMult<14 ) return false;
-    if( refMult < mRefMult[0] || refMult > mRefMult[1] ) return false;
+    // if( vertexZ==0. || fabs(vertexZ) > 25. || refMult<14 ) return false;
+    // if( refMult < mRefMult[0] || refMult > mRefMult[1] ) return false;
 
     return true;
 }
 
-bool DeltaPhiMaker::accept(StMuTrack* track) {
-    return track && 
-	track->flag() >= 0 &&
-	track->nHits() >= 25 &&
-	track->pt() >= 2.0 &&
-	track->eta() <= 0.7 ;
+bool TFmsMaker::accept(StMuTrack* track)
+{
+    // return track && 
+    // 	track->flag() >= 0 &&
+    // 	track->nHits() >= 25 &&
+    // 	track->pt() >= 2.0 &&
+    // 	track->eta() <= 0.7 ;
+
+    return true;
 }
