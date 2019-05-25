@@ -8,6 +8,7 @@ temp_*
 *.so
 *_Dict*
 *~*
+*.o
 jobDir/
 sched*.package.zip
 sched*.package
