@@ -28,6 +28,8 @@ class TStConfig : public TObject
     string fDSTwritePath;
     string fStarHome;
     string fRunListDB;
+    string fFileList;
+    string fProdPath;
     
     void CheckValidity();    
 public:
@@ -46,6 +48,8 @@ public:
     const string & GetDSTreadPath();
     const string & GetDSTwritePath();
     const string & GetRunListDB();
+    const string & GetFileList();
+    const string & GetProdPath();
     
     ClassDef(TStConfig,0)
 };

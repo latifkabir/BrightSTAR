@@ -17,3 +17,4 @@ sched*.dataset
 tutorials/
 temp_gccflags.c
 *.dat
+temp/

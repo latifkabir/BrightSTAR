@@ -27,6 +27,8 @@ TStConfig::TStConfig()
     fDSTreadPath = "./results";
     fDSTwritePath = "./results";
     fRunListDB = "./resources/RunList.json";
+    fFileList = "./resources/temp/temp.list";
+    fProdPath = "./";
     LoadConfig();
 }
 
@@ -96,6 +98,16 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fRunListDB = tokens;
 	    }
+	    else if(s == "FILE_LIST")
+	    {
+		tokens = strtok(NULL, " :,");
+		fFileList = tokens;
+	    }
+	    else if(s == "PROD_PATH")
+	    {
+		tokens = strtok(NULL, " :,");
+		fProdPath = tokens;
+	    }
 	    else
 	    {
 		tokens = strtok(NULL, " :,");
@@ -145,6 +157,16 @@ const string& TStConfig::GetRunListDB()
     return fRunListDB;
 }
 
+const string& TStConfig::GetFileList()
+{
+    return fFileList;
+}
+
+const string& TStConfig::GetProdPath()
+{
+    return fProdPath;
+}
+
 
 void TStConfig::Print()
 {
@@ -157,6 +179,8 @@ void TStConfig::Print()
     cout << "DST read path: "<< GetDSTreadPath() <<endl;
     cout << "DST write path: "<< GetDSTwritePath() <<endl;
     cout << "Run-list DB file: "<< GetRunListDB() <<endl;
+    cout << "File-list: "<< GetFileList() <<endl;
+    cout << "Production data path: "<< GetProdPath() <<endl;
     cout << "==================================================" <<endl;    
 }
 

@@ -79,7 +79,7 @@ void TStRunList::PrintRunList(Int_t minEvents)
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
     for(int i = 0; i < j.size(); ++i)
     {
-	if(j[i]["data"]["events"] >= minEntries)
+	if(j[i]["data"]["events"] >= minEvents)
 	{
 	    std::cout <<""<<j[i]["run"]<<"\t"<<j[i]["data"]["file"]<<"\t"<<j[i]["data"]["events"]<< std::endl;
 	    std::cout <<"---------------------------------------------------------------------"<< std::endl;
@@ -121,4 +121,49 @@ Int_t TStRunList::GetLastRun()
     Int_t lastRun = j[j.size() - 2]["run"];    
     i.close();
     return lastRun;
+}
+
+void TStRunList::MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles)
+{
+    Int_t lastRun = -1;
+    Int_t limit = -1;
+    Int_t fileCount = 0;
+    if(lastRunOrNfiles == -1)
+	lastRun = firstRun;
+    else if(lastRunOrNfiles != -1 && lastRunOrNfiles < firstRun)
+    {
+	limit = lastRunOrNfiles;
+	lastRun = firstRun;
+    }
+    else if(lastRunOrNfiles > firstRun)
+	lastRun = lastRunOrNfiles;
+    
+    TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
+    std::ifstream i(TStar::Config->GetRunListDB());
+    json j;
+    i >> j;
+
+    std::ofstream fileList(TStar::Config->GetFileList());
+    const char *rNumber;
+    for(int i = 0; i < j.size(); ++i)
+    {
+	if(j[i]["run"] >= firstRun && j[i]["run"] <= lastRun)
+	{
+	    rNumber =  (std::to_string((int)j[i]["run"])).c_str();
+	    std::cout<<"root://xrdstar.rcf.bnl.gov:1095/"<<TStar::Config->GetProdPath()<<rNumber[2]<<rNumber[3]<<rNumber[4]<<"/"<<(int)j[i]["run"]<<"/"<<(string)j[i]["data"]["file"]<< std::endl;
+	    fileList<<"root://xrdstar.rcf.bnl.gov:1095/"<<TStar::Config->GetProdPath()<<rNumber[2]<<rNumber[3]<<rNumber[4]<<"/"<<(int)j[i]["run"]<<"/"<<(string)j[i]["data"]["file"]<< std::endl;
+	    ++fileCount;
+	    if(limit == fileCount)
+		break;
+        }
+    }
+    fileList<<std::endl;
+    cout << "File-list has been generated!" <<endl;
+    i.close();
+    fileList.close();
+}
+
+void TStRunList::MakeFileListWithEvents(Int_t minEvents)
+{
+    
 }
