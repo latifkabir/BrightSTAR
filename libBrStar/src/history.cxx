@@ -17,7 +17,7 @@ void history()
 {
     string str;
     TString lineStr;
-    str = TStar::Config.GetStarHome() + (string)"/.root_history";
+    str = TStar::Config->GetStarHome() + (string)"/.root_history";
 	
     ifstream myFile(str.c_str());
     if(!myFile)

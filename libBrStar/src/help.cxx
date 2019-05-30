@@ -17,7 +17,7 @@ void help()
 {
     string str;
     TString lineStr;
-    str = TStar::Config.GetStarHome() + (string)"/libBrStar/src/";
+    str = TStar::Config->GetStarHome() + (string)"/libBrStar/src/";
 	
     str = str + "LinkDef.h";
     //cout << str <<endl;
@@ -51,7 +51,7 @@ void help()
     cout << "| Type 'help(\"function or class name\")' for details of any specific function or class     |"<<endl;
     cout<<  "-------------------------------------------------------------------------------------------" <<endl;  
 
-    str =  TStar::Config.GetStarHome() + (string)"/analysis/src/";
+    str =  TStar::Config->GetStarHome() + (string)"/analysis/src/";
     str = str + "LinkDef.h";
     //cout << str <<endl;
 
@@ -88,13 +88,13 @@ void help()
 
 void help(string file)
 {
-    string str =  TStar::Config.GetStarHome() + (string)"/libBrStar/src/";
+    string str =  TStar::Config->GetStarHome() + (string)"/libBrStar/src/";
     str = str + file + ".h";
     ifstream myFile(str.c_str());
 
     if(!myFile)
     {
-	str =  TStar::Config.GetStarHome() + (string)"/analysis/src/";
+	str =  TStar::Config->GetStarHome() + (string)"/analysis/src/";
 	str = str+file + ".h";
         myFile.open(str.c_str());	
     }
@@ -113,6 +113,6 @@ void help(string file)
 // int main(int argc, char *argv[])
 // {
 //     help();
-//     help("DecayAnalysis");
+//     help("TStRun");
 //     return 0;
 // }

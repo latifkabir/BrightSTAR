@@ -32,7 +32,7 @@ TStar::~TStar()
     
 }
 
-TStarConfig TStar::Config;
+TStConfig* TStar::Config = new TStConfig();
 
 void TStar::Exit()
 {
@@ -61,7 +61,7 @@ Bool_t TStar::IsValid(TString filePath)
 
 Int_t TStar::GetCounter()
 {
-    TString filePath = Config.GetFilePath();
+    TString filePath = Config->GetFilePath();
     filePath += "FileCounter.txt";    
     fstream counterFile(filePath,ios::in | ios::out);
     Int_t fileNo = -1;
@@ -77,7 +77,7 @@ Int_t TStar::GetCounter()
     counterFile<<fileNo;
     counterFile.close();
 
-    TString rootFilePath = Config.GetFilePath();
+    TString rootFilePath = Config->GetFilePath();
     rootFilePath += fileNo;
     rootFilePath += ".root";
 
@@ -91,7 +91,7 @@ Int_t TStar::GetCounter()
 
 void TStar::SetCounter(Int_t count)
 {
-    TString filePath = Config.GetFilePath();
+    TString filePath = Config->GetFilePath();
     filePath += "FileCounter.txt";    
     fstream counterFile(filePath, ios::out);
     Int_t fileNo = count;
@@ -107,7 +107,7 @@ void TStar::SetCounter(Int_t count)
 
 void TStar::PrintCounter()
 {
-    TString filePath = Config.GetFilePath();
+    TString filePath = Config->GetFilePath();
     filePath += "FileCounter.txt";    
     fstream counterFile(filePath, ios::in);
     Int_t fileNo = -1;
@@ -126,7 +126,7 @@ void TStar::PrintCounter()
 void TStar::FileViewer(Int_t fileNumber)
 {
     //Open the file for reading
-    TString fileName = Config.GetFilePath();
+    TString fileName = Config->GetFilePath();
     fileName += fileNumber;
     fileName += ".root";
     if(!IsValid(fileName))
@@ -193,7 +193,7 @@ void TStar::FilePrint(Int_t lowerRange, Int_t upperRange)
     for(int i = lowerRange; i <= upperRange; ++i)
     {
 	//Open the file for reading
-	TString fileName = Config.GetFilePath();
+	TString fileName = Config->GetFilePath();
 	fileName += i;
 	fileName += ".root";
 	if(gSystem->AccessPathName(fileName))
@@ -213,7 +213,7 @@ void TStar::FileListing(Int_t lowerRange, Int_t upperRange)
     for(int i = lowerRange; i <= upperRange; ++i)
     {
 	//Open the file for reading
-	TString fileName = Config.GetFilePath();
+	TString fileName = Config->GetFilePath();
 	fileName += i;
 	fileName += ".root";
 	if(gSystem->AccessPathName(fileName))
@@ -226,7 +226,7 @@ void TStar::FileListing(Int_t lowerRange, Int_t upperRange)
 
 void TStar::FileListing()
 {
-    TString filePath = Config.GetFilePath();
+    TString filePath = Config->GetFilePath();
     filePath += "FileCounter.txt";    
     fstream counterFile(filePath, ios::in);
     Int_t fileNo = -1;
@@ -242,7 +242,7 @@ void TStar::FileListing()
     for(int i = 0; i <= fileNo; ++i)
     {
 	//Open the file for reading
-	TString fileName = Config.GetFilePath();
+	TString fileName = Config->GetFilePath();
 	fileName += i;
 	fileName += ".root";
 	if(gSystem->AccessPathName(fileName))

@@ -1,17 +1,17 @@
-// Filename: TStarConfig.cc
+// Filename: TStConfig.cc
 // Description: 
-// Author: Latif Kabir < latif@jlab.org >
+// Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sun Sep  9 23:29:47 2018 (-0400)
 // URL: jlab.org/~latif
 
-#include "TStarConfig.h"
+#include "TStConfig.h"
 #include "TStar.h"
 #include "TApplication.h"
 using namespace std;
 
-ClassImp(TStarConfig)
+ClassImp(TStConfig)
 
-TStarConfig::TStarConfig()
+TStConfig::TStConfig()
 {
     if(getenv("STARHOME") == nullptr)
     {
@@ -21,15 +21,16 @@ TStarConfig::TStarConfig()
     else
 	fStarHome = getenv("STARHOME");	
     fConfigFile = fStarHome + (string)"/config/config.cfg"; 
-    fDataPath = "./";
-    fResultsPath = "./";
-    fVaultPath = "./";
-    fDSTreadPath = "./";
-    fDSTwritePath = "./";
+    fDataPath = "./data";
+    fResultsPath = "./results";
+    fVaultPath = "./results";
+    fDSTreadPath = "./results";
+    fDSTwritePath = "./results";
+    fRunListDB = "./resources/RunList.json";
     LoadConfig();
 }
 
-TStarConfig::TStarConfig(string file)
+TStConfig::TStConfig(string file)
 {
     if(getenv("STARHOME") == nullptr)
     {
@@ -43,17 +44,17 @@ TStarConfig::TStarConfig(string file)
     LoadConfig();
 }
 
-TStarConfig::~TStarConfig()
+TStConfig::~TStConfig()
 {
     
 }
 
-void TStarConfig::LoadConfig()
+void TStConfig::LoadConfig()
 {
     ifstream configFile;
     configFile.open( fConfigFile, ifstream::in);
     if(!configFile)
-        cout<<"TStarConfig: Config file NOT found."<<endl;
+        cout<<"TStConfig: Config file NOT found."<<endl;
     
     string line;
     while( getline(configFile, line) )
@@ -90,6 +91,11 @@ void TStarConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fDSTwritePath = tokens;
 	    }
+	    else if(s == "RUN_LIST_DB")
+	    {
+		tokens = strtok(NULL, " :,");
+		fRunListDB = tokens;
+	    }
 	    else
 	    {
 		tokens = strtok(NULL, " :,");
@@ -99,56 +105,62 @@ void TStarConfig::LoadConfig()
     configFile.close();
 }
 
-const string& TStarConfig::GetDataPath()
+const string& TStConfig::GetDataPath()
 {
     return fDataPath;
 }
 
-const string& TStarConfig::GetResultsPath()
+const string& TStConfig::GetResultsPath()
 {
     return fResultsPath;
 }
 
-const string& TStarConfig::GetVaultPath()
+const string& TStConfig::GetFilePath()
 {
     return fVaultPath;
 }
 
-const string& TStarConfig::GetDSTreadPath()
+const string& TStConfig::GetDSTreadPath()
 {
     return fDSTreadPath;
 }
 
-const string& TStarConfig::GetDSTwritePath()
+const string& TStConfig::GetDSTwritePath()
 {
     return fDSTwritePath;
 }
 
-const string& TStarConfig::GetStarHome()
+const string& TStConfig::GetStarHome()
 {
     return fStarHome;
 }
 
-const string& TStarConfig::GetConfigPath()
+const string& TStConfig::GetConfigPath()
 {
     return fConfigFile;
 }
 
+const string& TStConfig::GetRunListDB()
+{
+    return fRunListDB;
+}
 
-void TStarConfig::Print()
+
+void TStConfig::Print()
 {
     cout << "==============Star Configuration===================" <<endl;
     cout << "Star Home: "<< GetStarHome() <<endl;
     cout << "Config file: "<< GetConfigPath()<<endl;
     cout << "Data-file path: "<< GetDataPath() <<endl;
     cout << "Results path: "<< GetResultsPath() <<endl;
-    cout << "Vault path: "<< GetVaultPath() <<endl;
+    cout << "Vault path: "<< GetFilePath() <<endl;
     cout << "DST read path: "<< GetDSTreadPath() <<endl;
     cout << "DST write path: "<< GetDSTwritePath() <<endl;
+    cout << "Run-list DB file: "<< GetRunListDB() <<endl;
     cout << "==================================================" <<endl;    
 }
 
-void TStarConfig::CheckValidity()
+void TStConfig::CheckValidity()
 {
 
 }

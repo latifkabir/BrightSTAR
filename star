@@ -53,9 +53,9 @@ fi
 if ! [ -n "$BSTAR_DIR" ]   
 then
     BSTAR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    if [ -f $BSTAR_DIR/bin/setup.sh ]
+    if [ -f $BSTAR_DIR/setup.sh ]
     then
-	source $BSTAR_DIR/bin/setup.sh
+	source $BSTAR_DIR/setup.sh
     else
 	echo "Script to setup environment is NOT found."
 	exit
@@ -78,8 +78,7 @@ case $OPTION in
 	        Example-1: get_file_list.pl -keys 'path,filename' -cond 'storage=hpss,filetype=daq_reco_muDst,filename~st_physics,production=P11id,trgsetupname=AuAu19_production' -limit 10 -distinct -delim '/' \n
 	        Example-2: get_file_list.pl -keys path,filename -cond storage=local,trgsetupname=production_pp200trans_2015,filetype=daq_reco_mudst,filename~st_fms_16 -delim '/' \n
 	        Example-3: get_file_list.pl -keys 'fdid,storage,site,node,path,filename,events' -cond 'trgsetupname=AuAu19_production, filetype=daq_reco_MuDst, filename~st_physics, storage!=hpss' -limit 60 -delim '/' 
-                Run 17: get_file_list.pl -keys 'path,filename' -cond 'filetype=daq_reco_MuDst,trgsetupname=pp500_production_2017,filename~st_fms,storage!=hpss' -limit 10 -delim '/'
-"
+                Run 17: get_file_list.pl -keys 'path,filename' -cond 'filetype=daq_reco_MuDst,trgsetupname=pp500_production_2017,filename~st_fms,storage!=hpss' -limit 10 -delim '/' "
 	
 	    ;;	
     hpss-get)

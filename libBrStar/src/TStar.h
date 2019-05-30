@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include "TObject.h"
-#include "TStarConfig.h"
+#include "TStConfig.h"
 
 class TStar: public TObject
 {
@@ -17,7 +17,7 @@ class TStar: public TObject
 public:
     TStar();
     ~TStar();
-    static TStarConfig Config;
+    static TStConfig *Config;
     static Int_t GetCounter();
     static void SetCounter(Int_t cout);
     static void PrintCounter();

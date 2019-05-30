@@ -16,3 +16,4 @@ sched*.dataset
 *.session.xml
 tutorials/
 temp_gccflags.c
+*.dat

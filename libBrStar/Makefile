@@ -12,7 +12,8 @@ ROOTCINT  = rootcint
 ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
 CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker
-LIB_INCLUDE = ${STAR}/StRoot/StMuDSTMaker/COMMON/   
+INC_BASE = -I${STAR}/StRoot/
+LIB_INCLUDE = ${INC_BASE}/StMuDSTMaker/COMMON/ ${INC_BASE}/StChain/ ${INC_BASE}/St_base/ ${INC_BASE}/Star2Root ${INC_BASE}/ ${INC_BASE}/StEvent/ 
 
 all: libBrStar
 
@@ -32,7 +33,7 @@ lib/libBrStar.so: $(libBrStar_obj)  src/libBrStar_Dict.o
 	@echo "Finished the compilation successfully!!!"
 	@echo "-----------------------------------------------------------------------"
 src/%.o:src/%.cxx
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -I$(LIB_INCLUDE) $(ROOTFLAGS) $<
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) $(LIB_INCLUDE) $(ROOTFLAGS) $<
 
 src/libBrStar_Dict.cxx:
 	cd src/; $(ROOTCINT) -f libBrStar_Dict.cxx -c $(libBrStar_inc) LinkDef.h

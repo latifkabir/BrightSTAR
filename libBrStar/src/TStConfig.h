@@ -1,11 +1,11 @@
-// Filename: TStarConfig.h
+// Filename: TStConfig.h
 // Description: 
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Sun Sep  9 23:29:52 2018 (-0400)
 // URL: jlab.org/~latif
 
-#ifndef TSTARCONFIG_H
-#define TSTARCONFIG_H
+#ifndef TSTCONFIG_H
+#define TSTCONFIG_H
 
 #include <string>
 #include <cstring>
@@ -17,7 +17,7 @@
 
 using namespace std;
 
-class TStarConfig : public TObject
+class TStConfig : public TObject
 {
     //-----Buffer for each configuration field to be read goes here------
     string fConfigFile;
@@ -27,12 +27,13 @@ class TStarConfig : public TObject
     string fDSTreadPath;
     string fDSTwritePath;
     string fStarHome;
+    string fRunListDB;
     
     void CheckValidity();    
 public:
-    TStarConfig(string file );
-    TStarConfig();
-    ~TStarConfig();
+    TStConfig(string file );
+    TStConfig();
+    ~TStConfig();
     void LoadConfig();
     void Print();
 
@@ -41,11 +42,12 @@ public:
     const string & GetConfigPath();
     const string & GetDataPath();
     const string & GetResultsPath();
-    const string & GetVaultPath();
+    const string & GetFilePath();
     const string & GetDSTreadPath();
     const string & GetDSTwritePath();
+    const string & GetRunListDB();
     
-    ClassDef(TStarConfig,0)
+    ClassDef(TStConfig,0)
 };
 
 #endif
