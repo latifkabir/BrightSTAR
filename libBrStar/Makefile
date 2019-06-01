@@ -2,10 +2,14 @@
 # Description: Makefile for compiling Bright Star Analysis Framework. This Makefile is tailored for STAR farm nodes which is set for 32 bit.
 # Author: Latif Kabir < latif@jlab.org >
 # Created: Wed Nov 15 01:12:25 2017 (-0500)
-# URL: latifkabir.github.io
+# URL: jlab.org/~latif
 
 ifndef STAR
   $(error $$STAR environment variable not defined. source setup.[c]sh first)
+endif
+
+ifndef STARHOME
+  $(error $$STARHOME environment variable not defined. source setup.[c]sh first)
 endif
 
 ROOTCINT  = rootcint
@@ -30,7 +34,7 @@ lib/libBrStar.so: $(libBrStar_obj)  src/libBrStar_Dict.o
 	$(CXX) -o $@ $(CXXFLAGS) -shared -Wl,-soname,libBrStar.so $^	
 	@echo "                                                                        "
 	@echo "-----------------------------------------------------------------------"
-	@echo "Finished the compilation successfully!!!"
+	@echo "Finished the compilation!"
 	@echo "-----------------------------------------------------------------------"
 src/%.o:src/%.cxx
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) $(LIB_INCLUDE) $(ROOTFLAGS) $<
