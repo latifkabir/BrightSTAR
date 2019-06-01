@@ -51,7 +51,7 @@ public:
     const string & GetFileList();
     const string & GetProdPath();
     
-    ClassDef(TStConfig,0)
+    ClassDef(TStConfig,1)
 };
 
 #endif

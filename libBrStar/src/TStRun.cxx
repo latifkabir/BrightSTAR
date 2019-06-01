@@ -6,6 +6,8 @@
 
 #include "TStRun.h"
 #include "StMuDstMaker.h"
+#include "TStar.h"
+#include "TStRunList.h"
 
 using namespace std;
 
@@ -13,12 +15,24 @@ ClassImp(TStRun)
 
 TStRun::TStRun(TString fileList)
 {
-    muDstMaker = new StMuDstMaker(0, 0, "", fileList, "");
+    fFileList = fileList;
+    Init();
 }
 
+TStRun::TStRun(Int_t firstRun, Int_t lastRunOrNfiles)
+{
+    TStRunList::MakeFileList(firstRun, lastRunOrNfiles);
+    fFileList = TStar::Config->GetFileList();
+    Init();
+}
+void TStRun::Init()
+{
+    TStar::ExitIfInvalid(fFileList);
+    muDstMaker = new StMuDstMaker(0, 0, "", fFileList, "", 1000);
+}
 TStRun::~TStRun()
 {
-    
+    delete muDstMaker;    
 }
 
 TTree* TStRun::GetTree()

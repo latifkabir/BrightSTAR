@@ -14,14 +14,16 @@ class StMuDstMaker;
 class TStRun
 {
     StMuDstMaker *muDstMaker;
+    TString fFileList;
 public:
     
     TStRun(TString runList);
+    TStRun(Int_t firstRun, Int_t lastRunOrNfiles = -1);
     virtual ~TStRun();
     void Init();
     TTree *GetTree();
     TChain *GetChain();
     
-    ClassDef(TStRun,0)
+    ClassDef(TStRun,1)
 };
 #endif

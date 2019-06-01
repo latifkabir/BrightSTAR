@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "json.h"
 #include "TStRunList.h"
@@ -164,6 +165,41 @@ void TStRunList::MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles)
 }
 
 void TStRunList::MakeFileListWithEvents(Int_t minEvents)
+{        
+    TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
+    std::ifstream i(TStar::Config->GetRunListDB());
+    json j;
+    i >> j;
+
+    std::ofstream fileList(TStar::Config->GetFileList());
+    const char *rNumber;
+    for(int i = 0; i < j.size(); ++i)
+    {
+	if(j[i]["data"]["events"] >= minEvents)
+	{
+	    rNumber =  (std::to_string((int)j[i]["run"])).c_str();
+	    std::cout<<"root://xrdstar.rcf.bnl.gov:1095/"<<TStar::Config->GetProdPath()<<rNumber[2]<<rNumber[3]<<rNumber[4]<<"/"<<(int)j[i]["run"]<<"/"<<(string)j[i]["data"]["file"]<< std::endl;
+	    fileList<<"root://xrdstar.rcf.bnl.gov:1095/"<<TStar::Config->GetProdPath()<<rNumber[2]<<rNumber[3]<<rNumber[4]<<"/"<<(int)j[i]["run"]<<"/"<<(string)j[i]["data"]["file"]<< std::endl;
+        }
+    }
+    fileList<<std::endl;
+    cout << "File-list has been generated!" <<endl;
+    i.close();
+    fileList.close();
+}
+
+void TStRunList::PrintFileList()
 {
-    
+    std::ifstream fileList(TStar::Config->GetFileList());
+    string str;
+    if(!fileList)
+    {
+	std::cout << "Source file NOT found" <<std::endl;
+	return;
+    }
+
+    while(std::getline(fileList,str))
+    {
+	std::cout << str <<std::endl;
+    }
 }

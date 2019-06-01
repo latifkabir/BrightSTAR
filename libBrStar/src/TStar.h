@@ -29,7 +29,7 @@ public:
     static void FilePrint(Int_t lowerRange, Int_t upperRange);
     static void FileListing(Int_t lowerRange, Int_t upperRange);
     static void FileListing();
-    ClassDef(TStar,0)
+    ClassDef(TStar,1)
 };
 
 #endif

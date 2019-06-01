@@ -25,7 +25,8 @@ public:
     static Int_t GetLastRun();
     static void MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles = -1);
     static void MakeFileListWithEvents(Int_t minEvents);
+    static void PrintFileList();
     
-    ClassDef(TStRunList,0)
+    ClassDef(TStRunList,1)
 };
 #endif

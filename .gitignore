@@ -18,3 +18,5 @@ tutorials/
 temp_gccflags.c
 *.dat
 temp/
+*.list
+.root_history
