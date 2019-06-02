@@ -1,6 +1,6 @@
 # Filename: Makefile
 # Description: Makefile for compiling Bright Star Analysis Framework. This Makefile is tailored for STAR farm nodes which is set for 32 bit.
-# Author: Latif Kabir < latif@jlab.org >
+# Author: Latif Kabir < kabir@bnl.gov >
 # Created: Wed Nov 15 01:12:25 2017 (-0500)
 # URL: jlab.org/~latif
 
@@ -16,8 +16,9 @@ ROOTCINT  = rootcint
 ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
 CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker
-INC_BASE = -I${STAR}/StRoot/
-LIB_INCLUDE = ${INC_BASE}/StMuDSTMaker/COMMON/ ${INC_BASE}/StChain/ ${INC_BASE}/St_base/ ${INC_BASE}/Star2Root ${INC_BASE}/ ${INC_BASE}/StEvent/ 
+MODULES   = StMuDSTMaker/COMMON StChain St_base Star2Root StEvent StarClassLibrary 
+SRC_DIR   = $(addprefix ${STAR}/StRoot/,$(MODULES))
+LIB_INCLUDE  = $(addprefix -I,$(SRC_DIR)) -I${STAR}/StRoot/
 
 all: libBrStar
 

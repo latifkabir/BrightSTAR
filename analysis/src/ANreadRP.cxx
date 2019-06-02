@@ -1,4 +1,4 @@
-// Filename: ReadRP.C
+// Filename: ANreadRP.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon May 20 15:04:13 2019 (-0400)
@@ -8,16 +8,16 @@ Exclusively access all RP fields using StRoot classes.
 Check the class references for the classes: StMuRpsCollection, StMuRpsTrackPoint,  StMuRpsTrack
 */
 
+#include "RootInclude.h"
+#include "TStRunList.h"
+#include "TStar.h"
+#include "StRootInclude.h"
 
-#include <TH1F.h>
-#include <TTree.h>
-#include <TObjArray.h>
-
-void ReadRP()
+void ANreadRP(Int_t runNo, Int_t maxFiles)
 {
     TStopwatch st;
     st.Start();
-    TStRunList::MakeFileList(16066033, 10);
+    TStRunList::MakeFileList(runNo, maxFiles);
     TString fileList = TStar::Config->GetFileList();
     
     StChain *chain = new StChain;
@@ -27,7 +27,6 @@ void ReadRP()
     
     StMuDst *mDst = muDstMaker->muDst();   // Get StMuDst
     StMuRpsCollection *rpsMuColl;
-
     StMuRpsTrackPoint  *rpsTrkPoint;
     StMuRpsTrack *rpsTrk;
     
@@ -38,8 +37,7 @@ void ReadRP()
 
     chain->Init();
     
-    int nEvents = ch->GetEntries();  // Use muDstMaker->chain() if more than one root file is involved.
-    
+    int nEvents = ch->GetEntries();  // Use muDstMaker->chain() if more than one root file is involved.    
     for (int iev = 0; iev < nEvents; iev++)
     {
 	chain->Clear();
@@ -71,7 +69,7 @@ void ReadRP()
 	    {
 		for(Int_t k = 0; k < rpsMuColl->numberOfClusters(i,j); ++k)
 		{
-		    edist->Fill(rpsMuColl->energyCluster(i, j, k));		   
+		    engDist->Fill(rpsMuColl->energyCluster(i, j, k));		   
 		}
 	    }
 	}
@@ -80,7 +78,7 @@ void ReadRP()
     TCanvas *c1 = new TCanvas(); 
     dist->Draw();
     TCanvas *c2 = new TCanvas(); 
-    edist->Draw();
+    engDist->Draw();
     st.Stop();
     st.Print();
 }			

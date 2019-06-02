@@ -1,8 +1,8 @@
 // Filename: rootlogon.C
-// Description: Loading libBrStar automatically eact time you start root.
+// Description: Loading libBrStar automatically each time you start root.
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Nov 15 01:22:13 2017 (-0500)
-// URL: latifkabir.github.io
+// URL: jlab.org/~latif
 {
     cout << "\n\t\t=======================================================" <<endl;
     cout << "\t\t|  Welcome to Bright STAR Analysis Framework at RHIC  |"<<endl;
@@ -47,12 +47,12 @@
     else
 	cout << "attempt failed.\n";
 
-    // cout << "\t\t  Attempting to load libBrStarAnalysis.so ...";
-    // int status2=gSystem->Load("libBrStarAnalysis.so");
-    // if(status2>-1)
-    // 	cout << "attempt completed !!\n\n";
-    // else
-    // 	cout << "attempt failed.\n\n";
+    cout << "\t\t  Attempting to load libStAnalysis.so ...";
+    int status2=gSystem->Load("libStAnalysis.so");
+    if(status2>-1)
+    	cout << "attempt completed !!\n\n";
+    else
+    	cout << "attempt failed.\n\n";
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square
     gStyle->SetMarkerStyle(4);    // Circle
@@ -70,5 +70,61 @@
     Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
     TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
     gStyle->SetNumberContours(NCont);
+
+    //------------- Plotting Style -----------------------------
+    TStyle* dStyle = new TStyle("Bright_Star_Style", "Bright_Star_Style");
+    dStyle->Reset("Modern");
+
+    //Size & Margins
+    dStyle->SetCanvasDefH(800);
+    dStyle->SetCanvasDefW(1200);
+
+    //Basic object fill colors
+    dStyle->SetCanvasBorderMode(0);
+    dStyle->SetLegendFillColor(0);
+    dStyle->SetCanvasColor(0);
+
+    //Stat box
+    // dStyle->SetOptFit(112);
+    // dStyle->SetOptStat(10); //entries only //mean/rms should be replaced with a fit
+
+    //Titles and Labels
+    dStyle->SetLabelSize(0.05, "xyz");
+    dStyle->SetTitleSize(0.055, "xyz");
+    dStyle->SetTitleOffset(1.1, "x");
+    dStyle->SetTitleOffset(0.8, "y");
+
+    //Margins (correlated with title/label size)
+    dStyle->SetPadBottomMargin(0.15);
+
+    //Default Histogram Style Settings
+    //dStyle->SetHistFillColor(kTeal);
+    //dStyle->SetHistFillStyle(1001); //solid fill (0 for hollow) //see http://root.cern.ch/root/html/TAttFill.html
+    dStyle->SetHistLineColor(kBlack);
+    dStyle->SetHistMinimumZero(kTRUE);
+
+    //Default Function Style Settings
+    dStyle->SetFuncColor(kBlack);
+    dStyle->SetFuncStyle(1); //see http://root.cern.ch/root/html/TAttLine.html
+    dStyle->SetFuncWidth(3);
+
+    //Default Line Style Settings
+    dStyle->SetLineColor(kBlack);
+    dStyle->SetLineStyle(1); //see http://root.cern.ch/root/html/TAttLine.html
+    dStyle->SetLineWidth(1); //is border of TLegend
+
+    //Default Graph Style Settings
+    dStyle->SetMarkerColor(kBlack);
+    dStyle->SetMarkerSize(1); //see http://root.cern.ch/root/html/TAttMarker.html
+    dStyle->SetMarkerStyle(22); //see http://root.cern.ch/root/html/TAttMarker.html
+
+    //Grid
+    dStyle->SetPadGridX(kFALSE);
+    dStyle->SetPadGridY(kFALSE);
+
+    //Histogram/Graph Title Size
+    dStyle->SetTitleSize(0.075, "t"); //"t": could be anything that is not "x" "y" or "z"
+
+    dStyle->cd();
 }
 
