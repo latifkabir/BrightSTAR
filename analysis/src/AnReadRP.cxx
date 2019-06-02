@@ -1,4 +1,4 @@
-// Filename: ANreadRP.C
+// Filename: AnReadRP.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon May 20 15:04:13 2019 (-0400)
@@ -13,7 +13,7 @@ Check the class references for the classes: StMuRpsCollection, StMuRpsTrackPoint
 #include "TStar.h"
 #include "StRootInclude.h"
 
-void ANreadRP(Int_t runNo, Int_t maxFiles)
+void AnReadRP(Int_t runNo, Int_t maxFiles)
 {
     TStopwatch st;
     st.Start();
