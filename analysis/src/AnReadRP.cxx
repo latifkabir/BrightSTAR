@@ -17,11 +17,12 @@ void AnReadRP(Int_t runNo, Int_t maxFiles)
 {
     TStopwatch st;
     st.Start();
-    TStRunList::MakeFileList(runNo, maxFiles);
+    Int_t nFiles = TStRunList::MakeFileList(runNo, maxFiles);
     TString fileList = TStar::Config->GetFileList();
+    TStar::ExitIfInvalid(fileList);
     
     StChain *chain = new StChain;
-    StMuDstMaker *muDstMaker = new StMuDstMaker(0, 0, "", fileList, "");
+    StMuDstMaker *muDstMaker = new StMuDstMaker(0, 0, "", fileList, "", nFiles);
     muDstMaker->SetStatus("*",0);
     muDstMaker->SetStatus("pp2pp*",1);
     

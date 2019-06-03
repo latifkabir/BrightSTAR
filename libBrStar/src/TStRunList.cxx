@@ -37,7 +37,7 @@ void TStRunList::PrintRunList()
     i >> j;
 
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
-    std::cout<<"\tRun Number\t\t\t\tFile Name\t\t\t\tnumber of events"<< std::endl;
+    std::cout<<"\tRun Number\t\tFile Name\t\tnumber of events"<< std::endl;
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
     for(int i = 0; i < j.size(); ++i)
     {
@@ -54,8 +54,9 @@ void TStRunList::PrintRunList(Int_t firstRun, Int_t lastRun)
     json j;
     i >> j;
 
+    Int_t nFiles = 0;
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
-    std::cout<<"\tRun Number\t\t\t\tFile Name\t\t\t\tnumber of events"<< std::endl;
+    std::cout<<"\tRun Number\t\tFile Name\t\tnumber of events"<< std::endl;
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
     for(int i = 0; i < j.size(); ++i)
     {
@@ -63,8 +64,10 @@ void TStRunList::PrintRunList(Int_t firstRun, Int_t lastRun)
 	{
 	    std::cout <<""<<j[i]["run"]<<"\t"<<j[i]["data"]["file"]<<"\t"<<j[i]["data"]["events"]<< std::endl;
 	    std::cout <<"---------------------------------------------------------------------"<< std::endl;
+	    ++nFiles;
 	}
     }
+    cout << "Number of files in the range:"<<nFiles<<endl;
     i.close();
 }
 
@@ -124,7 +127,7 @@ Int_t TStRunList::GetLastRun()
     return lastRun;
 }
 
-void TStRunList::MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles)
+Int_t TStRunList::MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles)
 {
     Int_t lastRun = -1;
     Int_t limit = -1;
@@ -162,9 +165,10 @@ void TStRunList::MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles)
     cout << "File-list has been generated!" <<endl;
     i.close();
     fileList.close();
+    return fileCount;
 }
 
-void TStRunList::MakeFileListWithEvents(Int_t minEvents)
+Int_t TStRunList::MakeFileListWithEvents(Int_t minEvents)
 {        
     TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
     std::ifstream i(TStar::Config->GetRunListDB());
@@ -173,6 +177,7 @@ void TStRunList::MakeFileListWithEvents(Int_t minEvents)
 
     std::ofstream fileList(TStar::Config->GetFileList());
     const char *rNumber;
+    Int_t fileCount = 0;
     for(int i = 0; i < j.size(); ++i)
     {
 	if(j[i]["data"]["events"] >= minEvents)
@@ -180,12 +185,14 @@ void TStRunList::MakeFileListWithEvents(Int_t minEvents)
 	    rNumber =  (std::to_string((int)j[i]["run"])).c_str();
 	    std::cout<<"root://xrdstar.rcf.bnl.gov:1095/"<<TStar::Config->GetProdPath()<<rNumber[2]<<rNumber[3]<<rNumber[4]<<"/"<<(int)j[i]["run"]<<"/"<<(string)j[i]["data"]["file"]<< std::endl;
 	    fileList<<"root://xrdstar.rcf.bnl.gov:1095/"<<TStar::Config->GetProdPath()<<rNumber[2]<<rNumber[3]<<rNumber[4]<<"/"<<(int)j[i]["run"]<<"/"<<(string)j[i]["data"]["file"]<< std::endl;
+	    ++fileCount;
         }
     }
     fileList<<std::endl;
     cout << "File-list has been generated!" <<endl;
     i.close();
     fileList.close();
+    return fileCount;
 }
 
 void TStRunList::PrintFileList()

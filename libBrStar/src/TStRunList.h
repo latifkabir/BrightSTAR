@@ -23,8 +23,8 @@ public:
     static void DumpRunList();
     static Int_t GetFirstRun();
     static Int_t GetLastRun();
-    static void MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles = -1);
-    static void MakeFileListWithEvents(Int_t minEvents);
+    static Int_t MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles = -1);
+    static Int_t MakeFileListWithEvents(Int_t minEvents);
     static void PrintFileList();
     
     ClassDef(TStRunList,1)
