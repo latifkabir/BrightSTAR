@@ -19,7 +19,9 @@ void AnRPdist(Int_t runNo, Int_t maxFiles)
     
     const Int_t nPlots = 13;
     TH1F *h1[nPlots];
-    
+
+    TString fileName = TStar::Config->GetRootFileName();
+    TFile *file = new TFile(fileName, "recreate", "RP Track variable distributions from run" + (TString) runNo);
     h1[0] = new TH1F("h1nPlanes", "number of planes; number of planes", 100, 0.0, 0.0);
     h1[1] = new TH1F("h1nRP", "number of RP; number of RP", 100, 0.0, 0.0);
     h1[2] = new TH1F("h1BrID", "branch ID; branch ID", 100, 0.0, 0.0);
@@ -75,7 +77,7 @@ void AnRPdist(Int_t runNo, Int_t maxFiles)
 		h1[7]->Fill(rpsMuColl->track(i)->eta());
 		h1[8]->Fill(rpsMuColl->track(i)->pt());		
 		h1[9]->Fill(rpsMuColl->track(i)->p());		
-		h1[10]->Fill(rpsMuColl->track(i)->xi(100.0)); // Beam momentum approximate		
+		h1[10]->Fill(rpsMuColl->track(i)->xi(100.0)); // Beam momentum is approximate		
 		h1[11]->Fill(-1.0*rpsMuColl->track(i)->t(100.0));		
 		h1[12]->Fill(rpsMuColl->track(i)->phi());		
 	    }
@@ -86,19 +88,21 @@ void AnRPdist(Int_t runNo, Int_t maxFiles)
     TCanvas *c1[nPlots];
     for(Int_t i = 0; i < nPlots; ++i)
 	c1[i] = new TCanvas();
+
     for(Int_t i = 0; i < nPlots; ++i)
     {
 	c1[i]->cd();
 	h1[i]->Draw();
     }
-
-    c1[0]->Print((TString)TStar::Config->GetResultsPath() + "RPdist_Run_" + (TString)to_string(runNo) + ".pdf(", "pdf");       
-    for(Int_t i = 1; i < nPlots -1; ++i)
-    {
-	c1[i]->Print((TString)TStar::Config->GetResultsPath() + "RPdist_Run_" + (TString)to_string(runNo) + ".pdf", "pdf");       
-    }
-    c1[nPlots - 1]->Print((TString)TStar::Config->GetResultsPath() +"RPdist_Run_" + (TString)to_string(runNo) + ".pdf)", "pdf");       
     
+    file->cd();
+    for(Int_t i = 0; i < nPlots; ++i)
+    {
+	h1[i]->Write();
+	c1[i]->Write();
+    }
+    
+    file->Close();
     st.Stop();
     st.Print();
 }			

@@ -23,7 +23,6 @@ class TStConfig : public TObject
     string fConfigFile;
     string fDataPath;
     string fResultsPath;
-    string fVaultPath;
     string fDSTreadPath;
     string fDSTwritePath;
     string fStarHome;
@@ -50,6 +49,7 @@ public:
     const string & GetRunListDB();
     const string & GetFileList();
     const string & GetProdPath();
+    TString GetRootFileName();
     
     ClassDef(TStConfig,1)
 };

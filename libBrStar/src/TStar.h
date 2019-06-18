@@ -1,8 +1,8 @@
 // Filename: TStar.h
 // Description: 
-// Author: Latif Kabir < latif@jlab.org >
+// Author: Latif Kabir < kabir@bnl.gov >
 // Created: Tue Oct 17 18:10:57 2017 (-0400)
-// URL: latifkabir.github.io
+// URL: jlab.org/~latif
 
 #ifndef TSTAR_H
 #define TSTAR_H

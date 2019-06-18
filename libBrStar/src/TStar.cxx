@@ -77,7 +77,7 @@ Int_t TStar::GetCounter()
     counterFile<<fileNo;
     counterFile.close();
 
-    TString rootFilePath = Config->GetFilePath();
+    TString rootFilePath = Config->GetFilePath() + "root/";
     rootFilePath += fileNo;
     rootFilePath += ".root";
 
@@ -126,7 +126,7 @@ void TStar::PrintCounter()
 void TStar::FileViewer(Int_t fileNumber)
 {
     //Open the file for reading
-    TString fileName = Config->GetFilePath();
+    TString fileName = Config->GetFilePath() + "root/";
     fileName += fileNumber;
     fileName += ".root";
     if(!IsValid(fileName))
@@ -193,7 +193,7 @@ void TStar::FilePrint(Int_t lowerRange, Int_t upperRange)
     for(int i = lowerRange; i <= upperRange; ++i)
     {
 	//Open the file for reading
-	TString fileName = Config->GetFilePath();
+	TString fileName = Config->GetFilePath() + "root/"; 
 	fileName += i;
 	fileName += ".root";
 	if(gSystem->AccessPathName(fileName))
@@ -213,7 +213,7 @@ void TStar::FileListing(Int_t lowerRange, Int_t upperRange)
     for(int i = lowerRange; i <= upperRange; ++i)
     {
 	//Open the file for reading
-	TString fileName = Config->GetFilePath();
+	TString fileName = Config->GetFilePath() + "root/";
 	fileName += i;
 	fileName += ".root";
 	if(gSystem->AccessPathName(fileName))
@@ -232,7 +232,7 @@ void TStar::FileListing()
     Int_t fileNo = -1;
     if(!counterFile)
     {
-	cout << "WARNING: The vault file-counter NOT found" <<endl;
+	cout << "WARNING: The file having the file-counter NOT found" <<endl;
 	return;
     }
 
@@ -242,7 +242,7 @@ void TStar::FileListing()
     for(int i = 0; i <= fileNo; ++i)
     {
 	//Open the file for reading
-	TString fileName = Config->GetFilePath();
+	TString fileName = Config->GetFilePath() + "root/";
 	fileName += i;
 	fileName += ".root";
 	if(gSystem->AccessPathName(fileName))

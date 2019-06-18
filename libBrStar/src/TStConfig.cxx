@@ -23,7 +23,6 @@ TStConfig::TStConfig()
     fConfigFile = fStarHome + (string)"/config/config.cfg"; 
     fDataPath = "./data";
     fResultsPath = "./results";
-    fVaultPath = "./results";
     fDSTreadPath = "./results";
     fDSTwritePath = "./results";
     fRunListDB = "./resources/RunList.json";
@@ -78,11 +77,6 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fResultsPath = tokens;
 	    }
-	    else if(s == "VAULT_PATH")
-	    {
-		tokens = strtok(NULL, " :,");
-		fVaultPath = tokens;
-	    }
 	    else if(s == "DST_READ_PATH")
 	    {
 		tokens = strtok(NULL, " :,");
@@ -129,7 +123,7 @@ const string& TStConfig::GetResultsPath()
 
 const string& TStConfig::GetFilePath()
 {
-    return fVaultPath;
+    return fResultsPath;
 }
 
 const string& TStConfig::GetDSTreadPath()
@@ -167,6 +161,11 @@ const string& TStConfig::GetProdPath()
     return fProdPath;
 }
 
+TString TStConfig::GetRootFileName()
+{
+    return (GetFilePath() + (TString)"root/" + (TString)std::to_string(TStar::GetCounter()) + (TString)".root");
+}
+
 
 void TStConfig::Print()
 {
@@ -175,7 +174,6 @@ void TStConfig::Print()
     cout << "Config file: "<< GetConfigPath()<<endl;
     cout << "Data-file path: "<< GetDataPath() <<endl;
     cout << "Results path: "<< GetResultsPath() <<endl;
-    cout << "Vault path: "<< GetFilePath() <<endl;
     cout << "DST read path: "<< GetDSTreadPath() <<endl;
     cout << "DST write path: "<< GetDSTwritePath() <<endl;
     cout << "Run-list DB file: "<< GetRunListDB() <<endl;

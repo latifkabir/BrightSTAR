@@ -2,6 +2,8 @@ ChongsCode/
 examples/
 temp_*
 *.root
+*.pdf
+*.jpg
 .sl*
 .sl73_gcc485/
 *.obj
