@@ -29,7 +29,7 @@ Instruction()
     echo "          job-status         : Check farm job status"    
     echo "          job-report         : Check farm job status report"
     echo "          submit             : Submit job using SLUMS"
-    echo "          status         : Check farm job status"
+    echo "          status             : Check farm job status"
 
 
     echo "          ------------------------------------------------------------------------------------------------"
@@ -111,10 +111,10 @@ case $OPTION in
 	;;
     clean)
 	echo "Now moving intermediate files ...."
-	mv sched*.package.zip submitDir/
-	mv sched*.package submitDir/
-	mv sched*.dataset submitDir/
-	mv *.session.xml submitDir/
+	mv sched*.package.zip jobDir/
+	mv sched*.package jobDir/
+	mv sched*.dataset jobDir/
+	mv *.session.xml jobDir/
 	;;
     *)
 	echo "                                       "	   

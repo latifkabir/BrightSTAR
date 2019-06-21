@@ -35,7 +35,9 @@ void AnEEMCdist(Int_t runNo, Int_t maxFiles)
     StMuEmcPoint *eemcPoint;
 
     TTree *ch = muDstMaker->chain();
-    TH1F *dist = new TH1F("dist", "dist", 100, 0.0, 0.0);
+    TH1F *dist1 = new TH1F("dist1", "dist1", 100, 0.0, 0.0);
+    TH1F *dist2 = new TH1F("dist2", "dist2", 100, 0.0, 0.0);
+    TH1F *dist3 = new TH1F("dist3", "dist3", 100, 0.0, 0.0);
     TH2F *h2dist = new TH2F("h2dist", "h2dist", 100, 0.0, 0.0, 100, 0.0, 0.0);
     TH1F *engDist = new TH1F("edist", "edist", 100, 0.0, 0.0);
     Int_t iEvent = 0;
@@ -76,8 +78,12 @@ void AnEEMCdist(Int_t runNo, Int_t maxFiles)
 	    adc_v = hit->getAdc();
 	    Y = 1000 + strip_v -1  + (sec_v-1)*300;  //Check if v to be associated with Y??
 
-	    if(sec_u == sec_v)
+	    if(sec_u == 2 && sec_u == sec_v)
+	    {
 		h2dist->Fill(X, Y);
+		dist1->Fill(adc_u);
+		dist2->Fill(adc_v);
+	    }
 	    engDist->Fill(sec_u);
 	}		
     }
@@ -85,8 +91,12 @@ void AnEEMCdist(Int_t runNo, Int_t maxFiles)
     TCanvas *c1 = new TCanvas();
     h2dist->Draw("colz");
     TCanvas *c2 = new TCanvas();
-    engDist->Draw();	
-
+    engDist->Draw();
+    TCanvas *c3 = new TCanvas();
+    dist1->Draw();
+    TCanvas *c4 = new TCanvas();
+    dist2->Draw();
+    
     chain->Finish();
     st.Stop();
     st.Print();

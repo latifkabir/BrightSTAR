@@ -8,7 +8,7 @@
   <command>
     starpro
     setenv NODEBUG yes
-    root4star -l -q -b Analysis.C\(\"$FILELIST\",\"out\_$JOBID.root\"\)
+    root4star -l -q -b macros\/RunDeltaPhiMaker.C\(\"$FILELIST\",\"out\_$JOBID.root\"\)
   </command> 
 
   <SandBox installer="ZIP">

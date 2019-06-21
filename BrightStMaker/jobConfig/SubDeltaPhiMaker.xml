@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<job minFilesPerProcess="1" maxFilesPerProcess="1" simulateSubmission="false" fileListSyntax="xrootd" >
+<!-- <job eventsPerHour="10000" minEvents="1500" maxEvents="6000" softLimits="true" simulateSubmission="false" fileListSyntax="xrootd"> -->
+ 
+  <!-- <stdout discard="true" /> -->
+
+  <command>
+    starpro
+    setenv NODEBUG yes
+    root4star -l -q -b macros/RunDeltaPhiMaker.C\(\"$FILELIST\",\"out\_$JOBID.root\"\)
+  </command> 
+
+  <SandBox installer="ZIP">
+    <Package>
+      <File>file:./Analysis.xml</File>    <!-- Only so we can print it out ... done above -->      
+      <File>file:./Analysis.C</File>      <!-- Required -->
+      <File>file:./StRoot</File>          <!-- Required -->
+      <File>file:./.sl73_gcc485</File>    <!-- Required -->
+      <File>file:./rootlogon.C</File>    <!-- Required -->
+    </Package>
+  </SandBox>
+
+  <!-- 19.6 Gev -->
+  <!--<input URL="filelist:/star/u/kabir/JuniorsDay/Example_MuDst/19mu.list" nFiles="500" />--> 
+  <input URL="catalog:star.bnl.gov?production=P11id,filetype=daq_reco_MuDst,trgsetupname=AuAu19_production,tpx=1,filename~st_physics,sanity=1,storage!=HPSS" preferStorage="local" singleCopy="true" nFiles="4" />
+
+
+  <stderr URL="file:/star/data05/pwg/kabir/job_output/err_$JOBID.out"/>
+  <output fromScratch="*.root" toURL="/star/data05/pwg/kabir/job_output/" />
+  <output fromScratch="*.log" toURL="/star/data05/pwg/kabir/job_output/" />
+  <stdout URL="file:/star/data05/pwg/kabir/job_output/stdout_$JOBID.out" />
+  
+  <Generator>
+    <Location>./jobDir</Location>
+    <ReportLocation>/star/data05/pwg/kabir/job_output/</ReportLocation>
+  </Generator>
+</job>

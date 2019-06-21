@@ -16,7 +16,8 @@
 	gApplication->Terminate();
     }
 
-    // Dynamically link needed shared lib
+    //--------- Dynamically link needed shared lib----------------
+    //MuDST Related
     gSystem->Load("libStTableUtilities");
     gSystem->Load("libTable");
     gSystem->Load("libPhysics");
@@ -39,7 +40,22 @@
     gSystem->Load("StStrangeMuDstMaker");
     gSystem->Load("StMuDSTMaker");  
     cout<<"\t\t done loading libStMuDSTMaker.so ...."<<endl;
+
+    //-------- EEMC Related ------------
+    gSystem->Load("St_db_Maker");
+    gSystem->Load("StEEmcDbMaker");
+    gSystem->Load("StEEmcUtil");
+    gSystem->Load("StEmcRawMaker");
+    gSystem->Load("StEmcADCtoEMaker");
+    gSystem->Load("StEmcTriggerMaker");
+    gSystem->Load("StDbBroker");
+    gSystem->Load("StEEmcPoolmuDst");
+
+    //------ Bright Maker -------------
+    gSystem->Load("BrEEmcMaker");
+    gSystem->Load("BrExampleMaker");
     
+    //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";
     int status1 = gSystem->Load("libBrStar.so");
     if(status1>-1)
@@ -127,7 +143,6 @@
     Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
     TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
     gStyle->SetNumberContours(NCont);
-
    
 }
 
