@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE note [
+<!ENTITY FILEN "~st_physics">
+<!ENTITY FILET "daq_reco_mudst">
+<!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR/BrightStMaker">
+<!ENTITY OUTNAME "ex_scheduler">
+<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/.sl73_gcc485">
+<!ENTITY MACRO "macros/RunRpDistMaker.C">
+<!ENTITY TRIG "production_pp200trans_2015">
+<!ENTITY PROD "P16id">
+<!ENTITY OUTDIR "jobResults">
+<!ENTITY RUN "16071046">
+<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/rootlogon.C">
+]>
+<!-- Created on Sat Jun 22 15:49:33 2019 -->
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
 	<Generator>
@@ -11,7 +25,7 @@
 		set THISRUN = `echo $INPUTFILE0 | sed 's|.*_\([0-9]*\)_.*_\([0-9]*\).MuDst.root|\1_\2|'`
 		set OUTFILE = &OUTNAME;_${THISRUN}.root
 		set OUTDIR  = &OUTDIR;
-		
+
 		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
 
 		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;

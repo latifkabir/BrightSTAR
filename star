@@ -23,6 +23,7 @@ Instruction()
     echo "                   "			
     echo "          ------------------------------------- List of available options --------------------------------"
     echo "          clean              : Move intermediate schedular files"
+    echo "          clean-all          : Move intermediate schedular files, file-list and shell scripts"
     echo "          cancel-job         : Cancel all jobs submitted"
     echo "          file-list          : Print file list"
     echo "          hpss-get           : Restore file from HPSS (tape)"
@@ -111,12 +112,22 @@ case $OPTION in
 	;;
     clean)
 	echo "Now moving intermediate files ...."
-	mv sched*.package.zip jobDir/
-	mv sched*.package jobDir/
-	mv sched*.dataset jobDir/
-	mv *.session.xml jobDir/
+	mv sched*.package.zip jobDir/ 2>/dev/null
+	mv sched*.package jobDir/ 2>/dev/null
+	mv sched*.dataset jobDir/ 2>/dev/null
+	mv *.session.xml jobDir/ 2>/dev/null
 	echo "Deleting log files ..."
 	rm -r jobOutput/*
+	;;
+    clean-all)
+	echo "Now moving intermediate files ...."
+	mv sched*.package.zip jobDir/ 2>/dev/null
+	mv sched*.package jobDir/ 2>/dev/null
+	mv sched*.dataset jobDir/ 2>/dev/null
+	mv *.session.xml jobDir/ 2>/dev/null
+	echo "Deleting log files ..."
+	rm -r jobOutput/* 2>/dev/null
+	rm -r jobDir/* 2>/dev/null
 	;;
     *)
 	echo "                                       "	   
