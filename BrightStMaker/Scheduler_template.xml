@@ -17,8 +17,8 @@
 		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
 	</command>
 
-	<stdout URL="file:./jobOutput/log_&OUTNAME;/&RUN;/$FILEBASENAME.out" />
-	<stderr URL="file:./jobOutput/log_&OUTNAME;/&RUN;/$FILEBASENAME.err" />
+	<stdout URL="file:&JOBOUTDIR;/log_&OUTNAME;/&RUN;/$FILEBASENAME.out" />
+	<stderr URL="file:&JOBOUTDIR;/log_&OUTNAME;/&RUN;/$FILEBASENAME.err" />
 	
 	<SandBox>
 	<Package>

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <!DOCTYPE note [
-<!ENTITY FILEN "~st_physics">
 <!ENTITY FILET "daq_reco_mudst">
-<!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR/BrightStMaker">
-<!ENTITY OUTNAME "ex_scheduler">
-<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/.sl73_gcc485">
 <!ENTITY MACRO "macros/RunRpDistMaker.C">
-<!ENTITY TRIG "production_pp200trans_2015">
-<!ENTITY PROD "P16id">
-<!ENTITY OUTDIR "jobResults">
+<!ENTITY FILEN "~st_physics">
 <!ENTITY RUN "16071046">
+<!ENTITY TRIG "production_pp200trans_2015">
+<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/.sl73_gcc485">
+<!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR/BrightStMaker">
+<!ENTITY OUTNAME "jobOut">
 <!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/rootlogon.C">
+<!ENTITY JOBOUTDIR "jobOut">
+<!ENTITY PROD "P16id">
+<!ENTITY OUTDIR "jobResults/16071046">
 ]>
-<!-- Created on Sat Jun 22 15:49:33 2019 -->
+<!-- Created on Sat Jun 22 18:36:23 2019 -->
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
 	<Generator>
@@ -25,14 +26,14 @@
 		set THISRUN = `echo $INPUTFILE0 | sed 's|.*_\([0-9]*\)_.*_\([0-9]*\).MuDst.root|\1_\2|'`
 		set OUTFILE = &OUTNAME;_${THISRUN}.root
 		set OUTDIR  = &OUTDIR;
-
+		
 		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
 
 		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
 	</command>
 
-	<stdout URL="file:./jobOutput/log_&OUTNAME;/&RUN;/$FILEBASENAME.out" />
-	<stderr URL="file:./jobOutput/log_&OUTNAME;/&RUN;/$FILEBASENAME.err" />
+	<stdout URL="file:&JOBOUTDIR;/log_&OUTNAME;/&RUN;/$FILEBASENAME.out" />
+	<stderr URL="file:&JOBOUTDIR;/log_&OUTNAME;/&RUN;/$FILEBASENAME.err" />
 	
 	<SandBox>
 	<Package>

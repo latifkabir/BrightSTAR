@@ -35,19 +35,19 @@ Int_t TStRpDistMaker::Init()
     mMuDstMaker->SetStatus("pp2pp*",1);
     
     mFile = new TFile(mFileName,"recreate");    
-    mHist1[0] = new TH1F("h1nPlanes", "number of planes; number of planes", 100, 0.0, 0.0);
-    mHist1[1] = new TH1F("h1nRP", "number of RP; number of RP", 100, 0.0, 0.0);
-    mHist1[2] = new TH1F("h1BrID", "branch ID; branch ID", 100, 0.0, 0.0);
+    mHist1[0] = new TH1F("h1nPlanes", "number of planes; number of planes", 100, 0.0, 10.0);
+    mHist1[1] = new TH1F("h1nRP", "number of RP; number of RP", 100, 0.0, 10.0);
+    mHist1[2] = new TH1F("h1BrID", "branch ID; branch ID", 20, 0.0, 5.0);
     mHist1[3] = new TH1F("h1nTracks", "Number of Tracks per event [ with nTracks > 0 ]; Number of Tracks", 500, 0.0, 500.0);
-    mHist1[4] = new TH1F("h1Theta", "#theta; #theta [mRad]", 200, 0.0, 0.0);
-    mHist1[5] = new TH1F("h1Theta_x", "#theta_{x}; #theta_{x} [mRad]", 200, 0.0, 0.0);
-    mHist1[6] = new TH1F("h1Theta_y", "#theta_{y}; #theta_{y} [mRad]", 200, 0.0, 0.0);
-    mHist1[7] = new TH1F("h1Eta", "#eta; #eta", 100, 0.0, 0.0);
-    mHist1[8] = new TH1F("h1Pt", "Pt [GeV/c]; Pt [GeV/c]", 100, 0.0, 0.0);
+    mHist1[4] = new TH1F("h1Theta", "#theta; #theta [mRad]", 200, 0.0, 30.0);
+    mHist1[5] = new TH1F("h1Theta_x", "#theta_{x}; #theta_{x} [mRad]", 200, -30.0, 10.0);
+    mHist1[6] = new TH1F("h1Theta_y", "#theta_{y}; #theta_{y} [mRad]", 200, -30.0, 30.0);
+    mHist1[7] = new TH1F("h1Eta", "#eta; #eta", 100, -10.0, 10.0);
+    mHist1[8] = new TH1F("h1Pt", "Pt [GeV/c]; Pt [GeV/c]", 100, 0.0, 5.0);
     mHist1[9] = new TH1F("h1p", "p [GeV/c]; p [GeV/c]", 100, 0.0, 200.0);
-    mHist1[10] = new TH1F("h1xi", "#xi; #xi", 100, 0.0, 0.0);
-    mHist1[11] = new TH1F("h1tNeg", "-t [(GeV/c)^{2}]; -t [(GeV/c)^{2}]", 100, 0.0, 0.0);
-    mHist1[12] = new TH1F("h1Phi", "#phi [mRad]; #phi [mRad]", 100, 0.0, 0.0);
+    mHist1[10] = new TH1F("h1xi", "#xi; #xi", 100, -5.0, 5.0);
+    mHist1[11] = new TH1F("h1tNeg", "-t [(GeV/c)^{2}]; -t [(GeV/c)^{2}]", 100, 0.0, 5.0);
+    mHist1[12] = new TH1F("h1Phi", "#phi [mRad]; #phi [mRad]", 100, -4.0, 4.0);
 
     mMuDst = mMuDstMaker->muDst();
     return StMaker::Init();

@@ -4,7 +4,7 @@
 // Created: Sat Jun 22 01:35:03 2019 (-0400)
 // URL: jlab.org/~latif
 
-void RunRpDistMaker(TString inFile = "", TString outFile = "jobResults/RpDistMaker.root", int nEvents=50000)
+void RunRpDistMaker(TString inFile = "", TString outFile = "jobResults/RpDistMaker.root")
 {
     if(inFile == "")
 	inFile = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/071/16071046/st_physics_16071046_raw_1500013.MuDst.root";
@@ -12,7 +12,8 @@ void RunRpDistMaker(TString inFile = "", TString outFile = "jobResults/RpDistMak
     StChain *chain = new StChain;
     //chain->SetDebug(0);
     StMuDstMaker *muDstMaker = new StMuDstMaker(0,0,"",inFile,".",200);
-
+    Int_t nEvents = muDstMaker->chain()->GetEntries();
+    
     TStRpDistMaker *RpMaker = new TStRpDistMaker(muDstMaker);
     RpMaker->SetFileName(outFile);
 

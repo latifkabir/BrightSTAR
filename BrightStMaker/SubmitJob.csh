@@ -6,8 +6,9 @@ set MACRO   = $1
 set RUNLIST = $2
 
 set BASEDIR = `pwd`
-set OUTDIR = jobResults
-set OUTNAME = 'ex_scheduler'
+set BASEOUTDIR = jobResults     # .root files directory. Relative to current directory
+set JOBOUTDIR = jobOutput       #stderr, stdout, report etc directory. Relative to current directory
+set OUTNAME = 'jobOut'
 set SOURCE  = ${BASEDIR}/.sl73_gcc485
 set ROOTSETUP  =  ${BASEDIR}/rootlogon.C
 
@@ -30,13 +31,13 @@ set TRIG  = 'production_pp200trans_2015'
 #set TRIG  = 'production_pp200trans_2015||production_fms_pp200trans_2015'
 
     
-if (-d ./jobOutput/out_$OUTNAME) then
+if (-d $JOBOUTDIR/out_$OUTNAME) then
 	echo "WARNING! A folder with same name exist: delete old one and proceed? [y/n]"
 	switch ($<)
 
 		case y:
 		echo "Deleting old folders..."
-		rm -r ./jobOutput/out_$OUTNAME
+		rm -r $JOBOUTDIR/out_$OUTNAME
 		breaksw
 
 		default:
@@ -46,17 +47,16 @@ if (-d ./jobOutput/out_$OUTNAME) then
 endif
 
 foreach RUN (`cat $RUNLIST`)
-
-	mkdir -p ./jobOutput/log_$OUTNAME/$RUN
-	mkdir -p ./jobOutput/out_$OUTNAME
-	mkdir -p ./jobOutput/report
+	set OUTDIR = $BASEOUTDIR/$RUN
+	mkdir -p $OUTDIR
+	mkdir -p $JOBOUTDIR/log_$OUTNAME/$RUN
 
 	echo
 	echo "Submitting job for run" $RUN
 
 	star-submit-template \
 	 -template Scheduler_template.xml \
-	 -entities BASEDIR=$BASEDIR,MACRO=$MACRO,OUTDIR=$OUTDIR,OUTNAME=$OUTNAME,RUN=$RUN,SOURCE=$SOURCE,ROOTSETUP=$ROOTSETUP,FILEN=$FILEN,FILET=$FILET,PROD=$PROD,TRIG=$TRIG
+	 -entities BASEDIR=$BASEDIR,MACRO=$MACRO,OUTDIR=$OUTDIR,JOBOUTDIR=$JOBOUTDIR,OUTNAME=$OUTNAME,RUN=$RUN,SOURCE=$SOURCE,ROOTSETUP=$ROOTSETUP,FILEN=$FILEN,FILET=$FILET,PROD=$PROD,TRIG=$TRIG
 
 	echo
 	sleep 1
