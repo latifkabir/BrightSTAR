@@ -5,14 +5,24 @@ Bright STAR Maker
 
 - The Maker classes start with `TSt` and the corresponding root macro is inside `macros` directory. Each macro start with `Run` followed by corresponding maker class name (without `TSt`). The macros have extension `.C`.
 
-- All required shared objects are loaded from `rootlogon.C` file on `root` startup and not from the maker macros.
+- All required shared objects are loaded from `rootlogon.C` file on `root` startup and not from the maker macros. Do not use symbolic link. Symbolic link is copied as symbolic link.
 
-- All batch farm job description files are inside `jobConfig/` and has the file name pattern `Sub` + Maker macro name (without Run).
+- All batch farm job description files are inside `jobConfig/` and has the file name pattern `Sub` + Maker macro name (without Run prefix).
 
-- Before you submit the job, copy the desired job description file (xml file) to the top level directory of `BrightStMaker` and submit your job from there. Inside job description xmlfile, you need to call the macros with `macros/` prefix.
+- Current directory structure:
 
-- Inside `StMaker`, make a symbolic link of the directory `libBrStar` if your maker class is uisng classes from that module. It's better not to use `libBrStar` classes for maker classes.
+```
+├── jobConfig
+├── jobDir -> /star/u/kabir/pwg/jobDir
+├── jobOutput -> /star/u/kabir/pwg/jobOutput
+├── jobResults -> /star/u/kabir/pwg/jobResults
+├── macros
+├── README.md
+├── rootlogon.C
+├── RunList.txt
+├── SchedulerSubmit.csh
+├── Scheduler_template.xml
+├── StRoot
+├── SubDeltaPhiMaker.xml
 
-- Always compile with `cons` and run with `root4star`.
-
-- Submit the job from the top level directory of `BrightStMaker`.
+```

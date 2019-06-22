@@ -95,7 +95,7 @@ case $OPTION in
 	# echo "I=idle, R= running, C=complete, H=held"
 	# condor_q
 	echo "Name                                        Machine                  RunningJobs   IdleJobs   HeldJobs"
-	condor_status -submitters | grep $USER | head -n 1
+	condor_status -submitters | grep $USER 
 	;;
     job-report)
 	condor_q -global | grep $USER
@@ -115,6 +115,8 @@ case $OPTION in
 	mv sched*.package jobDir/
 	mv sched*.dataset jobDir/
 	mv *.session.xml jobDir/
+	echo "Deleting log files ..."
+	rm -r jobOutput/*
 	;;
     *)
 	echo "                                       "	   

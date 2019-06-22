@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
+
+	<Generator>
+		<Location> ./jobOutput </Location>
+	</Generator>
+
+	<command>
+		stardev
+
+		set THISRUN = `echo $INPUTFILE0 | sed 's|.*_\([0-9]*\)_.*_\([0-9]*\).MuDst.root|\1_\2|'`
+		set OUTFILE = &OUTNAME;_${THISRUN}.root
+		set OUTDIR  = &OUTDIR;
+
+		<!-- ln -s &BASEDIR;/&MACRO; . -->
+		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
+
+		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
+	</command>
+
+	<stdout URL="file:./jobOutput/log_&OUTNAME;/&RUN;/$FILEBASENAME.out" />
+	<stderr URL="file:./jobOutput/log_&OUTNAME;/&RUN;/$FILEBASENAME.err" />
+	
+	<SandBox>
+	<Package>
+		<File>file:&MACRO;</File>
+		<File>file:&SOURCE;</File>
+		<File>file:&ROOTSETUP;</File>
+	</Package>
+	</SandBox>
+
+	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" />
+</job>

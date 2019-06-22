@@ -22,3 +22,4 @@ temp_gccflags.c
 temp/
 *.list
 .root_history
+.consign
