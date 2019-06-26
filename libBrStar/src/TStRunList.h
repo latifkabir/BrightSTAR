@@ -24,6 +24,7 @@ public:
     static Int_t GetFirstRun();
     static Int_t GetLastRun();
     static Int_t MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles = -1);
+    static Int_t PrintFileList(Int_t firstRun, Int_t lastRunOrNfiles = -1);
     static Int_t MakeFileListWithEvents(Int_t minEvents);
     static void PrintFileList();
     

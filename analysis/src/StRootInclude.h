@@ -17,5 +17,11 @@
 #include "StMuRpsTrack.h"
 #include "StMuRpsTrackPoint.h"
 
+//EEMC
+#include "StEEmcDbMaker/StEEmcDbMaker.h"
+#include "StEEmcUtil/database/StEEmcDb.h"
+#include "StEEmcUtil/database/EEmcDbItem.h"
+#include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
+#include "StEEmcUtil/StEEmcSmd/StEEmcSmdGeom.h"
 
 #endif

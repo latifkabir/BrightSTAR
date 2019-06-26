@@ -33,7 +33,7 @@ void AnEEMCdist(Int_t runNo, Int_t maxFiles)
 
     StMuEmcHit  *eemcHit;
     StMuEmcPoint *eemcPoint;
-
+    
     TTree *ch = muDstMaker->chain();
     TH1F *dist1 = new TH1F("dist1", "dist1", 100, 0.0, 0.0);
     TH1F *dist2 = new TH1F("dist2", "dist2", 100, 0.0, 0.0);

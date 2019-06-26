@@ -23,7 +23,7 @@ TStEEmcMakerGeomEx::TStEEmcMakerGeomEx(const char* self ,const char* muDstMakerN
 {
     mMuDstMaker = (StMuDstMaker*)GetMaker(muDstMakerName);
     assert(mMuDstMaker);
-    geomTw= new EEmcGeomSimple(); // tower geomtry
+    geomTw = new EEmcGeomSimple(); // tower geomtry
     geomSmd =  StEEmcSmdGeom::instance(); //strip geometry, do NOT call new StEEmcSmdGeom()
 
 }
@@ -76,7 +76,8 @@ Int_t TStEEmcMakerGeomEx::Make()
 	return kStOK;
     }
 
-    int isec,ieta,isub,istrip,adc,ipre;
+    int sec, eta, sub, strip, adc, pre;
+    int isec, ieta, isub, istrip, ipre;
     StMuEmcHit *hit;
 
     int i, nh;
@@ -85,13 +86,16 @@ Int_t TStEEmcMakerGeomEx::Make()
     nh=0;
     for (i=0; i< emc->getNEndcapTowerADC(); i++)
     {
-	emc->getEndcapTowerADC(i,adc,isec,isub,ieta);
+	emc->getEndcapTowerADC(i,adc, sec, sub, eta);
 	if (adc<=0) continue; // print only non-zero values
 	nh++;
+	isec = sec - 1;
+	isub = sub - 1;
+	ieta = eta - 1;
 	// access geometry info
-	float etaCenter     =geomTw->getEtaMean(ieta);
-	float phiCenter     =geomTw->getPhiMean(isec,isub);
-	TVector3 r= geomTw-> getTowerCenter(isec, isub,ieta);
+	float etaCenter     = geomTw->getEtaMean(ieta);
+	float phiCenter     = geomTw->getPhiMean(isec,isub);
+	TVector3 r = geomTw-> getTowerCenter(isec, isub,ieta);
 
 	printf("\nToweR %2.2dT%c%2.2d  phi/deg=%6.1f eta=%5.2f x=%4.1f y=%4.1f z=%5.1f: adc=%4d\n   ",isec+1,isub+'A',ieta+1,phiCenter/3.14*180,etaCenter,r.x(),r.y(),r.z(),adc );
  
@@ -116,15 +120,19 @@ Int_t TStEEmcMakerGeomEx::Make()
     printf("\nTotal %d hits in pre1+2+post\n",nh);
     for (i=0; i<nh; i++)
     {
-	hit=emc->getEndcapPrsHit(i,isec,isub,ieta,ipre);
+	hit=emc->getEndcapPrsHit(i, sec, sub, eta, pre);
+	isec = sec - 1;
+	isub = sub - 1;
+	ieta = eta - 1;
+	ipre = pre - 1;
 	printf("\n\npre/post(%d) %2.2d%c%c%2.2d : energy=%f  adc=%d\n",ipre+1,isec+1,ipre+'P',isub+'A',ieta+1,hit->getEnergy(),hit->getAdc());
 	// ....... Access  DB 
 	char name[20];
-	sprintf(name,"%2.2d%c%c%2.2d",isec+1,ipre+'P',isub+'A',ieta+1);
+	sprintf(name,"%2.2d%c%c%2.2d", isec+1, ipre+'P', isub+'A', ieta+1);
 	printf("  DB: name='%s'",name);
-	int index=EEname2Index(name);
+	int index = EEname2Index(name);
 	printf(", index=%d, ", index);
-	const EEmcDbItem *dbItem=eeDb->getByIndex(index);
+	const EEmcDbItem *dbItem = eeDb->getByIndex(index);
 	assert(dbItem); //  fatal error in EEmcDb-maker
 	dbItem->print();
 
@@ -137,8 +145,11 @@ Int_t TStEEmcMakerGeomEx::Make()
     {
 	nh= emc->getNEndcapSmdHits(uv);
 	printf("\nTotal %d hits in SMD-%c\n",nh,uv);
-	for (i=0; i<nh; i++) {
-	    hit=emc->getEndcapSmdHit(uv,i,isec,istrip);
+	for (i=0; i<nh; i++)
+	{
+	    hit=emc->getEndcapSmdHit(uv,i, sec, strip);
+	    isec = sec - 1;
+	    istrip = strip - 1;
 	    printf("\nSMD-%c  %2.2d%c%3.3d : energy=%f  adc=%d\n",uv,isec+1,uv,istrip+1,hit->getEnergy(),hit->getAdc());
       
 	    // ... geometry
