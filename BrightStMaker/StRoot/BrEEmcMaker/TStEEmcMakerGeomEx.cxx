@@ -48,7 +48,14 @@ Int_t TStEEmcMakerGeomEx::Init()
     }
 
     // Create tables
-    // Create Histograms    
+    // Create Histograms
+    assert(!mFileName.IsNull());
+    mFile = TFile::Open(mFileName,"recreate");
+    assert(mFile);
+    mHist2d[0] = new TH2D("h2d1", "Tower x vs y", 100, 0.0, 0.0, 100, 0.0, 0.0);
+    mHist2d[1] = new TH2D("h2d2", "SMD x vs y", 100, 0.0, 0.0, 100, 0.0, 0.0);
+    mHist2d[2] = new TH2D("h2d3", "SMD x vs y", 100, 0.0, 0.0, 100, 0.0, 0.0);
+
     return StMaker::Init();
 }
 
@@ -81,7 +88,7 @@ Int_t TStEEmcMakerGeomEx::Make()
     StMuEmcHit *hit;
 
     int i, nh;
- 
+    
     printf("\nTotal %d hits in Tower\n",emc->getNEndcapTowerADC());
     nh=0;
     for (i=0; i< emc->getNEndcapTowerADC(); i++)
@@ -97,8 +104,8 @@ Int_t TStEEmcMakerGeomEx::Make()
 	float phiCenter     = geomTw->getPhiMean(isec,isub);
 	TVector3 r = geomTw-> getTowerCenter(isec, isub,ieta);
 
-	printf("\nToweR %2.2dT%c%2.2d  phi/deg=%6.1f eta=%5.2f x=%4.1f y=%4.1f z=%5.1f: adc=%4d\n   ",isec+1,isub+'A',ieta+1,phiCenter/3.14*180,etaCenter,r.x(),r.y(),r.z(),adc );
- 
+	printf("\nToweR %2.2dT%c%2.2d  phi/deg=%6.1f eta=%5.2f x=%4.1f y=%4.1f z=%5.1f: adc=%4d\n   ",isec+1,isub+'A',ieta+1,phiCenter/3.14*180,etaCenter, r.x(), r.y(), r.z(), adc );
+	mHist2d[0]->Fill(r.x(), r.y()); 
 #if 0
 	// more geometry info for towers, see .h
 	float etaHalfWidth  =geomTw->getEtaHalfWidth(ieta);
@@ -106,6 +113,7 @@ Int_t TStEEmcMakerGeomEx::Make()
     
 	// center of the tower in two ways
 	TVector3 r1=geomTw-> getDirection( etaCenter, phiCenter);
+	//mHist2d[0]->Fill(r1.x(), r1.y()); 
 #endif
 
 	// ....... Access  DB 
@@ -151,7 +159,9 @@ Int_t TStEEmcMakerGeomEx::Make()
 	    isec = sec - 1;
 	    istrip = strip - 1;
 	    printf("\nSMD-%c  %2.2d%c%3.3d : energy=%f  adc=%d\n",uv,isec+1,uv,istrip+1,hit->getEnergy(),hit->getAdc());
-      
+
+	    if(hit->getAdc() == 0)
+		continue;
 	    // ... geometry
 	    int iuv=uv-'U';
 	    StructEEmcStrip *st=geomSmd->getStripPtr(istrip,iuv,isec);
@@ -167,7 +177,10 @@ Int_t TStEEmcMakerGeomEx::Make()
 		   end1.x(),end1.y(),end1.z(),end2.x(),end2.y(),end2.z());
 	    //      	     st.end1.x(),
 	    //	     st.end1.y(),st.end2.x(),st.end1.z(),st.end2.y(),st.end2.z());
-      
+	    if(end1.x() != 0 &&  end1.y() != 0  && iuv == 0)
+		mHist2d[1]->Fill(end1.x(), end1.y());
+	    if(end2.x() != 0 &&  end2.y() != 0 && iuv == 0)
+		mHist2d[2]->Fill(end2.x(), end2.y()); 
 
 	    // ....... Access  DB
 
@@ -203,8 +216,18 @@ Int_t TStEEmcMakerGeomEx::Make()
     return kStOK;
 }
 
+void TStEEmcMakerGeomEx::SetOutFile(const char* filename)
+{
+    mFileName = filename;
+}
 
+Int_t TStEEmcMakerGeomEx::Finish()
+{
+    mFile->Write();
+    mFile->Close();
 
+    return kStOk;
+}
 
 
 

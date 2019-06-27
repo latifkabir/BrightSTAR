@@ -4,7 +4,9 @@
 // Created: Sun Jun 23 21:23:37 2019 (-0400)
 // URL: jlab.org/~latif
 
-void RunEEmcDistMaker(TString InputFileList="", TString outputfile="EEmcDistMaker.root", Int_t nEntries = -1)
+#include "StRootInclude.h"
+
+void RunEEmcDistMaker(TString InputFileList, TString outputfile, Int_t nEntries)
 {
     if(InputFileList == "")
 	InputFileList="root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/090/16090026/st_physics_16090026_raw_5500035.MuDst.root";	

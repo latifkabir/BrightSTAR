@@ -1,16 +1,12 @@
 //Now in order to read microDST use the DoMicroDst.
+
+#include "StRootInclude.h"
+
 class StChain;
-  StChain *chain=0;
+StChain *chain=0;
 
-
-int RunEEmcMakerGeomEx(
-	  char* file    = "st_physics_16066033_raw_0000006.MuDst.root",
-	  Int_t nFiles  = 1, 
-	  char* inDir   = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/066/16066033/",
-	  int nEve=10)
+int RunEEmcMakerGeomEx( char* file, Int_t nFiles, char* inDir, int nEve)
 { 
-
-
   gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
   loadSharedLibraries();
   cout << " loading done " << endl;
@@ -53,6 +49,7 @@ int RunEEmcMakerGeomEx(
   // myMk->setPreferedFlavor("set430","eemcPMTcal");
 
   TStEEmcMakerGeomEx *m = new TStEEmcMakerGeomEx("jasEE","MuDst");
+  m->SetOutFile("EEmcMakerGeomEx.root");
   
   chain->Init();
   chain->ls(3);

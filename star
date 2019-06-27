@@ -86,7 +86,7 @@ case $OPTION in
 	echo -e "
                  hpss_user.pl -r <output_dir> -f <file_list> 
                  where <file_list> is just a list of files.\n
-                 hpss_user.pl <input_file_name> <output_file_name> \n
+                 hpss_user.pl <input_file_name with full path> <output_file_name with full path> \n
                  hpss_user.pl -f <input_file_list> 
                  where each line is space separated in and out file names. \n
                  hpss_user.pl -h for details

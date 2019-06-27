@@ -24,7 +24,6 @@ echo ""
 echo "---------------------------------------------------------"
 echo ""
 
-# print simpler table for jobCheck.py to read
 # columns: [runnumber] [filename] [size (in bytes)] [#events]
 echo "[" | tee ${outputfile_}
 cat ${tempoutput_} | sed 's/::/ /g' | awk '{print "{\"run\":" $9", \"data\": {\"file\": \""$6"\", \"size\": "$7", \"events\": "$8 "}}," }' | sort -n | uniq | tee -a ${outputfile_}

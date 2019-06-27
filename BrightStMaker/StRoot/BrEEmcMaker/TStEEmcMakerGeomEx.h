@@ -3,9 +3,9 @@
 #define TSTEEMCMAKERGEOMEX_H
 
 
-#ifndef StMaker_H
 #include "StMaker.h"
-#endif
+#include "TH2D.h"
+
 
 class StMuDstMaker;
 class EEmcGeomSimple;
@@ -19,13 +19,17 @@ private:
     EEmcGeomSimple *geomTw;
     StEEmcSmdGeom  *geomSmd;
     StEEmcDb *eeDb;
-
+    TString mFileName;
+    TFile* mFile;
+    TH2D *mHist2d[3];
 public: 
     TStEEmcMakerGeomEx(const char *self="MuEEDemo", const char* muDstMakerName="muDstMaker");
     virtual       ~TStEEmcMakerGeomEx();
     virtual Int_t Init();
     virtual Int_t  Make();
-  
+    virtual Int_t Finish();
+    void SetOutFile(const char* fileName);
+    
     /// Displayed on session exit, leave it as-is please ...
     virtual const char *GetCVS() const
     {

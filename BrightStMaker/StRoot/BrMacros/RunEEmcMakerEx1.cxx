@@ -2,7 +2,9 @@
 // Sample MuDst reader
 //
 
-void RunEEmcMakerEx1(TString InputFileList="", TString outputfile="EEmcMakerEx1.root")
+#include "StRootInclude.h"
+
+void RunEEmcMakerEx1(TString InputFileList, TString outputfile)
 {
     if(InputFileList == "")
 	InputFileList="root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/090/16090026/st_physics_16090026_raw_5500035.MuDst.root";	
