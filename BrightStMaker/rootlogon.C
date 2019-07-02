@@ -46,9 +46,11 @@
     gSystem->Load("StEEmcPoolmuDst");
 
     //------ Bright Maker -------------
-    gSystem->Load("BrEEmcMaker");
-    gSystem->Load("BrRpMaker");
-    gSystem->Load("BrExampleMaker");
+    gSystem->Load("libBrEEmcMaker");
+    gSystem->Load("libBrRpMaker");
+    gSystem->Load("libBrExampleMaker");
+    gSystem->Load("libRunMacros");
+    //gSystem->Load("libPi0MakerIU");
     
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square

@@ -1,0 +1,55 @@
+# Filename: Makefile
+# Description: Makefile for compiling Bright Star Analysis Framework. This Makefile is tailored for STAR farm nodes which is set for 32 bit.
+# Author: Latif Kabir < kabir@bnl.gov >
+# Created: Wed May 15 01:12:25 2019 (-0500)
+# URL: jlab.org/~latif
+
+ifndef STAR
+  $(error $$STAR environment variable not defined. source setup.[c]sh first)
+endif
+
+ifndef STARHOME
+  $(error $$STARHOME environment variable not defined. source setup.[c]sh first)
+endif
+
+ROOTCINT  = rootcint
+ROOTFLAGS = $(shell root-config --cflags)
+ROOTLIBS  = $(shell root-config --glibs)
+CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker -L ${STARHOME}/libBrStar/lib -L ${STARHOME}/BrightStMaker/.sl73_gcc485/lib -lBrStar -lBrEEmcMaker -lBrExampleMaker -lBrRpMaker
+MODULES   = StMuDSTMaker/COMMON StChain St_base Star2Root StEvent StarClassLibrary StEmcUtil/database
+SRC_DIR   = $(addprefix ${STAR}/StRoot/,$(MODULES))
+LIB_INCLUDE  = $(addprefix -I,$(SRC_DIR)) -I${STAR}/StRoot/ -I${STARHOME}/libBrStar/macros/ -I${STARHOME}/BrightStMaker/StRoot
+
+all: libRunMacros
+
+clean: libRunMacros_clean
+clear: libRunMacros_clear
+
+
+libRunMacros: .sl73_gcc485/lib/libRunMacros.so
+libRunMacros_base= $(wildcard macros/*.cxx)  
+libRunMacros_inc	= $(patsubst macros/%.cxx, ./%.h,$(libRunMacros_base)) 
+libRunMacros_obj	= $(patsubst macros/%.cxx, macros/%.o,$(libRunMacros_base))
+
+.sl73_gcc485/lib/libRunMacros.so: $(libRunMacros_obj)  macros/libRunMacros_Dict.o
+	$(CXX) -o $@ $(CXXFLAGS) -shared -Wl,-soname,libRunMacros.so $^	
+	@echo "                                                                        "
+	@echo "-----------------------------------------------------------------------"
+	@echo "Finished the compilation!"
+	@echo "-----------------------------------------------------------------------"
+macros/%.o:macros/%.cxx
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) $(LIB_INCLUDE) $(ROOTFLAGS) $<
+
+macros/libRunMacros_Dict.cxx:
+	cd macros/; $(ROOTCINT) -f libRunMacros_Dict.cxx -c $(libRunMacros_inc) LinkDef.h
+
+libRunMacros_clean:
+	rm -f $(libRunMacros_obj)
+	rm -f  macros/*_Dict.*
+	rm -f .sl73_gcc485/lib/libRunMacros.so
+
+libRunMacros_clear:
+	rm -f $(libRunMacros_obj)
+	rm -f  macros/*_Dict.*
+
+

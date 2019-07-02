@@ -3,6 +3,8 @@
 //
 
 #include "StRootInclude.h"
+#include "BrEEmcMaker/TStEEmcMakerEx1.h"
+#include "TChain.h"
 
 void RunEEmcMakerEx1(TString InputFileList, TString outputfile)
 {
@@ -24,14 +26,15 @@ void RunEEmcMakerEx1(TString InputFileList, TString outputfile)
   StEEmcDbMaker* eemcDb = new StEEmcDbMaker;
 
   // Barrel ADC to energy maker
-  StEmcADCtoEMaker* adc2e = new StEmcADCtoEMaker;
-  adc2e->saveAllStEvent(true);
+  // StEmcADCtoEMaker* adc2e = new StEmcADCtoEMaker;
+  // adc2e->saveAllStEvent(true);
 
   TStEEmcMakerEx1* muAna = new TStEEmcMakerEx1;
   muAna->setOutFile(outputfile);
 
   chain->Init();
-  Int_t nEntries = muDstMaker->chain()->GetEntries();
+  TChain *ch = muDstMaker->chain();
+  Int_t nEntries = ch->GetEntries();
       
   // Event loop
   for (int iEvent = 1; iEvent <= nEntries; ++iEvent)

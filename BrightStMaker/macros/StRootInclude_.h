@@ -8,20 +8,19 @@
 #define ST_ROOT_INCLUDE
 
 //MuDST
-#include "StMuDstMaker.h"
-#include "StMuDst.h"
-#include "StMuEvent.h"
+#include "StMuDSTMaker/COMMON/StMuDstMaker.h"
+#include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StChain.h"
-#include "StMuEmcCollection.h"
-#include "StMuDbReader.h"
+#include "StMuDSTMaker/COMMON/StMuEmcCollection.h"
+#include "StMuDSTMaker/COMMON/StMuDbReader.h"
 
 //Database
 #include "St_db_Maker/St_db_Maker.h"
 
 //RP
-#include "StMuRpsCollection.h"
-#include "StMuRpsTrack.h"
-#include "StMuRpsTrackPoint.h"
+#include "StMuDSTMaker/COMMON/StMuRpsCollection.h"
+#include "StMuDSTMaker/COMMON/StMuRpsTrack.h"
+#include "StMuDSTMaker/COMMON/StMuRpsTrackPoint.h"
 
 //EEMC
 #include "StEEmcDbMaker/StEEmcDbMaker.h"
@@ -29,11 +28,6 @@
 #include "StEEmcUtil/database/EEmcDbItem.h"
 #include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
 #include "StEEmcUtil/StEEmcSmd/StEEmcSmdGeom.h"
-//#include "StEmcUtil/database/StBemcTables.h"
-
-//Trigger
-#include "StMuTriggerIdCollection.h"
-#include "StTriggerId.h"
-#include "StMuTriggerIdCollection.h"
+#include "StEmcUtil/database/StBemcTables.h"
 
 #endif

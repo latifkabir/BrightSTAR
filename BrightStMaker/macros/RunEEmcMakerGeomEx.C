@@ -1,32 +1,18 @@
 //Now in order to read microDST use the DoMicroDst.
 
 #include "StRootInclude.h"
+#include "BrEEmcMaker/TStEEmcMakerGeomEx.h"
 
 class StChain;
 StChain *chain=0;
 
 int RunEEmcMakerGeomEx( char* file, Int_t nFiles, char* inDir, int nEve)
 { 
-  gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
-  loadSharedLibraries();
-  cout << " loading done " << endl;
-
-//   gSystem->Load("StDbLib");
-//   gSystem->Load("StDbBroker");
-//   gSystem->Load("St_db_Maker");
-
-// // Load my maker
-//   assert(gSystem->Load("StEEmcUtil")==0);
-//   //assert(gSystem->Load("StEEmcPoolmuDst")==0 );
-//   assert(gSystem->Load("StEEmcDbMaker")==0);
-//   assert(gSystem->Load("DemoMaker")==0);
-
-
 // create chain    
   chain = new StChain("StChain"); 
   
 // Now we add Makers to the chain...   
-  maker = new StMuDstMaker(0,0,inDir,file,"MuDst.root",nFiles);
+  StMuDstMaker *maker = new StMuDstMaker(0,0,inDir,file,"MuDst.root",nFiles);
   StMuDbReader* db = StMuDbReader::instance();
 
   

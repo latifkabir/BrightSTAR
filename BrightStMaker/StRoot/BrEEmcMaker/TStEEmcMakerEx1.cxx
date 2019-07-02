@@ -19,7 +19,6 @@
 // EEMC stuff
 
 #include "StEEmcDbMaker/StEEmcDbMaker.h"
-
 #include "StEEmcUtil/database/StEEmcDb.h"
 #include "StEEmcUtil/database/EEmcDbItem.h"
 #include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"

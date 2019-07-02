@@ -62,7 +62,7 @@ int TStEEmcDistMaker::Init()
     mHist1[5] = new TH1D("h5", "Endcap SMD energy U", 600, -0.001, 0.005);
     mHist1[6] = new TH1D("h6", "Endcap SMD energy V", 600, -0.001, 0.005);
 
-    mHist2[0] = new TH2D("h2d1", "Tower x vs y", 100, 0.0, 0.0, 100, 0.0, 0.0);
+    mHist2[0] = new TH2D("h2d1", "Tower x vs y", 28, -250.0, 250.0, 28, -250.0, 250.0);
     mHist2[1] = new TH2D("h2d2", "SMD x vs y", 100, 0.0, 0.0, 100, 0.0, 0.0);
 
     return StMaker::Init();
@@ -103,7 +103,7 @@ int TStEEmcDistMaker::Make()
 	if(rawAdc == 0)
 	    continue;
 	mHist1[0]->Fill(towerIndex);
-	mHist2[0]->Fill(r.x(), r.y());
+	mHist2[0]->Fill(r.x(), r.y(), rawAdc);
 	// Sanity checks
 
 	assert(1 <= sector && sector <= 12);

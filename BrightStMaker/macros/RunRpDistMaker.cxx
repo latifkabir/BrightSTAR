@@ -5,6 +5,9 @@
 // URL: jlab.org/~latif
 
 #include "StRootInclude.h"
+#include "BrRpMaker/TStRpDistMaker.h"
+#include "TChain.h"
+#include "RunRpDistMaker.h"
 
 void RunRpDistMaker(TString inFile, TString outFile)
 {
@@ -13,8 +16,9 @@ void RunRpDistMaker(TString inFile, TString outFile)
 	
     StChain *chain = new StChain;
     //chain->SetDebug(0);
-    StMuDstMaker *muDstMaker = new StMuDstMaker(0,0,"",inFile,".",200);
-    Int_t nEvents = muDstMaker->chain()->GetEntries();
+    StMuDstMaker *muDstMaker = new StMuDstMaker(0,0,"", inFile, ".", 200);
+    TChain *ch = muDstMaker->chain();
+    Int_t nEvents = ch->GetEntries();
     
     TStRpDistMaker *RpMaker = new TStRpDistMaker(muDstMaker);
     RpMaker->SetFileName(outFile);

@@ -10,7 +10,6 @@
 //MuDST
 #include "StMuDstMaker.h"
 #include "StMuDst.h"
-#include "StMuEvent.h"
 #include "StChain.h"
 #include "StMuEmcCollection.h"
 #include "StMuDbReader.h"
@@ -30,10 +29,5 @@
 #include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
 #include "StEEmcUtil/StEEmcSmd/StEEmcSmdGeom.h"
 //#include "StEmcUtil/database/StBemcTables.h"
-
-//Trigger
-#include "StMuTriggerIdCollection.h"
-#include "StTriggerId.h"
-#include "StMuTriggerIdCollection.h"
 
 #endif
