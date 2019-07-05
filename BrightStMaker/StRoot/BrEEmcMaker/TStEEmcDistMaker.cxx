@@ -103,7 +103,7 @@ int TStEEmcDistMaker::Make()
 	if(rawAdc == 0)
 	    continue;
 	mHist1[0]->Fill(towerIndex);
-	mHist2[0]->Fill(r.x(), r.y(), rawAdc);
+	//mHist2[0]->Fill(r.x(), r.y(), rawAdc);
 	// Sanity checks
 
 	assert(1 <= sector && sector <= 12);
@@ -121,6 +121,7 @@ int TStEEmcDistMaker::Make()
 	double energy = adc/x->gain;
 
 	if(x->gain < 0) energy = 0.0;
+	mHist2[0]->Fill(r.x(), r.y(), energy);
 	mHist1[2]->Fill(energy);
     }
 
@@ -170,18 +171,19 @@ int TStEEmcDistMaker::Make()
 	assert(istr_v >= 0 && istr_v < 288);
 	if(x_v->gain <= 0) continue;
 
-	if(isec_u == isec_v && adc_u > 0 && adc_v > 0 && id_u == id_v)
-	{
-	   smdIntSect = geomSmd->getIntersection(isec_u, istr_u, istr_v);
-	   mHist2[1]->Fill(smdIntSect.x(), smdIntSect.y());
-	}
-	
 	double energy_u = adc_u / x_u->gain;
 	double energy_v = adc_v / x_v->gain;
 	mHist1[3]->Fill(adc_u);
 	mHist1[4]->Fill(adc_v);
 	mHist1[5]->Fill(energy_u);
 	mHist1[6]->Fill(energy_v);
+
+	if(isec_u == isec_v && adc_u > 0 && adc_v > 0 && id_u == id_v)
+	{
+	   smdIntSect = geomSmd->getIntersection(isec_u, istr_u, istr_v);
+	   if(energy_u > 0.002 && energy_v > 0.002)
+	       mHist2[1]->Fill(smdIntSect.x(), smdIntSect.y());
+	}		
     }
     
     return kStOk;

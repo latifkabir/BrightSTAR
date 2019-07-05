@@ -61,8 +61,8 @@ void AnEEmcEvent(Int_t runNo, Int_t maxFiles, Int_t eventNo)
     {
 	foundTrigger = kFALSE;
 	chain->Clear();
-	chain->Make(eventNo);
-	// muDstMaker->chain()->GetEntry(ii);
+	//chain->Make(ii);
+	muDstMaker->chain()->GetEntry(ii);
 
 	// trigMuColl = &mDst->event()->triggerIdCollection();
 	// if(!trigMuColl)

@@ -44,13 +44,12 @@ Int_t               stat          = 0;
 Int_t prescale = 100;
 
 void runEEmcPi0( Int_t nevents =-1, 
-		//Char_t *name = "st_physics_7136033_raw_1040013.MuDst.root",
-		 Char_t *name = "st_physics_16071046_raw_1000003.MuDst.root",
-		 Char_t *ofile= "test.root ",
-		 Char_t *path = "/star/u/kabir/pwg/data/", 
-		 // Int_t trigID=137641,
-		 Int_t trigID = 480202, //<-------------------------------------------
-		 Int_t nfiles = 100)
+			Char_t *name = "st_physics_7136033_raw_1040013.MuDst.root",
+			Char_t *ofile= "test.root ",
+			Char_t *path = "/star/u/kabir/pwg/data/", 
+		 Int_t trigID=137641,
+		 /*Int_t trigID=480001,*/
+			Int_t nfiles = 100,)
 		      
 {
   //home/starreco/reco/ppProductionLong/FullField/P06ie/2006/136/7136033/st_physics_adc_7136033_raw_1060001.MuDst.root
@@ -141,23 +140,13 @@ void runEEmcPi0( Int_t nevents =-1,
   //--
   mEEclusters=new StEEmcIUClusterMaker("mEEclusters");
   mEEclusters->analysis("AandE");
-  // mEEclusters->seedEnergy(0.8,0);       // tower seed energy
-  // mEEclusters->seedEnergy(3.0/1000.,4); // 2 MeV smd-u strip
-  // mEEclusters->seedEnergy(3.0/1000.,5); // 2 MeV smd-v strip
-  // mEEclusters->setSeedFloor(1.0);       // floating seed threshold near clusters
-  // mEEclusters->setMaxExtent(3);         // maximum distance from seed strip
-  // mEEclusters->suppress(0);              // disallows seeds in two strips adjacent to any cluster
-
-
-  mEEclusters->seedEnergy(0.2,0);       // tower seed energy
-  mEEclusters->seedEnergy(3.0/10000.,4); // 2 MeV smd-u strip
-  mEEclusters->seedEnergy(3.0/10000.,5); // 2 MeV smd-v strip
-  mEEclusters->setSeedFloor(0.2);       // floating seed threshold near clusters
+  mEEclusters->seedEnergy(0.8,0);       // tower seed energy
+  mEEclusters->seedEnergy(3.0/1000.,4); // 2 MeV smd-u strip
+  mEEclusters->seedEnergy(3.0/1000.,5); // 2 MeV smd-v strip
+  mEEclusters->setSeedFloor(1.0);       // floating seed threshold near clusters
   mEEclusters->setMaxExtent(3);         // maximum distance from seed strip
   mEEclusters->suppress(0);              // disallows seeds in two strips adjacent to any cluster
 
-
-  
 
   //--
   //-- Point maker.  Matches pairs of smd clusters to active towers.
@@ -189,8 +178,7 @@ void runEEmcPi0( Int_t nevents =-1,
   //pi0 analysis starts
   mEEpi0analysis=new StEEmcIUPi0Analysis("pi0analy");
   mEEpi0analysis->trigger(trigID);
-  //mEEpi0analysis->minbias(117001);   //<-------------------------------------------
-  mEEpi0analysis->minbias(480202);
+  mEEpi0analysis->minbias(117001);
   mEEpi0analysis->mudst("MuDst");
   mEEpi0analysis->points("mEEpoints");
   mEEpi0analysis->mixer("mEEmixer");
@@ -340,12 +328,11 @@ void LoadLibs()
   gSystem->Load("StEEmcDbMaker");
   gSystem->Load("StEEmcSimulatorMaker");
   gSystem->Load("StEEmcA2EMaker");
-  //#ifdef NEW
-  //gSystem->Load("StEEmcIUPi0");
-  gSystem->Load("libPi0MakerIU.so");
-  //#else
-  //  gSystem->Load("StMaxStripPi0");
-  //#endif 
+#ifdef NEW
+  gSystem->Load("StEEmcIUPi0");
+#else
+  gSystem->Load("StMaxStripPi0");
+#endif 
   gSystem->Load("StSpinDbMaker");
 
 }

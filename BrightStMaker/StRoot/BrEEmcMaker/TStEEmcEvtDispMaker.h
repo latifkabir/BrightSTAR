@@ -43,7 +43,7 @@ public:
 private:
     EEDB *eeDb;
 
-    TH1F *mHist1d[6];
+    TH1F *mHist1d[12];
     TH2F *mHist2d[2];
     int mSector;
     StMuDstMaker* muMaker;

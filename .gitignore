@@ -1,4 +1,3 @@
-ChongsCode/
 examples/
 temp_*
 *.root
@@ -23,3 +22,4 @@ temp/
 *.list
 .root_history
 .consign
+*.dat

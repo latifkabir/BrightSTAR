@@ -133,7 +133,7 @@
 
     dStyle->cd();
 
-    //------------ Preety Color platter -----------------------
+    //-----------------------------------
     const Int_t NRGBs = 5;
     const Int_t NCont = 255;
 

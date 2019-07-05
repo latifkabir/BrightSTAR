@@ -5,4 +5,7 @@
 // URL: jlab.org/~latif
 
 #include "TString.h"
-void RunEEmcEvtDispMaker(TString InputFileList="", TString outputfile= "EEmcDistMaker.root", Int_t nEntries = -1);
+void RunEEmcEvtDispMaker(TString InputFileList="", TString outputfile= "EEmcDistMaker.root", Int_t eventNo = -1, Int_t maxEvents = -1);
+
+// Use eventNo = -1 for displaying all events, otherwise set desired event number
+// use maxEvents = -1 for displaying all events in the Tree, otherwise set max event number to desired value.

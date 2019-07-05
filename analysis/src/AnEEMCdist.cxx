@@ -85,7 +85,21 @@ void AnEEMCdist(Int_t runNo, Int_t maxFiles)
 		dist2->Fill(adc_v);
 	    }
 	    engDist->Fill(sec_u);
-	}		
+	}
+
+
+	//------------------------ PreShower ----------------
+	int sec_pr,eta_pr,sub_pr, pre, adc_pr;
+	nh = emcMuColl->getNEndcapPrsHits();
+	cout<<"\nTotal "<<nh<<" hits in pre1+2+post\n"<<endl;
+	for (int i = 0; i < nh; i++)
+	{
+	    hit = emcMuColl->getEndcapPrsHit(i,sec_pr, sub_pr, eta_pr, pre);
+	    int ss = sub_pr + 5*(pre-1);
+	    adc_pr = hit->getAdc();
+	    printf("i=%d  pre/post(%d) %2.2d%c%c%2.2d : energy=%f  adc=%d\n",i,pre,sec_pr,pre+'P'-1,sub_pr+'A'-1,eta_pr,hit->getEnergy(),adc_pr);
+
+	}    
     }
 
     TCanvas *c1 = new TCanvas();
