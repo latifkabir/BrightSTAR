@@ -1,11 +1,11 @@
-// Filename: TStEEmcDistMaker.h
+// Filename: TStEEmcQAMaker.h
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sun Jun 23 21:19:08 2019 (-0400)
 // URL: jlab.org/~latif
 
-#ifndef TSTEEDISTMCMAKER_H
-#define TSTEEDISTMCMAKER_H
+#ifndef TSTEEMCQAMAKER_H
+#define TSTEEMCQAMAKER_H
 
 #include "TH2D.h"
 #include "StMaker.h"
@@ -27,22 +27,22 @@ typedef StEEmcDb EEDB;
 #include "StMaker.h"
 #include "TDatime.h"
 
-class TStEEmcDistMaker : public StMaker
+class TStEEmcQAMaker : public StMaker
 {
 public:
-    TStEEmcDistMaker(StMuDstMaker* muDstMaker, const char* name = "TStEEmcDistMaker");  
-    virtual ~TStEEmcDistMaker();
+    TStEEmcQAMaker(StMuDstMaker* muDstMaker, const char* name = "TStEEmcQAMaker");  
+    virtual ~TStEEmcQAMaker();
 
-    int Init();
-    int InitRun(int runNumber);
-    int Make();
-    int Finish();
-    int FinishRun(int runNumber);
+    Int_t Init();
+    Int_t InitRun(Int_t runNumber);
+    Int_t Make();
+    Int_t Finish();
+    Int_t FinishRun(Int_t runNumber);
 
     void setOutFile(const char* filename);
 
     EEDB *eeDb;
-    TH1D *mHist1[10];
+    TH1D *mHist1[20];
     TH2D *mHist2[2];
 
 private:
@@ -61,7 +61,7 @@ private:
     TString mFileName;
     TFile* mFile;
 
-    ClassDef(TStEEmcDistMaker,1);
+    ClassDef(TStEEmcQAMaker,1);
 };
 
 #endif 

@@ -1,11 +1,11 @@
-// Filename: TStRpDistMaker.h
+// Filename: TStRpQAMaker.h
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sat Jun 22 00:16:27 2019 (-0400)
 // URL: jlab.org/~latif
 
-#ifndef TSTRPDISTMAKERM_H    
-#define TSTRPDISTMAKERM_H
+#ifndef TSTRPQAMAKER_H    
+#define TSTRPQAMAKER_H
 
 #include "StMaker.h"
 #include "TString.h"
@@ -20,12 +20,12 @@ class TH1F;
 class StMuEvent;
 class StMuTrack;
 
-class TStRpDistMaker : public StMaker
+class TStRpQAMaker : public StMaker
 {
 public:
 
-    TStRpDistMaker(StMuDstMaker* maker);
-    ~TStRpDistMaker() {;}
+    TStRpQAMaker(StMuDstMaker* maker);
+    ~TStRpQAMaker() {;}
 
     void   Clear(Option_t *option="") {StMaker::Clear();}    
     Int_t  Init();                      
@@ -51,7 +51,7 @@ private:
     TFile* mFile;
     TH1F *mHist1[13];
     
-    ClassDef(TStRpDistMaker,1)
+    ClassDef(TStRpQAMaker,1)
 };
 
 #endif

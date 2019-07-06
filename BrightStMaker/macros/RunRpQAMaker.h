@@ -1,4 +1,4 @@
-// Filename: RunRpDistMaker.h
+// Filename: RunRpQAMaker.h
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Thu Jun 27 17:18:17 2019 (-0400)
@@ -6,4 +6,4 @@
 
 #include "TString.h"
 
-void RunRpDistMaker(TString inFile = "", TString outFile = "jobResults/RpDistMaker.root");
+void RunRpQAMaker(TString inFile = "", TString outFile = "jobResults/RpDistMaker.root");

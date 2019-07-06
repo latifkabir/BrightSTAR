@@ -1,15 +1,15 @@
-// Filename: RunRpDistMaker.C
+// Filename: RunRpQAMaker.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sat Jun 22 01:35:03 2019 (-0400)
 // URL: jlab.org/~latif
 
 #include "StRootInclude.h"
-#include "BrRpMaker/TStRpDistMaker.h"
+#include "BrRpMaker/TStRpQAMaker.h"
 #include "TChain.h"
-#include "RunRpDistMaker.h"
+#include "RunRpQAMaker.h"
 
-void RunRpDistMaker(TString inFile, TString outFile)
+void RunRpQAMaker(TString inFile, TString outFile)
 {
     if(inFile == "")
 	inFile = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/071/16071046/st_physics_16071046_raw_1500013.MuDst.root";
@@ -20,7 +20,7 @@ void RunRpDistMaker(TString inFile, TString outFile)
     TChain *ch = muDstMaker->chain();
     Int_t nEvents = ch->GetEntries();
     
-    TStRpDistMaker *RpMaker = new TStRpDistMaker(muDstMaker);
+    TStRpQAMaker *RpMaker = new TStRpQAMaker(muDstMaker);
     RpMaker->SetFileName(outFile);
 
     chain->Init();

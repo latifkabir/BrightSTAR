@@ -1,11 +1,11 @@
-// Filename: TStRpDistMaker.cxx
+// Filename: TStRpQAMaker.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sat Jun 22 00:16:21 2019 (-0400)
 // URL: jlab.org/~latif
 
 
-#include "TStRpDistMaker.h"
+#include "TStRpQAMaker.h"
 
 #include "TFile.h"
 #include "TH1.h"
@@ -17,9 +17,9 @@
 #include "StMuDSTMaker/COMMON/StMuDstMaker.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 
-ClassImp(TStRpDistMaker)
+ClassImp(TStRpQAMaker)
 
-TStRpDistMaker::TStRpDistMaker(StMuDstMaker *maker) : StMaker("TStRpDistMaker")
+TStRpQAMaker::TStRpQAMaker(StMuDstMaker *maker) : StMaker("TStRpQAMaker")
 {
     mNEventsPassed = mNEventsFailed = 0;
     mFileName = "";
@@ -27,7 +27,7 @@ TStRpDistMaker::TStRpDistMaker(StMuDstMaker *maker) : StMaker("TStRpDistMaker")
 }
 
 //__________________________________________________________________//
-Int_t TStRpDistMaker::Init()
+Int_t TStRpQAMaker::Init()
 {
     mMuDstMaker->SetStatus("*",0);
     mMuDstMaker->SetStatus("MuEvent",1);
@@ -54,7 +54,7 @@ Int_t TStRpDistMaker::Init()
 }
 
 //__________________________________________________________________//
-Int_t TStRpDistMaker::Make()
+Int_t TStRpQAMaker::Make()
 {
     mMuEvent = mMuDst->event();
 
@@ -95,7 +95,7 @@ Int_t TStRpDistMaker::Make()
 }
 
 //__________________________________________________________________//
-Int_t TStRpDistMaker::Finish()
+Int_t TStRpQAMaker::Finish()
 {
     //TFile *mFile =  new TFile(mFileName, "RECREATE");
     cout << "The output filename is " << mFileName.Data() << endl;
@@ -112,7 +112,7 @@ Int_t TStRpDistMaker::Finish()
     return kStOK;
 }
 
-Bool_t TStRpDistMaker::Accept(StMuEvent* muEvent)
+Bool_t TStRpQAMaker::Accept(StMuEvent* muEvent)
 {
     // Float_t vertexZ = muEvent->primaryVertexPosition().z();
     // Int_t refMult = muEvent->refMult();  
@@ -123,7 +123,7 @@ Bool_t TStRpDistMaker::Accept(StMuEvent* muEvent)
     return kTRUE;
 }
 
-Bool_t TStRpDistMaker::Accept(StMuTrack* track)
+Bool_t TStRpQAMaker::Accept(StMuTrack* track)
 {
     // return track && 
     // 	track->flag() >= 0 &&

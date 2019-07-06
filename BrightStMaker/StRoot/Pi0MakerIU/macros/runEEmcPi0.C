@@ -9,7 +9,7 @@
 //-- author: Weihong He
 //-- switch should be commented out when analysing real data
 //#define MONTE_CARLO
-#define NEW 
+//#define NEW 
 
 class StChain;
 class St_db_Maker;
@@ -45,11 +45,13 @@ Int_t prescale = 100;
 
 void runEEmcPi0( Int_t nevents =-1, 
 		//Char_t *name = "st_physics_7136033_raw_1040013.MuDst.root",
-		 Char_t *name = "st_physics_16071046_raw_1000003.MuDst.root",
+		 //Char_t *name = "st_physics_16071046_raw_1000003.MuDst.root",
+		 Char_t *name = "st_physics_16071046_raw_1500013.MuDst.root",
 		 Char_t *ofile= "test.root ",
-		 Char_t *path = "/star/u/kabir/pwg/data/", 
+		 //Char_t *path = "/star/u/kabir/pwg/data/", 
+		 Char_t *path = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/071/16071046/", 
 		 // Int_t trigID=137641,
-		 Int_t trigID = 480202, //<-------------------------------------------
+		 Int_t trigID = 480414, //<-------------------------------------------
 		 Int_t nfiles = 100)
 		      
 {
@@ -84,7 +86,7 @@ void runEEmcPi0( Int_t nevents =-1,
   //--
   mStarDatabase = new St_db_Maker("StarDb", "MySQL:StarDb");
 
-  
+  /*  
 #ifdef MONTE_CARLO  
   //--
   //-- Setup ideal gains for processing MC data
@@ -97,7 +99,7 @@ void runEEmcPi0( Int_t nevents =-1,
   mStarDatabase->SetFlavor("sim","eemcADCconf");
   mStarDatabase->SetDateTime(20050101,0);
 #endif
-
+  */
   //--
   //-- Initialize EEMC database
   //--
@@ -106,7 +108,7 @@ void runEEmcPi0( Int_t nevents =-1,
   gMessMgr -> SwitchOn("I");
 
   mSpinDb = new StSpinDbMaker("mSpinDb");
-
+  /*
 #ifdef MONTE_CARLO
   //--
   //-- Initialize slow simulator
@@ -117,7 +119,7 @@ void runEEmcPi0( Int_t nevents =-1,
   slowSim->setSmearPed(0);  // 0=no action, 1=gaussian ped, width from db
   slowSim->setOverwrite(1); // 0=no action, 1=overwrite muDst values
 #endif
- 
+  */
 
   //--
   //-- Energy to ADC maker
@@ -125,12 +127,12 @@ void runEEmcPi0( Int_t nevents =-1,
   mEEanalysis=new StEEmcA2EMaker("AandE");
   mEEanalysis->database("eemcDb");          // sets db connection
   mEEanalysis->source("MuDst",1);           // sets mudst as input
-  mEEanalysis->threshold(3.0,0);            // tower threshold
-  mEEanalysis->threshold(3.0,1);            // pre1 threshold 
-  mEEanalysis->threshold(3.0,2);            // pre2 threshold
-  mEEanalysis->threshold(3.0,3);            // post threshold
-  mEEanalysis->threshold(3.0,4);            // smdu threshold
-  mEEanalysis->threshold(3.0,5);            // smdv threshold
+  mEEanalysis->threshold(0.1, 0);            // tower threshold
+  mEEanalysis->threshold(1.0 / 1000.0, 1);            // pre1 threshold 
+  mEEanalysis->threshold(1.0 / 1000.0, 2);            // pre2 threshold
+  mEEanalysis->threshold(1.0 / 1000.0, 3);            // post threshold
+  mEEanalysis->threshold(3.0 / 1000.0, 4);            // smdu threshold
+  mEEanalysis->threshold(3.0 / 1000.0, 5);            // smdv threshold
   //mEEanalysis->scale(1.3);                  // scale energies by x1.2
   //mEEanalysis->FUNC(1.,0.);
    
@@ -149,9 +151,9 @@ void runEEmcPi0( Int_t nevents =-1,
   // mEEclusters->suppress(0);              // disallows seeds in two strips adjacent to any cluster
 
 
-  mEEclusters->seedEnergy(0.2,0);       // tower seed energy
-  mEEclusters->seedEnergy(3.0/10000.,4); // 2 MeV smd-u strip
-  mEEclusters->seedEnergy(3.0/10000.,5); // 2 MeV smd-v strip
+  mEEclusters->seedEnergy(0.4,0);       // tower seed energy
+  mEEclusters->seedEnergy(1.0/10000.,4); // 2 MeV smd-u strip
+  mEEclusters->seedEnergy(1.0/10000.,5); // 2 MeV smd-v strip
   mEEclusters->setSeedFloor(0.2);       // floating seed threshold near clusters
   mEEclusters->setMaxExtent(3);         // maximum distance from seed strip
   mEEclusters->suppress(0);              // disallows seeds in two strips adjacent to any cluster
@@ -190,7 +192,7 @@ void runEEmcPi0( Int_t nevents =-1,
   mEEpi0analysis=new StEEmcIUPi0Analysis("pi0analy");
   mEEpi0analysis->trigger(trigID);
   //mEEpi0analysis->minbias(117001);   //<-------------------------------------------
-  mEEpi0analysis->minbias(480202);
+  mEEpi0analysis->minbias(480206);
   mEEpi0analysis->mudst("MuDst");
   mEEpi0analysis->points("mEEpoints");
   mEEpi0analysis->mixer("mEEmixer");
