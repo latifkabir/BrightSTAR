@@ -13,7 +13,7 @@ export RUNLIST=$2
 export BASEDIR=`pwd`
 export BASEOUTDIR=jobResults     # .root files directory. Relative to current directory
 export JOBOUTDIR=jobOutput       #stderr, stdout, report etc directory. Relative to current directory
-export OUTNAME='jobOut'
+export OUTNAME='EEmc_Pi0'
 export SOURCE=${BASEDIR}/.sl73_gcc485
 export ROOTSETUP=${BASEDIR}/rootlogon.C
 #----------------------------------------------------------

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <!DOCTYPE note [
 <!ENTITY FILET "daq_reco_mudst">
-<!ENTITY MACRO "macros/RunRpDistMaker.C">
-<!ENTITY FILEN "~st_physics">
-<!ENTITY RUN "16071046">
-<!ENTITY TRIG "production_pp200trans_2015">
-<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/.sl73_gcc485">
 <!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR/BrightStMaker">
-<!ENTITY OUTNAME "jobOut">
-<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/rootlogon.C">
-<!ENTITY JOBOUTDIR "jobOut">
 <!ENTITY PROD "P16id">
-<!ENTITY OUTDIR "jobResults/16071046">
+<!ENTITY OUTDIR "jobResults/16072047">
+<!ENTITY TRIG "production_pp200trans_2015">
+<!ENTITY JOBOUTDIR "jobOutput">
+<!ENTITY RUN "16072047">
+<!ENTITY MACRO "macros/RunEEmcIUPi0.C">
+<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/rootlogon.C">
+<!ENTITY OUTNAME "EEmc_Pi0">
+<!ENTITY FILEN "~st_physics">
+<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/.sl73_gcc485">
 ]>
-<!-- Created on Sat Jun 22 18:36:23 2019 -->
+<!-- Created on Tue Jul  9 02:45:46 2019 -->
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
 	<Generator>
