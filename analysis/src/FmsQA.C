@@ -36,7 +36,7 @@ void FmsQA()
 	    adcDist[i][l] = new TH1F(title, title, 300, 0.0, 500); //Creating 1D histograms for each channel.
 	}   
     }
-    int maxx[4] = {0};    
+
     while(br->GetEntry(iEvent++))
     {
 	int nHits = array->GetEntriesFast();
@@ -47,11 +47,7 @@ void FmsQA()
 	    detID = hit->detectorId();        //Gets detector ID for each event.
 	    channel = hit->channel();         //Gets channel for each event. 288 for small/oMaxCh for large.
 	    if(detID >= 8 && detID <= 11)     // Exclude detector IDs corresponding to FPOST, FPS, FPD etc.
-	    {
-		adcDist[detID - 8][channel - 1]->Fill(hit->adc()); //fill the histogram with adc data. Note: channel number starts from 1.
-		if(channel > maxx[detID - 8])
-		    maxx[detID - 8] = channel;
-	    }
+		adcDist[detID - 8][channel - 1]->Fill(hit->adc()); //fill the histogram with adc data. Note: channel number starts from 1.	    
 	}
     }
 
