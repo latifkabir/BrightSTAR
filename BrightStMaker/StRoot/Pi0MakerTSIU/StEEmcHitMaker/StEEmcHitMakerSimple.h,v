@@ -1,0 +1,311 @@
+head	1.9;
+access;
+symbols
+	response:1.7;
+locks; strict;
+comment	@ * @;
+
+
+1.9
+date	2012.11.26.19.40.34;	author sgliske;	state dead;
+branches;
+next	1.8;
+
+1.8
+date	2012.05.17.18.04.25;	author sgliske;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2011.08.30.21.46.34;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2011.08.09.20.36.09;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.08.09.18.06.28;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.07.21.21.17.37;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.07.13.20.24.45;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.07.11.15.14.31;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.05.21.48.19;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.9
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ *
+ * \class EEmcHitMakerSimple_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Connects the three basic tasks of hit finding, specifically
+ * clustering, point finding, and energy sharing.  One can
+ * independently set the methods used for each of the three tasks.
+ * Conglomerate methods where the programming flow is not simply
+ *
+ *      cluster -> find points -> finalize energy sharing
+ *
+ * are children of the StEEmcHitMakerConglomerate_t class
+ *
+ *
+ */
+
+#ifndef _EEMC_HIT_MAKER_SIMPLE_H_
+#define _EEMC_HIT_MAKER_SIMPLE_H_
+
+/// Include StRoot headers
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+
+/// Include related classes
+#include "StEEmcHitMaker.h"
+#include "StEEmcTowerClusterFinder.h"
+#include "StEEmcStripClusterFinder.h"
+#include "StEEmcPointFinder.h"
+#include "StEEmcEnergyApportioner.h"
+
+class StEEmcHitMakerSimple_t : public StEEmcHitMaker_t {
+ public:
+   /// Construtor
+   StEEmcHitMakerSimple_t( const Char_t *myName,          // name of this maker in the StMaker hash table
+                           const Char_t *inputMakerName,  // name of the keeper in charge of the response
+                           StEEmcTowerClusterFinder_t* towerClusterFinder,
+                           StEEmcStripClusterFinder_t* stripClusterFinder,
+                           StEEmcPointFinder_t *pointFinder,
+                           StEEmcEnergyApportioner_t *energyApportioner );
+
+   /// Deconstructor
+   virtual ~StEEmcHitMakerSimple_t();
+
+   /// Initialize
+   Int_t Init();
+
+   /// Find all the hits
+   Int_t Make();
+
+   /// Clear for next event
+   void  Clear(Option_t *opts="");
+
+   /// modifier
+   void setClusterStripsFirst( Bool_t doItFirst = 1 ){ mClusterStripsFirst = doItFirst; };
+
+ protected:
+   /// pointers to finders for subtasks
+   StEEmcTowerClusterFinder_t *mTowerClusterFinder;
+   StEEmcStripClusterFinder_t *mStripClusterFinder;
+   StEEmcPointFinder_t *mPointFinder;
+   StEEmcEnergyApportioner_t *mEnergyApportioner;
+
+   Int_t clusterTowers();
+   Int_t clusterStrips();
+
+   // whether to cluster towers before or after the SMD strips
+   Bool_t mClusterStripsFirst;
+
+ private:
+   ClassDef( StEEmcHitMakerSimple_t, 1 );
+};
+
+#endif
+
+/*
+ * $Id: StEEmcHitMakerSimple.h,v 1.8 2012/05/17 18:04:25 sgliske Exp $
+ *
+ * $Log: StEEmcHitMakerSimple.h,v $
+ * Revision 1.8  2012/05/17 18:04:25  sgliske
+ * Moving from EEmcResponse to EEmcTree
+ *
+ * Revision 1.7  2011/08/30 21:46:34  sgliske
+ * update
+ *
+ * Revision 1.6  2011/08/09 20:36:09  sgliske
+ * working on adding MC support to AnalysisTreeMaker
+ *
+ * Revision 1.5  2011/08/09 18:06:28  sgliske
+ * Allow StHitMakerSimple to cluster towers either before or after clustering SMD strips
+ *
+ * Revision 1.4  2011/07/21 21:17:37  sgliske
+ * update
+ *
+ * Revision 1.3  2011/07/13 20:24:45  sgliske
+ * update
+ *
+ * Revision 1.2  2011/07/11 15:14:31  sgliske
+ * before making StHitData class
+ *
+ * Revision 1.1  2011/07/05 21:48:19  sgliske
+ * split from StEEmcAnalysisTreeMaker
+ *
+ * Revision 1.4  2011/07/01 21:44:24  sgliske
+ * update
+ *
+ * Revision 1.3  2011/06/29 21:39:43  sgliske
+ * update
+ *
+ * Revision 1.2  2011/06/29 16:37:59  sgliske
+ * update
+ * 
+ * Revision 1.1  2011/06/23 21:55:05  sgliske
+ * daily update
+ * 
+ */
+@
+
+
+1.8
+log
+@Moving from EEmcResponse to EEmcTree
+@
+text
+@d76 1
+a76 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.7 2011/08/30 21:46:34 sgliske Exp $
+d79 3
+@
+
+
+1.7
+log
+@update
+@
+text
+@a22 4
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcA2EMaker.h"
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcTower.h"
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcStrip.h"
+
+d34 2
+a35 2
+   StEEmcHitMakerSimple_t( const Char_t *myName,             // name of this maker in the StMaker hash table
+                           const Char_t *responseMakerName,  // name of the keeper in charge of the response
+d76 1
+a76 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.6 2011/08/09 20:36:09 sgliske Exp $
+d79 3
+@
+
+
+1.6
+log
+@working on adding MC support to AnalysisTreeMaker
+@
+text
+@d3 1
+a3 1
+ * \class EEmcHitMaker_t
+d80 1
+a80 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.5 2011/08/09 18:06:28 sgliske Exp $
+d83 3
+@
+
+
+1.5
+log
+@Allow StHitMakerSimple to cluster towers either before or after clustering SMD strips
+@
+text
+@a36 2
+   using StEEmcHitMaker_t::InputType_t;
+
+a37 3
+   /// Note: need to know the pointer for the A2E maker
+   /// Also note: ownership is not taken over for any of these input
+   /// pointers
+a39 1
+                           InputType_t inputType,            // whether the response maker is a "response maker" or from the "tree reader"
+d80 1
+a80 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.4 2011/07/21 21:17:37 sgliske Exp $
+d83 3
+@
+
+
+1.4
+log
+@update
+@
+text
+@d63 3
+d73 6
+d86 1
+a86 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.3 2011/07/13 20:24:45 sgliske Exp $
+d89 3
+@
+
+
+1.3
+log
+@update
+@
+text
+@d44 1
+a44 1
+                           const Char_t *responseMakerName,  // name of the maker in charge of setting the resonse
+d77 1
+a77 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.2 2011/07/11 15:14:31 sgliske Exp $
+d80 3
+@
+
+
+1.2
+log
+@before making StHitData class
+@
+text
+@d37 2
+d43 3
+a45 2
+   StEEmcHitMakerSimple_t( const Char_t *name, 
+                           StEEmcA2EMaker* a2EMakerPtr,
+d77 1
+a77 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.1 2011/07/05 21:48:19 sgliske Exp $
+d80 3
+@
+
+
+1.1
+log
+@split from StEEmcAnalysisTreeMaker
+@
+text
+@d18 2
+a19 2
+#ifndef _EEMC_HITFINDER_SIMPLE_H_
+#define _EEMC_HITFINDER_SIMPLE_H_
+d74 1
+a74 1
+ * $Id: StEEmcHitMakerSimple.h,v 1.4 2011/07/01 21:44:24 sgliske Exp $
+d77 3
+@
+

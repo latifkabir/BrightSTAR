@@ -1,0 +1,132 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.3
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.07.22.08.04;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.03.20.09.17;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlSimple33TowerModel_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Weight is set to one if hit in the same tower as the query.  If
+ * tower shares an edge with the tower of the hit, then the weight is
+ * set according to a function of the distnace from the hit to shared
+ * edge over a scale factor.  Note: scale factors have units of [cm].
+ * If the tower is in the 3x3 block of adjacent towers, but is one of
+ * the diagonal towers not sharing an edge, the the weight is the
+ * product of the weights for the two edges in the direction of the
+ * other tower.
+ */
+
+#ifndef _EEMC_ANL_SHOWER_SHAPE_MODEL_SIMPLE_33_TOWER_H
+#define _EEMC_ANL_SHOWER_SHAPE_MODEL_SIMPLE_33_TOWER_H
+
+#include <TF1.h>
+
+#include "Stypes.h"
+#include "StEEmcAnlShowerShapeModel.h"
+
+// the class
+class StEEmcAnlSimple33TowerModel_t : public StEEmcAnlShowerShapeModel_t {
+ public:
+   /// Construtor, deconstructor
+   StEEmcAnlSimple33TowerModel_t();
+   virtual ~StEEmcAnlSimple33TowerModel_t();
+
+   // default copy constructor, eq. op. OK
+
+   /// Initialize
+   virtual Int_t Init();
+
+   /// Find all the hits
+   virtual Float_t getEnergyFromHitIntoElement( const StEEmcAnlHit_t& hitPtr, Short_t geoId );
+
+   /// set the weight function
+   void setWeightFunction( TF1* func );
+   void setFactorR( Float_t r );
+   void setFactorPhi( Float_t phi );
+
+ protected:
+   TF1* mWeightFunc;
+   Float_t mFactorR, mFactorPhi;   // in units of [cm.]
+
+ private:
+   ClassDef( StEEmcAnlSimple33TowerModel_t, 1 );
+};
+
+// inline functions
+
+inline void StEEmcAnlSimple33TowerModel_t::setWeightFunction( TF1* func ){ mWeightFunc = func; };
+inline void StEEmcAnlSimple33TowerModel_t::setFactorR( Float_t r ){ mFactorR = r; };
+inline void StEEmcAnlSimple33TowerModel_t::setFactorPhi( Float_t phi ){ mFactorPhi = phi; };
+
+#endif
+
+/*
+ * $Id: StEEmcAnlSimple33TowerModel.h,v 1.2 2011/11/07 22:08:04 sgliske Exp $
+ * $Log: StEEmcAnlSimple33TowerModel.h,v $
+ * Revision 1.2  2011/11/07 22:08:04  sgliske
+ * daily update
+ *
+ * Revision 1.1  2011/11/03 20:09:17  sgliske
+ * creation
+ *
+ * 
+ */
+@
+
+
+1.2
+log
+@daily update
+@
+text
+@d61 1
+a61 1
+ * $Id: StEEmcAnlSimple33TowerModel.h,v 1.1 2011/11/03 20:09:17 sgliske Exp $
+d63 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d37 1
+a37 1
+   virtual Float_t getEnergyFromHitIntoElement( const StEEmcAnlHit_t& hitPtr, Short_t geoId ) = 0;
+d61 5
+a65 2
+ * $Id: $
+ * $Log: $
+@
+

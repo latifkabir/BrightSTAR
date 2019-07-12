@@ -1,0 +1,362 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.15.22.21.18;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.14.17.53.10;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlSplitHitANLS_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See description in the header file
+ *
+ */
+
+#define DEBUG
+
+#include <map>
+#include <set>
+#include <cmath>
+#include <algorithm>
+#include "assert.h"
+
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/StEEmcPool/StEEmcGeoId/StEEmcGeoId.h"
+#include "StRoot/StEEmcPool/StEEmcPointMap/StEEmcPointMap.h"
+#include "AnlEMPoint.h"
+#include "StEEmcAnlHit.h"
+#include "StEEmcAnlSplitHitANLS.h"
+#include "StEEmcStripClusterFinderANLS.h"
+
+/// Construtor, deconstructor
+StEEmcAnlSplitHitANLS_t::StEEmcAnlSplitHitANLS_t( StEEmcStripClusterFinderANLS_t *clusterFinderPtr ) : StEEmcAnlSplitHitAlgo_t(),
+                                                                                                       mClusterFinderPtr( clusterFinderPtr ) { /* */ };
+StEEmcAnlSplitHitANLS_t::~StEEmcAnlSplitHitANLS_t(){ /* */ };
+
+/// Initialize
+Int_t StEEmcAnlSplitHitANLS_t::Init(){
+   Int_t ierr = kStOk;
+
+   if( !mClusterFinderPtr || !mClusterFinderPtr->isReady() ){
+      LOG_ERROR << "Cluster finder is not ready or not available" << endm;
+      ierr = kStFatal;
+   };
+   
+   return ierr;
+};
+
+/// Find all the hits
+Int_t StEEmcAnlSplitHitANLS_t::splitHit( const StEEmcAnlHit_t& hit, Bool_t& doSplit, Bool_t& doInvalidate, AnlEMPoint_t& point1, AnlEMPoint_t& point2 ){
+   Int_t ierr = kStOk;
+   doSplit = 0;
+   doInvalidate = 0;
+
+   // clear arrays
+   for( Int_t i=0; i<kEEmcNumSectors; ++i ){
+      mEu[i] = 0;
+      mEv[i] = 0;
+      mEtot[i] = 0;
+      mNumStripsPerSectorU[i] = 0;
+      mNumStripsPerSectorV[i] = 0;
+   };
+
+   // loop over all strips in the hit and determine what sector to cluster
+   const StEEmcAnlElementSet_t stripSet = hit.getStripSet();
+   StEEmcAnlElementSet_t::const_iterator stripSetIter;
+   for( stripSetIter = stripSet.begin(); stripSetIter != stripSet.end(); ++stripSetIter ){
+      Short_t sector, strip;
+      Bool_t layerIsV;
+
+      StEEmcGeoId_t::decodeSmd( stripSetIter->getGeoId(), sector, layerIsV, strip );
+      Float_t E = stripSetIter->getEnergy();
+      if( E ){
+         (layerIsV ? mEv[sector] : mEu[ sector ] ) += E;
+         mEtot[sector] += E;
+         layerIsV ? ++mNumStripsPerSectorV[ sector ] : ++mNumStripsPerSectorU[ sector ];
+      };
+   };
+
+   // find max
+   Int_t splitSector = -1;
+   Int_t maxE = 0;
+   for( Int_t i=0; i<kEEmcNumSectors; ++i )
+      if( mEu[i] && mEv[i] && mEtot[i] > maxE )
+         splitSector = i;
+
+#ifdef DEBUG
+   LOG_INFO << "Sector to be split is " << splitSector << endm;
+#endif
+
+   if( splitSector == -1 ){
+      // Could not find any sector with both u and v strips nonzero.
+      // Invalidate the cluster.
+      doSplit = 0;
+      doInvalidate = 1;
+      return ierr;
+   };
+
+
+   // to hold the strip data for the cluster finder (it expects this
+   // sort of input)
+   StEEmcStripVec_t hitStripsU, hitStripsV;
+   hitStripsU.reserve( mNumStripsPerSectorU[ splitSector ] );
+   hitStripsV.reserve( mNumStripsPerSectorV[ splitSector ] );
+
+#ifdef DEBUG
+   LOG_INFO << "Sector has " << mNumStripsPerSectorU[ splitSector ]
+            << " u strips and " << mNumStripsPerSectorV[ splitSector ]
+            << " v strips" << endm;
+#endif
+
+   // loop over all strips in the hit and copy relevant strips
+   for( stripSetIter = stripSet.begin(); stripSetIter != stripSet.end(); ++stripSetIter ){
+      Short_t sector, strip;
+      Bool_t layerIsV;
+
+      StEEmcGeoId_t::decodeSmd( stripSetIter->getGeoId(), sector, layerIsV, strip );
+      if( sector == (Short_t)splitSector ){
+         StEEmcStripVec_t& hitStrips = (layerIsV ? hitStripsV : hitStripsU );
+
+         hitStrips.push_back( StEEmcStrip() );
+         StEEmcStrip& eemcStrip = hitStrips.back();
+         eemcStrip.fail(0);
+         eemcStrip.energy( stripSetIter->getEnergy() );
+         eemcStrip.sector( splitSector );
+         eemcStrip.plane( layerIsV );
+         eemcStrip.index( strip );
+      };
+   };
+
+   // cluster
+   StSimpleClusterVec_t clustersU, clustersV;
+   mClusterFinderPtr->clear();
+   ierr = mClusterFinderPtr->find( hitStripsU, clustersU );
+   if( !ierr ){
+      mClusterFinderPtr->clear();
+      ierr = mClusterFinderPtr->find( hitStripsV, clustersV );
+   };
+
+#ifdef DEBUG
+   LOG_INFO << "Clustering yeilds " << clustersU.size()
+            << " u clusters and " << clustersV.size()
+            << " v clusters" << endm;
+#endif
+
+   doSplit = ( clustersU.size() > 1 || clustersV.size() > 1 ) && !clustersU.empty() && !clustersV.empty();
+   if( doSplit ){
+      StSimpleClusterVec_t::iterator clusIter, clusIterEnd;
+
+      Float_t minUratio = 10000, minVratio = 10000;
+
+      if( clustersU.size() > 1 )
+         for( clusIter = clustersU.begin(); clusIter != clustersU.end(); ++clusIter )
+            if( clusIter->getMeanY() < minUratio )
+               minUratio = clusIter->getMeanY();
+
+      if( clustersV.size() > 1 )
+         for( clusIter = clustersV.begin(); clusIter != clustersV.end(); ++clusIter )
+            if( clusIter->getMeanY() < minVratio )
+               minVratio = clusIter->getMeanY();
+
+#ifdef DEBUG
+      LOG_INFO << "Ratios: " << minUratio << ' ' << minVratio << endm;
+#endif
+
+      StSimpleCluster_t uClusA, uClusB, vClusA, vClusB;
+
+      // set uClusA to be the one u cluster, if only one cluster.
+      // set uClusA and uClusB to be the two clusters, if only two.
+      // if more than two clusters in either layer, merge into two clusters
+      if( !clustersU.empty() ){
+         uClusA = clustersU.front();
+
+         if( clustersU.size() > 1 ){
+            uClusB = clustersU.back();
+
+            if( clustersU.size() > 2 ){
+               --(clusIterEnd = clustersU.end());
+               for( ++(clusIter = clustersU.begin()); clusIter != clusIterEnd; ++clusIter )
+                  ( clusIter->getMeanY() < minUratio ? uClusA : uClusB ) += (*clusIter );
+            };
+         };
+      };
+      if( !clustersV.empty() ){
+         vClusA = clustersV.front();
+
+         if( clustersV.size() > 1 ){
+            vClusB = clustersV.back();
+
+            if( clustersV.size() > 2 ){
+               --(clusIterEnd = clustersV.end());
+               for( ++(clusIter = clustersV.begin()); clusIter != clusIterEnd; ++clusIter )
+                  ( clusIter->getMeanY() < minUratio ? uClusA : uClusB ) += (*clusIter );
+            };
+         };
+      };
+
+#ifdef DEBUG
+      LOG_INFO << "u Hit IDs " << uClusA.getID() << ' ' << uClusB.getID() << " pos " << uClusA.getMeanX() << ' ' << uClusB.getMeanX() << endm;
+      LOG_INFO << "v Hit IDs " << vClusA.getID() << ' ' << vClusB.getID() << " pos " << vClusA.getMeanX() << ' ' << vClusB.getMeanX() << endm;
+#endif
+
+      StSimpleCluster_t& uClus1 = ( clustersU.size() == 1 ? uClusA : ( uClusA.getEnergy() > uClusB.getEnergy() ? uClusA : uClusB ) );
+      StSimpleCluster_t& uClus2 = ( clustersU.size() == 1 ? uClusA : ( uClusA.getEnergy() > uClusB.getEnergy() ? uClusB : uClusA ) );
+      StSimpleCluster_t& vClus1 = ( clustersV.size() == 1 ? vClusA : ( vClusA.getEnergy() > vClusB.getEnergy() ? vClusA : vClusB ) );
+      StSimpleCluster_t& vClus2 = ( clustersV.size() == 1 ? vClusA : ( vClusA.getEnergy() > vClusB.getEnergy() ? vClusB : vClusA ) );
+
+      point1.W() = uClus1.getEnergy() + vClus1.getEnergy();
+      point2.W() = uClus2.getEnergy() + vClus2.getEnergy();
+      Float_t wTot = point1.W() + point2.W();
+
+      point1.W() /= wTot;
+      point2.W() /= wTot;
+
+      StEEmcPointMap_t::instance().convertStripUVtoXY( splitSector, uClus1.getMeanX(), vClus1.getMeanX(), point1.X(), point1.Y() );
+      StEEmcPointMap_t::instance().convertStripUVtoXY( splitSector, uClus2.getMeanX(), vClus2.getMeanX(), point2.X(), point2.Y() );
+
+#ifdef DEBUG
+      LOG_INFO << "Hit a: " << uClus1.getMeanX() << ' ' << vClus1.getMeanX() << " -> " << point1.X() << ' ' << point1.Y() << " W " << point1.W() << endm;
+      LOG_INFO << "Hit b: " << uClus2.getMeanX() << ' ' << vClus2.getMeanX() << " -> " << point2.X() << ' ' << point2.Y() << " W " << point2.W() << endm;
+#endif
+   };
+
+   return ierr;
+};
+
+/// Clear for next event
+void StEEmcAnlSplitHitANLS_t::Clear(Option_t *opts ){
+   if( mClusterFinderPtr )
+      mClusterFinderPtr->resetClusterCount();
+};
+
+ClassImp( StEEmcAnlSplitHitANLS_t );
+
+/*
+ * $Id: StEEmcAnlSplitHitANLS.cxx,v 1.2 2011/12/15 22:21:18 sgliske Exp $
+ * $Log: StEEmcAnlSplitHitANLS.cxx,v $
+ * Revision 1.2  2011/12/15 22:21:18  sgliske
+ * update
+ *
+ * Revision 1.1  2011/12/14 17:53:10  sgliske
+ * creation
+ *
+ * 
+ */
+
+@
+
+
+1.2
+log
+@update
+@
+text
+@d231 1
+a231 1
+ * $Id: StEEmcAnlSplitHitANLS.cxx,v 1.1 2011/12/14 17:53:10 sgliske Exp $
+d233 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d10 1
+a10 1
+//#define DEBUG
+d25 1
+a25 1
+
+d28 1
+a28 1
+StEEmcAnlSplitHitANLS_t::StEEmcAnlSplitHitANLS_t( StEEmcStripClusterFinderANLS_t *clusterFinderPtr ) : StEEmcAnlSplitHitANLS_t(),
+d39 1
+a39 1
+   }:
+d51 7
+a57 2
+   for( Int_t i=0; i<kEEmcNumSectors; ++i )
+      mEu[i] = mEv[i] = mEtot[i] = mNumStripsPerSectorU[i] = mNumStripsPerSectorV[i] = 0;
+d61 1
+d69 2
+a70 1
+         (layerIsV ? mEv : mEu)[ sector ] += E;
+d86 1
+a86 1
+   if( splitSctor == -1 ){
+d90 1
+a90 1
+      doInvalidated = 1;
+a107 1
+   const StEEmcAnlElementSet_t stripSet = hit.getStripSet();
+d116 1
+a116 1
+         hitStrips.push_back();
+d128 2
+a129 1
+   ierr = clusterFinderPtr->find( hitStripsU, clustersU );
+d131 2
+a132 2
+      clusterFinderPtr->clear();
+      ierr = clusterFinderPtr->find( hitStripsV, clustersV );
+d141 1
+a141 2
+   Bool_t doSplit = ( clustersU.size() > 1 || clustersV.size() > 1 );
+
+d172 1
+a172 1
+            if( clusterU.size() > 2 ){
+d185 1
+a185 1
+            if( clusterV.size() > 2 ){
+d193 9
+a201 4
+      StSimpleCluster_t& uClus1 = ( clustersU.empty() ? uClusA : ( uClusA.getEnergy() > uClusB.getEnergy() ? uClusA : uClusB ) );
+      StSimpleCluster_t& uClus2 = ( clustersU.empty() ? uClusA : ( uClusA.getEnergy() > uClusB.getEnergy() ? uClusB : uClusA ) );
+      StSimpleCluster_t& vClus1 = ( clustersV.empty() ? vClusA : ( vClusA.getEnergy() > vClusB.getEnergy() ? vClusA : vClusB ) );
+      StSimpleCluster_t& vClus2 = ( clustersV.empty() ? vClusA : ( vClusA.getEnergy() > vClusB.getEnergy() ? vClusB : vClusA ) );
+d215 1
+a215 1
+      LOG_INFO << "Hit b: " << uClus1.getMeanX() << ' ' << vClus1.getMeanX() << " -> " << point2.X() << ' ' << point2.Y() << " W " << point2.W() << endm;
+d223 3
+a225 3
+void StEEmcAnlSplitHitANLS_t::Clear(Option_t *opts=""){
+   if( clusterFinderPtr )
+      clusterFinderPtr->resetClusterCount();
+d231 5
+a235 2
+ * $Id: $
+ * $Log: $
+@
+

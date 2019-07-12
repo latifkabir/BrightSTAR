@@ -1,0 +1,367 @@
+head	1.10;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.10
+date	2012.11.26.19.37.32;	author sgliske;	state dead;
+branches;
+next	1.9;
+
+1.9
+date	2012.06.14.05.03.49;	author sgliske;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2012.06.01.21.50.11;	author sgliske;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2012.06.01.21.26.07;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2012.05.25.16.20.15;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2012.05.25.03.19.00;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2012.05.23.19.58.38;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2012.05.22.22.01.07;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2012.05.21.21.08.15;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2012.05.16.20.48.03;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@Moved to StRoot/StEEmcPool/EEmcTreeContainers
+@
+text
+@/*
+ * Created by S. Gliske, May 2012
+ *
+ * Description: see header.
+ *
+ */
+
+#include <Rtypes.h>
+#include <TObject.h>
+
+#include "EEmcHit.h"
+
+EEmcHit_t::EEmcHit_t() : uClusIdx(-1), vClusIdx(-1), x(0), y(0), eta(0), phi(0), eTow(0), ePost(0), ePre1(0), ePre2(0), 
+                         centralTowerIdx(-1), numUsedTowers(0) {
+
+   for( Int_t i=0; i<kMaxNumTowers; ++i ){
+      usedTowerIdx[i] = -1;
+      usedTowerWeight[i] = 0;
+   };
+};
+
+void EEmcHit_t::Clear( const Option_t* ){
+   uClusIdx = -1;
+   vClusIdx = -1;
+   x = y = eta = phi = 0;
+   eTow = ePre1 = ePre2 = ePost = 0;
+
+   centralTowerIdx = -1;
+   numUsedTowers = 0;
+
+   for( Int_t i=0; i<kMaxNumTowers; ++i ){
+      usedTowerIdx[i] = -1;
+      usedTowerWeight[i] = 0;
+   };
+};
+
+ClassImp( EEmcHit_t );
+
+/*
+ * $Id: EEmcHit.cxx,v 1.9 2012/06/14 05:03:49 sgliske Exp $
+ * $Log: EEmcHit.cxx,v $
+ * Revision 1.9  2012/06/14 05:03:49  sgliske
+ * Removed TArrayS and TArrayF from EEmcSmdCluster and EEmcHit, as
+ * they still contain dynamic arrays, and so things fail when using
+ * TClonesArrays.  Now both use a static array.
+ *
+ * Revision 1.8  2012/06/01 21:50:11  sgliske
+ * Updated for overhaul of EEmcHit and EEmcCluster.  Both had dynamic arrays removed as well as
+ * dependencies on StEEmcHit containers removed.  Converters between StEEmcHit containers and
+ * EEmcTree containers now provided by static functions in StEEmcTreeMaker.
+ *
+ * Revision 1.7  2012/06/01 21:26:07  sgliske
+ * Removed dependancy on StEEmcHit (the converter is now part of
+ * StEEmcTreeMaker) and removed dynamic arrays.
+ *
+ * Revision 1.6  2012/05/25 16:20:15  sgliske
+ * ready for production (I hope)
+ *
+ * Revision 1.5  2012/05/25 03:19:00  sgliske
+ * Removed TRef, replaced with index in TClonesArray
+ *
+ * Revision 1.4  2012/05/23 19:58:38  sgliske
+ * updates
+ *
+ * Revision 1.3  2012/05/22 22:01:07  sgliske
+ * updates
+ *
+ * Revision 1.2  2012/05/21 21:08:15  sgliske
+ * added support for candidate particles, both 1 and 2
+ *
+ * Revision 1.1  2012/05/16 20:48:03  sgliske
+ * moved from StEEmcTree to EEmcTreeContainers
+ *
+ * Revision 1.1  2012/05/15 20:52:47  sgliske
+ * created more containers
+ *
+ *
+ */
+@
+
+
+1.9
+log
+@Removed TArrayS and TArrayF from EEmcSmdCluster and EEmcHit, as
+they still contain dynamic arrays, and so things fail when using
+TClonesArrays.  Now both use a static array.
+@
+text
+@d40 1
+a40 1
+ * $Id: EEmcHit.cxx,v 1.8 2012/06/01 21:50:11 sgliske Exp $
+d42 5
+@
+
+
+1.8
+log
+@Updated for overhaul of EEmcHit and EEmcCluster.  Both had dynamic arrays removed as well as
+dependencies on StEEmcHit containers removed.  Converters between StEEmcHit containers and
+EEmcTree containers now provided by static functions in StEEmcTreeMaker.
+@
+text
+@d13 8
+a20 1
+EEmcHit_t::EEmcHit_t() : uClusIdx(-1), vClusIdx(-1), x(0), y(0), eta(0), phi(0), eTow(0), ePost(0), ePre1(0), ePre2(0), localCentralTowerIdx(-1) { /* */ };
+d28 7
+a34 3
+   localCentralTowerIdx = -1;
+   usedTowerIndexArray.Set(0);
+   usedTowerWeightArray.Set(0);
+d40 1
+a40 1
+ * $Id: EEmcHit.cxx,v 1.7 2012/06/01 21:26:07 sgliske Exp $
+d42 5
+@
+
+
+1.7
+log
+@Removed dependancy on StEEmcHit (the converter is now part of
+StEEmcTreeMaker) and removed dynamic arrays.
+@
+text
+@d21 1
+a21 1
+   localCentralTowerIdx(-1);
+d29 1
+a29 1
+ * $Id: EEmcHit.cxx,v 1.6 2012/05/25 16:20:15 sgliske Exp $
+d31 4
+@
+
+
+1.6
+log
+@ready for production (I hope)
+@
+text
+@a7 1
+#include <assert.h>
+d13 1
+a13 51
+#include "EEmcEnergy.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcHit.h"
+
+EEmcHit_t::EEmcHit_t( const EEmcEnergy_t& eemcEnergy, Int_t uClusIdx_, Int_t vClusIdx_, const StEEmcHit_t& other ) 
+   : uClusIdx( uClusIdx_ ), vClusIdx( vClusIdx_ ) {
+
+   const TVector3& position = other.getPosition();
+   x = position.X();
+   y = position.Y();
+   eta = position.Eta();
+   phi = position.Phi();
+
+   nTowers = other.getNumUsedTowers();
+   tower = new EEmcHitElement_t[ nTowers ];
+   total.Clear();
+
+   total.idx = other.getTowerIdx();
+   total.weight = 1;
+
+   for( Int_t i=0; i<nTowers; ++i ){
+      Short_t idx = other.getUseTowerIndex( i );
+      Float_t weight = other.getUseTowerWeight( i );
+
+      const EEmcElement_t& towElement = eemcEnergy.eTow.getByIdx( idx );
+      const EEmcElement_t& pr1Element = eemcEnergy.ePre1.getByIdx( idx );
+      const EEmcElement_t& pr2Element = eemcEnergy.ePre2.getByIdx( idx );
+      const EEmcElement_t& pstElement = eemcEnergy.ePost.getByIdx( idx );
+
+      tower[i].set( idx,
+                    weight,
+                    towElement.fail ? 0 : towElement.energy,
+                    pr1Element.fail ? 0 : pr1Element.energy,
+                    pr2Element.fail ? 0 : pr2Element.energy,
+                    pstElement.fail ? 0 : pstElement.energy  );
+
+      total.eTow  += tower[i].eTow;  // weight already multiplied in via the EEmcHitElement_t::set(...) function
+      total.ePost += tower[i].ePost; // weight already multiplied in via the EEmcHitElement_t::set(...) function
+
+      if( idx == total.idx ){
+         total.ePre1 = tower[i].ePre1;
+         total.ePre2 = tower[i].ePre2;
+      };
+   };
+
+};
+
+EEmcHit_t::~EEmcHit_t(){
+   if( nTowers )
+      delete tower;
+   nTowers = 0;
+};
+a15 3
+   if( nTowers )
+      delete tower;
+   nTowers = 0;
+d19 5
+a23 1
+   total.Clear();
+d29 1
+a29 1
+ * $Id: EEmcHit.cxx,v 1.5 2012/05/25 03:19:00 sgliske Exp $
+d31 3
+@
+
+
+1.5
+log
+@Removed TRef, replaced with index in TClonesArray
+@
+text
+@a36 1
+
+d57 1
+d79 1
+a79 1
+ * $Id: EEmcHit.cxx,v 1.4 2012/05/23 19:58:38 sgliske Exp $
+d81 3
+@
+
+
+1.4
+log
+@updates
+@
+text
+@a10 1
+#include <TRef.h>
+d17 2
+a18 2
+EEmcHit_t::EEmcHit_t( const EEmcEnergy_t& eemcEnergy, TRef uClus_, TRef vClus_, const StEEmcHit_t& other ) 
+   : uClus( uClus_ ), vClus( vClus_ ) {
+d70 2
+a71 2
+   uClus = (TObject*)0;
+   vClus = (TObject*)0;
+d79 1
+a79 1
+ * $Id: EEmcHit.cxx,v 1.3 2012/05/22 22:01:07 sgliske Exp $
+d81 3
+@
+
+
+1.3
+log
+@updates
+@
+text
+@d39 4
+a42 4
+      const EEmcElement_t& towElement = eemcEnergy.etow.getByIdx( idx );
+      const EEmcElement_t& pr1Element = eemcEnergy.epre1.getByIdx( idx );
+      const EEmcElement_t& pr2Element = eemcEnergy.epre2.getByIdx( idx );
+      const EEmcElement_t& pstElement = eemcEnergy.epost.getByIdx( idx );
+d80 1
+a80 1
+ * $Id: EEmcHit.cxx,v 1.2 2012/05/21 21:08:15 sgliske Exp $
+d82 3
+@
+
+
+1.2
+log
+@added support for candidate particles, both 1 and 2
+@
+text
+@d51 2
+a52 2
+      total.eTow  += tower[i].eTow*weight;
+      total.ePost += tower[i].ePost*weight;
+d80 1
+a80 1
+ * $Id: EEmcHit.cxx,v 1.1 2012/05/16 20:48:03 sgliske Exp $
+d82 3
+@
+
+
+1.1
+log
+@moved from StEEmcTree to EEmcTreeContainers
+@
+text
+@d38 5
+a42 9
+      Int_t phibin    = idx / 12;
+      Int_t etabin    = idx % 12;
+      Int_t sector    = phibin / 5;
+      Int_t subsector = phibin % 5;
+
+      const EEmcElement_t& towElement = eemcEnergy.etow.sec[ sector ].sub[ subsector ].eta[ etabin ];
+      const EEmcElement_t& pr1Element = eemcEnergy.epre1.sec[ sector ].sub[ subsector ].eta[ etabin ];
+      const EEmcElement_t& pr2Element = eemcEnergy.epre2.sec[ sector ].sub[ subsector ].eta[ etabin ];
+      const EEmcElement_t& pstElement = eemcEnergy.epost.sec[ sector ].sub[ subsector ].eta[ etabin ];
+d80 1
+a80 1
+ * $Id: EEmcHit.cxx,v 1.1 2012/05/15 20:52:47 sgliske Exp $
+d82 3
+@
+

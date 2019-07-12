@@ -1,0 +1,180 @@
+head	1.4;
+access;
+symbols
+	response:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.11.03.17.12.59;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.02.22.04.45;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.02.20.54.24;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlDistMatrixPruner_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * DistMatrixPruner: provides means to delete elements from StEEmcAnlDistMatrix_t matching either one of two indices
+ *
+ */
+
+#ifndef _ST_EEMC_ANL_DIST_MATRIX_PRUNER_H_
+#define _ST_EEMC_ANL_DIST_MATRIX_PRUNER_H_
+
+#include <list>
+#include <Rtypes.h>
+
+#include "StEEmcAnlDistMatrixElement.h"
+
+// the class
+class StEEmcAnlDistMatrixPruner_t {
+ public:
+   /// Construtor
+   StEEmcAnlDistMatrixPruner_t( Int_t idx1 = -1, Int_t idx2 = -1 ) : mIdx1( idx1 ), mIdx2( idx2 ) { /* */ };
+
+   /// Deconstructor
+   ~StEEmcAnlDistMatrixPruner_t() { /* */ };
+
+   // operators
+   Bool_t operator() ( const StEEmcAnlDistMatrixElement_t& element );
+
+   // accessors
+   Short_t getIdx1() { return mIdx1; };
+   Short_t getIdx2() { return mIdx2; };
+
+   // modifiers
+   void setIdx1( Int_t i ){ mIdx1 = i; };
+   void setIdx2( Int_t i ){ mIdx2 = i; };
+
+ protected:
+   Int_t mIdx1, mIdx2;
+
+ private:
+
+};
+
+// longer inline function
+
+// operators
+inline Bool_t StEEmcAnlDistMatrixPruner_t::operator() ( const StEEmcAnlDistMatrixElement_t& element ){
+   return ( element.getIdx1() == mIdx1 || 
+            element.getIdx1() == mIdx2 || 
+            element.getIdx2() == mIdx1 || 
+            element.getIdx2() == mIdx2 );
+};
+
+#endif
+
+/*
+ * $Id: StEEmcAnlDistMatrixPruner.h,v 1.3 2011/11/03 17:12:59 sgliske Exp $
+ * $Log: StEEmcAnlDistMatrixPruner.h,v $
+ * Revision 1.3  2011/11/03 17:12:59  sgliske
+ * it compiles
+ *
+ * Revision 1.2  2011/11/02 22:04:45  sgliske
+ * update
+ *
+ * Revision 1.1  2011/11/02 20:54:24  sgliske
+ * update
+ *
+ * 
+ */
+@
+
+
+1.3
+log
+@it compiles
+@
+text
+@d58 1
+a58 1
+ * $Id: StEEmcAnlDistMatrixPruner.h,v 1.2 2011/11/02 22:04:45 sgliske Exp $
+d60 3
+@
+
+
+1.2
+log
+@update
+@
+text
+@d22 1
+a22 1
+   StEEmcAnlDistMatrixPruner_t( Int_t idx1 = -1, Int_t idx2 = -1 ) : mIdx1( idx1 ), mIdx2( idx2 ){ /* */ };
+d25 1
+a25 1
+   ~StEEmcAnlDistMatrixPruner_t(){ /* */ };
+d28 1
+a28 1
+   static Bool_t operator() ( const StEEmcAnlDistMatrixElement_t& element );
+d31 2
+a32 2
+   static Short_t getIdx1() const { return mIdx1; };
+   static Short_t getIdx2() const { return mIdx2; };
+d35 2
+a36 2
+   static void setIdx1( Int_t i ){ mIdx1 = i; };
+   static void setIdx2( Int_t i ){ mIdx2 = i; };
+d39 1
+a39 1
+   static Int_t mIdx1, mIdx2;
+d58 1
+a58 1
+ * $Id: StEEmcAnlDistMatrixPruner.h,v 1.1 2011/11/02 20:54:24 sgliske Exp $
+d60 3
+@
+
+
+1.1
+log
+@update
+@
+text
+@d28 1
+a28 1
+   Bool_t operator() ( const StEEmcAnlDistMatrixElement_t& element );
+d31 2
+a32 2
+   Short_t getIdx1() const { return mIdx1; };
+   Short_t getIdx2() const { return mIdx2; };
+d35 2
+a36 2
+   void setIdx1( Int_t i ){ mIdx1 = i; };
+   void setIdx2( Int_t i ){ mIdx2 = i; };
+d39 1
+a39 1
+   Int_t mIdx1, mIdx2;
+d58 5
+a62 2
+ * $Id: $
+ * $Log: $
+@
+

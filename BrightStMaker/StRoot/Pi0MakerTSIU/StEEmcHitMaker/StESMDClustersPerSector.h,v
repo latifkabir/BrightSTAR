@@ -1,0 +1,206 @@
+head	1.6;
+access;
+symbols
+	response:1.5;
+locks; strict;
+comment	@ * @;
+
+
+1.6
+date	2012.11.26.19.40.35;	author sgliske;	state dead;
+branches;
+next	1.5;
+
+1.5
+date	2011.07.22.16.33.06;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.07.20.21.35.26;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.07.12.19.14.36;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.07.12.14.13.16;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.07.20.53.04;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.6
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ * \class StESMDClustersPerSector_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Storage class for all the SMD clusters per sector.
+ *
+*/
+
+#ifndef _ST_ESMD_CLUSTER_PER_SECTOR_H_
+#define _ST_ESMD_CLUSTER_PER_SECTOR_H_
+
+#include <Rtypes.h>
+
+#include "StSimpleCluster.h"
+
+/// Forward declaration
+class StESMDClustersPerSector_t;
+
+/// Containers
+typedef std::vector< StESMDClustersPerSector_t > StESMDClustersVec_t;
+
+//#define ClassDefVec( CLASS );
+
+// force RootCint.pl to make vector dictionary
+//ClassDefVec( StESMDClustersPerSector_t );
+
+/// The class
+class StESMDClustersPerSector_t {
+ public:
+   // constructor
+   StESMDClustersPerSector_t() : mSector(0) { /* */ };
+   StESMDClustersPerSector_t( Short_t sector ) : mSector(sector) { /* */ };
+   ~StESMDClustersPerSector_t(){ /* */ };
+
+   // accessors
+   StSimpleClusterVec_t& getClusterVecU() { return mClusterVecU; };
+   StSimpleClusterVec_t& getClusterVecV() { return mClusterVecV; };
+   const StSimpleClusterVec_t& getClusterVecU() const { return mClusterVecU; };
+   const StSimpleClusterVec_t& getClusterVecV() const { return mClusterVecV; };
+   Int_t getSector() const { return static_cast< Int_t >( mSector); };
+
+   // modifiers
+   void setSector( Short_t sector ){ mSector = sector; };
+   void clear(){ mClusterVecU.clear(); mClusterVecV.clear(); };
+
+ protected:
+   Short_t mSector;                    //! the sector
+   StSimpleClusterVec_t mClusterVecU;  //! the U clusters
+   StSimpleClusterVec_t mClusterVecV;  //! the V clusters
+
+ private:
+   /// Make class available to root
+   ClassDef(StESMDClustersPerSector_t,1);   // Simplest class to describe a cluster
+
+};
+
+#endif
+
+// $Id: StESMDClustersPerSector.h,v 1.5 2011/07/22 16:33:06 sgliske Exp $
+//
+// $Log: StESMDClustersPerSector.h,v $
+// Revision 1.5  2011/07/22 16:33:06  sgliske
+// update
+//
+// Revision 1.4  2011/07/20 21:35:26  sgliske
+// update
+//
+// Revision 1.3  2011/07/12 19:14:36  sgliske
+// StEEmcResponseTreeMaker working
+//
+// Revision 1.2  2011/07/12 14:13:16  sgliske
+// update
+//
+// Revision 1.1  2011/07/07 20:53:04  sgliske
+// update
+//
+@
+
+
+1.5
+log
+@update
+@
+text
+@d59 1
+a59 1
+// $Id: StESMDClustersPerSector.h,v 1.4 2011/07/20 21:35:26 sgliske Exp $
+d62 3
+@
+
+
+1.4
+log
+@update
+@
+text
+@d32 1
+a32 1
+   StESMDClustersPerSector_t( Char_t sector ) : mSector(sector) { /* */ };
+d43 1
+a43 1
+   void setSector( Char_t sector ){ mSector = sector; };
+d47 1
+a47 1
+   Char_t mSector;                     //! the sector (only need one byte, so it is a Char_t to save space)
+d59 1
+a59 1
+// $Id: StESMDClustersPerSector.h,v 1.3 2011/07/12 19:14:36 sgliske Exp $
+d62 3
+@
+
+
+1.3
+log
+@StEEmcResponseTreeMaker working
+@
+text
+@d40 1
+a40 1
+   Char_t getSector() const { return mSector; };
+d59 1
+a59 1
+// $Id: StESMDClustersPerSector.h,v 1.2 2011/07/12 14:13:16 sgliske Exp $
+d62 3
+@
+
+
+1.2
+log
+@update
+@
+text
+@d22 1
+a22 1
+#define ClassDefVec( CLASS );
+d25 1
+a25 1
+ClassDefVec( StESMDClustersPerSector_t );
+d59 1
+a59 1
+// $Id: StESMDClustersPerSector.h,v 1.1 2011/07/07 20:53:04 sgliske Exp $
+d62 3
+@
+
+
+1.1
+log
+@update
+@
+text
+@d22 5
+d59 5
+a63 1
+// $Id: $
+a64 1
+// $Log: $
+@
+

@@ -1,0 +1,228 @@
+head	1.7;
+access;
+symbols
+	response:1.5;
+locks; strict;
+comment	@ * @;
+
+
+1.7
+date	2012.11.26.19.40.35;	author sgliske;	state dead;
+branches;
+next	1.6;
+
+1.6
+date	2012.05.17.22.47.02;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.12.28.15.07.57;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.12.28.15.06.10;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.12.28.14.54.22;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.22.16.46.36;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.19.18.23.55;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ * \class StEEmcStripClusterFinderTSP_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * This algorithm applies the smoother, attributed J.W. Tukey, and then identifies clusters which each peak above threshold.
+ * The Tukey-smoother is already programmed in TH1::SmoothArray(...).  
+ *
+ * Note: TSP stands for "apply (T)ukey-(S)moother and find (P)eaks".
+ *
+*/
+
+#ifndef _ST_STRIP_CLUSTER_FINDER_TSP_H_
+#define _ST_STRIP_CLUSTER_FINDER_TSP_H_
+
+
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+
+#include "StEEmcStripClusterFinder.h"
+
+class StEEmcStripClusterFinderTSP_t : public StEEmcStripClusterFinder_t {
+
+ public:
+   StEEmcStripClusterFinderTSP_t( );
+   virtual ~StEEmcStripClusterFinderTSP_t();
+
+   /// find some clusters
+   virtual Int_t find( const ESmdLayer_t& stripArray, StSimpleClusterVec_t& cluster );
+
+   void setNumSmoothIters( UInt_t val ){ mNumSmoothIters = val; };
+   void setMinStripsPerCluster( UInt_t val ){ mMinStripsPerCluster = val; };
+   void setMaxDist( UInt_t val ){ mMaxDist = val; };
+   void setSearchMargin( UInt_t val ){ mSearchMargin = val; };
+   void setSeedAbsThres( Double_t val ){ mSeedAbsThres = val; };
+   void setSeedRelThres( Double_t val ){ mSeedRelThres = val; };
+   void setAbsPeakValleyThres( Double_t val ){ mAbsPeakValleyThres = val; };
+   void setAnomalySubFactor( Double_t val ){ mAnomalySupFactor = val; };   // 0.5 here to avoid dividing by half to take the average
+
+ protected:
+   // typedef
+   typedef std::vector< Int_t > IntVec_t;
+
+   // parameters
+   UInt_t mNumSmoothIters, mMinStripsPerCluster, mMaxDist, mSearchMargin;
+   Double_t mSeedAbsThres, mSeedRelThres, mAbsPeakValleyThres, mAnomalySupFactor;
+
+   // temp storage
+   Double_t mStripEnergyArray[ kEEmcNumStrips ], mSmoothedEnergyArrayA[ kEEmcNumStrips ], mSmoothedEnergyArrayB[ kEEmcNumStrips ];
+   Int_t mSmallestIdx, mLargestIdx;
+
+ private:
+   ClassDef( StEEmcStripClusterFinderTSP_t, 1 );
+};
+
+
+#endif
+
+/*
+ * $Id: StEEmcStripClusterFinderTSP.h,v 1.6 2012/05/17 22:47:02 sgliske Exp $
+ * $Log: StEEmcStripClusterFinderTSP.h,v $
+ * Revision 1.6  2012/05/17 22:47:02  sgliske
+ * working on switching to EEmcTree containers
+ *
+ * Revision 1.5  2011/12/28 15:07:57  sgliske
+ * update
+ *
+ * Revision 1.4  2011/12/28 15:06:10  sgliske
+ * update
+ *
+ * Revision 1.3  2011/12/28 14:54:22  sgliske
+ * update
+ *
+ * Revision 1.2  2011/12/22 16:46:36  sgliske
+ * general update
+ *
+ * Revision 1.1  2011/12/19 18:23:55  sgliske
+ * creation
+ *
+ *
+ */
+@
+
+
+1.6
+log
+@working on switching to EEmcTree containers
+@
+text
+@d58 1
+a58 1
+ * $Id: StEEmcStripClusterFinderTSP.h,v 1.5 2011/12/28 15:07:57 sgliske Exp $
+d60 3
+@
+
+
+1.5
+log
+@update
+@
+text
+@d15 1
+a15 1
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcStrip.h"
+d27 1
+a27 1
+   virtual Int_t find( const StEEmcStripVec_t& hitStrips, StSimpleClusterVec_t& cluster );
+d58 1
+a58 1
+ * $Id: StEEmcStripClusterFinderTSP.h,v 1.4 2011/12/28 15:06:10 sgliske Exp $
+d60 3
+@
+
+
+1.4
+log
+@update
+@
+text
+@d36 1
+a36 1
+   void setAnomalySubFactor( Double_t val ){ mAnomalySupFactor = val };   // 0.5 here to avoid dividing by half to take the average
+d58 1
+a58 1
+ * $Id: StEEmcStripClusterFinderTSP.h,v 1.3 2011/12/28 14:54:22 sgliske Exp $
+d60 3
+@
+
+
+1.3
+log
+@update
+@
+text
+@d36 1
+d44 1
+a44 1
+   Double_t mSeedAbsThres, mSeedRelThres, mAbsPeakValleyThres;
+d47 1
+a47 1
+   Double_t mStripEnergyArray[ kEEmcNumStrips ], mSmoothedEnergyArray[ kEEmcNumStrips ];
+d58 1
+a58 1
+ * $Id: StEEmcStripClusterFinderTSP.h,v 1.2 2011/12/22 16:46:36 sgliske Exp $
+d60 3
+@
+
+
+1.2
+log
+@general update
+@
+text
+@d47 1
+d57 1
+a57 1
+ * $Id: StEEmcStripClusterFinderTSP.h,v 1.1 2011/12/19 18:23:55 sgliske Exp $
+d59 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d32 1
+d35 1
+d43 1
+a43 1
+   Double_t mSeedAbsThres, mSeedRelThres;
+d56 5
+a60 2
+ * $Id: $
+ * $Log: $
+@
+

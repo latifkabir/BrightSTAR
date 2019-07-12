@@ -1,0 +1,138 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.3
+date	2012.10.09.03.57.21;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.28.14.54.22;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.22.23.00.53;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcStripClusterFinderTSG_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Clusters via solving a GMM with the EM algorithm, using the cluster finder
+ * StEEmcStripClusterFinderTSP_t to initialize.
+ *
+ * Note: TSG stands for "apply (T)ukey-(S)moother plus (G)aussian mixture model.
+ *
+ * 'mForcedInitSigma > 0' forces all Gaussians to be intialized with
+ * this value for sigma.  Otherwise, the st. dev. of the strips
+ * included each the clusters, multiplied by the factor
+ * 'mInitSigmaFactor', is used for the initial sigma of each Gaussian.
+ *
+ * Only Gaussians with an amplitude at least 'mMinimumAmpFrac' times the
+ * maximum amplitude are used to make clusters.  Also, any clusters within 
+ * 'mMergeDist' are merged into single clusters.
+ *
+ * The EM algorthim is ran for 'mNumEmIters'.
+ * 
+ * When saving the results to the StSimpleCluster_t, only strips with
+ * weight above 'mMinStripWeight' are associated with the cluster.
+*/
+
+#ifndef _ST_STRIP_CLUSTER_FINDER_TSG_H_
+#define _ST_STRIP_CLUSTER_FINDER_TSG_H_
+
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcStrip.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+
+#include "StEEmcStripClusterFinderTSP.h"
+#include "StRoot/StEEmcPool/StEEmcHitMaker/GmmEm1D/GmmEm1D.h"
+
+class StEEmcStripClusterFinderTSG_t : public StEEmcStripClusterFinderTSP_t {
+
+ public:
+   StEEmcStripClusterFinderTSG_t( Int_t numEmIters = 10 );
+   virtual ~StEEmcStripClusterFinderTSG_t();
+
+   /// find some clusters
+   virtual Int_t find( const StEEmcStripVec_t& hitStrips, StSimpleClusterVec_t& cluster );
+
+   void setForcedInitSigma( Float_t val ){ mForcedInitSigmaSq = val*val; };
+   void setInitSigmaFactor( Float_t val ){ mInitSigmaFactor = val; };
+   void setMinimumAmpFrac( Float_t val ){ mMinimumAmpFrac = val; };
+   void setMergeDist( Float_t val ){ mMergeDist = val; };
+   void setMinStripWeight( Float_t val ){ mMinStripWeight = val; };
+   void setMinSigma( Float_t val ){ mMinSigmaSq = val*val; };
+   void setMaxSigma( Float_t val ){ mMaxSigmaSq = val*val; };
+   void setMaxStripSigmaDist( Float_t val ){ mMaxStripSigmaDist = val; };
+
+ protected:
+   Float_t mForcedInitSigmaSq, mInitSigmaFactor, mMinimumAmpFrac, mMergeDist, mMinStripWeight, mMinSigmaSq, mMaxSigmaSq, mMaxStripSigmaDist;
+
+   GmmEm1D_t mGmmEm;
+
+ private:
+   ClassDef( StEEmcStripClusterFinderTSG_t, 1 );
+};
+
+
+#endif
+
+/*
+ * $Id: StEEmcStripClusterFinderTSG.h,v 1.2 2011/12/28 14:54:22 sgliske Exp $
+ * $Log: StEEmcStripClusterFinderTSG.h,v $
+ * Revision 1.2  2011/12/28 14:54:22  sgliske
+ * update
+ *
+ * Revision 1.1  2011/12/22 23:00:53  sgliske
+ * creation
+ *
+ *
+ */
+@
+
+
+1.2
+log
+@update
+@
+text
+@d65 1
+a65 1
+ * $Id: StEEmcStripClusterFinderTSG.h,v 1.1 2011/12/22 23:00:53 sgliske Exp $
+d67 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d32 1
+d48 3
+d53 1
+a53 1
+   Float_t mForcedInitSigmaSq, mInitSigmaFactor, mMinimumAmpFrac, mMergeDist, mMinStripWeight;
+d65 5
+a69 2
+ * $Id:  $
+ * $Log: $
+@
+

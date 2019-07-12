@@ -1,0 +1,132 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.3
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.07.22.08.04;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.02.20.54.24;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlDistMatrixElement_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * DistMatrixElement container for the StEEmcAnlHit_t class.  Includes
+ * the distance between two hits, and the indices of the two hits.
+ *
+ */
+
+#ifndef _ST_EEMC_ANL_DIST_MATRIX_ELEMENT_H_
+#define _ST_EEMC_ANL_DIST_MATRIX_ELEMENT_H_
+
+#include <list>
+#include <Rtypes.h>
+
+// forward declaration
+class StEEmcAnlDistMatrixElement_t;
+
+// collection
+typedef std::list< StEEmcAnlDistMatrixElement_t > StEEmcAnlDistMatrix_t;
+
+// the class
+class StEEmcAnlDistMatrixElement_t {
+ public:
+   /// Construtor
+   StEEmcAnlDistMatrixElement_t( Float_t dist = 0, Int_t idx1 = -1, Int_t idx2 = -1 ) : mDist( dist ), mIdx1( idx1 ), mIdx2( idx2 ){ /* */ };
+
+   /// Deconstructor
+   ~StEEmcAnlDistMatrixElement_t(){ /* */ };
+
+   // operators
+   Bool_t operator==( const StEEmcAnlDistMatrixElement_t& rhs ) const { return mDist == rhs.mDist; };
+   Bool_t operator<( const StEEmcAnlDistMatrixElement_t& rhs ) const { return mDist < rhs.mDist; };
+
+   // accessors
+   Float_t getDist() const { return mDist; };
+   Short_t getIdx1() const { return mIdx1; };
+   Short_t getIdx2() const { return mIdx2; };
+
+   // modifiers
+   void setDist( Float_t d ){ mDist = d; };
+   void setIdx1( Int_t i ){ mIdx1 = i; };
+   void setIdx2( Int_t i ){ mIdx2 = i; };
+
+ protected:
+   Float_t mDist;
+   Int_t mIdx1, mIdx2;
+
+ private:
+
+};
+
+inline std::ostream &operator<<( std::ostream &out, const StEEmcAnlDistMatrixElement_t &element ) {
+   out << "dist. between " << element.getIdx1() << " & " << element.getIdx2() << " is " << element.getDist() << '.';
+
+   return out;
+};
+
+#endif
+
+/*
+ * $Id: StEEmcAnlDistMatrixElement.h,v 1.2 2011/11/07 22:08:04 sgliske Exp $
+ * $Log: StEEmcAnlDistMatrixElement.h,v $
+ * Revision 1.2  2011/11/07 22:08:04  sgliske
+ * daily update
+ *
+ * Revision 1.1  2011/11/02 20:54:24  sgliske
+ * update
+ *
+ * 
+ */
+@
+
+
+1.2
+log
+@daily update
+@
+text
+@d63 1
+a63 1
+ * $Id: StEEmcAnlDistMatrixElement.h,v 1.1 2011/11/02 20:54:24 sgliske Exp $
+d65 3
+@
+
+
+1.1
+log
+@update
+@
+text
+@d54 6
+d63 5
+a67 2
+ * $Id: $
+ * $Log: $
+@
+

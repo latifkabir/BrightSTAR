@@ -1,0 +1,355 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.13.21.32.27;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.07.22.33.11;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcStripClusterFinderGMM_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See header for description.
+ *
+*/
+
+#include <list>
+#include <TMath.h>
+
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+
+#include "StEEmcStripClusterFinderGMM.h"
+#include "GmmEm1D/GmmEm1D.h"
+
+//#define DEBUG
+//#define DEBUG2
+//#define DEBUG3
+//#define DEBUG4
+
+StEEmcStripClusterFinderGMM_t::StEEmcStripClusterFinderGMM_t( Int_t maxGmmIters ) :
+   mMinNumClusters(1), mMaxNumClusters(5), mMinStripsPerCluster(5), mAttemptsPerNumClusters(20), mMinSeedEnergy(0.005), mInitSigmaSq(4), mMinimumAmp(0.05), mMinStripWeight(0.001), mAICfactor(0.75),
+   mMinSigmaSq( 25 ) {
+
+   mGmmEm.setMaxIters( maxGmmIters );
+
+   // set unique seed
+   rand.SetSeed();
+
+   // initialize a few parent variables
+   mLayer = U_LAYER;
+   mSector = 0;
+   mIsReady = 1;
+};
+
+StEEmcStripClusterFinderGMM_t::~StEEmcStripClusterFinderGMM_t(){
+   // nothing else
+};
+
+/// find some clusters
+Int_t StEEmcStripClusterFinderGMM_t::find( const StEEmcStripVec_t& hitStrips, StSimpleClusterVec_t& clusters ){
+   clusters.clear();
+   Int_t ierr = kStOk;
+
+   // skip if not enough strips hit
+   if( hitStrips.size() < static_cast< UInt_t >( mMinStripsPerCluster ) )
+      return ierr;
+
+   // copy into GmmEm input structure
+   GmmEmDataVec_t gmmEmData, gmmEmSeedPtrs;
+   for( StEEmcStripVec_t::const_iterator iter = hitStrips.begin(); iter != hitStrips.end(); ++iter ){
+      if( !iter->fail()  ){
+         gmmEmData.push_back( GmmEmDataElement_t( iter->index(), iter->energy() ) );
+
+#ifdef DEBUG2
+         cout << "ccc " << iter->index() << ' ' << iter->energy() << endl;
+#endif
+
+         if( iter->energy() > mMinSeedEnergy )
+            gmmEmSeedPtrs.push_back( gmmEmData.back() );
+      };
+   };
+
+   // to store the clusters
+   GmmEmGausParamVec_t gmmClustersA, gmmClustersB, *gmmClustersPtr, *gmmClustersTempPtr;
+   gmmClustersA.reserve(mMaxNumClusters);
+   gmmClustersA.resize(0);
+   gmmClustersB.reserve(mMaxNumClusters);
+   gmmClustersB.resize(0);
+   gmmClustersPtr = &gmmClustersA;
+   gmmClustersTempPtr = &gmmClustersB;
+
+   Double_t minAIC = 1e100;
+   std::vector< std::vector< Double_t > > savedWeightVec;
+
+   // define iterators once
+   GmmEmDataVec_t::iterator dataVecIter, seedVecIter;
+   std::list< GmmEmData_t* >::iterator seedListIter;
+   WeightVec_t::const_iterator weightIter;
+   GmmEmGausParamVec_t::iterator gmmClusIter;
+   std::vector< std::vector< Double_t > >::iterator savedWeightVecIter;
+
+   for( Int_t numClusters = mMinNumClusters; numClusters < mMaxNumClusters && !ierr; ++numClusters ){
+      // make sure enough points
+      if( gmmEmSeedPtrs.size() >= (UInt_t)numClusters ){
+
+         UInt_t numAttempts = mAttemptsPerNumClusters;
+
+         // reduce numAttempts in certain cases
+         if( (UInt_t)numClusters > gmmEmSeedPtrs.size() )
+            numAttempts = -1;
+         else if( numClusters == 1 )
+            numAttempts = 1;
+         else if( (UInt_t)numClusters == gmmEmSeedPtrs.size() )
+            numAttempts = gmmEmSeedPtrs.size();
+
+         for( UInt_t trial = 0; trial < numAttempts; ++trial ){
+            // make pool of possible seeds
+
+            std::list< GmmEmData_t* > seedPtrPool;
+            for( seedVecIter = gmmEmSeedPtrs.begin(); seedVecIter != gmmEmSeedPtrs.end(); ++seedVecIter )
+               seedPtrPool.push_back( &(*seedVecIter) );
+         
+            // initialize clusters
+            gmmClustersTempPtr->resize( 0 );
+#ifdef DEBUG2
+            LOG_INFO << "Seeds at " << endm;
+#endif
+
+            for( Int_t clusIdx = 0; clusIdx < numClusters; ++clusIdx ){
+               Int_t idx = seedPtrPool.size()*rand.Rndm();
+
+               seedListIter = seedPtrPool.begin();
+               std::advance( seedListIter, idx );
+               gmmClustersTempPtr->push_back( GausParam_t( (*seedListIter)->val, (*seedListIter)->idx, mInitSigmaSq ) );
+
+               seedPtrPool.erase( seedListIter );
+#ifdef DEBUG2
+               LOG_INFO << idx << ' ' << seedPtrPool.size() << ' ' << (*seedListIter)->val << ' ' << (*seedListIter)->idx << ' ' << mInitSigmaSq << endm;
+#endif
+            };
+
+            Double_t chiSq = 0;
+            Int_t gmmErrCode = mGmmEm.solve( gmmEmData, *gmmClustersTempPtr, &chiSq );
+
+            if( gmmErrCode ){
+               LOG_WARN << "GMM EM Algo had an error: '" << mGmmEm.getMessage() << "'" << endm;
+               ierr = kStErr;
+            } else {
+               // compute the AIC
+               Double_t AIC = chiSq + mAICfactor*numClusters;
+
+#ifdef DEBUG
+               LOG_INFO << "Num clusters is " << numClusters << ", trial " << trial+1 << " of " << numAttempts << ", AIC = " << AIC << endm;
+#endif
+#ifdef DEBUG4
+               LOG_INFO << "GMM Results: " << endm;
+               for( gmmClusIter = gmmClustersTempPtr->begin(); gmmClusIter != gmmClustersTempPtr->end(); ++gmmClusIter ){
+                  LOG_INFO << "\t" << gmmClusIter->A << ' ' << gmmClusIter->mean << ' ' << sqrt( gmmClusIter->sigmaSq ) << endm;
+               };
+#endif
+
+               // make sure this has the best AIC
+               if( AIC < minAIC ){
+                  minAIC = AIC;
+
+                  // make sure all clusters have abouve min amount of strips and min energy
+                  Double_t minA = 1;  // A's are normalized so they sum to 1, so 1 is the max value any can have
+                  for( gmmClusIter = gmmClustersTempPtr->begin(); gmmClusIter != gmmClustersTempPtr->end(); ++gmmClusIter )
+                     if( gmmClusIter->A < minA && gmmClusIter->A )
+                        minA = gmmClusIter->A;
+
+#ifdef DEBUG3
+                  LOG_INFO << "MinA = " << minA << " vs " << mMinimumAmp << endm;
+#endif
+
+                  if( minA > mMinimumAmp && gmmClusIter->sigmaSq < mMinSigmaSq ){
+
+                     // make sure all clusters have enough strips
+                     Int_t *nPerCluster = new Int_t [ numClusters ];
+                     for( Int_t *p = nPerCluster; p != &nPerCluster[ numClusters ]; ++p )
+                        (*p) = 0;
+
+                     const WeightVec_t& weightVec = mGmmEm.getWeights();
+                     for( weightIter = weightVec.begin(); weightIter != weightVec.end(); ++weightIter )
+                        for( Int_t i=0; i<numClusters; ++i )
+                           if( (*weightIter)[i] > mMinStripWeight )
+                              ++nPerCluster[i];
+
+                     // get min
+                     Int_t minNumPerClus = nPerCluster[0];
+                     for( Int_t *p = &nPerCluster[1]; p != &nPerCluster[ numClusters ]; ++p )
+                        if( *p < minNumPerClus )
+                           minNumPerClus = *p;
+
+#ifdef DEBUG3
+                     LOG_INFO << "minNumPerClus = " << minNumPerClus << " vs " << mMinStripsPerCluster << endm;
+#endif
+               
+                     if( minNumPerClus > mMinStripsPerCluster ){
+
+                        // switch the save and the temp around
+                        GmmEmGausParamVec_t* tempPtr = gmmClustersPtr;
+                        gmmClustersPtr = gmmClustersTempPtr;
+                        gmmClustersTempPtr = tempPtr;
+
+                        // save the weights
+                        savedWeightVec.resize( weightVec.size() );
+                        savedWeightVecIter = savedWeightVec.begin();
+                        for( weightIter = weightVec.begin(); weightIter != weightVec.end(); ++weightIter, ++savedWeightVecIter ){
+                           savedWeightVecIter->clear();
+                           savedWeightVecIter->reserve( numClusters );
+                           for( Int_t i=0; i<numClusters; ++i )
+                              savedWeightVecIter->push_back( (*weightIter)[i] );
+                        };
+                     };
+                  };
+               };
+            };
+         };
+      };
+   };
+
+#ifdef DEBUG
+   LOG_INFO << "Final choice is " << gmmClustersPtr->size() << " clusters with an AIC of " << minAIC << endm;
+#endif
+
+   if( !ierr && !gmmClustersPtr->empty() ){
+      // prefer to work with a reference rather than a pointer
+      GmmEmGausParamVec_t &gmmClusters = *gmmClustersPtr;
+
+      // convert results to correct output
+      clusters.reserve( gmmClusters.size() );
+
+      Int_t clusIdx = 0;
+      for( gmmClusIter = gmmClusters.begin(); gmmClusIter != gmmClusters.end(); ++gmmClusIter, ++clusIdx ){
+
+         // count how many strips contribute to this cluster
+         Int_t n = 0;
+         for( savedWeightVecIter = savedWeightVec.begin(); savedWeightVecIter != savedWeightVec.end(); ++savedWeightVecIter )
+            if( savedWeightVecIter->size() > (UInt_t)clusIdx && (*savedWeightVecIter)[clusIdx] > mMinStripWeight )
+               ++n;
+
+         clusters.push_back( StSimpleCluster_t( ++mLastClusterID ) );
+         StSimpleCluster_t& clus = clusters.back();
+         clus.setMeanX( gmmClusIter->mean );
+
+         TArrayS& memArr = clus.getMemberArray();
+         TArrayF& wArr = clus.getWeightArray();
+
+         memArr.Set( n );
+         wArr.Set( n );
+
+         Int_t idx = 0, seedIdx = 0;
+         Double_t maxStripE = 0;
+         Double_t energy = 0;
+
+         dataVecIter = gmmEmData.begin();
+         for( savedWeightVecIter = savedWeightVec.begin(); savedWeightVecIter != savedWeightVec.end(); ++savedWeightVecIter, ++dataVecIter ){
+            if( savedWeightVecIter->size() > (UInt_t)clusIdx  ){
+               Double_t &w = (*savedWeightVecIter)[clusIdx];
+
+               if( w > mMinStripWeight ){
+                  memArr[idx] = dataVecIter->idx;
+                  wArr[idx] = w;
+
+                  Double_t thisE = w * dataVecIter->val;
+                  energy += thisE;
+                  if( thisE > maxStripE ){
+                     maxStripE = thisE;
+                     seedIdx = idx;
+                  };
+
+                  // must weight until after setting seedIdx to increment
+                  idx++;
+               };
+            };
+         };
+
+         clus.setEnergy( energy );
+         clus.setSeedIdx( seedIdx );
+
+#ifdef DEBUG4
+         LOG_INFO << "Final result: " << getEventNum() << " Sector " << mSector << " layer " << mLayer << ' ' << clus << " seedE " << maxStripE << endm;
+#endif
+#ifdef DEBUG
+         LOG_INFO << "Final result: " << getEventNum() << " Sector " << mSector << " layer " << mLayer << ' ' << clus << endm;
+#endif
+      };
+   };
+
+   return ierr;
+};
+
+ClassImp( StEEmcStripClusterFinderGMM_t );
+
+/*
+ * $Id: StEEmcStripClusterFinderGMM.cxx,v 1.2 2011/12/13 21:32:27 sgliske Exp $
+ * $Log: StEEmcStripClusterFinderGMM.cxx,v $
+ * Revision 1.2  2011/12/13 21:32:27  sgliske
+ * Bug fix: now ensure clusters have unique IDs across sectors and layers.
+ * Otherwise, StMcHitMakerStrips has errors.
+ * Few other small updates also included in this checkin.
+ *
+ * Revision 1.1  2011/12/07 22:33:11  sgliske
+ * update
+ *
+ *
+ */
+@
+
+
+1.2
+log
+@Bug fix: now ensure clusters have unique IDs across sectors and layers.
+Otherwise, StMcHitMakerStrips has errors.
+Few other small updates also included in this checkin.
+@
+text
+@d280 1
+a280 1
+ * $Id: StEEmcStripClusterFinderGMM.cxx,v 1.1 2011/12/07 22:33:11 sgliske Exp $
+d282 5
+@
+
+
+1.1
+log
+@update
+@
+text
+@d226 1
+a226 1
+         clusters.push_back( clusIdx );
+d280 5
+a284 2
+ * $Id:  $
+ * $Log:  $
+@
+

@@ -1,0 +1,188 @@
+head	1.4;
+access;
+symbols
+	response:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.12.22.16.46.36;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.15.22.21.18;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.15.22.04.01;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcPointFinderTopo_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Abstract base class for point finders that act differently on
+ * different the topologies clusters, i.e. those start by finding the
+ * minimial sets of "tangled" u and v clusters and then act
+ * differently depending on the number of u and v clusters in each
+ * minimal "tangled" set.  A set of "tangled" clusters are sets in
+ * which it is not obvious which u cluster goes with which v cluster,
+ * and a minimal "tangled" set is one which cannot be divided into a
+ * smaller tangled sets.
+ * 
+*/
+
+#ifndef _ST_POINT_FINDER_TOPO_H_
+#define _ST_POINT_FINDER_TOPO_H_
+
+#include <set>
+
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
+
+#include "StEEmcPointFinder.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+#include "StESMDClustersPerSector.h"
+
+class StEEmcHitMaker_t;
+
+class StEEmcPointFinderTopo_t : public StEEmcPointFinder_t {
+
+ public:
+   StEEmcPointFinderTopo_t();
+   virtual ~StEEmcPointFinderTopo_t();
+
+   /// clear things before doing the finding for the next event
+   virtual void clear(){ /* */ };
+
+   /// find some some points
+   virtual Int_t find( const StSimpleClusterVec_t &towerClusterVec,
+                       const StESMDClustersVec_t &smdClusterVec,
+                       StEEmcHitVec_t& hitVec );
+
+   // modifiers
+   Int_t setHitMakerPtr( StEEmcHitMaker_t *hitMakerPtr );
+   void setTowerThreshold( Float_t thres ){ mTowerThreshold = thres; };
+
+ protected:
+   // typedefs
+   typedef std::set< Int_t > StClusterPool_t;
+   typedef std::vector< Int_t > IntVec_t;
+   typedef std::map< Int_t, std::pair< const StSimpleCluster_t*, IntVec_t > > ClusMap_t;
+
+   // find points on a minimal set of u and v clusters
+   virtual Int_t findHits( const StClusterPool_t& uClusPool, const StClusterPool_t& vClusPool, StEEmcHitVec_t& newHits ) = 0;
+
+   // geometry class
+   EEmcGeomSimple mEEmcGeomSimple;
+
+   // pointer for HitMaker
+   const StEEmcHitMaker_t *mHitMakerPtr;
+
+   // Minimun energy for a tower to allow a point underneath
+   Float_t mTowerThreshold;
+
+   // maps to keep track of input, in case child findHits functions need the data
+   ClusMap_t mUclusMap, mVclusMap;
+
+   // more internal variables
+   Int_t mLastHitID, mSector;
+
+   // naive method of making a hit from a pair of u and v clusters
+   Int_t makeHit( Int_t uID, Int_t vID, StEEmcHitVec_t& newHitVec );
+   Int_t makeHit( const StSimpleCluster_t* uClusPtr, const StSimpleCluster_t* vClusPtr, StEEmcHitVec_t& newHitVec );
+
+ private:
+   ClassDef( StEEmcPointFinderTopo_t, 1 );
+
+};
+
+#endif
+
+/*
+ * $Id: StEEmcPointFinderTopo.h,v 1.3 2011/12/22 16:46:36 sgliske Exp $
+ * $Log: StEEmcPointFinderTopo.h,v $
+ * Revision 1.3  2011/12/22 16:46:36  sgliske
+ * general update
+ *
+ * Revision 1.2  2011/12/15 22:21:18  sgliske
+ * update
+ *
+ * Revision 1.1  2011/12/15 22:04:01  sgliske
+ * creation
+ *
+ *
+ */
+@
+
+
+1.3
+log
+@general update
+@
+text
+@d85 1
+a85 1
+ * $Id: StEEmcPointFinderTopo.h,v 1.2 2011/12/15 22:21:18 sgliske Exp $
+d87 3
+@
+
+
+1.2
+log
+@update
+@
+text
+@d53 1
+d68 1
+a68 1
+   std::map< Int_t, std::pair< const StSimpleCluster_t*, IntVec_t > > mUclusMap, mVclusMap;
+d70 6
+a75 2
+   // to keep trak of hit IDs
+   Int_t mLastHitID;
+d85 1
+a85 1
+ * $Id: StEEmcPointFinderTopo.h,v 1.1 2011/12/15 22:04:01 sgliske Exp $
+d87 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@a51 2
+   typedef std::pair< Int_t, Int_t >  StAssignment_t;
+   typedef std::vector< StAssignment_t > StAssignmentVec_t;
+d55 1
+a55 1
+   virtual Int_t findAssignments( const StClusterPool_t& uClusPool, const StClusterPool_t& vClusPool, StAssignmentVec_t& assignments ) = 0;
+d66 6
+d80 5
+a84 2
+ * $Id: $
+ * $Log: $
+@
+

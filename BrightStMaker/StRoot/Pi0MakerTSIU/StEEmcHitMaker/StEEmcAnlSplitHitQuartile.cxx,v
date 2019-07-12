@@ -1,0 +1,518 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.4
+date	2011.11.23.17.57.04;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.11.23.17.55.44;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.18.01.51.02;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.18.01.47.03;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@Moving StEEmcAnlSplitHitQuartile -> StEEmcAnlSplitHitGausQuartile
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlSplitHitQuartile_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See description in the header file
+ *
+ */
+
+//#define DEBUG
+
+#include <map>
+#include <set>
+#include <cmath>
+#include <algorithm>
+#include "assert.h"
+
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/StEEmcPool/StEEmcGeoId/StEEmcGeoId.h"
+#include "StRoot/StEEmcPool/StEEmcPointMap/StEEmcPointMap.h"
+#include "AnlEMPoint.h"
+#include "StEEmcAnlHit.h"
+#include "StEEmcAnlSplitHitQuartile.h"
+
+
+
+/// Construtor, deconstructor
+StEEmcAnlSplitHitQuartile_t::StEEmcAnlSplitHitQuartile_t( Int_t maxGmmIters ) :
+   mMaxNumTrials(10),
+   mSumSqDifThres(2),
+   mDefaultSigma(0.15),
+   mAllowedSigmaFrac(0.9)
+{
+   mGmmEm.setMaxIters( maxGmmIters );
+};
+
+StEEmcAnlSplitHitQuartile_t::~StEEmcAnlSplitHitQuartile_t(){ /* */ };
+
+/// Initialize
+Int_t StEEmcAnlSplitHitQuartile_t::Init(){
+   Int_t ierr = kStOk;
+
+   // set random seed
+   rand.SetSeed();
+
+   // check parameter values
+   if( mMaxNumTrials < 1 ){
+      LOG_WARN << "mMaxNumTrials < 1.  Resetting to 10" << endm;
+      mMaxNumTrials = 10;
+   };
+   if( mSumSqDifThres <= 0 ){
+      LOG_WARN << "mSumSqDifThres <= 0.  Resetting to 2" << endm;
+      mSumSqDifThres = 2;
+   };
+   if( mDefaultSigma <= 0 ){
+      LOG_WARN << "mDefaultSigma <= 0.  Resetting to 0.15" << endm;
+      mSumSqDifThres = 0.15;
+   };
+   if( mDefaultSigma > 15 ){
+      LOG_WARN << "mDefaultSigma > 15.  Resetting to 0.15" << endm;
+      mSumSqDifThres = 15;
+   };
+   if( mAllowedSigmaFrac <= 0 || mAllowedSigmaFrac > 1 ){
+      LOG_WARN << "mAllowedSigmaFrac not in range (0,1].  Resetting to 0.9" << endm;
+      mAllowedSigmaFrac = 0.9;
+   };
+
+   return ierr;
+};
+
+/// Find all the hits
+Int_t StEEmcAnlSplitHitQuartile_t::splitHit( const StEEmcAnlHit_t& hit, Bool_t& doSplit, Bool_t& doInvalidate, AnlEMPoint_t& point1, AnlEMPoint_t& point2 ){
+   Int_t ierr = kStOk;
+   doSplit = 0;
+   doInvalidate = 0;
+
+   // clear arrays
+   for( Int_t i=0; i<kMaxNumLayers; ++i )
+      for( Float_t *p = mStripEnergyArray[i]; p != &mStripEnergyArray[i][kEEmcNumStrips]; ++p )
+         (*p) = 0;
+
+   // containers
+   std::map< Int_t, Int_t > sectorPlaneToIdxMap;
+   std::vector< Int_t > sectorPlaneVec;
+   QuartileData_t quartileData;
+
+   // some iterators
+   StEEmcAnlHitList_t::iterator hitIter;
+   StEEmcAnlElementSet_t::const_iterator stripSetIter;
+   std::map< Int_t, Int_t >::iterator sectorPlaneToIdxMapIter;
+   QuartileData_t::iterator quartileDataIter;
+
+   // loop over all strips in the hit and copy data to mStripEnergyArray
+   const StEEmcAnlElementSet_t stripSet = hit.getStripSet();
+   for( stripSetIter = stripSet.begin(); stripSetIter != stripSet.end(); ++stripSetIter ){
+      Short_t sector, strip;
+      Bool_t layerIsV;
+
+      StEEmcGeoId_t::decodeSmd( stripSetIter->getGeoId(), sector, layerIsV, strip );
+      Int_t sectorPlane = sector*2 + layerIsV;
+
+      sectorPlaneToIdxMapIter = sectorPlaneToIdxMap.find( sectorPlane );
+      if( sectorPlaneToIdxMapIter == sectorPlaneToIdxMap.end() ){
+         sectorPlaneVec.push_back( sectorPlane );
+         sectorPlaneToIdxMap[ sectorPlane ] = sectorPlaneVec.size()-1;
+      };
+
+      Int_t idx = sectorPlaneToIdxMap[ sectorPlane ];
+
+      ierr = kStErr;
+      if( idx < kMaxNumLayers ){
+         ierr = kStOk;
+
+         Float_t e = stripSetIter->getEnergy();
+         if( e > 10 ){
+            LOG_WARN << "Sanity check failure: SMD Strip with > 10 GeV energy deposited. Strip will be ignored." << endm;
+            e = 0;
+         };
+
+         mStripEnergyArray[ idx ][ strip ] = e;
+      };
+   };
+
+   // determine the number of layers involved
+
+   Int_t nLayers = sectorPlaneVec.size();
+#ifdef DEBUG
+   LOG_INFO << "nLayers (1) = " << nLayers << endm;
+   for( UInt_t i=0; i<sectorPlaneVec.size(); ++i ){
+      LOG_INFO << sectorPlaneVec[i]/2 << ' ' << (sectorPlaneVec[i]%2 ? 'v' : 'u') << endm;
+   };
+#endif
+
+   // invalidated the hit if it contains less than two layers
+   if( nLayers < 2 ){
+      // flag to invalidate hit
+      doInvalidate = 1;
+   } else if (!ierr ){
+      // determine the quartiles per each layer
+
+      // will resum non-zero layers
+      Int_t nLayersOld = nLayers;
+      nLayers = 0;
+      for( Int_t layerIdx = 0; layerIdx < nLayersOld; ++layerIdx ){
+         Float_t *stripEnergyArray = mStripEnergyArray[ layerIdx ];
+
+         // compute the cummulative distribution and the energy weighted mean
+         Float_t totE = 0, meanIdx = 0;
+         Int_t idx = 0;
+         for( Float_t *ptr = stripEnergyArray, *cdfPtr = mCDF; ptr != &stripEnergyArray[kEEmcNumStrips]; ++ptr, ++cdfPtr, ++idx ){
+            meanIdx += idx*(*ptr);
+            totE += (*ptr );
+            (*cdfPtr) = totE;
+         };
+
+#ifdef DEBUG
+         LOG_INFO << "layer " << layerIdx << " totE = " << totE << endm;
+#endif
+
+         // make sure there is energy in this layer
+         if( totE ){
+            meanIdx /= totE;
+            ++nLayers;
+
+            // compute standard deviation
+            Float_t uncert = 0, sumE2 = 0;
+            idx = 0;
+            for( Float_t *ptr = stripEnergyArray; ptr != &stripEnergyArray[kEEmcNumStrips]; ++ptr, ++idx ){
+               Float_t temp = ( idx - meanIdx );
+               temp *= temp;
+               temp *= (*ptr);
+               uncert += temp;
+               sumE2 += (*ptr) * (*ptr);
+            };
+
+            uncert *= totE / ( totE*totE + sumE2 );
+            uncert = sqrt( uncert );
+
+#ifdef DEBUG
+            LOG_INFO << "Layer " << layerIdx << ": mean is " << meanIdx << " +/- " << uncert << endm;
+#endif 
+
+            // set up the data structure
+            quartileData.push_back( QuartileDataElement_t() );
+            QuartileDataElement_t &qElement = quartileData.back();
+
+            // compute the expected positions
+            qElement.mQinnerData[0].mExpected = meanIdx - 0.6745*uncert;
+            qElement.mQinnerData[1].mExpected = meanIdx;
+            qElement.mQinnerData[2].mExpected = meanIdx + 0.6745*uncert;
+
+            // compute the actual quartile positions
+            qElement.mQinnerData[0].mActual = findPosition( 0.25*totE );
+            qElement.mQinnerData[1].mActual = findPosition( 0.50*totE );
+            qElement.mQinnerData[2].mActual = findPosition( 0.75*totE );
+
+#ifdef DEBUG
+            LOG_INFO << "Q1 " << qElement.mQinnerData[0] << endm;
+            LOG_INFO << "Q2 " << qElement.mQinnerData[1] << endm;
+            LOG_INFO << "Q3 " << qElement.mQinnerData[2] << endm;
+#endif 
+
+            // set the sum sq. dif.
+            qElement.computeSumSqDif();
+
+            // save the uncertainty
+            qElement.mUncert = uncert;
+         };
+      };
+   };
+   
+   if( nLayers < 2 ){
+      // flag to invalidate hit
+      doInvalidate = 1;
+   } else if ( !ierr ){
+
+      Int_t count = 0;
+      Float_t sumSqDif = 0;
+      Int_t layerIdx = 0;
+      Int_t sector = 0;
+      Bool_t layerIsV = 0;
+      do {
+         // split the layer with the max difference
+         quartileDataIter = std::max_element( quartileData.begin(), quartileData.end() );
+
+         // get the index for this layer
+         layerIdx = std::distance( quartileData.begin(), quartileDataIter );
+         sector = sectorPlaneVec[ layerIdx ]/2;
+         layerIsV = sectorPlaneVec[ layerIdx ]%2;
+         sumSqDif = quartileDataIter->mSumSqDif;
+
+         // make sure the other u or v strip for this same sector is also in the hit
+         Int_t otherLayerSectorPlane = sector*2 + !layerIsV;
+
+         sectorPlaneToIdxMapIter = sectorPlaneToIdxMap.find( otherLayerSectorPlane );
+         count = 2;
+         if( sectorPlaneToIdxMapIter == sectorPlaneToIdxMap.end() ){
+            count = 1;
+
+            // ignore this one, and try again
+            quartileDataIter->mSumSqDif = 0;
+         };
+      } while ( sumSqDif && count != 2 );
+
+      if( sumSqDif && quartileDataIter->mSumSqDif > mSumSqDifThres ){
+         // split the layer
+
+#ifdef DEBUG
+      LOG_INFO << "Splitting " << sector << " layer " << (layerIsV ? 'v' : 'u' ) << " sumSqDif = " << sumSqDif << " count = " << count << endm;
+#endif
+
+         // determine the layer and get a pointer to the array
+         Float_t *stripEnergyArray = mStripEnergyArray[ layerIdx ];
+
+         // determine upper and lower search areas;
+
+         // copy into GmmEm input structure
+         GmmEmDataVec_t gmmEmData;
+
+         Int_t startIdx = -1;
+         Int_t stopIdx = -1;
+         Int_t idx = 0;
+
+         for( Float_t *stripIter = stripEnergyArray; stripIter != &stripEnergyArray[kEEmcNumStrips]; ++stripIter, ++idx ){
+            if( *stripIter ){
+               stopIdx = idx;
+               if( startIdx == -1 )
+                  startIdx = idx;
+               gmmEmData.push_back( GmmEmDataElement_t( idx, *stripIter ) );
+            };
+         };
+
+         // increment stopIdx so it is the one past the end, not the last valid one
+         ++stopIdx;
+
+         Int_t idxDiff = (stopIdx - startIdx);
+
+         // to store the clusters
+         GmmEmGausParamVec_t gmmClusters(2);
+
+         // multiply once now, rather than ever loop
+         Float_t defaultSigmaSq = mDefaultSigma*mDefaultSigma;
+         Float_t maxSigmaSq = quartileDataIter->mUncert * mAllowedSigmaFrac;
+         maxSigmaSq *= maxSigmaSq;
+
+         // try multiple starting places, until find a solution with all sigmas less than the overall sigma
+         Bool_t goodClustersFound = 0;
+         for( Int_t tryNum = 0; tryNum < mMaxNumTrials && !goodClustersFound; ++tryNum ){
+            if( gmmClusters.size() != 2 )
+               gmmClusters.resize(2);
+
+            gmmClusters[0].A = 1;
+            gmmClusters[0].mean = idxDiff*rand.Rndm() + startIdx;
+            gmmClusters[0].sigmaSq = defaultSigmaSq;
+
+            gmmClusters[1].A = 1;
+            gmmClusters[1].mean = idxDiff*rand.Rndm() + startIdx;
+            gmmClusters[1].sigmaSq = defaultSigmaSq;
+
+            Int_t gmmErrCode = mGmmEm.solve( gmmEmData, gmmClusters );
+            if( gmmErrCode ){
+               LOG_WARN << "GMM EM Algo had an error: '" << mGmmEm.getMessage() << "'" << endm;
+               ierr = kStErr;
+            } else if( gmmClusters[0].sigmaSq < maxSigmaSq && gmmClusters[0].sigmaSq < maxSigmaSq && gmmClusters[0].A > 0 && gmmClusters[1].A > 0 ) {
+               goodClustersFound = 1;
+            };
+         };
+
+         if( !goodClustersFound ){
+            LOG_WARN << "GMM EM could not find `good' clusters after " << mMaxNumTrials << " trials.  Will not split." << endm;
+            doSplit = 0;
+         } else {
+            doSplit = 1;
+            point1.W() = gmmClusters[0].A;
+            point2.W() = gmmClusters[1].A;
+
+            Double_t splitPos1 = gmmClusters[0].mean;
+            Double_t splitPos2 = gmmClusters[1].mean;
+
+#ifdef DEBUG
+            LOG_INFO << "GMM Results: "
+                     << gmmClusters[0].A << ' ' << gmmClusters[0].mean << ", "
+                     << gmmClusters[1].A << ' ' << gmmClusters[1].mean << endm;
+#endif
+
+            // find the layerIdx for the other layer
+            Int_t otherSectorPlane = sector*2 + !layerIsV;
+
+            sectorPlaneToIdxMapIter =  sectorPlaneToIdxMap.find( otherSectorPlane );
+            assert( sectorPlaneToIdxMapIter != sectorPlaneToIdxMap.end() ); // already checked that it is in there
+            Int_t otherIdx = sectorPlaneToIdxMapIter->second;
+
+            // use the 2nd quartile for the position in the other layer
+            Float_t otherActual = quartileData[otherIdx].mQinnerData[1].mActual;
+            Float_t otherExpected = quartileData[otherIdx].mQinnerData[1].mExpected;
+            Float_t notSplitPosMean = 0.5*( otherActual + otherExpected );
+            Float_t notSplitPos1 = 0, notSplitPos2 = 0;
+
+            // give a small 'kick' off to the sides for the layer that is not split
+            Float_t biggerDist = ( otherActual - otherExpected );
+            notSplitPos1 = notSplitPosMean + biggerDist;
+            notSplitPos2 = notSplitPosMean - biggerDist;
+            if( gmmClusters[1].A > gmmClusters[0].A ){
+               notSplitPos1 = notSplitPosMean - biggerDist;
+               notSplitPos2 = notSplitPosMean + biggerDist;
+            };
+#ifdef DEBUG
+            LOG_INFO << "Shift is " << biggerDist << " about mean of " << notSplitPosMean << endm;
+#endif
+
+            Double_t u1 = splitPos1;
+            Double_t v1 = notSplitPos1;
+            Double_t u2 = splitPos2;
+            Double_t v2 = notSplitPos2;
+
+            if( layerIsV ){
+               u1 = notSplitPos1;
+               v1 = splitPos1;
+               u2 = notSplitPos2;
+               v2 = splitPos2;
+            };
+
+            StEEmcPointMap_t::instance().convertStripUVtoXY( sector, u1, v1, point1.X(), point1.Y() );
+            StEEmcPointMap_t::instance().convertStripUVtoXY( sector, u2, v2, point2.X(), point2.Y() );
+
+#ifdef DEBUG
+            LOG_INFO << "Hit 1: " << u1 << ' ' << v1 << " -> " << point1.X() << ' ' << point1.Y() << endm;
+            LOG_INFO << "Hit 2: " << u2 << ' ' << v2 << " -> " << point2.X() << ' ' << point2.Y() << endm;
+#endif
+            };
+      };
+   };
+
+   return ierr;
+};
+
+// to find quartile positions
+Float_t StEEmcAnlSplitHitQuartile_t::findPosition( Float_t energy ){
+   Float_t *iter1 = mCDF;
+   Float_t *iter2 = mCDF;
+   for( iter2 = mCDF; iter2 != &mCDF[kEEmcNumStrips-1] && (*iter2) < energy; ++iter2 )
+      if( (*iter2) < energy )
+         iter1 = iter2;
+
+   // note: iter1 points to the last one before being over, and iter2 points to the first one after
+   return (Int_t)(iter1 - mCDF) + (energy-(*iter1))/((*iter2)-(*iter1))*((Int_t)( iter2 - iter1 ));
+};
+
+
+
+ClassImp( StEEmcAnlSplitHitQuartile_t );
+
+/*
+ * $Id: StEEmcAnlSplitHitQuartile.cxx,v 1.3 2011/11/23 17:55:44 sgliske Exp $
+ * $Log: StEEmcAnlSplitHitQuartile.cxx,v $
+ * Revision 1.3  2011/11/23 17:55:44  sgliske
+ * update
+ *
+ * Revision 1.2  2011/11/18 01:51:02  sgliske
+ * today
+ *
+ * Revision 1.1  2011/11/18 01:47:03  sgliske
+ * today
+ *
+ * 
+ */
+
+@
+
+
+1.3
+log
+@update
+@
+text
+@d395 1
+a395 1
+ * $Id: StEEmcAnlSplitHitQuartile.cxx,v 1.2 2011/11/18 01:51:02 sgliske Exp $
+d397 3
+@
+
+
+1.2
+log
+@today
+@
+text
+@d10 1
+a10 1
+#define DEBUG
+d246 3
+a252 3
+      if( sumSqDif && quartileDataIter->mSumSqDif > mSumSqDifThres ){
+         // split the layer
+
+d321 6
+d335 16
+a350 1
+            Double_t notSplitPos = quartileData[otherIdx].mQinnerData[1].mActual;
+d353 1
+a353 1
+            Double_t v1 = notSplitPos;
+d355 1
+a355 1
+            Double_t v2 = notSplitPos;
+d358 1
+a358 1
+               u1 = notSplitPos;
+d360 1
+a360 1
+               u2 = notSplitPos;
+d368 2
+a369 2
+               LOG_INFO << "Hit 1: " << u1 << ' ' << v1 << " -> " << point1.X() << ' ' << point1.Y() << endm;
+               LOG_INFO << "Hit 2: " << u2 << ' ' << v2 << " -> " << point2.X() << ' ' << point2.Y() << endm;
+d395 1
+a395 1
+ * $Id: StEEmcAnlSplitHitQuartile.cxx,v 1.1 2011/11/18 01:47:03 sgliske Exp $
+d397 3
+@
+
+
+1.1
+log
+@today
+@
+text
+@a243 3
+
+         LOG_INFO << "Considering splitting sector " << sector << " layer " << (layerIsV ? 'v' : 'u' ) << " sumSqDif = " << sumSqDif << " count = " << count << endm;
+
+d246 3
+a248 1
+      LOG_INFO << "Chose " << sector << " layer " << (layerIsV ? 'v' : 'u' ) << " sumSqDif = " << sumSqDif << " count = " << count << endm;
+d374 5
+a378 2
+ * $Id: $
+ * $Log: $
+@
+

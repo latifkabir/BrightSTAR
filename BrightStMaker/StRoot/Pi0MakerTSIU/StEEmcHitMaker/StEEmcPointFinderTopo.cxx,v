@@ -1,0 +1,593 @@
+head	1.4;
+access;
+symbols
+	response:1.3;
+locks; strict;
+comment	@// @;
+
+
+1.4
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.12.22.16.46.36;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.15.22.21.18;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.15.22.04.00;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcPointFinderCounter_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See header for description.
+ *
+*/
+
+#include <TMath.h>
+#include <map>
+
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
+#include "StRoot/StEEmcUtil/EEmcSmdMap/EEmcSmdMap.h"
+#include "StRoot/StEEmcUtil/StEEmcSmd/EEmcSmdGeom.h"
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcTower.h"
+
+#include "StEEmcPointFinderTopo.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+//#include "StEEmcStripClusterFinder.h"
+#include "StESMDClustersPerSector.h"
+#include "StEEmcHitMaker.h"
+
+//#define DEBUG
+//#define DEBUG2
+
+StEEmcPointFinderTopo_t::StEEmcPointFinderTopo_t() : StEEmcPointFinder_t(), mTowerThreshold( 1.0 ) {
+   // not ready until after set hit pointer
+   mIsReady = 0;
+};
+
+
+StEEmcPointFinderTopo_t::~StEEmcPointFinderTopo_t() {
+   // nothing to do
+};
+
+
+Int_t StEEmcPointFinderTopo_t::setHitMakerPtr( StEEmcHitMaker_t *hitMakerPtr ){
+   Int_t ierr = kStOK;
+
+   if( !hitMakerPtr ){
+      LOG_FATAL << "::SetHitMakerPtr(...) given invalid pointer." << endm;
+      ierr = kStFatal;
+   } else {
+      mHitMakerPtr = hitMakerPtr;
+      mIsReady = 1;
+   };
+
+   return ierr;
+};
+
+
+/// find some some points.  Note: input is towerClusterVec and
+/// stripClusterVec results are stored in mHit, and the return Int_t
+/// is an error code or kStOK.
+Int_t StEEmcPointFinderTopo_t::find( const StSimpleClusterVec_t &towerClusterVec,
+                                   const StESMDClustersVec_t &smdClusterVec,
+                                   StEEmcHitVec_t& hitVec ){
+   Int_t ierr = kStOK;
+
+   // Cluster pools
+   StClusterPool_t uClusterPool, vClusterPool;
+
+   // maps to get hits associated with given u or v cluster and the pointer to the cluster
+   ClusMap_t::iterator clusMapIter;
+   IntVec_t::const_iterator iVecIter;
+
+   // new hits
+   StEEmcHitVec_t newHits;
+
+   // define some iterators
+   StESMDClustersVec_t::const_iterator  smdClusterVecIter;
+   StSimpleClusterVec_t::const_iterator uClusVecIter, vClusVecIter;
+   StClusterPool_t::const_iterator      clusPoolIter;
+
+   // last hit ID
+   mLastHitID = -1;
+
+   // iterate over sectors with at least one cluster
+   for( smdClusterVecIter = smdClusterVec.begin(); smdClusterVecIter != smdClusterVec.end() && !ierr; ++smdClusterVecIter ){
+      mSector = smdClusterVecIter->getSector();
+
+      //LOG_INFO << "sector = " << mSector << " (" << (Int_t)(smdClusterVecIter-smdClusterVec.begin()) << " of " << smdClusterVec.size() << ")" << endm;
+
+      // clear the pools and maps
+      uClusterPool.clear();
+      vClusterPool.clear();
+      mUclusMap.clear();
+      mVclusMap.clear();
+
+      // some references to make code cleaner
+      const StSimpleClusterVec_t &uClusVec = smdClusterVecIter->getClusterVecU();
+      const StSimpleClusterVec_t &vClusVec = smdClusterVecIter->getClusterVecV();
+
+      //LOG_INFO << "--> Num clusters = " << uClusVec.size() << ' ' << vClusVec.size() << endm;
+
+      // u layer
+      for( uClusVecIter = uClusVec.begin(); uClusVecIter != uClusVec.end(); ++uClusVecIter )
+         uClusterPool.insert( uClusVecIter->getID() );
+
+      // v layer
+      for( vClusVecIter = vClusVec.begin(); vClusVecIter != vClusVec.end(); ++vClusVecIter )
+         vClusterPool.insert( vClusVecIter->getID() );
+
+#ifdef DEBUG
+      LOG_INFO << "Have " << uClusterPool.size() << " u clus and " << vClusterPool.size() << " v clus" << endm;
+#endif
+
+      // First try finding all candidate hits.  Any pair of u & v
+      // clusters under an "active" tower are considered candidates, with
+      // "active" being defined below
+
+      Int_t nCandidates = 0;
+      // iterate over u and v clusters to make possible pairs
+      for( uClusVecIter = uClusVec.begin(); uClusVecIter != uClusVec.end(); ++uClusVecIter ){
+         for( vClusVecIter = vClusVec.begin(); vClusVecIter != vClusVec.end(); ++vClusVecIter ){
+            Int_t uID = uClusVecIter->getID();
+            Int_t vID = vClusVecIter->getID();
+
+#ifdef DEBUG3
+               LOG_INFO << "Checking candidate point with with u clus ID " << uID << " and v clus ID " << vID << endm;
+#endif
+
+            // get mean position
+            Float_t uMean = uClusVecIter->getMeanX();
+            Float_t vMean = vClusVecIter->getMeanX();
+
+            // whether this is a valid pair
+            Bool_t isValid = 1;
+
+            // determine which tower this SMD point/hit is under
+            TVector3 position = EEmcSmdGeom::instance()->getIntersection( mSector, uMean, vMean );
+            Int_t sec,sub,eta;
+            if( mEEmcGeomSimple.getTower(position,sec,sub,eta) ){
+               // is valid tower so, check sectors agree
+               isValid = ( sec == mSector );
+            };
+
+            // tower ptr may return null if had no energy or it had fail bits set.
+            const StEEmcTower *towerPtr = mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, sec, sub, eta );
+            isValid &= (towerPtr != 0);
+
+            if( isValid )
+               isValid = ( !towerPtr->fail() && towerPtr->energy() > mTowerThreshold );
+
+            if( isValid ) {
+               ++nCandidates;
+
+               // update maps
+               clusMapIter = mUclusMap.find( uID );
+               if( clusMapIter == mUclusMap.end() ){
+                  ( mUclusMap[ uID ] = std::make_pair( &(*uClusVecIter), IntVec_t() ) ).second.push_back( vID );
+               } else {
+                  clusMapIter->second.second.push_back( vID );
+               };
+
+               clusMapIter = mVclusMap.find( vID );
+               if( clusMapIter == mVclusMap.end() ){
+                  ( mVclusMap[ vID ] = std::make_pair( &(*vClusVecIter), IntVec_t() ) ).second.push_back( uID );
+               } else {
+                  clusMapIter->second.second.push_back( uID );
+               };
+
+#ifdef DEBUG
+               LOG_INFO << "Candidate point with with u clus ID " << uID << " and v clus ID " << vID << endm;
+#endif
+            };
+         };
+      };
+
+      // if not enough candidate hits, then give up trying (or if there was an error)
+      // Note: this is not an error, but a stopping criteria
+      if( !nCandidates )
+         return ierr;
+
+      // the following is basically a while !uClusterPool.empty() with
+      // a sanity check on the number of iterations
+      Int_t maxN = uClusterPool.size()*2+10;
+      for( Int_t i1 = 0; i1 < maxN && !uClusterPool.empty() && !ierr; ++i1 ){
+#ifdef DEBUG2
+         LOG_INFO << i1 << " Have " << uClusterPool.size() << " u clus and " << vClusterPool.size() << " v clus in the main pool" << endm;
+#endif
+         StClusterPool_t uPool2, uPoolNew, vPool2, vPoolNew, tempPool;
+
+         // move the first cluster from the first to second u pools
+         uPoolNew.insert(    *uClusterPool.begin() );
+         uClusterPool.erase(  uClusterPool.begin() );
+
+         // the following is basically a while !uPoolNew.empty() with
+         // a sanity check on the number of iterations
+         for( Int_t i2 = 0; i2 < maxN && !uPoolNew.empty(); ++i2 ){
+            // for all the new u clusters, add all the corresponding v's
+            for( clusPoolIter = uPoolNew.begin(); clusPoolIter != uPoolNew.end(); ++clusPoolIter ){
+               IntVec_t& iVec = mUclusMap[ (*clusPoolIter) ].second;
+
+               // iterate over hits associated with this u cluster, and add v clusters to the new v pool
+               for( iVecIter = iVec.begin(); iVecIter != iVec.end(); ++iVecIter )
+                  vPoolNew.insert( *iVecIter );
+            };
+
+            // compute union of uPoolNew and uPool2, store result in tempPool;
+            std::set_union(uPool2.begin(), uPool2.end(), 
+                           uPoolNew.begin(), uPoolNew.end(), 
+                           std::inserter(tempPool, tempPool.begin()) );
+
+            // move results to uPool2
+            uPool2.swap(tempPool);
+            tempPool.clear();
+
+            // clear uPoolNew
+            uPoolNew.clear();
+
+            // for all the new v clusters, find the new u clusters
+            for( clusPoolIter = vPoolNew.begin(); clusPoolIter != vPoolNew.end(); ++clusPoolIter ){
+               IntVec_t& iVec = mVclusMap[ (*clusPoolIter) ].second;
+
+               // iterate over hits associated with this v cluster, and add u clusters to the new u pool
+               for( iVecIter = iVec.begin(); iVecIter != iVec.end(); ++iVecIter )
+                  uPoolNew.insert( *iVecIter );
+            };
+
+            // compute union of vPoolNew and vPool2, store the results in tempPool
+            std::set_union(vPool2.begin(), vPool2.end(), 
+                           vPoolNew.begin(), vPoolNew.end(), 
+                           std::inserter(tempPool, tempPool.begin()) );
+
+            // move results to vPool2
+            vPool2.swap(tempPool);
+            tempPool.clear();
+
+            // clear vPoolNew
+            vPoolNew.clear();
+
+            // of the new u clusters, determine how many are really "new", i.e. take a set difference
+            std::set_difference(uPoolNew.begin(), uPoolNew.end(), 
+                                uPool2.begin(), uPool2.end(), 
+                                std::inserter(tempPool, tempPool.begin()) );
+
+            // move results to uPoolNew
+            uPoolNew.swap(tempPool);
+            tempPool.clear();
+
+#ifdef DEBUG2
+            LOG_INFO << i2 << " Have " << uPool2.size() << " u clus and " << vPool2.size() << " v clus in the second pool" << endm;
+            LOG_INFO << i2 << " Have " << uPoolNew.size() << " u clus and " << vPoolNew.size() << " v clus in the new pool" << endm;
+
+            LOG_INFO << "uPool2:" << endm;
+            for( clusPoolIter = uPool2.begin(); clusPoolIter != uPool2.end(); ++clusPoolIter ){
+               LOG_INFO << (*clusPoolIter) << endm;
+            };
+            LOG_INFO << "uPoolNew:" << endm;
+            for( clusPoolIter = uPoolNew.begin(); clusPoolIter != uPoolNew.end(); ++clusPoolIter ){
+               LOG_INFO << (*clusPoolIter) << endm;
+            };
+#endif
+         };
+
+         // uPool2 and vPool2 now contain a minimal set of "tangled" u and v clusters
+
+         // remove these pools from the main pools
+         tempPool.clear();
+         std::set_difference(uClusterPool.begin(), uClusterPool.end(), 
+                             uPool2.begin(), uPool2.end(), 
+                             std::inserter(tempPool, tempPool.begin()) );
+         uClusterPool.swap( tempPool );
+         tempPool.clear();
+         std::set_difference(vClusterPool.begin(), vClusterPool.end(), 
+                             vPool2.begin(), vPool2.end(), 
+                             std::inserter(tempPool, tempPool.begin()));
+         vClusterPool.swap( tempPool );
+         tempPool.clear();
+
+#ifdef DEBUG
+         // determine the topology
+         Int_t nClusU = uPool2.size();
+         Int_t nClusV = vPool2.size();
+
+         LOG_INFO << "This topology: " << nClusU << 'x' << nClusV << endm;
+#endif
+
+         // now call the child class to make the assignments
+         newHits.clear();
+         ierr = findHits( uPool2, vPool2, newHits );
+         if( !ierr ){
+#ifdef DEBUG
+            LOG_INFO << "Number of hits: " << assignments.size() << endm;
+#endif
+            while( !newHits.empty() ){
+               hitVec.push_back( newHits.back() );
+               newHits.pop_back();
+            };
+         };
+      }; // looping over cluster pool
+   }; // looping over sectors
+
+   // return the error code
+   return ierr;
+};
+
+// makes a hit from the u and v clusters uID, vID and adds it to the hit vec newHitVec
+Int_t StEEmcPointFinderTopo_t::makeHit( Int_t uID, Int_t vID, StEEmcHitVec_t& newHitVec ){
+
+   // iterator
+   ClusMap_t::iterator clusMapIter;
+
+   // find the clusters
+   const StSimpleCluster_t *uClusPtr = 0;
+   const StSimpleCluster_t *vClusPtr = 0;
+
+   clusMapIter = mUclusMap.find( uID );
+   if( clusMapIter != mUclusMap.end() )
+      uClusPtr = clusMapIter->second.first;
+
+   clusMapIter = mVclusMap.find( vID );
+   if( clusMapIter != mVclusMap.end() )
+      vClusPtr = clusMapIter->second.first;
+
+   return makeHit( uClusPtr, vClusPtr, newHitVec );
+};
+
+Int_t StEEmcPointFinderTopo_t::makeHit( const StSimpleCluster_t *uClusPtr, const StSimpleCluster_t *vClusPtr, StEEmcHitVec_t& newHitVec ){
+   if( uClusPtr && vClusPtr ){
+
+      // get mean position
+      Float_t uMean = uClusPtr->getMeanX();
+      Float_t vMean = vClusPtr->getMeanX();
+
+      TVector3 position = EEmcSmdGeom::instance()->getIntersection( mSector, uMean, vMean );
+      Int_t sec,sub,eta;
+
+      if( mEEmcGeomSimple.getTower(position,sec,sub,eta) ){
+         const StEEmcTower *towerPtr = mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, sec, sub, eta );
+
+         if( towerPtr ){
+            // add the hit to the output vector
+            newHitVec.push_back( StEEmcHit_t( ++mLastHitID ) );
+
+            // get reference
+            StEEmcHit_t &hit = newHitVec.back();
+
+            // set UV info
+            hit.setEnergyU( uClusPtr->getEnergy() );
+            hit.setEnergyV( vClusPtr->getEnergy() );
+            hit.setClusIDu( uClusPtr->getID() );
+            hit.setClusIDv( vClusPtr->getID() );
+            hit.setTowerIdx( towerPtr->index() );
+
+            // set sec
+            hit.setSector( mSector );
+
+            // pre-compute ttest value
+            hit.computeTtest2();
+
+            // set position
+            hit.setX( position.X() );
+            hit.setY( position.Y() );
+            hit.setZ( position.Z() );
+
+            if( position.Z() < -998 ){
+               // bad pairing, remove the candidate hit
+               newHitVec.pop_back();
+            };
+         };
+      }; // is valid
+   };
+
+   return kStOk;
+};
+
+
+
+ClassImp( StEEmcPointFinderTopo_t );
+
+/*
+ * $Id: StEEmcPointFinderTopo.cxx,v 1.3 2011/12/22 16:46:36 sgliske Exp $
+ * $Log: StEEmcPointFinderTopo.cxx,v $
+ * Revision 1.3  2011/12/22 16:46:36  sgliske
+ * general update
+ *
+ * Revision 1.2  2011/12/15 22:21:18  sgliske
+ * update
+ *
+ * Revision 1.1  2011/12/15 22:04:00  sgliske
+ * creation
+ *
+ *
+ */
+@
+
+
+1.3
+log
+@general update
+@
+text
+@d378 1
+a378 1
+ * $Id: StEEmcPointFinderTopo.cxx,v 1.2 2011/12/15 22:21:18 sgliske Exp $
+d380 3
+@
+
+
+1.2
+log
+@update
+@
+text
+@d68 1
+a68 1
+   std::map< Int_t, std::pair< const StSimpleCluster_t*, IntVec_t > >::iterator clus2clusIter;
+d84 1
+a84 1
+      Int_t sector = smdClusterVecIter->getSector();
+d86 1
+a86 1
+      //LOG_INFO << "sector = " << sector << " (" << (Int_t)(smdClusterVecIter-smdClusterVec.begin()) << " of " << smdClusterVec.size() << ")" << endm;
+d135 1
+a135 1
+            TVector3 position = EEmcSmdGeom::instance()->getIntersection( sector, uMean, vMean );
+d139 1
+a139 1
+               isValid = ( sec == sector );
+d153 2
+a154 2
+               clus2clusIter = mUclusMap.find( uID );
+               if( clus2clusIter == mUclusMap.end() ){
+d157 1
+a157 1
+                  clus2clusIter->second.second.push_back( vID );
+d160 2
+a161 2
+               clus2clusIter = mVclusMap.find( vID );
+               if( clus2clusIter == mVclusMap.end() ){
+d164 1
+a164 1
+                  clus2clusIter->second.second.push_back( uID );
+d303 71
+d378 1
+a378 1
+ * $Id: StEEmcPointFinderTopo.cxx,v 1.1 2011/12/15 22:04:00 sgliske Exp $
+d380 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@a67 2
+   std::map< Int_t, std::pair< const StSimpleCluster_t*, IntVec_t > > uClus2vClus;
+   std::map< Int_t, std::pair< const StSimpleCluster_t*, IntVec_t > > vClus2uClus;
+d71 2
+a72 2
+   // assignment vector
+   StAssignmentVec_t assignments;
+d80 1
+a80 1
+   Int_t lastSMDhitID = -1;
+d91 2
+a92 2
+      uClus2vClus.clear();
+      vClus2uClus.clear();
+d153 3
+a155 3
+               clus2clusIter = uClus2vClus.find( uID );
+               if( clus2clusIter == uClus2vClus.end() ){
+                  ( uClus2vClus[ uID ] = std::make_pair( &(*uClusVecIter), IntVec_t() ) ).second.push_back( vID );
+d160 3
+a162 3
+               clus2clusIter = vClus2uClus.find( vID );
+               if( clus2clusIter == vClus2uClus.end() ){
+                  ( vClus2uClus[ vID ] = std::make_pair( &(*vClusVecIter), IntVec_t() ) ).second.push_back( uID );
+d197 1
+a197 1
+               IntVec_t& iVec = uClus2vClus[ (*clusPoolIter) ].second;
+d218 1
+a218 1
+               IntVec_t& iVec = vClus2uClus[ (*clusPoolIter) ].second;
+d285 2
+a286 2
+         assignments.clear();
+         ierr = findAssignments( uPool2, vPool2, assignments );
+d291 5
+a295 61
+
+            while( !assignments.empty() ){
+               // get the IDs
+               Int_t uID = assignments.back().first;
+               Int_t vID = assignments.back().second;
+               assignments.pop_back();
+
+               // get the clusters
+               const StSimpleCluster_t *uClusPtr = uClus2vClus[ uID ].first;
+               const StSimpleCluster_t *vClusPtr = vClus2uClus[ vID ].first;
+
+               // get mean position
+               Float_t uMean = uClusVecIter->getMeanX();
+               Float_t vMean = vClusVecIter->getMeanX();
+
+               // this probably will never cut anything, but might as well check
+               Bool_t isValid = 1;
+
+               TVector3 position = EEmcSmdGeom::instance()->getIntersection( sector, uMean, vMean );
+               Int_t sec,sub,eta;
+               if( mEEmcGeomSimple.getTower(position,sec,sub,eta) ){
+                  // is valid tower so, check sectors agree
+                  isValid = ( sec == sector );
+               };
+
+               // tower ptr may return null if had no energy or it had fail bits set.
+               const StEEmcTower *towerPtr = mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, sec, sub, eta );
+               isValid &= (towerPtr != 0);
+
+               if( isValid ) {
+                  // add the hit to the output vector
+                  hitVec.push_back( StEEmcHit_t(++lastSMDhitID) );
+
+                  // get reference
+                  StEEmcHit_t &hit = hitVec.back();
+
+                  // set UV info
+                  hit.setEnergyU( uClusPtr->getEnergy() );
+                  hit.setEnergyV( vClusPtr->getEnergy() );
+                  hit.setClusIDu( uClusPtr->getID() );
+                  hit.setClusIDv( vClusPtr->getID() );
+                  hit.setTowerIdx( towerPtr->index() );
+
+                  // set sector
+                  hit.setSector( sector );
+
+                  // pre-compute ttest value
+                  hit.computeTtest2();
+
+                  // set position
+                  hit.setX( position.X() );
+                  hit.setY( position.Y() );
+                  hit.setZ( position.Z() );
+
+                  if( position.Z() < -998 ){
+                     // bad pairing, remove the candidate hit
+                     hitVec.pop_back();
+                  };
+               }; // is valid
+            }; // inserting new hits
+         }; // no ierr finding assignments
+d307 5
+a311 2
+ * $Id: $
+ * $Log:  $
+@
+

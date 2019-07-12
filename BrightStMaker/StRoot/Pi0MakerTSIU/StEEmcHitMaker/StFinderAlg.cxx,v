@@ -1,0 +1,84 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2012.11.26.19.40.35;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.08.02.16.52.02;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.11.15.14.31;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ * \class StFinderAlg_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See header file
+*/
+
+#include "StFinderAlg.h"
+
+ClassImp( StFinderAlg_t );
+
+Int_t StFinderAlg_t::mEventNum = -999;
+
+
+// $Id: StFinderAlg.cxx,v 1.2 2011/08/02 16:52:02 sgliske Exp $
+//
+// $Log: StFinderAlg.cxx,v $
+// Revision 1.2  2011/08/02 16:52:02  sgliske
+// debugging
+//
+// Revision 1.1  2011/07/11 15:14:31  sgliske
+// before making StHitData class
+//
+
+@
+
+
+1.2
+log
+@debugging
+@
+text
+@d15 1
+a15 1
+// $Id: StFinderAlg.cxx,v 1.1 2011/07/11 15:14:31 sgliske Exp $
+d18 3
+@
+
+
+1.1
+log
+@before making StHitData class
+@
+text
+@d12 8
+a19 1
+// $Id: $
+a20 1
+// $Log: $
+@
+

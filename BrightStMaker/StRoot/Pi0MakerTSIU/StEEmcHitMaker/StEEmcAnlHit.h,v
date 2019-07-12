@@ -1,0 +1,446 @@
+head	1.10;
+access;
+symbols
+	response:1.9;
+locks; strict;
+comment	@ * @;
+
+
+1.10
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.9;
+
+1.9
+date	2011.12.06.22.36.35;	author sgliske;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2011.11.09.23.12.31;	author sgliske;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2011.11.07.22.08.04;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2011.11.02.22.04.45;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.11.02.20.54.24;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.10.26.21.37.35;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.09.01.21.52.49;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.08.31.22.05.42;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.08.30.21.46.21;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlHit_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Hit container for the StEEmcHitMakerAnlEM_t class. Includes energy,
+ * position, and energy constribution to each strip and tower.
+ *
+ */
+
+#ifndef _ST_EEMC_ANL_HIT_H_
+#define _ST_EEMC_ANL_HIT_H_
+
+#include <list>
+#include <map>
+#include "StEEmcAnlElement.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+
+// forward declaration
+class StEEmcAnlHit_t;
+
+// collection
+typedef std::list< StEEmcAnlHit_t > StEEmcAnlHitList_t;
+
+class StEEmcAnlHit_t {
+ public:
+   /// Construtor
+   StEEmcAnlHit_t() : mKey( ++mLastKey ), mE(-1), mEsmd(0), mX(0), mY(0) { /* */ };
+   StEEmcAnlHit_t( const StEEmcAnlHit_t& rhs ) : mKey( rhs.mKey ), mE(rhs.mE), mEsmd(rhs.mEsmd), mX(rhs.mX), mY(rhs.mY), mStripSet(rhs.mStripSet), mTowerSet(rhs.mTowerSet) { /* */ };
+   StEEmcAnlHit_t( const StSimpleCluster_t& towerClus );
+
+   /// Deconstructor
+   virtual ~StEEmcAnlHit_t(){ /* */ };
+
+   // operators
+   StEEmcAnlHit_t& operator=( const StEEmcAnlHit_t& rhs );
+   StEEmcAnlHit_t& operator+=( const StEEmcAnlHit_t& rhs );
+
+   /// accessors
+   Int_t getKey() const { return mKey; };
+   Float_t getE() const { return mE; };
+   Float_t getEsmd() const { return mEsmd; };
+   Float_t getX() const { return mX; };
+   Float_t getY() const { return mY; };
+   static Bool_t isNotValid( const StEEmcAnlHit_t& hit ){ return (hit.mE <= 0 || hit.mEsmd <= 0); };
+   Bool_t isValid(){ return mE > 0 && mEsmd > 0; };
+   Float_t getDistToHit( const StEEmcAnlHit_t& other );
+   Float_t getSpread( Int_t sectorLayer ) const;
+
+   // copy functions
+   void copyToEEmcData( StSimpleCluster_t& towerCluster, StSimpleCluster_t& uCluster, StSimpleCluster_t& vCluster, StEEmcHit_t& eemcHit ) const;
+   void copyToTowerCluster( StSimpleCluster_t& towerCluster ) const;
+   void copyToStripClusters( StSimpleCluster_t& uCluster, StSimpleCluster_t& vCluster ) const;
+   void copyToEEmcHit( StEEmcHit_t& eemcHit ) const;
+
+   /// modifiers
+   void setE( Float_t e ){ mE = e; };
+   void setEsmd( Float_t e ){ mEsmd = e; };
+   void setX( Float_t x ){ mX = x; };
+   void setY( Float_t y ){ mY = y; };
+   void setXY( Float_t x, Float_t y ){ mX = x; mY = y; };
+   void invalidate(){ mE = -999; mEsmd = -999; };
+   static void resetKeyNumbering(){ mLastKey = -1; };
+   void setKeyToNext(){ mKey = ++mLastKey; };
+   void setSpread( Int_t sectorLayer, Float_t val );
+   void clearSpreadMap(){ mSpreadMap.clear(); };
+
+   // joint accessor/modifiers
+   StEEmcAnlElementSet_t& getStripSet(){ return mStripSet; };
+   StEEmcAnlElementSet_t& getTowerSet(){ return mTowerSet; };
+   const StEEmcAnlElementSet_t& getStripSet() const { return mStripSet; };
+   const StEEmcAnlElementSet_t& getTowerSet() const { return mTowerSet; };
+
+   // clear
+   void clear();
+
+ protected:
+   Int_t mKey;
+   Float_t mE, mEsmd, mX, mY;
+   StEEmcAnlElementSet_t mStripSet;
+   StEEmcAnlElementSet_t mTowerSet;
+
+   static Int_t mLastKey;
+   std::map< Int_t, Float_t > mSpreadMap;
+
+ private:
+   ClassDef( StEEmcAnlHit_t, 1 );
+};
+
+// operators
+inline StEEmcAnlHit_t& StEEmcAnlHit_t::operator=( const StEEmcAnlHit_t& rhs ){
+   mE = rhs.mE;
+   mEsmd = rhs.mEsmd;
+   mX = rhs.mX;
+   mY = rhs.mY;
+   mStripSet = rhs.mStripSet;
+   mTowerSet = rhs.mTowerSet;
+   mSpreadMap = rhs.mSpreadMap;
+
+   return *this;
+};
+
+// clear
+inline void StEEmcAnlHit_t::clear(){
+   mStripSet.clear();
+   mTowerSet.clear();
+   mE = -1;
+   mEsmd = 0;
+   mX = 0;
+   mY = 0;
+
+   mSpreadMap.clear();
+};
+
+#endif
+
+/*
+ * $Id: StEEmcAnlHit.h,v 1.9 2011/12/06 22:36:35 sgliske Exp $
+ *
+ * $Log: StEEmcAnlHit.h,v $
+ * Revision 1.9  2011/12/06 22:36:35  sgliske
+ * update
+ *
+ * Revision 1.8  2011/11/09 23:12:31  sgliske
+ * daily update
+ *
+ * Revision 1.7  2011/11/07 22:08:04  sgliske
+ * daily update
+ *
+ * Revision 1.6  2011/11/02 22:04:45  sgliske
+ * update
+ *
+ * Revision 1.5  2011/11/02 20:54:24  sgliske
+ * update
+ *
+ * Revision 1.4  2011/10/26 21:37:35  sgliske
+ * Working on ANL EM Algo
+ *
+ * Revision 1.3  2011/09/01 21:52:49  sgliske
+ * Working on ANL EM Algo -- still
+ *
+ * Revision 1.2  2011/08/31 22:05:42  sgliske
+ * Working on ANL EM Algo
+ *
+ * Revision 1.1  2011/08/30 21:46:21  sgliske
+ * creation
+ *
+ * 
+ */
+@
+
+
+1.9
+log
+@update
+@
+text
+@d119 1
+a119 1
+ * $Id: StEEmcAnlHit.h,v 1.8 2011/11/09 23:12:31 sgliske Exp $
+d122 3
+@
+
+
+1.8
+log
+@daily update
+@
+text
+@d15 1
+d49 1
+d66 2
+d85 1
+d99 1
+d112 2
+d119 1
+a119 1
+ * $Id: StEEmcAnlHit.h,v 1.7 2011/11/07 22:08:04 sgliske Exp $
+d122 3
+@
+
+
+1.7
+log
+@daily update
+@
+text
+@d45 2
+a46 2
+   static Bool_t isNotValid( const StEEmcAnlHit_t& hit ){ return hit.mE <= 0; };
+   Bool_t isValid(){ return mE > 0; };
+d61 1
+a61 1
+   void invalidate(){ mE = -999; };
+d111 1
+a111 1
+ * $Id: StEEmcAnlHit.h,v 1.6 2011/11/02 22:04:45 sgliske Exp $
+d114 3
+@
+
+
+1.6
+log
+@update
+@
+text
+@d45 6
+d52 1
+a53 2
+   static Bool_t isNotValid( const StEEmcAnlHit_t& hit ){ return hit.mE < 0; };
+   Float_t getDistToHit( const StEEmcAnlHit_t& other );
+d111 1
+a111 1
+ * $Id: StEEmcAnlHit.h,v 1.5 2011/11/02 20:54:24 sgliske Exp $
+d114 3
+@
+
+
+1.5
+log
+@update
+@
+text
+@d28 2
+a29 2
+   StEEmcAnlHit_t() : mE(-1), mEsmd(0), mX(0), mY(0) { /* */ };
+   StEEmcAnlHit_t( const StEEmcAnlHit_t& rhs ) : mE(rhs.mE), mEsmd(rhs.mEsmd), mX(rhs.mX), mY(rhs.mY), mStripSet(rhs.mStripSet), mTowerSet(rhs.mTowerSet) { /* */ };
+d37 1
+d40 1
+d48 1
+a48 5
+
+   // for optimizing best x,y
+/*    static void setActiveHit( const StEEmcAnlHit_t* hitPtr ) { mActiveHit = hitPtr; }; */
+/*    static void meanSquaredDcaMinuitFunc(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t iflag); */
+/*    Double_t getMeanSquaredDca( Double_t x, Double_t y ) const; */
+d57 2
+a68 1
+
+d70 1
+d75 1
+a75 1
+   static const StEEmcAnlHit_t* mActiveHit;
+d106 1
+a106 1
+ * $Id: StEEmcAnlHit.h,v 1.4 2011/10/26 21:37:35 sgliske Exp $
+d109 3
+@
+
+
+1.4
+log
+@Working on ANL EM Algo
+@
+text
+@d45 1
+d48 3
+a50 3
+   static void setActiveHit( const StEEmcAnlHit_t* hitPtr ) { mActiveHit = hitPtr; };
+   static void meanSquaredDcaMinuitFunc(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t iflag);
+   Double_t getMeanSquaredDca( Double_t x, Double_t y ) const;
+d58 1
+d69 1
+d106 1
+a106 1
+ * $Id: StEEmcAnlHit.h,v 1.3 2011/09/01 21:52:49 sgliske Exp $
+d109 3
+@
+
+
+1.3
+log
+@Working on ANL EM Algo -- still
+@
+text
+@d28 2
+a29 2
+   StEEmcAnlHit_t() : mE(-1), mEu(0), mEv(0), mX(0), mY(0) { /* */ };
+   StEEmcAnlHit_t( const StEEmcAnlHit_t& rhs ) : mE(rhs.mE), mEu(rhs.mEu), mEv(rhs.mEv), mX(rhs.mX), mY(rhs.mY), mStripSet(rhs.mStripSet), mTowerSet(rhs.mTowerSet) { /* */ };
+d40 1
+a40 3
+   Float_t getEu() const { return mEu; };
+   Float_t getEv() const { return mEv; };
+   Float_t getEuv() const { return mEu + mEv; };
+d43 2
+a44 2
+   void copyToTowerCluster( StSimpleCluster_t& towerCluster );
+   void copyToEEmcHit( StEEmcHit_t& eemcHit );
+d53 1
+a53 2
+   void setEu( Float_t e ){ mEu = e; };
+   void setEv( Float_t e ){ mEv = e; };
+d68 1
+a68 1
+   Float_t mE, mEu, mEv, mX, mY;
+d81 1
+a81 2
+   mEu = rhs.mEu;
+   mEv = rhs.mEv;
+d95 1
+a95 2
+   mEu = 0;
+   mEv = 0;
+d103 1
+a103 1
+ * $Id: StEEmcAnlHit.h,v 1.2 2011/08/31 22:05:42 sgliske Exp $
+d106 3
+@
+
+
+1.2
+log
+@Working on ANL EM Algo
+@
+text
+@d28 2
+a29 2
+   StEEmcAnlHit_t() : mE(-1), mX(0), mY(0) { /* */ };
+   StEEmcAnlHit_t( const StEEmcAnlHit_t& rhs ) : mE(rhs.mE), mX(rhs.mX), mY(rhs.mY), mStripSet(rhs.mStripSet), mTowerSet(rhs.mTowerSet) { /* */ };
+d40 3
+d48 5
+d55 2
+d59 1
+d71 1
+a71 1
+   Float_t mE, mX, mY;
+d75 2
+d84 2
+d99 2
+d108 1
+a108 1
+ * $Id: StEEmcAnlHit.h,v 1.1 2011/08/30 21:46:21 sgliske Exp $
+d111 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d16 2
+d20 1
+a20 1
+class StStEEmcAnlHit_t;
+d25 1
+a25 1
+class StEEmcAnlHit_t : public StEEmcHitMaker_t {
+d28 3
+a30 1
+   StEEmcAnlHit_t();
+d33 4
+a36 1
+   virtual ~StEEmcAnlHit_t();
+d42 1
+a42 2
+   void copyToTowerClusterVec( StSimpleClusterVec_t& towerClusterVec );
+   void copyToStripClusterVec( StSimpleClusterVec_t& stripClusterVec );
+d46 3
+a48 3
+   void setE( Float_t e ) const { mE = e; };
+   void setX( Float_t x ) const { mX = x; };
+   void setY( Float_t y ) const { mY = y; };
+d57 1
+a57 1
+   clear();
+d60 1
+a60 1
+   Float_t E, X, Y;
+d68 20
+d91 5
+a95 1
+ * $Id: $
+a96 1
+ * $Log:  $
+@
+

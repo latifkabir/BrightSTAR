@@ -1,0 +1,501 @@
+head	1.10;
+access;
+symbols
+	response:1.8;
+locks; strict;
+comment	@// @;
+
+
+1.10
+date	2012.10.09.03.57.21;	author sgliske;	state dead;
+branches;
+next	1.9;
+
+1.9
+date	2012.05.17.22.47.02;	author sgliske;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2011.11.08.22.22.15;	author sgliske;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2011.11.07.22.08.04;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2011.08.18.15.48.30;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.07.22.16.33.06;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.07.20.21.35.26;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.07.13.20.24.45;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.07.11.15.14.31;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.05.21.48.19;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class TowerClusterFinderMinesweeper_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See description in the header file
+ *
+ * Note: several improvements in the implementation are included.  The
+ * sort (order N log(N)) has been replaced with an extra loop over
+ * neighbors (order 8 log N).  Also, in several cases copy
+ * constructors were previously used where they were not needed.
+ * These have been replaced with references.
+ */
+
+
+#include <vector>
+
+#include <Rtypes.h>
+#include <TMath.h>
+#include <TArrayS.h>
+#include <TArrayF.h>
+
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
+
+#include "StEEmcTowerClusterFinderMinesweeper.h"
+#include "StSimpleCluster.h"
+#include "StFinderAlg.h"
+
+
+// the main algorithm
+Int_t StEEmcTowerClusterFinderMinesweeper_t::find( ETowEnergy_t& towEnergy, StSimpleClusterVec_t& cluster ){
+
+   int ierr = kStOK;
+
+   //LOG_INFO << "----------> Finding clusters in some tower layer, nTowers = " << towers.size() << " <----------" << endm;
+
+   // Initialize sum of neighboring seeds to zero
+   for( Float_t *p = mSumOfNeighboringSeeds; p != &mSumOfNeighboringSeeds[ kEEmcNumTowers ]; ++p )
+      (*p) = 0;
+
+   // note: -1 since no last cluster id
+   Int_t lastClusterID = -1;
+
+   // no need to sort and order--it is slow: N log(N) + N
+
+   // note: seed towers are those about threshold
+   // double check threshold
+   if( mSeedEnergyThres <= 0 ){
+      LOG_ERROR << "Fatal: mSeedEnergyThres in StEEmcTowerClusterFinderMinesweeper_t is not strictly positive" << endm;
+      ierr = kStFatal;
+   };
+
+   if( !ierr ){
+      // storage container for the seed towers
+      std::vector< const EEmcElement_t* > seedTowerVec;
+
+      // iterate over all active towers for each tower, and compute
+      // sum of weights of neighboring seeds.  This value will become
+      // the deminator for the weights
+
+      Int_t nAboveThes = 0;
+
+      StEEmcTowerVec_t::const_iterator towerIter = towers.begin();
+      for( ; towerIter != towers.end(); ++towerIter ) {
+
+         //LOG_INFO << "tower " << towerIter->index() << ", energy = " << towerIter->energy() << ", thres = " << mSeedEnergyThres << endm;
+
+         // check if energy above threshold
+         if( towerIter->energy() > mSeedEnergyThres ){
+
+            ++nAboveThes;
+
+            // count how many neighboring seeds are above threshold
+            // and of those, how many are greater or less than the
+            // current tower
+            Int_t seed_neighbors_greater = 0;
+            Int_t seed_neighbors_less = 0;
+            for ( Int_t i = 0; i < towerIter->numberOfNeighbors(); ++i ) {
+               Double_t neighbor_energy = towerIter->neighbor(i).energy();
+               if( neighbor_energy > mSeedEnergyThres )
+                  neighbor_energy > towerIter->energy() ? ++seed_neighbors_greater : ++seed_neighbors_less;
+            };
+
+            // if this is the largest, then it is the seed of a cluster
+            if( !seed_neighbors_greater || mAllowAdjacent ){
+
+               // add to vector of seeds
+               seedTowerVec.push_back( &(*towerIter) );
+
+               // add the energy to the denominator of the weight for all neighbors
+               for ( Int_t i = 0; i < towerIter->numberOfNeighbors(); ++i )
+                  mSumOfNeighboringSeeds[ towerIter->neighbor(i).index() ] += towerIter->energy();
+            };
+
+            // end check if towerIter is above threshold
+         };
+
+         // end loop over towers
+      };
+
+      //LOG_INFO << "Towers: num above threshold = " << nAboveThes << ", num seeds = " << seedTowerVec.size() << endm;
+
+      // instance of EEmcGeomSimple
+      EEmcGeomSimple &eemcSimpleGeom = EEmcGeomSimple::Instance();
+
+      // now loop over seeds
+      std::vector< const StEEmcTower* >::iterator seedTowerIter = seedTowerVec.begin();
+      for( ; seedTowerIter != seedTowerVec.end(); ++seedTowerIter ){
+
+         TVector3 position;
+
+         // add the cluster to the list
+         clusterVec.push_back( StSimpleCluster_t( ++lastClusterID ) );
+
+         // get reference to the cluster Note: important to use
+         // reference not copy constuctor in all the following places
+         // references occur
+         StSimpleCluster_t &cluster = clusterVec.back();
+
+         // get reference to the arrays
+         TArrayS &member = cluster.getMemberArray();
+         TArrayF &weight = cluster.getWeightArray();
+
+         // prepare arrays
+         Int_t size = (*seedTowerIter)->numberOfNeighbors()+1;
+         member.Set( size );
+         weight.Set( size );
+
+         // include seed
+         cluster.setSeedIdx( size-1 );
+         Int_t seedIdx = (*seedTowerIter)->index();
+         member[ size-1 ] = seedIdx;
+         weight[ size-1 ] = 1;
+         Float_t energy = (*seedTowerIter)->energy();
+         //LOG_INFO << "energy start = " << energy << endm;
+
+         Float_t totalWeight = 1;
+         position += eemcSimpleGeom.getTowerCenter( (*seedTowerIter)->sector(), (*seedTowerIter)->subsector(), (*seedTowerIter)->etabin() );
+
+         // add neighbors to the seed
+         for ( Int_t i=0; i < (*seedTowerIter)->numberOfNeighbors(); i++ ) {
+            // get a reference to the neighbor
+            // Note: important to use reference not copy constuctor
+            const StEEmcTower &neighbor = (*seedTowerIter)->neighbor(i);
+
+            if( neighbor.index() != seedIdx ){
+               // save towers which are members of the cluster
+               member[i] = neighbor.index();
+               weight[i] = (*seedTowerIter)->energy() / mSumOfNeighboringSeeds[ neighbor.index() ];
+               energy += weight[i]*neighbor.energy();
+               totalWeight += weight[i];
+               position += eemcSimpleGeom.getTowerCenter( neighbor.sector(), neighbor.subsector(), neighbor.etabin() );
+
+               //LOG_INFO << "energy += " << weight[i] << "*" << neighbor.energy() << ", energy = " << energy << endm;
+            }; 
+         };
+
+         cluster.setEnergy( energy );
+         cluster.setMeanX( position.X()/totalWeight );
+         cluster.setMeanY( position.Y()/totalWeight );
+
+         // end loops over seeds
+      };
+
+      // end of if statement regarding ierr
+   };
+
+   //LOG_INFO << "----------> Found " << clusterVec.size() << " clusters <----------" << endm;
+
+   return ierr;
+};
+
+ClassImp( StEEmcTowerClusterFinderMinesweeper_t );
+
+/*
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.9 2012/05/17 22:47:02 sgliske Exp $
+ * $Log: StEEmcTowerClusterFinderMinesweeper.cxx,v $
+ * Revision 1.9  2012/05/17 22:47:02  sgliske
+ * working on switching to EEmcTree containers
+ *
+ * Revision 1.8  2011/11/08 22:22:15  sgliske
+ * daily update
+ *
+ * Revision 1.7  2011/11/07 22:08:04  sgliske
+ * daily update
+ *
+ * Revision 1.6  2011/08/18 15:48:30  sgliske
+ * added calculation of mean X and mean Y
+ *
+ * Revision 1.5  2011/07/22 16:33:06  sgliske
+ * update
+ *
+ * Revision 1.4  2011/07/20 21:35:26  sgliske
+ * update
+ *
+ * Revision 1.3  2011/07/13 20:24:45  sgliske
+ * update
+ *
+ * Revision 1.2  2011/07/11 15:14:31  sgliske
+ * before making StHitData class
+ *
+ * Revision 1.1  2011/07/05 21:48:19  sgliske
+ * split from StEEmcAnalysisTreeMaker
+ *
+ * Revision 1.1  2011/06/23 21:55:05  sgliske
+ * daily update
+ */
+@
+
+
+1.9
+log
+@working on switching to EEmcTree containers
+@
+text
+@d179 1
+a179 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.8 2011/11/08 22:22:15 sgliske Exp $
+d181 3
+@
+
+
+1.8
+log
+@daily update
+@
+text
+@d24 1
+a24 1
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcTower.h"
+d34 2
+a35 1
+Int_t StEEmcTowerClusterFinderMinesweeper_t::find( const StEEmcTowerVec_t& towers, StSimpleClusterVec_t& clusterVec ){
+d58 1
+a58 1
+      std::vector< const StEEmcTower* > seed_tower;
+d91 1
+a91 1
+               seed_tower.push_back( &(*towerIter) );
+d104 1
+a104 1
+      //LOG_INFO << "Towers: num above threshold = " << nAboveThes << ", num seeds = " << seed_tower.size() << endm;
+d110 2
+a111 2
+      std::vector< const StEEmcTower* >::iterator seedTowerIter = seed_tower.begin();
+      for( ; seedTowerIter != seed_tower.end(); ++seedTowerIter ){
+d179 1
+a179 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.7 2011/11/07 22:08:04 sgliske Exp $
+d181 3
+@
+
+
+1.7
+log
+@daily update
+@
+text
+@d133 2
+a134 1
+         member[ size-1 ] = (*seedTowerIter)->index();
+d137 1
+d148 10
+a157 6
+            // save towers which are members of the cluster
+            member[i] = neighbor.index();
+            weight[i] = (*seedTowerIter)->energy() / mSumOfNeighboringSeeds[ neighbor.index() ];
+            energy += weight[i]*neighbor.energy();
+            totalWeight += weight[i];
+            position += eemcSimpleGeom.getTowerCenter( neighbor.sector(), neighbor.subsector(), neighbor.etabin() );
+d178 1
+a178 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.6 2011/08/18 15:48:30 sgliske Exp $
+d180 3
+@
+
+
+1.6
+log
+@added calculation of mean X and mean Y
+@
+text
+@d87 1
+a87 1
+            if( !seed_neighbors_greater ){
+d172 1
+a172 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.5 2011/07/22 16:33:06 sgliske Exp $
+d174 3
+@
+
+
+1.5
+log
+@update
+@
+text
+@d26 1
+d105 3
+d112 2
+d132 1
+d137 2
+a138 2
+         // Note: not computing cluster energy (or any other derived
+         // quantities) at this stage
+d150 2
+d155 2
+d172 1
+a172 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.4 2011/07/20 21:35:26 sgliske Exp $
+d174 3
+@
+
+
+1.4
+log
+@update
+@
+text
+@d128 1
+d142 1
+d145 2
+d161 1
+a161 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.3 2011/07/13 20:24:45 sgliske Exp $
+d163 3
+@
+
+
+1.3
+log
+@update
+@
+text
+@d36 1
+a36 1
+   LOG_INFO << "----------> Finding clusters in some tower layer, nTowers = " << towers.size() << " <----------" << endm;
+d67 1
+a67 1
+         LOG_INFO << "tower " << towerIter->index() << ", energy = " << towerIter->energy() << ", thres = " << mSeedEnergyThres << endm;
+d102 1
+a102 1
+      LOG_INFO << "Towers: num above threshold = " << nAboveThes << ", num seeds = " << seed_tower.size() << endm;
+d149 1
+a149 1
+   LOG_INFO << "----------> Found " << clusterVec.size() << " clusters <----------" << endm;
+d157 1
+a157 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.2 2011/07/11 15:14:31 sgliske Exp $
+d159 3
+@
+
+
+1.2
+log
+@before making StHitData class
+@
+text
+@d36 1
+a36 1
+   LOG_INFO << "----------> Finding clusters in some tower layer <----------" << endm;
+d64 4
+a67 2
+      StEEmcTowerVec_t::const_iterator tower_iter = towers.begin();
+      for( ; tower_iter != towers.end(); ++tower_iter ) {
+d70 1
+a70 1
+         if( tower_iter->energy() > mSeedEnergyThres ){
+d79 2
+a80 2
+            for ( Int_t i = 0; i < tower_iter->numberOfNeighbors(); ++i ) {
+               Double_t neighbor_energy = tower_iter->neighbor(i).energy();
+d82 1
+a82 1
+                  neighbor_energy > tower_iter->energy() ? ++seed_neighbors_greater : ++seed_neighbors_less;
+d89 1
+a89 1
+               seed_tower.push_back( &(*tower_iter) );
+d92 2
+a93 2
+               for ( Int_t i = 0; i < tower_iter->numberOfNeighbors(); ++i )
+                  mSumOfNeighboringSeeds[ tower_iter->neighbor(i).index() ] += tower_iter->energy();
+d96 1
+a96 1
+            // end check if tower_iter is above threshold
+d105 2
+a106 2
+      std::vector< const StEEmcTower* >::iterator seed_tower_iter = seed_tower.begin();
+      for( ; seed_tower_iter != seed_tower.end(); ++seed_tower_iter ){
+d121 1
+a121 1
+         Int_t size = (*seed_tower_iter)->numberOfNeighbors()+1;
+d126 1
+a126 1
+         member[ size-1 ] = (*seed_tower_iter)->index();
+d133 1
+a133 1
+         for ( Int_t i=0; i < (*seed_tower_iter)->numberOfNeighbors(); i++ ) {
+d136 1
+a136 1
+            const StEEmcTower &neighbor = (*seed_tower_iter)->neighbor(i);
+d140 1
+a140 1
+            weight[i] = (*seed_tower_iter)->energy() / mSumOfNeighboringSeeds[ neighbor.index() ];
+d157 1
+a157 1
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.1 2011/07/05 21:48:19 sgliske Exp $
+d159 3
+@
+
+
+1.1
+log
+@split from StEEmcAnalysisTreeMaker
+@
+text
+@a3 5
+ * $Id: StEEmcTowerClusterFinderMinesweeper.cxx,v 1.1 2011/06/23 21:55:05 sgliske Exp $
+ * $Log: StEEmcTowerClusterFinderMinesweeper.cxx,v $
+ * Revision 1.1  2011/06/23 21:55:05  sgliske
+ * daily update
+ *
+d36 2
+d62 2
+d70 2
+d100 2
+d147 2
+d151 12
+@
+

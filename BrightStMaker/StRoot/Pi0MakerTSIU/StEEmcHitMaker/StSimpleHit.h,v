@@ -1,0 +1,169 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.3
+date	2012.11.26.19.40.36;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.07.20.21.35.26;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.05.21.48.20;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ *
+ * \class StSimpleHit_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * The basic information needed to define a hit:
+ *  - x, y, z position
+ *  - Energy E
+ *
+ * This is designed as a storage class.  Information derived from the
+ * above is not included, as that would cost extra storage space
+ * (though reduce time cost).
+ *
+ * Note: all functions are inlined and default copy constructors,
+ * equal operators, and deconstructors are used.
+*/
+
+#ifndef _ST_SIMPLE_HIT_H_
+#define _ST_SIMPLE_HIT_H_
+
+#include <vector>
+#include <ostream>
+
+#include <Rtypes.h>
+#include <TVector3.h>
+
+/// Forward declaration
+class StSimpleHit_t;
+
+/// A container
+typedef std::vector< StSimpleHit_t > StSimpleHitVec_t;
+
+/// The class
+class StSimpleHit_t : public TObject {
+ public:
+   // constructor
+   StSimpleHit_t( Short_t ID = -1 ) : mID( ID ), mX( 0 ), mY( 0 ), mZ( 0 ), mE( 0 ){ /* */ };
+
+   // deconstructor
+   ~StSimpleHit_t(){ /* */ };
+
+   // accessors
+   Short_t getID() const { return mID; };
+   Float_t getEnergy() const { return mE; };
+   Float_t getX() const { return mX; };
+   Float_t getY() const { return mY; };
+   Float_t getZ() const { return mZ; };
+   TVector3 getPosition() const { return TVector3( mX, mY, mZ ); };
+
+   // modifiers
+   void setID( const Short_t ID ) { mID = ID; };
+   void setEnergy( const Float_t E ) { mE = E; };
+   void setX( const Float_t X ) { mX = X; };
+   void setY( const Float_t Y ) { mY = Y; };
+   void setZ( const Float_t Z ) { mZ = Z; };
+
+   friend std::ostream &operator<<( std::ostream &out, const StSimpleHit_t &clus );
+
+ protected:
+   Short_t mID;
+   Float_t mX, mY, mZ, mE;
+
+ private:
+   /// Make class available to root
+   ClassDef(StSimpleHit_t,1);  // Simplest class to describe a hit
+};
+
+std::ostream &operator<<( std::ostream &out, const StSimpleHit_t &hit );
+
+#endif
+
+/*
+ * $Id: StSimpleHit.h,v 1.2 2011/07/20 21:35:26 sgliske Exp $
+ * $Log: StSimpleHit.h,v $
+ * Revision 1.2  2011/07/20 21:35:26  sgliske
+ * update
+ *
+ * Revision 1.1  2011/07/05 21:48:20  sgliske
+ * split from StEEmcAnalysisTreeMaker
+ *
+ * Revision 1.4  2011/06/29 21:39:43  sgliske
+ * update
+ *
+ * Revision 1.3  2011/06/29 16:37:59  sgliske
+ * update
+ *
+ * Revision 1.2  2011/06/24 17:32:34  sgliske
+ * Everything now compiles using cons
+ *
+ * Revision 1.1  2011/06/23 21:55:05  sgliske
+ * daily update
+ */
+@
+
+
+1.2
+log
+@update
+@
+text
+@d73 1
+a73 1
+ * $Id: StSimpleHit.h,v 1.1 2011/07/05 21:48:20 sgliske Exp $
+d75 3
+@
+
+
+1.1
+log
+@split from StEEmcAnalysisTreeMaker
+@
+text
+@a4 14
+ * $Id: StSimpleHit.h,v 1.4 2011/06/29 21:39:43 sgliske Exp $
+ * $Log: StSimpleHit.h,v $
+ * Revision 1.4  2011/06/29 21:39:43  sgliske
+ * update
+ *
+ * Revision 1.3  2011/06/29 16:37:59  sgliske
+ * update
+ *
+ * Revision 1.2  2011/06/24 17:32:34  sgliske
+ * Everything now compiles using cons
+ *
+ * Revision 1.1  2011/06/23 21:55:05  sgliske
+ * daily update
+ *
+d22 1
+d54 4
+a57 2
+   void setY( const Float_t Y ) { mX = Y; };
+   void setZ( const Float_t Z ) { mX = Z; };
+d68 2
+d71 19
+@
+

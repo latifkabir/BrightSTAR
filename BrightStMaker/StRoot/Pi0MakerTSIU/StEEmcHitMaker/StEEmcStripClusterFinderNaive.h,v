@@ -1,0 +1,103 @@
+head	1.2;
+access;
+symbols
+	response:1.1;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.15.18.06.11;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcStripClusterFinderNaive_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Naive method: Seeds required to be mMinSeedDist apart and above
+ * mSeedEnergyThres in energy.  Strips farther than mMaxDist from the
+ * seed strip are ignored. Clusters required to have
+ * mMinStripsPerCluster non-zero strips in the cluster and be above
+ * mMinClusterEnergy.
+ *
+*/
+
+#ifndef _ST_STRIP_CLUSTER_FINDER_NAIVE_H_
+#define _ST_STRIP_CLUSTER_FINDER_NAIVE_H_
+
+#include <TRandom3.h>
+#include <TSpectrum.h>
+
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcStrip.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+
+#include "StEEmcStripClusterFinder.h"
+
+class StEEmcStripClusterFinderNaive_t : public StEEmcStripClusterFinder_t {
+
+ public:
+   StEEmcStripClusterFinderNaive_t( );
+   virtual ~StEEmcStripClusterFinderNaive_t();
+
+   /// find some clusters
+   virtual Int_t find( const StEEmcStripVec_t& hitStrips, StSimpleClusterVec_t& cluster );
+
+   void setMinStripsPerCluster( Int_t val ){ mMinStripsPerCluster = val; };
+   void setMinSeedDist( Int_t val ){ mMinSeedDist = val; };
+   void setSeedEnergyThres( Float_t val ){ mSeedEnergyThres = val; };
+   void setMaxDist( Int_t val ){ mMaxDist = val; };
+   void setMinClusterEnergy( Float_t val ){ mMinClusterEnergy = val; };
+
+ protected:
+   // parameters
+   Int_t mMinStripsPerCluster, mMinSeedDist, mMaxDist;
+   Float_t mSeedEnergyThres, mMinClusterEnergy;
+
+   // temp storage
+   Float_t mStripEnergyArray[ kEEmcNumStrips ];
+
+ private:
+   ClassDef( StEEmcStripClusterFinderNaive_t, 1 );
+};
+
+
+#endif
+
+/*
+ * $Id: StEEmcStripClusterFinderNaive.h,v 1.1 2011/12/15 18:06:11 sgliske Exp $
+ * $Log: StEEmcStripClusterFinderNaive.h,v $
+ * Revision 1.1  2011/12/15 18:06:11  sgliske
+ * creation
+ *
+ *
+ */
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d55 5
+a59 2
+ * $Id: $
+ * $Log: $
+@
+

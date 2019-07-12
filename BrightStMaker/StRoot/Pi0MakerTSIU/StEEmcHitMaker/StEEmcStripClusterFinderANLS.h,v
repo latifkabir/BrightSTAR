@@ -1,0 +1,161 @@
+head	1.4;
+access;
+symbols
+	response:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.12.15.22.21.18;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.13.21.32.27;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.09.18.01.16;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcStripClusterFinderANLS_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * A strip based cluster finder.  See
+ * http://drupal.star.bnl.gov/STAR/blog/sgliske/2011/dec/13/anls-eemc-cluster-finding-algorithm
+ *
+*/
+
+#ifndef _ST_STRIP_CLUSTER_FINDER_ANLS_H_
+#define _ST_STRIP_CLUSTER_FINDER_ANLS_H_
+
+#include <TRandom3.h>
+#include <TSpectrum.h>
+
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcStrip.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+
+#include "StEEmcStripClusterFinder.h"
+
+class StEEmcStripClusterFinderANLS_t : public StEEmcStripClusterFinder_t {
+
+ public:
+   StEEmcStripClusterFinderANLS_t( );
+   virtual ~StEEmcStripClusterFinderANLS_t();
+
+   /// find some clusters
+   virtual Int_t find( const StEEmcStripVec_t& hitStrips, StSimpleClusterVec_t& cluster );
+
+   void setMinStripsPerCluster( Int_t val ){ mMinStripsPerCluster = val; };
+   void setSideWidth( Int_t val ){ mSideWidth = val; };
+   void setMinSeedDist( Int_t val ){ mMinSeedDist = val; };
+   void setMaxWidth( Int_t val ){ mMaxWidth = val; };
+   void setDensityEstWidth( Int_t val ){ mDensityEstWidth = val; };
+   void setSeedEnergyThres( Float_t val ){ mSeedEnergyThres = val; };
+   void setSeedRelThres( Float_t val ){ mSeedRelThres = val; };
+   void setMinClusterEnergy( Float_t val ){ mMinClusterEnergy = val; };
+   void setMergeThres( Float_t val ){ mMergeThres = val; };
+
+ protected:
+   // parameters
+   Int_t mMinStripsPerCluster, mSideWidth, mMinSeedDist, mMaxWidth, mDensityEstWidth;
+   Float_t mSeedEnergyThres, mSeedRelThres, mMinClusterEnergy, mMergeThres;
+
+   // temp storage
+   Float_t mStripEnergyArray[ kEEmcNumStrips ], mSmearedEnergyArray[ kEEmcNumStrips ];
+
+ private:
+   ClassDef( StEEmcStripClusterFinderANLS_t, 1 );
+};
+
+
+#endif
+
+/*
+ * $Id: StEEmcStripClusterFinderANLS.h,v 1.3 2011/12/15 22:21:18 sgliske Exp $
+ * $Log: StEEmcStripClusterFinderANLS.h,v $
+ * Revision 1.3  2011/12/15 22:21:18  sgliske
+ * update
+ *
+ * Revision 1.2  2011/12/13 21:32:27  sgliske
+ * Bug fix: now ensure clusters have unique IDs across sectors and layers.
+ * Otherwise, StMcHitMakerStrips has errors.
+ * Few other small updates also included in this checkin.
+ *
+ * Revision 1.1  2011/12/09 18:01:16  sgliske
+ * finished creation
+ *
+ *
+ */
+@
+
+
+1.3
+log
+@update
+@
+text
+@d56 1
+a56 1
+ * $Id: StEEmcStripClusterFinderANLS.h,v 1.2 2011/12/13 21:32:27 sgliske Exp $
+d58 3
+@
+
+
+1.2
+log
+@Bug fix: now ensure clusters have unique IDs across sectors and layers.
+Otherwise, StMcHitMakerStrips has errors.
+Few other small updates also included in this checkin.
+@
+text
+@d5 2
+a6 1
+ * Use ANLS with the AIC criterea for picking the number of clusters.
+a19 1
+#include "GmmEm1D/GmmEm1D.h"
+d56 1
+a56 1
+ * $Id: StEEmcStripClusterFinderANLS.h,v 1.1 2011/12/09 18:01:16 sgliske Exp $
+d58 5
+@
+
+
+1.1
+log
+@finished creation
+@
+text
+@d30 1
+a30 1
+   void setMinStripsToCluster( Int_t val ){ mMinStripsToCluster = val; };
+a34 1
+
+d42 1
+a42 1
+   Int_t mMinStripsToCluster, mSideWidth, mMinSeedDist, mMaxWidth, mDensityEstWidth;
+d56 5
+a60 2
+ * $Id: $
+ * $Log: $
+@
+

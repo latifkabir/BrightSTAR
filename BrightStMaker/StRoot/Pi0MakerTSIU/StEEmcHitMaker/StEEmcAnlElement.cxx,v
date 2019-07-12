@@ -1,0 +1,94 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.23.17.55.44;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.08.31.22.05.42;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlElement_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See description in header file.
+ *
+ */
+
+#include "StEEmcAnlElement.h"
+#include "StRoot/St_base/StMessMgr.h"
+
+// static member function to clear set
+void StEEmcAnlElement_t::scaleSet( StEEmcAnlElementSet_t &elemSet, Float_t w ){
+   for( StEEmcAnlElementSet_t::iterator elementIter = elemSet.begin(); elementIter != elemSet.end(); ++elementIter )
+      const_cast< StEEmcAnlElement_t* >( &(*elementIter) )->mEnergy *= w;
+};
+
+
+ClassImp( StEEmcAnlElement_t );
+
+/*
+ * $Id: StEEmcAnlElement.cxx,v 1.2 2011/11/23 17:55:44 sgliske Exp $
+ *
+ * $Log: StEEmcAnlElement.cxx,v $
+ * Revision 1.2  2011/11/23 17:55:44  sgliske
+ * update
+ *
+ * Revision 1.1  2011/08/31 22:05:42  sgliske
+ * Working on ANL EM Algo
+ *
+ * 
+ */
+@
+
+
+1.2
+log
+@update
+@
+text
+@d23 1
+a23 1
+ * $Id: StEEmcAnlElement.cxx,v 1.1 2011/08/31 22:05:42 sgliske Exp $
+d26 3
+@
+
+
+1.1
+log
+@Working on ANL EM Algo
+@
+text
+@d11 8
+d23 5
+a27 1
+ * $Id: $
+a28 1
+ * $Log: $
+@
+

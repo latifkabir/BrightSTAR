@@ -1,0 +1,339 @@
+head	1.5;
+access;
+symbols
+	response:1.4;
+locks; strict;
+comment	@// @;
+
+
+1.5
+date	2012.10.09.03.57.21;	author sgliske;	state dead;
+branches;
+next	1.4;
+
+1.4
+date	2011.08.16.13.33.18;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.08.11.22.04.33;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.08.09.21.46.22;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.08.09.20.36.09;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@removed unused makers
+@
+text
+@/*
+ * \class StMcEEmcHitMaker_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See description in StMcEEmcHitMaker.h
+ *
+*/
+
+#include <string>
+
+/// Include the header
+#include "StMcEEmcHitMaker.h"
+
+/// Include StRoot classes
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/StEEmcPool/StEEmcResponseTreeMaker/StMcTowerResponse.h"
+#include "StRoot/StEEmcPool/StEEmcResponseTreeMaker/StMcStripResponse.h"
+#include "StRoot/StEEmcPool/StEEmcResponseTreeMaker/StMcEEmcResponse.h"
+#include "StRoot/StEEmcPool/StEEmcResponseTreeMaker/StEEmcResponseKeeper.h"
+
+#include "StEEmcHitMaker.h"
+
+/// Construtor
+StMcEEmcHitMaker_t::StMcEEmcHitMaker_t( const Char_t *myName,             // name of this maker in the StMaker hash table
+                                        const Char_t *responseMakerName,  // name of the maker in charge of setting the resonse
+                                        const Char_t *hitDataName )     // name of the hit maker
+   : StMaker( myName ),
+     mResponseMakerName( responseMakerName ),
+     mHitDataName( hitDataName ),
+     mMcResponsePtr( 0 ),
+     mHitDataPtr( 0 )
+{
+   // that is all!
+};
+
+/// Initialize
+Int_t StMcEEmcHitMaker_t::Init(){
+   Int_t ierr = kStOK;
+
+   TObject *responseMaker = GetMaker( mResponseMakerName.data() );
+
+   if( !responseMaker ){
+      LOG_FATAL << "::Init() could not get pointer maker with name '" << mResponseMakerName << "'" << endm;
+      ierr = kStFatal;
+   };
+
+   mMcResponsePtr = 0;
+   if( !ierr && !responseMaker->InheritsFrom( "StEEmcResponseKeeper_t" ) ){
+      LOG_FATAL << "make with name '" << mResponseMakerName << "' does not inherit from 'StEEmcResponseKeeper_t'" << endm;
+      ierr = kStFatal;
+   };
+
+   if( !ierr ){
+      StEEmcResponseKeeper_t *responseKeeper = static_cast< StEEmcResponseKeeper_t* >( responseMaker );
+      mMcResponsePtr = static_cast< StMcEEmcResponse_t* >( responseKeeper->getResponsePtr() );
+
+      if( !mMcResponsePtr ){
+         LOG_FATAL << "Error getting response pointer from maker '" << mResponseMakerName << "'" << endm;
+         ierr = kStFatal;
+      };
+   };
+
+   if( !ierr && !mMcResponsePtr->InheritsFrom("StMcEEmcResponse_t") ){
+      LOG_FATAL << "Response in maker with name '" << mResponseMakerName << "' is not an 'StMcEEmcResponse_t'" << endm;
+      ierr = kStFatal;
+   };
+
+   mHitDataPtr = 0;
+   TObject *hitDataPtr = GetMaker( mHitDataName.data() );
+
+   if( !hitDataPtr ){
+      LOG_FATAL << "::Init() could not get pointer maker with name '" << mHitDataName << "'" << endm;
+      ierr = kStFatal;
+   };
+
+   mHitDataPtr = 0;
+   if( !ierr && !hitDataPtr->InheritsFrom( "StEEmcHitMaker_t" ) ){
+      LOG_FATAL << "make with name '" << mHitDataName << "' does not inherit from 'StEEmcHitMaker_t'" << endm;
+      ierr = kStFatal;
+   };
+
+   if( !ierr ){
+      StEEmcHitMaker_t *hitMakerPtr = static_cast< StEEmcHitMaker_t* >( hitDataPtr );
+      mHitDataPtr = static_cast< StEEmcHitMakerData_t* >( hitMakerPtr );
+   };
+
+   return ierr;
+};
+
+
+/// Clear for next event
+void StMcEEmcHitMaker_t::Clear(Option_t *){
+   mMcHitVec.clear();
+};
+
+
+ClassImp( StMcEEmcHitMaker_t );
+
+/*
+ * $Id: StMcEEmcHitMaker.cxx,v 1.4 2011/08/16 13:33:18 sgliske Exp $
+ * 
+ * $Log: StMcEEmcHitMaker.cxx,v $
+ * Revision 1.4  2011/08/16 13:33:18  sgliske
+ * debugging MC
+ *
+ * Revision 1.3  2011/08/11 22:04:33  sgliske
+ * update
+ *
+ * Revision 1.2  2011/08/09 21:46:22  sgliske
+ * debugging
+ *
+ * Revision 1.1  2011/08/09 20:36:09  sgliske
+ * working on adding MC support to AnalysisTreeMaker
+ *
+*/
+@
+
+
+1.4
+log
+@debugging MC
+@
+text
+@d101 1
+a101 1
+ * $Id: StMcEEmcHitMaker.cxx,v 1.3 2011/08/11 22:04:33 sgliske Exp $
+d104 3
+@
+
+
+1.3
+log
+@update
+@
+text
+@a91 116
+/// Make: align MC tracks with Hits
+Int_t StMcEEmcHitMaker_t::Make(){
+   Int_t ierr = kStOK;
+
+   //LOG_INFO << GetEventNumber() << ' ' << ClassName() << "::Make()" << endm;
+
+   // TODO: later add options for using SMD strips or both SMD strips and towers
+   
+   // map for finding towers more easily
+   // key = tower index (ID) 0..719
+   // value = pointer to StMcTowerResponse_t
+   std::map< Short_t, StMcTowerResponse_t* > towerMap;
+   std::map< Short_t, StMcTowerResponse_t* >::iterator towerMapIter;
+
+   TClonesArray *towerArrayPtr = mMcResponsePtr->getTowerArrayPtr();
+   if( !towerArrayPtr ){
+      LOG_FATAL << "Error getting tower array pointer from the response class" << endm;
+      ierr = kStFatal;
+   };
+
+   // map for keeping track of tracks contribution to a hit
+   // key = track key
+   // value = weight
+   std::map< Short_t, Float_t > trackWeightMap;
+   std::map< Short_t, Float_t >::iterator trackWeightMapIter;
+
+
+   if( !ierr ){
+      // easier to work with a reference
+      TClonesArray &towerArray = *towerArrayPtr;
+
+      // copy towers into the map
+      for( Int_t i=0; i<towerArray.GetEntriesFast(); ++i ){
+         StMcTowerResponse_t *mcTowerRespPtr = static_cast< StMcTowerResponse_t* >( towerArray[i] );
+         towerMap[ mcTowerRespPtr->getID() ] = mcTowerRespPtr;
+      };
+   };
+
+   if( !ierr ){
+      const StEEmcHitVec_t& hitVec = mHitDataPtr->getHitVec();
+      StEEmcHitVec_t::const_iterator hitIter;
+      for( hitIter = hitVec.begin(); hitIter != hitVec.end(); ++hitIter ){
+         // first copy over
+         mMcHitVec.push_back( *hitIter );
+
+         // get reference
+         StMcEEmcHit_t &mcHit = mMcHitVec.back();
+
+         // clear map
+         trackWeightMap.clear();
+
+         // iterate over towers used in this hit
+         Int_t nUsedTow = hitIter->getNumUsedTowers();
+         for( Int_t i = 0; i<nUsedTow; ++i ){
+            Short_t usedTowIdx = hitIter->getUseTowerIndex( i );
+            Float_t usedTowWeight = hitIter->getUseTowerWeight( i );
+
+            // now find the tower in the tower/track map
+            towerMapIter = towerMap.find( usedTowIdx );
+
+            // make sure it was found
+            if( towerMapIter != towerMap.end() ){
+               // iterate over the tracks contributing to this tower
+               TArrayS& trackIdxArray = towerMapIter->second->getTrackIdxArray();
+               TArrayF& trackWeightArray = towerMapIter->second->getEnergyFromTrackArray();
+
+               Int_t nTracks = trackIdxArray.GetSize();
+               if( trackWeightArray.GetSize() < nTracks )
+                  nTracks = trackWeightArray.GetSize();
+
+               for( Int_t j = 0; j < nTracks; ++j ){
+                  // additional contribution to the weight of this track
+                  Float_t w = trackWeightArray[j] * usedTowWeight;
+                  Int_t trackKey = trackIdxArray[j];
+
+                  if( w ){
+                     // check if track considered yet for this hit
+                     trackWeightMapIter = trackWeightMap.find( trackKey );
+                     if( trackWeightMapIter == trackWeightMap.end() ){
+                        trackWeightMap[ trackKey ] = w;
+                     } else {
+                        trackWeightMap[ trackKey ] += w;
+                     };
+                  };
+               };
+            };
+         };
+
+         // get total sum, so can normalize contributions
+         Float_t totalWeight = 0;
+         for( trackWeightMapIter = trackWeightMap.begin(); trackWeightMapIter != trackWeightMap.end(); ++trackWeightMapIter )
+            totalWeight += trackWeightMapIter->second;
+
+         // get the arrays to save the tracks and weights
+         TArrayS& trackIdxArray = mcHit.getTrackIdxArray();
+         TArrayF& trackWeightArray = mcHit.getEnergyFromTrackArray();
+
+         // resize
+         Int_t nTracks = trackWeightMap.size();
+         trackIdxArray.Set( nTracks );
+         trackWeightArray.Set( nTracks );
+
+         // copy track key's and weights for the hit
+         Int_t i = 0;
+         for( trackWeightMapIter = trackWeightMap.begin(); trackWeightMapIter != trackWeightMap.end(); ++trackWeightMapIter, ++i ){
+            trackIdxArray[i] = trackWeightMapIter->first;
+            trackWeightArray[i] = trackWeightMapIter->second / totalWeight;
+         };
+      }; // end loop over hits
+   }; // end ierr check
+
+   //LOG_INFO << GetEventNumber() << "\tdone with " << ClassName() << "::Make()" << endm;
+
+   return ierr;
+};
+
+d101 1
+a101 1
+ * $Id: StMcEEmcHitMaker.cxx,v 1.2 2011/08/09 21:46:22 sgliske Exp $
+d104 3
+@
+
+
+1.2
+log
+@debugging
+@
+text
+@d96 1
+a96 1
+   LOG_INFO << GetEventNumber() << ' ' << ClassName() << "::Make()" << endm;
+d203 1
+a203 1
+   LOG_INFO << GetEventNumber() << "\tdone with " << ClassName() << "::Make()" << endm;
+d217 1
+a217 1
+ * $Id: StMcEEmcHitMaker.cxx,v 1.1 2011/08/09 20:36:09 sgliske Exp $
+d220 3
+@
+
+
+1.1
+log
+@working on adding MC support to AnalysisTreeMaker
+@
+text
+@d96 2
+d190 1
+a190 1
+         Int_t nTracks = trackIdxArray.GetSize();
+d203 2
+d217 1
+a217 1
+ * $Id:  $
+d219 4
+a222 1
+ * $Log: $
+@
+

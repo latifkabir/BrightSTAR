@@ -1,0 +1,328 @@
+head	1.8;
+access;
+symbols
+	response:1.5;
+locks; strict;
+comment	@ * @;
+
+
+1.8
+date	2012.11.26.19.40.34;	author sgliske;	state dead;
+branches;
+next	1.7;
+
+1.7
+date	2012.09.08.19.16.52;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2012.05.17.22.47.02;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.07.20.21.35.26;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.07.13.20.24.45;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.07.11.15.14.31;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.07.07.20.53.04;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.05.21.48.19;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.8
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ * \class StEEmcPointFinderIU_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Implementation of the point finder algrothim from the PhD
+ * dissertation of Weihong He.
+ * 
+ * Some implementation improvements have been made versus that found in 
+ * $CVSROOT/offline/users/aliceb/StRoot/StEEmcPool/StEEmcIUPi0/StEEmcIUPointMaker.cxx
+*/
+
+#ifndef _ST_POINT_FINDER_IU_H_
+#define _ST_POINT_FINDER_IU_H_
+
+#include <set>
+
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
+#include "StRoot/StEEmcUtil/EEmcSmdMap/EEmcSmdMap.h"
+#include "StRoot/StEEmcUtil/StEEmcSmd/EEmcSmdGeom.h"
+
+#include "StEEmcPointFinder.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+#include "StEEmcHitMaker.h"
+#include "StESMDClustersPerSector.h"
+
+class StEEmcPointFinderIU_t : public StEEmcPointFinder_t {
+
+ public:
+   StEEmcPointFinderIU_t();
+   virtual ~StEEmcPointFinderIU_t() { /* */ };
+
+   /// clear things before doing the finding for the next event
+   virtual void clear(){ /* */ };
+
+   /// find some some points
+   virtual Int_t find( const EEmcEnergy_t& eemcEnergy,
+                       const StSimpleClusterVec_t &towerClusterVec,
+                       const StESMDClustersVec_t &smdClusterVec,
+                       StEEmcHitVec_t& hitVec );
+
+   // modifiers
+   void setMinUVRatio( Float_t ratio ){ mMinUVratio = ratio; };
+   void setTowerThreshold( Float_t thres ){ mTowerThreshold = thres; };
+   void setZratioThres( Float_t thres ){ mZratioThres = thres; };
+
+ protected:
+   // function used to sort strips
+   // defined here so is inlined
+   struct clusterLessThan {
+      const Bool_t operator()( const StSimpleCluster_t *a, const StSimpleCluster_t *b) const {
+         // check for 0
+         if (a == 0) {
+            return b != 0; // if b is also 0, then they are equal, hence a is not < than b
+         } else if (b == 0) {
+            return false;
+         } else {
+            return a->getSeedMember() < b->getSeedMember();
+         };
+      };
+   };
+
+   // Function used to sort candidate hits.
+   static Bool_t hitTtest2LessThan( const StEEmcHit_t &h1, const StEEmcHit_t &h2 ) {
+      return h1.getTtest2() < h2.getTtest2();
+   };
+
+   // typedef for the cluster pools
+   typedef std::set< const StSimpleCluster_t*, clusterLessThan > StClusterPool_t;
+   //typedef std::set< const StSimpleCluster_t* > StClusterPool_t;
+
+
+   // geometry type classes
+   EEmcSmdGeom *mEEmcSmdGeom;
+   EEmcSmdMap *mEEmcSmdMap;
+   EEmcGeomSimple mEEmcGeomSimple;
+
+   // the ratio of u/v energy and v/u energy must both be greater than this minimum
+   Float_t mMinUVratio;
+   Float_t mZratioThres;
+   Float_t mTtestThres;
+   Bool_t mUseBugFixes;
+
+   // Minimun energy for a tower to allow a point underneath
+   Float_t mTowerThreshold;
+
+   // class variable to keep track of things for recurseive algo
+   Int_t mSector;
+   Int_t mLastSMDhitID;
+
+   // recursive point finder
+   Int_t findPoints( const EEmcEnergy_t& eemcEnergy,
+                     StClusterPool_t &uClusterVec,
+                     StClusterPool_t &vClusterVec,
+                     StEEmcHitVec_t& hitVec );
+
+ private:
+   ClassDef( StEEmcPointFinderIU_t, 1 );
+
+};
+
+#endif
+
+/*
+ * $Id: StEEmcPointFinderIU.h,v 1.7 2012/09/08 19:16:52 sgliske Exp $
+ * $Log: StEEmcPointFinderIU.h,v $
+ * Revision 1.7  2012/09/08 19:16:52  sgliske
+ * general update
+ *
+ * Revision 1.6  2012/05/17 22:47:02  sgliske
+ * working on switching to EEmcTree containers
+ *
+ * Revision 1.5  2011/07/20 21:35:26  sgliske
+ * update
+ *
+ * Revision 1.4  2011/07/13 20:24:45  sgliske
+ * update
+ *
+ * Revision 1.3  2011/07/11 15:14:31  sgliske
+ * before making StHitData class
+ *
+ * Revision 1.2  2011/07/07 20:53:04  sgliske
+ * update
+ *
+ * Revision 1.1  2011/07/05 21:48:19  sgliske
+ * split from StEEmcAnalysisTreeMaker
+ *
+ * Revision 1.2  2011/06/29 16:37:59  sgliske
+ * update
+ *
+ * Revision 1.1  2011/06/23 21:55:05  sgliske
+ * daily update
+ */
+@
+
+
+1.7
+log
+@general update
+@
+text
+@d107 1
+a107 1
+ * $Id: StEEmcPointFinderIU.h,v 1.6 2012/05/17 22:47:02 sgliske Exp $
+d109 3
+@
+
+
+1.6
+log
+@working on switching to EEmcTree containers
+@
+text
+@d47 1
+d107 1
+a107 1
+ * $Id: StEEmcPointFinderIU.h,v 1.5 2011/07/20 21:35:26 sgliske Exp $
+d109 3
+@
+
+
+1.5
+log
+@update
+@
+text
+@d39 2
+a40 1
+   virtual Int_t find( const StSimpleClusterVec_t &towerClusterVec,
+a47 4
+   // Note: this is needed before the "is ready" flag is set
+   Int_t SetHitMakerPtr( StEEmcHitMaker_t *hitMaker );
+
+
+a78 3
+   // pointer for HitMaker
+   const StEEmcHitMaker_t *mHitMakerPtr;
+
+d93 2
+a94 1
+   Int_t findPoints( StClusterPool_t &uClusterVec,
+d106 1
+a106 1
+ * $Id: StEEmcPointFinderIU.h,v 1.4 2011/07/13 20:24:45 sgliske Exp $
+d108 3
+@
+
+
+1.4
+log
+@update
+@
+text
+@a90 1
+
+d94 3
+a96 2
+   // class variable to keep track of sector
+   Int_t sector;
+d111 1
+a111 1
+ * $Id: StEEmcPointFinderIU.h,v 1.3 2011/07/11 15:14:31 sgliske Exp $
+d113 3
+@
+
+
+1.3
+log
+@before making StHitData class
+@
+text
+@a17 1
+#include "StRoot/StEEmcPool/StEEmcA2EMaker/StEEmcA2EMaker.h"
+d32 1
+a32 1
+   StEEmcPointFinderIU_t( StEEmcA2EMaker *a2EMakerPtr );
+d47 3
+d82 2
+a83 2
+   // pointer for A2EMaker
+   StEEmcA2EMaker *mA2EMakerPtr;
+d111 1
+a111 1
+ * $Id: StEEmcPointFinderIU.h,v 1.2 2011/07/07 20:53:04 sgliske Exp $
+d113 3
+@
+
+
+1.2
+log
+@update
+@
+text
+@d24 1
+a24 1
+#include "StFinderAlg.h"
+d30 1
+a30 1
+class StEEmcPointFinderIU_t : public StFinderAlg_t {
+a48 1
+
+d101 2
+a102 1
+
+d109 1
+a109 1
+ * $Id: StEEmcPointFinderIU.h,v 1.1 2011/07/05 21:48:19 sgliske Exp $
+d111 3
+@
+
+
+1.1
+log
+@split from StEEmcAnalysisTreeMaker
+@
+text
+@d28 1
+a28 1
+
+d41 1
+a41 1
+                       const StSimpleClusterVec_t stripClusterVec[ kNumEEmcStripVecs ],
+d109 1
+a109 1
+ * $Id: StEEmcPointFinderIU.h,v 1.2 2011/06/29 16:37:59 sgliske Exp $
+d111 3
+@
+

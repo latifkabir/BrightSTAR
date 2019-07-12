@@ -1,0 +1,597 @@
+head	1.10;
+access;
+symbols
+	response:1.9;
+locks; strict;
+comment	@// @;
+
+
+1.10
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.9;
+
+1.9
+date	2011.12.06.22.36.35;	author sgliske;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2011.11.11.21.28.10;	author sgliske;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2011.11.07.22.08.04;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2011.11.02.22.04.45;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.11.02.20.54.24;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.10.26.21.37.35;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.10.24.21.49.39;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.09.01.21.52.49;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.08.31.22.05.42;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlHit_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See description in header file.
+ *
+ */
+
+#include "StEEmcAnlHit.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+#include "StEEmcAnlElement.h"
+#include "StRoot/StEEmcPool/StEEmcPointMap/StEEmcPointMap.h"
+
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StRoot/StEEmcPool/StEEmcGeoId/StEEmcGeoId.h"
+#include "assert.h"
+
+Int_t StEEmcAnlHit_t::mLastKey = -1;
+
+StEEmcAnlHit_t::StEEmcAnlHit_t( const StSimpleCluster_t& towerClus ){
+   mKey = ++mLastKey;
+   mE = towerClus.getEnergy();
+   mEsmd = 0;
+   mX = towerClus.getMeanX();
+   mY = towerClus.getMeanY();
+
+   const TArrayS &memberArray = towerClus.getMemberArray();
+   const TArrayF &weightArray = towerClus.getWeightArray();
+   Int_t n = std::min( memberArray.GetSize(), weightArray.GetSize() );
+
+   StEEmcAnlElementSet_t::iterator iter;
+   for( Int_t i = 0; i < n; ++i )
+      mTowerSet.insert( StEEmcAnlElement_t( memberArray[i], weightArray[i] ));
+};
+
+void StEEmcAnlHit_t::copyToEEmcData( StSimpleCluster_t& towerCluster, StSimpleCluster_t& uCluster, StSimpleCluster_t& vCluster, StEEmcHit_t& eemcHit ) const {
+   copyToTowerCluster( towerCluster );
+   copyToStripClusters( uCluster, vCluster );
+   copyToEEmcHit( eemcHit );
+
+   // set eemcHit data that is dependent on the smd strips (clusters)
+
+   eemcHit.setClusIDu( uCluster.getID() );
+   eemcHit.setClusIDv( vCluster.getID() );
+   Float_t uE = uCluster.getEnergy();
+   Float_t vE = vCluster.getEnergy();
+   if( uE + vE != mEsmd && mEsmd && (uE + vE) ){
+      Float_t factor = mEsmd/(uE + vE);
+      uE *= factor;
+      vE *= factor;
+   };
+   eemcHit.setEnergyU( uE );
+   eemcHit.setEnergyV( vE );
+   eemcHit.setWeightU( 1 );
+   eemcHit.setWeightV( 1 );
+
+   eemcHit.computeTtest2();
+};
+
+void StEEmcAnlHit_t::copyToStripClusters( StSimpleCluster_t& uCluster, StSimpleCluster_t& vCluster ) const {
+
+   Int_t uN = 0, vN = 0;
+   Float_t uE = 0, vE = 0;
+
+   StEEmcAnlElementSet_t::iterator stripIter;
+   StEEmcAnlElementPtrVec_t uStrips, vStrips;
+   StEEmcAnlElementPtrVec_t::iterator stripPtrIter;
+
+   Short_t hitSector = StEEmcPointMap_t::instance().getSectorOfPoint( mX, mY );
+
+   Float_t uE_inSector = 0, vE_inSector = 0;
+   Float_t meanStripU = 0, meanStripV = 0;
+
+   Int_t i=0;
+   for( stripIter = mStripSet.begin(); stripIter != mStripSet.end(); ++stripIter, ++i ){
+      Short_t sector, strip;
+      Bool_t layerIsV;
+
+      StEEmcGeoId_t::decodeSmd( stripIter->getGeoId(), sector, layerIsV, strip );
+      Float_t E = stripIter->getEnergy();
+
+      if( layerIsV ){
+         ++vN;
+         vE += E;
+         vStrips.push_back( &(*stripIter) );
+         if( sector == hitSector ){
+            vE_inSector += E;
+            meanStripV += E*strip;
+         };
+      } else {
+         ++uN;
+         uE += E;
+         uStrips.push_back( &(*stripIter) );
+         if( sector == hitSector ){
+            uE_inSector += E;
+            meanStripU += E*strip;
+         };
+      };
+   };
+   assert( uE_inSector );
+   assert( vE_inSector );
+   meanStripU /= uE_inSector;
+   meanStripV /= vE_inSector;
+
+   TArrayS memberArrayU( uN );
+   TArrayF weightArrayU( uN );
+   TArrayS memberArrayV( vN );
+   TArrayF weightArrayV( vN );
+
+   Int_t seedStripIdxU = -1, seedStripIdxV = -1;
+   Float_t distU = 1000, distV = 1000;
+   for( i = 0, stripPtrIter = uStrips.begin(); stripPtrIter != uStrips.end(); ++stripPtrIter, ++i ){
+      Short_t sector, strip;
+      Bool_t layerIsV;
+      StEEmcGeoId_t::decodeSmd( (*stripPtrIter)->getGeoId(), sector, layerIsV, strip );
+
+      memberArrayU[i] = strip;
+      weightArrayU[i] = (*stripPtrIter)->getEnergy();
+
+      if( sector == hitSector ){
+         Float_t delta = TMath::Abs(meanStripU-strip);
+         if( delta < distU ){
+            seedStripIdxU = i;
+            distU = delta;
+         };
+      };
+   };
+
+   for( i = 0, stripPtrIter = vStrips.begin(); stripPtrIter != vStrips.end(); ++stripPtrIter, ++i ){
+      Short_t sector, strip;
+      Bool_t layerIsV;
+      StEEmcGeoId_t::decodeSmd( (*stripPtrIter)->getGeoId(), sector, layerIsV, strip );
+
+      memberArrayV[i] = strip;
+      weightArrayV[i] = (*stripPtrIter)->getEnergy();
+
+      if( sector == hitSector ){
+         Float_t delta = TMath::Abs(meanStripV-strip);
+         if( delta < distV ){
+            seedStripIdxV = i;
+            distV = delta;
+         };
+      };
+   };
+
+   if( distU == 1000 )
+      seedStripIdxU = 0;
+   uCluster.setSeedIdx( seedStripIdxU );
+
+   if( distV == 1000 )
+      seedStripIdxV = 0;
+   vCluster.setSeedIdx( seedStripIdxV );
+
+   uCluster.setEnergy( uE );
+   uCluster.setMeanX( meanStripU );
+   uCluster.setMemberArray( memberArrayU );
+   uCluster.setWeightArray( weightArrayU );
+
+   vCluster.setEnergy( vE );
+   vCluster.setMeanX( meanStripV );
+   vCluster.setMemberArray( memberArrayV );
+   vCluster.setWeightArray( weightArrayV );
+
+
+};
+
+
+void StEEmcAnlHit_t::copyToTowerCluster( StSimpleCluster_t& towerCluster ) const {
+   StEEmcAnlElementSet_t::iterator towIter;
+   TArrayS memberArray( mTowerSet.size() );
+   TArrayF weightArray( mTowerSet.size() );
+
+   Int_t i=0;
+   for( towIter = mTowerSet.begin(); towIter != mTowerSet.end(); ++towIter, ++i ){
+      memberArray[i] = towIter->getGeoId();
+      weightArray[i] = towIter->getEnergy();
+   };
+
+   towerCluster.setEnergy( mE );
+   towerCluster.setMeanX( mX );
+   towerCluster.setMeanY( mY );
+   towerCluster.setMemberArray( memberArray );
+   towerCluster.setWeightArray( weightArray );
+};
+
+void StEEmcAnlHit_t::copyToEEmcHit( StEEmcHit_t& eemcHit ) const {
+   StEEmcAnlElementSet_t::iterator towIter;
+
+   // copy over relevant information
+   eemcHit.setID( mKey );
+   eemcHit.setEnergy( mE );
+   eemcHit.setX( mX );
+   eemcHit.setY( mY );
+   eemcHit.setZ( kEEmcZSMD );
+   eemcHit.setSector( StEEmcPointMap_t::instance().getSectorOfPoint( mX, mY ) );
+
+   eemcHit.setNumUsedTowers( mTowerSet.size() );
+
+   Int_t i = 0;
+   Int_t maxTowerId = -1;
+   Float_t maxTowerE = 0;
+   for( towIter = mTowerSet.begin(); towIter != mTowerSet.end(); ++towIter, ++i ){
+      eemcHit.addUsedTower( i, towIter->getGeoId(), towIter->getEnergy()/mE );
+      if( towIter->getEnergy() > maxTowerE ){
+         maxTowerId = towIter->getGeoId();
+         maxTowerE = towIter->getEnergy();
+      };
+   };
+   eemcHit.setTowerIdx( maxTowerId );
+   eemcHit.setIsValid( 1 );
+
+   // TODO: the following need cluster data to compute.  Taken care of in ::copyToEEmcData
+   eemcHit.setClusIDu( -1 );
+   eemcHit.setClusIDv( -1 );
+   eemcHit.setEnergyU( 0 );
+   eemcHit.setEnergyV( 0 );
+   eemcHit.setWeightU( 1 );
+   eemcHit.setWeightV( 1 );
+};
+
+Float_t StEEmcAnlHit_t::getDistToHit( const StEEmcAnlHit_t& other ){
+   Float_t deltaX = mX - other.mX;
+   Float_t deltaY = mY - other.mY;
+
+   return sqrt( deltaX*deltaX + deltaY*deltaY );
+};
+
+// operators
+StEEmcAnlHit_t& StEEmcAnlHit_t::operator+=( const StEEmcAnlHit_t& rhs ){
+   mE += rhs.mE;
+   mEsmd += rhs.mEsmd;
+   mX = 0.5*(mX + rhs.mX);
+   mY = 0.5*(mY + rhs.mY);
+
+   StEEmcAnlElementSet_t::const_iterator rhsIter;
+   StEEmcAnlElementSet_t::iterator myIter;
+
+   for( rhsIter = rhs.mStripSet.begin(); rhsIter != rhs.mStripSet.end(); ++rhsIter ){
+      myIter = mStripSet.find( *rhsIter );
+      if( myIter == mStripSet.end() ){
+         mStripSet.insert( *rhsIter );
+      } else {
+         *const_cast< StEEmcAnlElement_t* >( &(*myIter) ) += (*rhsIter);
+      };
+   };
+   for( rhsIter = rhs.mTowerSet.begin(); rhsIter != rhs.mTowerSet.end(); ++rhsIter ){
+      myIter = mTowerSet.find( *rhsIter );
+      if( myIter == mTowerSet.end() ){
+         mTowerSet.insert( *rhsIter );
+      } else {
+         *const_cast< StEEmcAnlElement_t* >( &(*myIter) ) += (*rhsIter);
+      };
+   };
+
+   return *this;
+};
+
+
+Float_t StEEmcAnlHit_t::getSpread( Int_t sectorLayer ) const {
+   std::map< Int_t, Float_t >::const_iterator mapIter = mSpreadMap.find( sectorLayer );
+
+   return ( mapIter == mSpreadMap.end() ? -999 : mapIter->second );
+};
+
+void StEEmcAnlHit_t::setSpread( Int_t sectorLayer, Float_t val ){
+   mSpreadMap[ sectorLayer ] = val;
+};
+
+ClassImp( StEEmcAnlHit_t );
+
+/*
+ * $Id: StEEmcAnlHit.cxx,v 1.9 2011/12/06 22:36:35 sgliske Exp $
+ *
+ * $Log: StEEmcAnlHit.cxx,v $
+ * Revision 1.9  2011/12/06 22:36:35  sgliske
+ * update
+ *
+ * Revision 1.8  2011/11/11 21:28:10  sgliske
+ * daily update
+ *
+ * Revision 1.7  2011/11/07 22:08:04  sgliske
+ * daily update
+ *
+ * Revision 1.6  2011/11/02 22:04:45  sgliske
+ * update
+ *
+ * Revision 1.5  2011/11/02 20:54:24  sgliske
+ * update
+ *
+ * Revision 1.4  2011/10/26 21:37:35  sgliske
+ * Working on ANL EM Algo
+ *
+ * Revision 1.3  2011/10/24 21:49:39  sgliske
+ * updates, working on reading MC code
+ *
+ * Revision 1.2  2011/09/01 21:52:49  sgliske
+ * Working on ANL EM Algo -- still
+ *
+ * Revision 1.1  2011/08/31 22:05:42  sgliske
+ * Working on ANL EM Algo
+ *
+ * 
+ */
+
+@
+
+
+1.9
+log
+@update
+@
+text
+@d274 1
+a274 1
+ * $Id: StEEmcAnlHit.cxx,v 1.8 2011/11/11 21:28:10 sgliske Exp $
+d277 3
+@
+
+
+1.8
+log
+@daily update
+@
+text
+@d261 10
+d274 1
+a274 1
+ * $Id: StEEmcAnlHit.cxx,v 1.7 2011/11/07 22:08:04 sgliske Exp $
+d277 3
+@
+
+
+1.7
+log
+@daily update
+@
+text
+@d58 2
+d264 1
+a264 1
+ * $Id: StEEmcAnlHit.cxx,v 1.6 2011/11/02 22:04:45 sgliske Exp $
+d267 3
+@
+
+
+1.6
+log
+@update
+@
+text
+@d17 2
+d38 129
+d197 2
+d200 2
+d204 4
+d209 2
+d212 1
+a212 3
+
+   // TODO: could compute these things if needed, but no need yet (not
+   // overly relevant for this hit finder).
+a214 1
+   eemcHit.setTowerIdx( -1 );
+a218 2
+   eemcHit.setIsValid( 1 );
+   eemcHit.setNumUsedTowers( mTowerSet.size() );
+d262 1
+a262 1
+ * $Id: StEEmcAnlHit.cxx,v 1.5 2011/11/02 20:54:24 sgliske Exp $
+d265 3
+@
+
+
+1.5
+log
+@update
+@
+text
+@d18 2
+d21 1
+d59 1
+d85 36
+a120 22
+// Double_t StEEmcAnlHit_t::getMeanSquaredDca( Double_t x, Double_t y ) const{
+//    StEEmcAnlElementSet_t::iterator stripSetIter;
+//    Double_t val = 0;
+//    Double_t totE = 0;
+
+//    for( stripSetIter = mStripSet.begin(); stripSetIter != mStripSet.end(); ++stripSetIter ){
+//       Double_t temp = StEEmcPointMap_t::instance().getStripDCA( x, y, stripSetIter->getGeoId() );
+//       temp *= stripSetIter->getEnergy();
+//       totE += stripSetIter->getEnergy();
+//       val += temp*temp;
+//    };
+//    if( totE ){
+//       totE *= totE;
+//       val /= totE;
+//    };
+
+//    return val;
+// };
+
+// void StEEmcAnlHit_t::meanSquaredDcaMinuitFunc(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t iflag) {
+//    f = mActiveHit ? mActiveHit->getMeanSquaredDca( par[0], par[1] ) : 0;
+// };
+a121 1
+// const StEEmcAnlHit_t* StEEmcAnlHit_t::mActiveHit = 0;
+d126 1
+a126 1
+ * $Id: StEEmcAnlHit.cxx,v 1.4 2011/10/26 21:37:35 sgliske Exp $
+d129 3
+@
+
+
+1.4
+log
+@Working on ANL EM Algo
+@
+text
+@d81 22
+a102 22
+Double_t StEEmcAnlHit_t::getMeanSquaredDca( Double_t x, Double_t y ) const{
+   StEEmcAnlElementSet_t::iterator stripSetIter;
+   Double_t val = 0;
+   Double_t totE = 0;
+
+   for( stripSetIter = mStripSet.begin(); stripSetIter != mStripSet.end(); ++stripSetIter ){
+      Double_t temp = StEEmcPointMap_t::instance().getStripDCA( x, y, stripSetIter->getGeoId() );
+      temp *= stripSetIter->getEnergy();
+      totE += stripSetIter->getEnergy();
+      val += temp*temp;
+   };
+   if( totE ){
+      totE *= totE;
+      val /= totE;
+   };
+
+   return val;
+};
+
+void StEEmcAnlHit_t::meanSquaredDcaMinuitFunc(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t iflag) {
+   f = mActiveHit ? mActiveHit->getMeanSquaredDca( par[0], par[1] ) : 0;
+};
+d104 1
+a104 1
+const StEEmcAnlHit_t* StEEmcAnlHit_t::mActiveHit = 0;
+d109 1
+a109 1
+ * $Id: StEEmcAnlHit.cxx,v 1.3 2011/10/24 21:49:39 sgliske Exp $
+d112 3
+@
+
+
+1.3
+log
+@updates, working on reading MC code
+@
+text
+@d20 1
+a20 2
+   mEu = 0;
+   mEv = 0;
+d34 1
+a34 1
+void StEEmcAnlHit_t::copyToTowerCluster( StSimpleCluster_t& towerCluster ){
+d52 1
+a52 1
+void StEEmcAnlHit_t::copyToEEmcHit( StEEmcHit_t& eemcHit ){
+d60 1
+a60 3
+
+   eemcHit.setEnergyU( mEu );
+   eemcHit.setEnergyV( mEv );
+d67 2
+a68 1
+   // TODO: could compute these things if needed, but no need (not
+a69 1
+   eemcHit.setSector( -1 );
+a78 1
+
+d81 1
+a81 1
+Double_t StEEmcAnlHit_t::getMeanSquaredDca(  Double_t x, Double_t y ) const{
+d109 1
+a109 1
+ * $Id: StEEmcAnlHit.cxx,v 1.2 2011/09/01 21:52:49 sgliske Exp $
+d112 3
+@
+
+
+1.2
+log
+@Working on ANL EM Algo -- still
+@
+text
+@d62 2
+a63 2
+   eemcHit.SetEnergyU( mEu );
+   eemcHit.SetEnergyV( mEv );
+d104 2
+a105 2
+void StEEmcAnlHit_t::meanSquaredDcaMinuitFunc(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t iflag){
+   f = mActiveHit->getMeanSquaredDca( par[0], par[1] );
+d108 1
+d113 1
+a113 1
+ * $Id: StEEmcAnlHit.cxx,v 1.1 2011/08/31 22:05:42 sgliske Exp $
+d116 3
+@
+
+
+1.1
+log
+@Working on ANL EM Algo
+@
+text
+@d14 1
+d20 2
+d62 3
+d85 23
+d112 5
+a116 1
+ * $Id: $
+a117 1
+ * $Log: $
+@
+

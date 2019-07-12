@@ -1,0 +1,122 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.3
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.03.20.08.51;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.02.20.54.24;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlShowerShapeModel_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Abstract base class for both SMD and tower shower shape models.
+ * The model needs determine the amount of energy deposited by a given
+ * hit into either a given tower or a given strip.  The overall
+ * normalization is not important.
+ *
+ */
+
+#ifndef _EEMC_ANL_SHOWER_SHAPE_MODEL_H
+#define _EEMC_ANL_SHOWER_SHAPE_MODEL_H
+
+#include "Stypes.h"
+class StEEmcAnlHit_t;
+
+// the class
+class StEEmcAnlShowerShapeModel_t {
+ public:
+   /// Construtor, deconstructor
+   StEEmcAnlShowerShapeModel_t();
+   virtual ~StEEmcAnlShowerShapeModel_t();
+
+   // default copy constructor, eq. op. OK
+
+   /// Initialize
+   virtual Int_t Init();
+
+   /// Find all the hits
+   virtual Float_t getEnergyFromHitIntoElement( const StEEmcAnlHit_t& hitPtr, Short_t geoId ) = 0;
+
+   /// Clear for next event
+   virtual void Clear(Option_t *opts="");
+
+ private:
+   ClassDef( StEEmcAnlShowerShapeModel_t, 1 );
+};
+
+// inline functions
+
+inline StEEmcAnlShowerShapeModel_t::StEEmcAnlShowerShapeModel_t(){ /* */ };
+inline StEEmcAnlShowerShapeModel_t::~StEEmcAnlShowerShapeModel_t(){ /* */ };
+inline Int_t StEEmcAnlShowerShapeModel_t::Init(){ return kStOk; };
+inline void StEEmcAnlShowerShapeModel_t::Clear( Option_t *opts ){ /* */ };
+
+#endif
+
+/*
+ * $Id: StEEmcAnlShowerShapeModel.h,v 1.2 2011/11/03 20:08:51 sgliske Exp $
+ *
+ * $Log: StEEmcAnlShowerShapeModel.h,v $
+ * Revision 1.2  2011/11/03 20:08:51  sgliske
+ * update
+ *
+ * Revision 1.1  2011/11/02 20:54:24  sgliske
+ * update
+ *
+ * 
+ */
+@
+
+
+1.2
+log
+@update
+@
+text
+@d51 1
+a51 1
+ * $Id: StEEmcAnlShowerShapeModel.h,v 1.1 2011/11/02 20:54:24 sgliske Exp $
+d54 3
+@
+
+
+1.1
+log
+@update
+@
+text
+@d17 1
+d51 5
+a55 1
+ * $Id: $
+a56 1
+ * $Log:  $
+@
+

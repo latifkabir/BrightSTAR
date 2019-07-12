@@ -1,0 +1,247 @@
+head	1.7;
+access;
+symbols
+	response:1.6;
+locks; strict;
+comment	@ * @;
+
+
+1.7
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.6;
+
+1.6
+date	2011.11.18.01.47.54;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.11.18.01.47.03;	author sgliske;	state dead;
+branches;
+next	1.4;
+
+1.4
+date	2011.11.11.21.28.20;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.11.11.04.15.36;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.10.23.43.26;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.10.23.33.33;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlSplitHitMorhac_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Split hits based on peak finding algorith of Miroslav Morhac, as
+ * provided in TSpectrum.
+ *
+ */
+
+#ifndef _EEMC_ANL_SPLIT_HIT_MORHAC_H
+#define _EEMC_ANL_SPLIT_HIT_MORHAC_H
+
+#include <TSpectrum.h>
+
+#include "Stypes.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StEEmcAnlSplitHitAlgo.h"
+#include "AnlEMPoint.h"
+
+class StEEmcAnlHit_t;
+
+// the class
+class StEEmcAnlSplitHitMorhac_t : public StEEmcAnlSplitHitAlgo_t {
+ public:
+   /// Construtor, deconstructor
+   StEEmcAnlSplitHitMorhac_t();
+   virtual ~StEEmcAnlSplitHitMorhac_t();
+
+   // default copy constructor, eq. op. OK
+
+   /// Initialize
+   virtual Int_t Init();
+
+   /// Find all the hits
+   virtual Int_t splitHit( const StEEmcAnlHit_t& hit, Bool_t& doSplit, Bool_t& doInvalidate, AnlEMPoint_t& point1, AnlEMPoint_t& point2 );
+
+   void setRemoveBkg( Bool_t val ){ mRemoveBkg = val; };
+   void setDoMarkov( Bool_t val ){ mDoMarkov = val; };
+   void setMaxNumPoints( Int_t val ){ mMaxNumPoints = val; };
+   void setMinNumStrips( Int_t val ){ mMinNumStrips = val; };
+   void setSideStrips( Int_t val ){ mSideStrips = val; };
+   void setExtraSideStrips( Int_t val ){ mExtraSideStrips = val; };
+   void setNumDeconIters( Int_t val ){ mNumDeconIters = val; };
+   void setAverWindow( Int_t val ){ mAverWindow = val; };
+   void setNumToSum( Int_t val ){ mNumToSum = val; };
+   void setResolution( Float_t val ){ mResolution = val; };
+   void setStartWidth( Float_t val ){ mStartWidth = val; };
+   void setStopWidth( Float_t val ){ mStopWidth = val; };
+   void setWidthStepSize( Float_t val ){ mWidthStepSize = val; };
+   void setThreshold( Float_t val ){ mThreshold = val; };
+
+ protected:
+   TSpectrum *peakFinderPtr;
+
+   Bool_t mDoMarkov;
+   Bool_t mRemoveBkg;
+   Int_t mMaxNumPoints;
+   Int_t mMinNumStrips;
+   Int_t mSideStrips;
+   Int_t mExtraSideStrips;
+   Int_t mNumDeconIters;
+   Int_t mAverWindow;
+   Int_t mNumToSum;
+   Float_t mResolution;
+   Float_t mStartWidth;
+   Float_t mStopWidth;
+   Float_t mWidthStepSize;
+   Float_t mThreshold;
+
+   enum { kMaxNumLayers = 4 };
+   Float_t mStripEnergyArray[kMaxNumLayers][kEEmcNumStrips];
+   Float_t mDeconvoluted[kEEmcNumStrips];
+
+ private:
+   ClassDef( StEEmcAnlSplitHitMorhac_t, 1 );
+};
+
+#endif
+
+/*
+ * $Id: StEEmcAnlSplitHitMorhac.h,v 1.6 2011/11/18 01:47:54 sgliske Exp $
+ *
+ * $Log: StEEmcAnlSplitHitMorhac.h,v $
+ * Revision 1.6  2011/11/18 01:47:54  sgliske
+ * today
+ *
+ * Revision 1.4  2011/11/11 21:28:20  sgliske
+ * daily update
+ *
+ * Revision 1.3  2011/11/11 04:15:36  sgliske
+ * update: it compiles!
+ *
+ * Revision 1.2  2011/11/10 23:43:26  sgliske
+ * update
+ *
+ * Revision 1.1  2011/11/10 23:33:33  sgliske
+ * Re-arranged hit splitting & added new base class and algos
+ *
+ * 
+ */
+@
+
+
+1.6
+log
+@today
+@
+text
+@d82 1
+a82 1
+ * $Id: StEEmcAnlSplitHitMorhac.h,v 1.4 2011/11/11 21:28:20 sgliske Exp $
+d85 3
+@
+
+
+1.5
+log
+@today
+@
+text
+@d17 2
+d20 1
+a22 3
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StEEmcAnlSplitHitAlgo.h"
+
+@
+
+
+1.4
+log
+@daily update
+@
+text
+@d82 1
+a82 1
+ * $Id: StEEmcAnlSplitHitMorhac.h,v 1.3 2011/11/11 04:15:36 sgliske Exp $
+d85 3
+@
+
+
+1.3
+log
+@update: it compiles!
+@
+text
+@d38 15
+d55 3
+d59 1
+d61 4
+d69 1
+a69 1
+   Float_t mThreshold, mRemoveBkg, mNumDeconIters, mDoMarkov, mAverWindow;  // settings to TSpectrum::HighResSearch
+d82 1
+a82 1
+ * $Id: StEEmcAnlSplitHitMorhac.h,v 1.2 2011/11/10 23:43:26 sgliske Exp $
+d85 3
+@
+
+
+1.2
+log
+@update
+@
+text
+@d36 1
+a36 1
+   virtual Int_t splitHit( const StEEmcAnlHit_t& hit, Bool_t& doSplit, AnlEMPoint_t& point1, AnlEMPoint_t& point2 );
+d50 1
+d59 1
+a59 1
+ * $Id: StEEmcAnlSplitHitMorhac.h,v 1.1 2011/11/10 23:33:33 sgliske Exp $
+d62 3
+@
+
+
+1.1
+log
+@Re-arranged hit splitting & added new base class and algos
+@
+text
+@d20 1
+d46 1
+d48 1
+a48 1
+   enum { kMaxNumLayers = 4; };
+d58 5
+a62 1
+ * $Id: $
+a63 1
+ * $Log: $
+@
+

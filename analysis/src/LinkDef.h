@@ -1,11 +1,11 @@
 
 #ifdef __CINT__
 
-#pragma link C++ function AnReadRP;                     // Read RP data
-#pragma link C++ function AnReadEEMC;                   // Read EEMC data
-#pragma link C++ function AnReadEEMC2;                  // Read EEMC data
-#pragma link C++ function AnRPdist;                     // Various RP distributions
-#pragma link C++ function AnEEMCdist;                   // Various EEMC distributions
-#pragma link C++ function AnEEmcEvent;                  // Various EEMC distributions
+#pragma link C++ function RpReadDemo;                     // Read RP data
+#pragma link C++ function RpQA;                           // Various RP distributions
+#pragma link C++ function EEmcReadDemo;                   // Read EEMC data
+#pragma link C++ function EEmcReadDemo2;                  // Read EEMC data
+#pragma link C++ function EEmcQA;                         // Various EEMC distributions
+#pragma link C++ function EEmcEvent;                      // Various EEMC distributions
 
 #endif

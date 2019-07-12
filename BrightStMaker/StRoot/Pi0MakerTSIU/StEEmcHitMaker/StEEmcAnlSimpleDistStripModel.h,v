@@ -1,0 +1,135 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.3
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.06.22.36.35;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.11.21.28.17;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlNaiveDistStripModel_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Evaluate given function f(x) at
+ *
+ * x = (delta strips) / spread
+ *
+ * Delta strips (the distance is between point and strip, in units of
+ * number of strips) and spread are those relevant for the sector and
+ * layer of the strip.
+ * 
+ */
+
+#ifndef _EEMC_ANL_SHOWER_SHAPE_MODEL_SIMPLE_DIST_STRIP_H_
+#define _EEMC_ANL_SHOWER_SHAPE_MODEL_SIMPLE_DIST_STRIP_H_
+
+#include <TF1.h>
+
+#include "Stypes.h"
+#include "StEEmcAnlNaiveDistStripModel.h"
+
+// the class
+class StEEmcAnlSimpleDistStripModel_t : public StEEmcAnlNaiveDistStripModel_t {
+ public:
+   /// Construtor, deconstructor
+   StEEmcAnlSimpleDistStripModel_t();
+   virtual ~StEEmcAnlSimpleDistStripModel_t();
+
+   // default copy constructor, eq. op. OK
+
+   /// Find all the hits
+   virtual Float_t getEnergyFromHitIntoElement( const StEEmcAnlHit_t& hitPtr, Short_t geoId );
+
+ protected:
+
+ private:
+   ClassDef( StEEmcAnlSimpleDistStripModel_t, 1 );
+};
+
+#endif
+
+/*
+ * $Id: StEEmcAnlSimpleDistStripModel.h,v 1.2 2011/12/06 22:36:35 sgliske Exp $
+ * $Log: StEEmcAnlSimpleDistStripModel.h,v $
+ * Revision 1.2  2011/12/06 22:36:35  sgliske
+ * update
+ *
+ * Revision 1.1  2011/11/11 21:28:17  sgliske
+ * daily update
+ *
+ * 
+ */
+@
+
+
+1.2
+log
+@update
+@
+text
+@d45 1
+a45 1
+ * $Id: StEEmcAnlSimpleDistStripModel.h,v 1.1 2011/11/11 21:28:17 sgliske Exp $
+d47 3
+@
+
+
+1.1
+log
+@daily update
+@
+text
+@d6 1
+a6 1
+ * Evaluate given function f(x) at x = DCA(point and strip)/hitStripRMS(sector,layer)
+d8 6
+a32 3
+   /// Initialize
+   virtual Int_t Init();
+
+a35 3
+   /// set the weight function
+   void setWeightFunction( TF1* func );
+
+a36 4
+   TF1* mWeightFunc;
+   Float_t mFactor;   // in units of [cm.]
+
+   void setFactor( Float_t factor ){ /* */ };  // deprecate the function
+a41 4
+// inline functions
+
+inline void StEEmcAnlSimpleDistStripModel_t::setWeightFunction( TF1* func ){ mWeightFunc = func; };
+
+d45 5
+a49 2
+ * $Id: $
+ * $Log: $
+@
+

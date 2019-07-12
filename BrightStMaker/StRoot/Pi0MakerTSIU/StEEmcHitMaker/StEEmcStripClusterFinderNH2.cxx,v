@@ -1,0 +1,487 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2012.03.07.22.30.46;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2012.03.02.19.04.59;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@creation
+@
+
+
+1.3
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcStripClusterFinderNH2_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See header for description.
+ *
+*/
+
+#include <list>
+#include <TMath.h>
+#include <TFile.h>
+#include <TF1.h>
+#include <assert.h>
+
+#include <TSpectrum.h>
+
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+
+#include "StEEmcStripClusterFinderNH2.h"
+
+#include "IdxValPair.h"
+
+//#define DEBUG
+//#define DEBUG_INPUT
+
+
+StEEmcStripClusterFinderNH2_t::StEEmcStripClusterFinderNH2_t() :
+   mMinStripsPerCluster( 5 ),
+   mMinSeedDist( 20 ),
+   mWindowDist( 20 ),
+   mSeedEnergyThres( 0.003 ),
+   mMinClusterEnergy( 0.01 ),
+   mMeanDistThres( 7 ),
+   mAveWinFact( 0.4 ),          // good to keep below 0.5
+   mShapeFactor( 0.3 )
+{
+   // initialize a few parent variables
+   mLayer = U_LAYER;
+   mSector = 0;
+   mIsReady = 1;
+
+   Int_t maxDist = 2*mWindowDist+2;  // added an extra 1 for good measure
+   mHist2D =  new TH2F( "stripClusterFinderNH2_hist2D", "Hough Space: Mean vs. Delta; mean; delta", kEEmcNumStrips, 0, kEEmcNumStrips, maxDist, 0, maxDist );
+
+#ifdef MAKE_HISTS
+   mTFile = new TFile( "test.NH2.root", "RECREATE" );
+   mHistNum = -1;
+   mRatioHist = new TH1F ( "ratioHist", "", 40, 0, 1 );
+   mMeanHist = new TH1F ( "meanHist", "", 30, 0, 30 );
+   mRmsHist = new TH1F ( "rmsHist", "", 30, 0, 30 );
+   mMpvHist = new TH1F ( "mpvHist", "", 30, 0, 30 );
+   mMeanMinusMpvHist = new TH1F ( "meanMinusMpvHist", "", 60, -30, 30 );
+   mIntHist = new TH1F ( "intHist", "", 50, 0, 1 );
+   mPeak = new TH1F ( "peak", "", 30, 0, 30 );
+   mMaxPeak = new TH1F ( "maxPeak", "", 30, 0, 30 );
+#endif
+};
+
+StEEmcStripClusterFinderNH2_t::~StEEmcStripClusterFinderNH2_t(){
+   // nothing to do
+#ifdef MAKE_HISTS
+   mTFile->cd();
+   mTFile->Write();
+   mTFile->Close();
+#endif
+};
+
+
+/// find some clusters
+Int_t StEEmcStripClusterFinderNH2_t::find( const StEEmcStripVec_t& hitStrips, StSimpleClusterVec_t& clustersOut ){
+   clustersOut.clear();
+   Int_t ierr = kStOk;
+
+   if( mMinSeedDist < 3 ){
+      LOG_WARN << "Min. seed distance reset to 3" << endm;
+      mMinSeedDist = 3;
+   };
+
+   StSimpleClusterList_t clusters;
+
+   // skip if not enough strips hit
+   if( hitStrips.size() < static_cast< UInt_t >( mMinStripsPerCluster ) )
+      return ierr;
+
+   // clear array
+   for( Float_t *p1 = mStripEnergyArray; p1 != &mStripEnergyArray[kEEmcNumStrips]; ++p1 )
+      (*p1) = 0;
+
+   // containers of seeds
+   IdxValPairVec_t seedVec; // sorted by Idx
+   ValIdxPairList_t seedList;   // sorted by Energy
+
+   // copy
+   Int_t smallestIdx = kEEmcNumStrips, largestIdx = -1;
+   for( StEEmcStripVec_t::const_iterator iter = hitStrips.begin(); iter != hitStrips.end(); ++iter ){
+      if( !iter->fail()  ){
+         Float_t E = iter->energy();
+         Int_t idx = iter->index();
+         mStripEnergyArray[ idx ] =  E;
+
+         if( idx > largestIdx )
+            largestIdx = idx;
+         if( idx < smallestIdx )
+            smallestIdx = idx;
+
+         if( E > mSeedEnergyThres )
+            seedVec.push_back( IdxValPair_t( idx, E ) );
+
+#ifdef DEBUG_INPUT
+         cout << "ccc " << mSector << ' ' << (mLayer ? 'v' : 'u' ) << ' ' << iter->index() << ' ' << E << endl;
+#endif
+      };
+   };
+
+   // note: seedVec sorted by idx (ascending)
+
+   if( !seedVec.empty() ){
+      // now fill list and sort by energy
+      seedList.assign( seedVec.begin(), seedVec.end() );
+      seedList.sort();
+
+      // set order to be descending
+      seedList.reverse();
+
+      // remove any that are too close (keeping higher energy one)
+      ValIdxPairList_t::iterator listIter1, listIter2;
+      for( listIter1 = seedList.begin(); listIter1 != seedList.end(); ++listIter1 )
+         for( (listIter2 = listIter1)++; listIter2 != seedList.end(); ++listIter2 )
+            if( listIter1 != listIter2 && abs( listIter1->idx - listIter2->idx) < mMinSeedDist )
+               listIter2 = --seedList.erase( listIter2 );
+   };
+
+   if( !seedList.empty() ){
+
+#ifdef DEBUG
+      LOG_INFO << "Sector " << mSector << " layer " << (mLayer?'v':'u') << " found " << seedList.size() << " seeds" << endm;
+      LOG_INFO << "Seeds are at " << endm;
+
+      ValIdxPairList_t::iterator iter;
+      for( iter = seedList.begin(); iter != seedList.end(); ++iter ){
+         LOG_INFO << iter->idx << ' ' << iter->val << endm;
+      };
+#endif
+
+      Int_t nSeeds = seedList.size();
+
+      // copy seeds back to the vector
+      seedVec.reserve( nSeeds + 1 );
+      seedVec.assign( seedList.begin(), seedList.end() );
+      std::sort( seedVec.begin(), seedVec.end() );
+
+      // add an upper edge to the seed vector, such that the average
+      // of the last seed pos. and this seed pos is the upper edge of
+      // the array.
+      seedVec.push_back( IdxValPair_t( 2*kEEmcNumStrips + seedVec.back().idx ) );
+
+      // precompute first low edge
+      Int_t lowEdge = std::max( 0, seedVec[0].idx - mWindowDist );
+
+      // loop over seeds and set edge vectors
+      for( Int_t iseed = 0; iseed < nSeeds; ++iseed ){
+         Int_t ave = 0.5*(seedVec[iseed].idx + seedVec[iseed+1].idx) + 0.5;  // add an extra 0.5 so that ave is rounded to nearest int
+
+         Int_t highEdge = std::min( seedVec[iseed].idx + mWindowDist, ave );
+
+         // reset histo
+         mHist2D->Reset();
+
+         // Hough transform
+         Float_t *ePtr1 = &mStripEnergyArray[lowEdge];
+         for( Int_t i1 = lowEdge; i1 < highEdge; ++i1, ++ePtr1 ){
+            Float_t *ePtr2 = ePtr1;
+            ++ePtr2;
+            for( Int_t i2 = i1+1; i2 < highEdge; ++i2, ++ePtr2 ){
+               Float_t weight = (*ePtr1)*(*ePtr2);
+               if( weight > 0 ){
+                  weight = sqrt(weight);
+                  Float_t mean = (i1+i2)*0.5;
+                  Float_t width = (i2-i1);
+                  mHist2D->Fill( mean, width, weight );
+               };
+            };
+         };
+
+         // Decide if one hit or two
+
+         // get projection of Hough mean's above the average Hough distance
+         Float_t meanY = mHist2D->GetMean(2);
+         TH1D *pxHigh = mHist2D->ProjectionX( "pxHigh", meanY+0.5, -1 );
+
+         // set cut to post probable peak, and look at distances near the cut value
+
+         TSpectrum spec(100);
+         Int_t npeaks = spec.Search( pxHigh, 1, "goff", 0.45 );
+         Int_t cutPos = pxHigh->GetMaximumBin()-1;
+         if( npeaks ){
+            Float_t maxHeight = 0;
+            const Float_t *peakXpos = spec.GetPositionX();
+            const Float_t *peakYpos = spec.GetPositionY();
+            for( Int_t i = 0; i < npeaks; ++i ){
+               if( maxHeight < peakYpos[i] ){
+                  maxHeight = peakYpos[i];
+                  cutPos = peakXpos[i];
+               };
+            };
+         };
+
+         TH1D *pyCut = mHist2D->ProjectionY( "pyCut", cutPos-0.5, cutPos+0.5 );
+
+#ifdef MAKE_HISTS
+         std::stringstream ss;
+         ss << "pyCut_" << ++mHistNum;
+         pyCut->SetName( ss.str().data() );
+         mTFile->cd();
+         pyCut->Write();
+#endif
+
+
+         npeaks = spec.Search( pyCut, 1, "goff", 0.45 );
+         Float_t maxPeakPos = -1;
+
+         const Float_t *peakXpos = spec.GetPositionX();
+         for( Int_t i = 0; i < npeaks; ++i ){
+#ifdef MAKE_HISTS
+            mPeak->Fill( peakXpos[i] );
+#endif
+            if( maxPeakPos < peakXpos[i] )
+               maxPeakPos = peakXpos[i];
+         };
+#ifdef MAKE_HISTS
+         if( maxPeakPos > -1 )
+            mMaxPeak->Fill( maxPeakPos );
+#endif
+
+         //cout << "Peaks per hist " << mHistNum << ' ' << npeaks << " max at " << maxPeakPos << endl;
+
+         // smooth once
+         // pyCut->Smooth(1);
+
+#ifdef MAKE_HISTS
+         Float_t distMean = pyCut->GetMean();
+         mRatioHist->Fill( pyCut->GetBinContent(2)*1. / pyCut->GetMaximum() );
+         mMeanHist->Fill( distMean );
+         mRmsHist->Fill( pyCut->GetRMS() );
+         mMpvHist->Fill( pyCut->GetMaximumBin()-1 );
+         mMeanMinusMpvHist->Fill( distMean - pyCut->GetMaximumBin()-1 );
+         mIntHist->Fill( pyCut->Integral( 1, 5 ) / pyCut->Integral() );
+
+         //cout << pyCut->GetBinContent(2) << ' ' << pyCut->GetMaximum() << ' ' << pyCut->GetBinContent(2)*1. / pyCut->GetMaximum() << endl;
+#endif
+
+         // cut on mean dist and that the first possible non-zero bin is less than a fraction of the max bin
+         if( maxPeakPos < 6 ){
+            //cout << "is 1" << endl;
+
+            // single cluster: set it to cover full range and use the same seed
+            addCluster( lowEdge, highEdge, seedVec[iseed].idx, kEEmcNumStrips, clustersOut );
+         } else {
+            // two clusters: determine the seed positions
+            TH1D *pxLow = mHist2D->ProjectionX( "pxLow", 1, meanY+0.5 );
+            Int_t primaryPeakPos = pxLow->GetMaximumBin()-1;
+            Int_t interClusterDist = maxPeakPos;
+            Int_t averageWindow =  interClusterDist*mAveWinFact;
+
+            if( TMath::Abs( primaryPeakPos - cutPos ) >= interClusterDist ){
+               //cout << "is 2->1" << endl;
+
+               // both seeds fell on the same side of the cut--assume is just one cluster
+               addCluster( lowEdge, highEdge, seedVec[iseed].idx, kEEmcNumStrips, clustersOut );
+            } else if( cutPos > primaryPeakPos ){
+               //cout << "is 2" << endl;
+
+               // primary peak has lower strip idx
+               addCluster( lowEdge,  cutPos, primaryPeakPos,                    averageWindow, clustersOut );
+               addCluster( cutPos, highEdge, primaryPeakPos + interClusterDist, averageWindow, clustersOut );
+            } else {
+               //cout << "is 2" << endl;
+
+               addCluster( lowEdge,  cutPos, primaryPeakPos - interClusterDist, averageWindow, clustersOut );
+               addCluster( cutPos, highEdge, primaryPeakPos,                    averageWindow, clustersOut );
+            };
+         };
+
+         // set new low edge before looping
+         lowEdge = std::max( seedVec[iseed+1].idx - mWindowDist, ave );
+      };
+   };
+
+#ifdef DEBUG
+   for( UInt_t i=0; i<clustersOut.size(); ++i ){
+      LOG_INFO << "Final results: event " << getEventNum() << " sector/layer " << mSector << '/'
+               << (mLayer ? 'v' : 'u') << ' ' << clustersOut[i] << endm;
+   };
+#endif
+
+   return ierr;
+};
+
+
+void StEEmcStripClusterFinderNH2_t::addCluster( Int_t lowIdx, Int_t highIdx, Int_t seedIdx, Int_t aveWindow, StSimpleClusterVec_t& clustersOut ){
+
+   // count number of strips in the cluster and the total energy
+   Int_t nStrips = 0;
+   Float_t energy = 0;
+   for( Float_t *p = &mStripEnergyArray[ lowIdx ]; p != &mStripEnergyArray[ highIdx ]; ++p ){
+      if( *p ){
+         ++nStrips;
+         energy += *p;
+      };
+   };
+
+   if( nStrips >= mMinStripsPerCluster && energy >= mMinClusterEnergy ){
+      // add cluster
+      clustersOut.push_back( StSimpleCluster_t( ++mLastClusterID ) );
+      StSimpleCluster_t& clus = clustersOut.back();
+
+      // compute weighted mean position
+
+      if( aveWindow < 1 )
+         aveWindow = 1;
+
+      Float_t wMean = 0, wSum = 0;
+      //cout << lowIdx << ' ' << highIdx << ' ' << seedIdx << ' ' << aveWindow << endl;
+      for( Int_t i = std::max( lowIdx, seedIdx - aveWindow ); i < std::min( highIdx, seedIdx + aveWindow + 1 ); ++i ){
+         wSum += mStripEnergyArray[i];
+         wMean += mStripEnergyArray[i] * i;
+      };
+      if( wSum <= 0 ){
+         TFile *f = new TFile("temp.root", "RECREATE");
+         mHist2D->Write();
+         f->Write();
+      };
+      if( !wSum ){
+         LOG_ERROR << "Total energy is << " << wSum << " between max(" << lowIdx << ", " << seedIdx << "-" << aveWindow << ") and min(" << highIdx << ", " << seedIdx << "+" << aveWindow << "+1 )" << endl;
+      };
+      assert( wSum ); // must be true or something really odd happened
+      wMean /= wSum;
+
+      TArrayS& memArr = clus.getMemberArray();
+      TArrayF& wArr = clus.getWeightArray();
+
+      memArr.Set( nStrips );
+      wArr.Set( nStrips );
+
+      Int_t internalSeedIdx = 0, i = -1;
+      for( Int_t idx = lowIdx; idx < highIdx; ++idx ){
+         if( mStripEnergyArray[idx] ){
+            ++i;
+            memArr[i] = idx;
+            wArr[i] = mStripEnergyArray[idx];
+            if( idx == seedIdx )
+               internalSeedIdx = i;
+         };
+      };
+
+      clus.setMeanX( wMean );
+      clus.setEnergy( energy );
+      clus.setSeedIdx( internalSeedIdx );
+   };
+};
+
+ClassImp( StEEmcStripClusterFinderNH2_t );
+
+/*
+ * $Id: StEEmcStripClusterFinderNH2.cxx,v 1.2 2012/03/07 22:30:46 sgliske Exp $
+ * $Log: StEEmcStripClusterFinderNH2.cxx,v $
+ * Revision 1.2  2012/03/07 22:30:46  sgliske
+ * general updates
+ *
+ * Revision 1.1  2012/03/02 19:04:59  sgliske
+ * creation
+ *
+ *
+ */
+@
+
+
+1.2
+log
+@general updates
+@
+text
+@d366 1
+a366 1
+ * $Id: StEEmcStripClusterFinderNH2.cxx,v 1.1 2012/03/02 19:04:59 sgliske Exp $
+d368 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d11 2
+d15 2
+d36 1
+d45 13
+d62 5
+d163 1
+a163 1
+         Float_t ave = 0.5*(seedVec[iseed].idx + seedVec[iseed+1].idx);
+d165 1
+a165 1
+         highEdge = std::min( seedVec[iseed].idx + mWindowDist, ave );
+d175 1
+a175 1
+            for( Int_t j = i+1; j < highEdge; ++j, ++ePtr2 ){
+d177 5
+a181 4
+               if( weight ){
+                  Float_t mean = (i+j)*0.5;
+                  Float_t width = (j-i);
+                  newHist->Fill( mean, width, weight );
+d192 17
+a208 2
+         // set cut to MVP, and look at distances near the cut value
+         Int_t cutPos = pxHigh->GetMaximumBin();
+d211 31
+d243 13
+a256 1
+         if( distMean < mMeanDistThres ){
+d258 1
+a258 1
+            addCluster( lowEdge, highEdge, seedVec[iseed].idx, clustersOut );
+d262 11
+a272 2
+            Int_t primaryPeakPos = pxLow->GetMaximumBin();
+            Int_t interClusterDist = pyCut->GetMaximumBin();
+a273 1
+            if( cutPos > primaryPeakPos ){
+d275 2
+a276 2
+               addCluster( lowEdge, cutPos, primaryPeakPos, clustersOut );
+               addCluster( cutPos, highEdge, primaryPeakPos + interClusterDist, clustersOut );
+d278 4
+a281 2
+               addCluster( lowEdge, cutPos, primaryPeakPos - interClusterDist, clustersOut );
+               addCluster( cutPos, highEdge, primaryPeakPos, clustersOut );
+d315 2
+a316 2
+      clusters.push_back( StSimpleCluster_t( ++mLastClusterID ) );
+      StSimpleCluster_t& clus = clusters.back();
+d320 3
+d324 1
+d329 8
+d366 5
+a370 2
+ * $Id: $
+ * $Log:  $
+@
+

@@ -1,0 +1,438 @@
+head	1.4;
+access;
+symbols
+	response:1.3;
+locks; strict;
+comment	@// @;
+
+
+1.4
+date	2012.10.09.03.58.25;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.12.07.22.33.11;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.18.01.51.02;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.18.01.47.03;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@updates
+@
+text
+@/*!
+ *
+ * \class GmmEm1D_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Solve 1D Gaussian Mixture Model with EM Alg.  Implemented by
+ * S. Gliske, May and Nov. 2011.
+ *
+ */
+
+#include "GmmEm1D.h"
+
+#include <vector>
+#include <string>
+#include <cmath>
+#include <set>
+
+#include <iostream>
+// using std::cerr;
+// using std::cout;
+// using std::endl;
+
+#ifndef ONE_OVER_SQUARE_ROOT_OF_2PI
+#define ONE_OVER_SQUARE_ROOT_OF_2PI 0.39894228
+#endif
+
+GmmEm1D_t::GmmEm1D_t() : mMaxIters(15), mStatusMessage("Constructed.") { /* */ };
+
+GmmEm1D_t::~GmmEm1D_t(){
+   // clear memory
+   while( !mWeight.empty() ){
+      delete[] mWeight.back();
+      mWeight.pop_back();
+   };
+};
+
+int GmmEm1D_t::solve( const GmmEmDataVec_t& input, GmmEmGausParamVec_t& output, double* chiSqPtr ){
+
+   mStatusMessage = "Solving in progress...";
+   mInputPtr = &input;
+
+   // total weights in
+   double wTot = 0;
+   GmmEmDataVec_t::const_iterator inputIter;
+
+   for( inputIter = input.begin(); inputIter != input.end(); ++inputIter )
+      wTot += inputIter->val;
+
+   if( wTot == 0 ){
+      mStatusMessage = "GmmEm1D_t::solve(): Error: total of input weights is zero";
+      return 1;
+   };
+
+   // make own list of clusters, and copy to output at the end
+   GmmEmGausParamVec_t cluster( output );
+
+   // clear memory
+   while( !mWeight.empty() ){
+      delete[] mWeight.back();
+      mWeight.pop_back();
+   };
+
+   // set up initial membership weights for input points
+   mWeight.resize( input.size(), 0 );
+   WeightVec_t::iterator weightIter;
+   for( weightIter = mWeight.begin(); weightIter != mWeight.end(); ++weightIter ){
+      (*weightIter) = new double [ cluster.size() ];
+
+      // init weights to 1
+      for( double *p = (*weightIter); p != (*weightIter) + cluster.size(); ++p )
+         (*p) = 1;
+   };
+
+   GmmEmGausParamVec_t::iterator clusIter;
+   //    cerr << "Initial values" << endl;
+   //    for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter )
+   //       cerr << clusIter->A << ' ' << clusIter->mean << ' ' << sqrt(clusIter->sigmaSq) << endl;
+
+   int ierr = 0;
+   for( int iterNum = 0; iterNum < mMaxIters && !ierr; ++iterNum ){
+
+      // update the membership weights
+      ierr = Expectation( cluster, mWeight );
+
+      // update means and sigmas
+      if( !ierr )
+         ierr = Maximization( cluster, mWeight );
+
+      // Normalize
+      double totA = 0;
+      for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter )
+         totA += clusIter->A;
+      for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter )
+         clusIter->A /= totA; 
+
+      // check if converged
+
+   };
+
+   // copy clusters to output
+   if( !ierr )
+      output = cluster;
+
+   if( chiSqPtr )
+      *chiSqPtr = computeChiSq( cluster, mWeight, wTot );
+
+   return ierr;
+};
+
+// update the membership weights
+int GmmEm1D_t::Expectation( const GmmEmGausParamVec_t& cluster, WeightVec_t& weight ){
+
+   GmmEmDataVec_t::const_iterator inputIter;
+   WeightVec_t::iterator weightIter;
+   GmmEmGausParamVec_t::const_iterator clusIter;
+
+   // first go over all of the clusters and evaluate at each of the positions
+   // later, normalize
+   int clusIdx = 0;
+   for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter, ++clusIdx ){
+      weightIter = weight.begin();
+      inputIter = mInputPtr->begin();
+
+      // ensure not removed from the set and sanity check on sigma
+      if( clusIter->A && clusIter->sigmaSq > 0){
+         double gaus_norm = ONE_OVER_SQUARE_ROOT_OF_2PI/sqrt(clusIter->sigmaSq);
+
+         // evaluate given cluster at each idx position
+         for( ; inputIter != mInputPtr->end(); ++inputIter, ++weightIter )
+            (*weightIter)[clusIdx] = EvalGaus( gaus_norm*clusIter->A, clusIter->mean, clusIter->sigmaSq, inputIter->idx );
+      } else {
+         for( ; inputIter != mInputPtr->end(); ++inputIter, ++weightIter )
+            (*weightIter)[clusIdx] = 0;
+      };
+   };
+
+   // normalize
+   for( weightIter = weight.begin(); weightIter != weight.end(); ++weightIter ){
+      double wTot = 0;
+
+      for( double *p = (*weightIter); p != (*weightIter) + cluster.size(); ++p )
+         wTot += (*p);
+
+      // as long as not zero
+      if( wTot  )
+         for( double *p = (*weightIter); p != (*weightIter) + cluster.size(); ++p )
+            (*p) /= wTot;
+   };
+
+   return 0;
+};
+
+// determine cluster params given the weights and input
+int GmmEm1D_t::Maximization( GmmEmGausParamVec_t& cluster, const WeightVec_t& weight ){
+
+   GmmEmDataVec_t::const_iterator inputIter;
+   WeightVec_t::const_iterator weightIter;
+   GmmEmGausParamVec_t::iterator clusIter;
+
+   // for each cluster, set the parameters the values with maximize the likelihood
+   int clusIdx = 0;
+   for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter, ++clusIdx ){
+
+      // make sure not removed from the set
+      if( clusIter->A ){
+         double old_mean = clusIter->mean;
+
+         double &A = clusIter->A;
+         double &mean = clusIter->mean;
+         double &sigmaSq = clusIter->sigmaSq;
+
+         A = 0;
+         mean = 0;
+         sigmaSq = 0;
+
+         weightIter = weight.begin();
+         inputIter = mInputPtr->begin();
+
+         // iterate over the input points and their membership weights
+         for( ; inputIter != mInputPtr->end(); ++inputIter, ++weightIter ){
+            double w = (*weightIter)[clusIdx] * inputIter->val;
+
+            A += w;
+            mean += w*inputIter->idx;
+
+            double diff = ( inputIter->idx - old_mean );
+            diff *= diff;
+            diff *= w;
+            sigmaSq += diff;
+         };
+
+         if( A ){
+            mean /= A;
+            sigmaSq /= A;
+            A /= mInputPtr->size();
+         };
+      };
+   };
+
+
+   return 0;
+};
+
+double GmmEm1D_t::EvalGaus( double A, double mu, double sigmaSq, double x ) {
+
+//    double sigma = sqrt(sigmaSq);
+//    double d = ( mu > x ? mu - x : x - mu );
+//    double Afactor = ONE_OVER_SQUARE_ROOT_OF_2PI / sigma;
+//    double val = 0;
+//    if( d < sigma )
+//       val = A/Afactor /2./sigma;
+//    return val+0.01;
+
+   double temp = mu - x;
+   temp *= temp;
+   temp *= -0.5;
+   temp /= sigmaSq;
+   if( temp )
+      temp = A*exp( temp );
+
+   return temp;
+};
+
+// note: currently only evalutes at the points given in the input, not on all points in the range of the input
+double GmmEm1D_t::computeChiSq(  const GmmEmGausParamVec_t& cluster, const WeightVec_t& weight, double totE ){
+   double chiSq = 0;
+
+   GmmEmDataVec_t::const_iterator inputIter;
+   WeightVec_t::const_iterator weightIter;
+   GmmEmGausParamVec_t::const_iterator clusIter;
+
+   weightIter = weight.begin();
+   inputIter = mInputPtr->begin();
+
+   // iterate over the input points and find range
+   int idx1 = mInputPtr->front().idx;
+   int idx2 = mInputPtr->front().idx;
+
+   std::set< int > idxSet, diffSet;
+
+   for( ; inputIter != mInputPtr->end(); ++inputIter, ++weightIter ){
+      if( inputIter->idx < idx1 )
+         idx1 = inputIter->idx;
+      if( inputIter->idx > idx2 )
+         idx2 = inputIter->idx;
+
+      idxSet.insert( inputIter->idx );
+   };
+
+   for( int i = idx1+1; i < idx2; ++i )
+      if( !idxSet.count( i ) )
+         diffSet.insert( i );
+
+   diffSet.insert( idx1-1 );
+   diffSet.insert( idx2+1 );
+
+   // iterate over the input points and their membership weights
+   for( ; inputIter != mInputPtr->end(); ++inputIter, ++weightIter ){
+
+      // iterate over all clusters
+      int clusIdx = 0;
+      for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter, ++clusIdx ){
+         if( clusIter->A && clusIter->sigmaSq > 0){
+            double gaus_norm = ONE_OVER_SQUARE_ROOT_OF_2PI / sqrt(clusIter->sigmaSq) * totE;
+
+            double expected = EvalGaus( gaus_norm*clusIter->A, clusIter->mean, clusIter->sigmaSq, inputIter->idx );
+            double observed = (inputIter->val) * (*weightIter)[clusIdx];
+
+            if( expected > 1e-6 ){
+               double temp = expected - observed;
+               temp *= temp;
+               temp /= expected;
+               chiSq += temp;
+
+               //std::cout << "ZZZ " << expected << ' ' << observed << ' ' << temp << ' ' << chiSq << std::endl;
+            };
+         };
+      };
+   };
+
+   // now the chisq for all the bins that are zero
+
+   int clusIdx = 0;
+   for( std::set< int >::iterator setIter = diffSet.begin(); setIter != diffSet.end(); ++setIter ){
+      // iterate over all clusters
+      for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter, ++clusIdx ){
+         if( clusIter->A && clusIter->sigmaSq > 0){
+            double gaus_norm = ONE_OVER_SQUARE_ROOT_OF_2PI / sqrt(clusIter->sigmaSq) * totE;
+            double expected = EvalGaus( gaus_norm*clusIter->A, clusIter->mean, clusIter->sigmaSq, *setIter );
+
+            chiSq += expected;
+         };
+      };
+   };
+
+   return ( chiSq ? chiSq : 1e100 );
+};
+
+
+
+/*
+ * $Id: GmmEm1D.cxx,v 1.3 2011/12/07 22:33:11 sgliske Exp $
+ * $Log: GmmEm1D.cxx,v $
+ * Revision 1.3  2011/12/07 22:33:11  sgliske
+ * update
+ *
+ * Revision 1.2  2011/11/18 01:51:02  sgliske
+ * today
+ *
+ * Revision 1.1  2011/11/18 01:47:03  sgliske
+ * today
+ *
+ * 
+ */
+@
+
+
+1.3
+log
+@update
+@
+text
+@d302 1
+a302 1
+ * $Id: GmmEm1D.cxx,v 1.2 2011/11/18 01:51:02 sgliske Exp $
+d304 3
+@
+
+
+1.2
+log
+@today
+@
+text
+@d16 1
+d18 1
+a18 1
+// #include <iostream>
+d29 7
+d37 1
+a37 1
+int GmmEm1D_t::solve( const GmmEmDataVec_t& input, GmmEmGausParamVec_t& output ){
+d57 6
+d64 1
+a64 1
+   WeightVec_t weight( input.size(), 0 );
+d66 1
+a66 1
+   for( weightIter = weight.begin(); weightIter != weight.end(); ++weightIter ){
+d75 3
+a77 3
+//    cerr << "Initial values" << endl;
+//    for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter )
+//       cerr << clusIter->A << ' ' << clusIter->mean << ' ' << sqrt(clusIter->sigmaSq) << endl;
+d83 1
+a83 1
+      ierr = Expectation( cluster, weight );
+d87 1
+a87 1
+         ierr = Maximization( cluster, weight );
+a99 4
+   // clear memory
+   for( weightIter = weight.begin(); weightIter != weight.end(); ++weightIter )
+      delete[] (*weightIter);
+
+d104 3
+d200 1
+d205 9
+d224 76
+d302 1
+a302 1
+ * $Id: GmmEm1D.cxx,v 1.1 2011/11/18 01:47:03 sgliske Exp $
+d304 3
+@
+
+
+1.1
+log
+@today
+@
+text
+@a15 1
+#include <iostream>
+d17 4
+a20 3
+using std::cerr;
+using std::cout;
+using std::endl;
+a59 1
+   cerr << "Initial values" << endl;
+d61 3
+a63 2
+   for( clusIter = cluster.begin(); clusIter != cluster.end(); ++clusIter )
+      cerr << clusIter->A << ' ' << clusIter->mean << ' ' << sqrt(clusIter->sigmaSq) << endl;
+d203 5
+a207 2
+ * $Id: $
+ * $Log: $
+@
+

@@ -1,0 +1,60 @@
+head	1.2;
+access;
+symbols
+	response:1.1;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2012.11.26.19.40.34;	author sgliske;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.11.15.14.31;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ * \class StEEmcStEEmcPointFinder_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Abstract base class for various point finding algorithms.
+*/
+#include "StEEmcPointFinder.h"
+
+
+ClassImp( StEEmcPointFinder_t );
+
+// $Id: StEEmcPointFinder.cxx,v 1.1 2011/07/11 15:14:31 sgliske Exp $
+//
+// $Log: StEEmcPointFinder.cxx,v $
+// Revision 1.1  2011/07/11 15:14:31  sgliske
+// before making StHitData class
+//
+@
+
+
+1.1
+log
+@before making StHitData class
+@
+text
+@d12 5
+a16 1
+// $Id: $
+a17 1
+// $Log: $
+@
+

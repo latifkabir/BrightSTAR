@@ -1,0 +1,262 @@
+head	1.2;
+access;
+symbols
+	response:1.1;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.15.18.06.11;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcStripClusterFinderNaive_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See header for description.
+ *
+*/
+
+#include <list>
+#include <TMath.h>
+#include <assert.h>
+
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/St_base/Stypes.h"
+
+#include "StEEmcStripClusterFinderNaive.h"
+
+#include "IdxValPair.h"
+
+//#define DEBUG
+//#define DEBUG_INPUT
+
+
+StEEmcStripClusterFinderNaive_t::StEEmcStripClusterFinderNaive_t() :
+   mMinStripsPerCluster( 5 ),
+   mMinSeedDist( 12 ),
+   mMaxDist( 12 ),
+   mSeedEnergyThres( 0.003 ),
+   mMinClusterEnergy( 0.01 )
+{
+   // initialize a few parent variables
+   mLayer = U_LAYER;
+   mSector = 0;
+   mIsReady = 1;
+};
+
+StEEmcStripClusterFinderNaive_t::~StEEmcStripClusterFinderNaive_t(){
+   // nothing to do
+};
+
+
+/// find some clusters
+Int_t StEEmcStripClusterFinderNaive_t::find( const StEEmcStripVec_t& hitStrips, StSimpleClusterVec_t& clustersOut ){
+   clustersOut.clear();
+   Int_t ierr = kStOk;
+
+   if( mMinSeedDist < 3 ){
+      LOG_WARN << "Min. seed distance reset to 3" << endm;
+      mMinSeedDist = 3;
+   };
+
+   StSimpleClusterList_t clusters;
+
+   // skip if not enough strips hit
+   if( hitStrips.size() < static_cast< UInt_t >( mMinStripsPerCluster ) )
+      return ierr;
+
+   // clear array
+   for( Float_t *p1 = mStripEnergyArray; p1 != &mStripEnergyArray[kEEmcNumStrips]; ++p1 )
+      (*p1) = 0;
+
+   // containers of seeds
+   IdxValPairVec_t seedVec; // sorted by Idx
+   ValIdxPairList_t seedList;   // sorted by Energy
+
+   // copy
+   Int_t smallestIdx = kEEmcNumStrips, largestIdx = -1;
+   for( StEEmcStripVec_t::const_iterator iter = hitStrips.begin(); iter != hitStrips.end(); ++iter ){
+      if( !iter->fail()  ){
+         Float_t E = iter->energy();
+         Int_t idx = iter->index();
+         mStripEnergyArray[ idx ] =  E;
+
+         if( idx > largestIdx )
+            largestIdx = idx;
+         if( idx < smallestIdx )
+            smallestIdx = idx;
+
+         if( E > mSeedEnergyThres )
+            seedVec.push_back( IdxValPair_t( idx, E ) );
+
+#ifdef DEBUG_INPUT
+         cout << "ccc " << mSector << ' ' << (mLayer ? 'v' : 'u' ) << ' ' << iter->index() << ' ' << E << endl;
+#endif
+      };
+   };
+
+   // note: seedVec sorted by idx (ascending)
+
+   if( !seedVec.empty() ){
+      // now fill list and sort by energy
+      seedList.assign( seedVec.begin(), seedVec.end() );
+      seedList.sort();
+
+      // set order to be descending
+      seedList.reverse();
+
+      // remove any that are too close (keeping higher energy one)
+      ValIdxPairList_t::iterator listIter1, listIter2;
+      for( listIter1 = seedList.begin(); listIter1 != seedList.end(); ++listIter1 )
+         for( (listIter2 = listIter1)++; listIter2 != seedList.end(); ++listIter2 )
+            if( listIter1 != listIter2 && abs( listIter1->idx - listIter2->idx) < mMinSeedDist )
+               listIter2 = --seedList.erase( listIter2 );
+   };
+
+   if( !seedList.empty() ){
+
+#ifdef DEBUG
+      LOG_INFO << "Sector " << mSector << " layer " << (mLayer?'v':'u') << " found " << seedList.size() << " seeds" << endm;
+      LOG_INFO << "Seeds are at " << endm;
+
+      ValIdxPairList_t::iterator iter;
+      for( iter = seedList.begin(); iter != seedList.end(); ++iter ){
+         LOG_INFO << iter->idx << ' ' << iter->val << endm;
+      };
+#endif
+
+      Int_t nSeeds = seedList.size();
+
+      // copy seeds back to the vector
+      seedVec.assign( seedList.begin(), seedList.end() );
+      std::sort( seedVec.begin(), seedVec.end() );
+
+      std::vector< Float_t > midPoints;
+      midPoints.reserve( nSeeds - 1 );
+
+      std::vector< Int_t > stripsPerClus;
+      stripsPerClus.reserve( kEEmcNumStrips );
+
+      // make clusters and assign strips to nearest seed
+      for( Int_t iseed = 0; iseed < nSeeds; ++iseed ){
+         stripsPerClus.clear();
+         Int_t seedIdx = seedVec[iseed].idx;
+
+         // add cluster
+         clusters.push_back( StSimpleCluster_t( ++mLastClusterID ) );
+         StSimpleCluster_t& clus = clusters.back();
+
+         Float_t pos1 = -1, pos2 = -1;
+         if( iseed == 0 ){
+            pos1 = (seedIdx < mMaxDist ? 0 : (seedIdx - mMaxDist) );
+         } else {
+            Int_t prevSeedIdx = seedVec[iseed-1].idx;
+            pos1 = 0.5*( seedIdx + prevSeedIdx );
+         };
+
+         if( iseed+1 == nSeeds ){
+            pos2 = (seedIdx+mMaxDist < kEEmcNumStrips ? (seedIdx + mMaxDist) : kEEmcNumStrips );
+         } else {
+            Int_t nextSeedIdx = seedVec[iseed+1].idx;
+            pos2 = 0.5*( seedIdx + nextSeedIdx );
+         };
+
+         Float_t energy = 0;
+         Float_t weightedMean = 0;
+         for( Int_t idx = pos1; idx < pos2; ++idx ){
+            if( mStripEnergyArray[idx] )
+               stripsPerClus.push_back( idx );
+            if( mStripEnergyArray[idx] ){
+               energy += mStripEnergyArray[idx];
+               weightedMean += mStripEnergyArray[ idx ] * idx;
+            };
+         };
+         assert( energy ); // this must be true or something really weird happened
+         weightedMean /= energy;
+
+         Int_t n = stripsPerClus.size();
+
+         TArrayS& memArr = clus.getMemberArray();
+         TArrayF& wArr = clus.getWeightArray();
+
+         memArr.Set( n );
+         wArr.Set( n );
+
+         Int_t internalSeedIdx = 0;
+         for( Int_t i = 0; i < n; ++i ){
+            Int_t idx = stripsPerClus.back();
+            stripsPerClus.pop_back();
+
+            memArr[i] = idx;
+            wArr[i] = 1;
+
+            if( idx == seedIdx )
+               internalSeedIdx = i;
+         };
+
+         clus.setMeanX( weightedMean );
+         clus.setEnergy( energy );
+         clus.setSeedIdx( internalSeedIdx );
+      };
+
+      // iterate through clusters, and copy valid clusters
+      clustersOut.reserve( clusters.size() );
+      StSimpleClusterList_t::iterator clusIter;
+
+      for( clusIter = clusters.begin(); clusIter != clusters.end(); ++clusIter )
+         if( clusIter->getEnergy() > mMinClusterEnergy && clusIter->getMemberArray().GetSize() >= mMinStripsPerCluster )
+            clustersOut.push_back( *clusIter );
+   };
+
+#ifdef DEBUG
+   for( UInt_t i=0; i<clustersOut.size(); ++i ){
+      LOG_INFO << "Final results: event " << getEventNum() << " sector/layer " << mSector << '/'
+               << (mLayer ? 'v' : 'u') << ' ' << clustersOut[i] << endm;
+   };
+#endif
+
+   return ierr;
+};
+
+ClassImp( StEEmcStripClusterFinderNaive_t );
+
+/*
+ * $Id: StEEmcStripClusterFinderNaive.cxx,v 1.1 2011/12/15 18:06:11 sgliske Exp $
+ * $Log: StEEmcStripClusterFinderNaive.cxx,v $
+ * Revision 1.1  2011/12/15 18:06:11  sgliske
+ * creation
+ *
+ *
+ */
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d214 5
+a218 2
+ * $Id: $
+ * $Log: $
+@
+

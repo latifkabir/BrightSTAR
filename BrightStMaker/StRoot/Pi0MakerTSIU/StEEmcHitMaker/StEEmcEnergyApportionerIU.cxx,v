@@ -1,0 +1,1258 @@
+head	1.19;
+access;
+symbols
+	response:1.14;
+locks; strict;
+comment	@// @;
+
+
+1.19
+date	2012.11.26.19.40.33;	author sgliske;	state dead;
+branches;
+next	1.18;
+
+1.18
+date	2012.05.25.16.20.17;	author sgliske;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2012.05.23.19.58.38;	author sgliske;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2012.05.18.22.12.30;	author sgliske;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2012.05.17.22.47.02;	author sgliske;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2012.01.09.16.12.49;	author sgliske;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2011.08.18.15.48.38;	author sgliske;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2011.08.16.13.33.18;	author sgliske;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2011.08.09.20.36.09;	author sgliske;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2011.08.05.13.52.35;	author sgliske;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2011.08.03.22.16.52;	author sgliske;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2011.08.02.16.52.02;	author sgliske;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2011.07.25.21.40.29;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2011.07.21.21.17.37;	author sgliske;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.07.20.21.35.26;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.07.13.20.24.45;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.07.11.15.14.31;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.07.07.20.53.04;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.05.21.48.19;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.19
+log
+@moved to official StEEmcPool
+@
+text
+@/*
+ * \class StEEmcEnergyApportionerIU_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See header file for description.
+*/
+
+#include <vector>
+#include <Rtypes.h>
+
+#include "StEEmcPool/EEmcTreeContainers/EEmcEnergy.h"
+#include "StEEmcPool/StEEmcPointMaker/eeTowerFunction.h"
+#include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
+#include "StEEmcPool/StEEmcGeoId/StEEmcGeoId.h"
+
+#include "StEEmcEnergyApportionerIU.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+#include "StESMDClustersPerSector.h"
+
+StEEmcEnergyApportionerIU_t::StEEmcEnergyApportionerIU_t() : StEEmcEnergyApportioner_t(),
+                                                             mCheckTowerBits(1),
+                                                             weightFunc( &StEEmcEnergyApportionerIU_t::smdSumWeightFunc ){
+   mIsReady = 1;
+};
+
+Int_t StEEmcEnergyApportionerIU_t::find( EEmcEnergy_t* eemcEnergyPtr,
+                                         const StSimpleClusterVec_t& towerClusterVec,
+                                         const StESMDClustersVec_t &smdClusterVec,
+                                         StEEmcHitVec_t& hitVec ){
+   if( !hitVec.empty() ){
+      Int_t nInvalid = 0;
+
+      // Weight per tower per hit.  Vector matches vector of hits.
+      // The sparseVec is indexed by tower index, and holds the relative
+      // contribution of each hit to the tower (i.e. non-normalized
+      // weight).
+      std::vector< sparseVec_t > wPerTowerPerHit( hitVec.size() );
+
+      // temporary, to hold indexes of neighbors
+      std::vector< Int_t > neighborIndices;
+
+      // to hold denominators (i.e. map used as a sparse vector)
+      sparseVec_t denominator;
+      sparseVec_t::iterator denomIter, weightIter;
+
+      // iterate over hits
+      StEEmcHitVec_t::iterator hitIter = hitVec.begin();
+
+      //LOG_INFO << "eee " << "---------------> Energy Apportioner <---------------" << endm;
+
+      static Int_t  kEEmcNumPhiBins = kEEmcNumSubSectors * kEEmcNumSectors;
+      Int_t hitIdx = 0;
+      for( hitIter = hitVec.begin(); hitIter != hitVec.end(); ++hitIter, ++hitIdx ){
+         //LOG_INFO << "eee " << '\t' << (*hitIter) << endm;
+
+         // get new map
+         sparseVec_t& thisMap = wPerTowerPerHit[ hitIdx ];
+
+         // clear the neighbors
+         neighborIndices.clear();
+
+         // various indexing methods
+         Int_t towIdx = hitIter->getTowerIdx();
+         Short_t etaBin = 0;
+         Short_t phiBin = 0;
+         StEEmcGeoId_t::decodeTow( towIdx, phiBin, etaBin );
+
+         // fill usedTowerIndices with all neighbors of the main hit tower
+         Int_t phiBinLeft = (phiBin ? phiBin-1 : kEEmcNumPhiBins-1);
+         Int_t phiBinRight = (phiBin+1 < kEEmcNumPhiBins ? phiBin+1 : 0);
+
+         neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBinLeft,  etaBin ) );
+         neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBin,      etaBin ) );
+         neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBinRight, etaBin ) );
+
+         if( etaBin < kEEmcNumEtas -1 ){
+            // not at upper limit
+            neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBinLeft,  etaBin + 1 ) );
+            neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBin,      etaBin + 1 ) );
+            neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBinRight, etaBin + 1 ) );
+         };
+
+         if( etaBin > 0 ){
+            // not at lower limit
+            neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBinLeft,  etaBin - 1 ) );
+            neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBin,      etaBin - 1 ) );
+            neighborIndices.push_back( StEEmcGeoId_t::encodeTow( phiBinRight, etaBin - 1 ) );
+         };
+
+
+         // compute contribution of this hit to each tower
+         for( UInt_t i=0; i<neighborIndices.size(); ++i ){
+            Int_t& thisTowIdx = neighborIndices[i];
+            Float_t contribution = (this->*weightFunc)( *hitIter, thisTowIdx );
+
+            thisMap[ thisTowIdx ] = contribution;
+
+            denomIter = denominator.find(  thisTowIdx );
+            if( denomIter == denominator.end() ){
+               denominator[ thisTowIdx ] = contribution;
+            } else {
+               denominator[ thisTowIdx ] += contribution;
+            };
+         };
+      };
+
+      // to save indices and weights
+      std::vector< Short_t > usedTowerIndices;
+      std::vector< Float_t > usedTowerWeights;
+
+      //LOG_INFO << "eee " << "numerators" << endm;
+
+      // Now that have all the denominators, re-iterate and compute the
+      // energies.
+
+//       cout << "----------------------------------------" << endl;
+      hitIdx = 0;
+      for( hitIter = hitVec.begin(); hitIter != hitVec.end(); ++hitIter, ++hitIdx ){
+
+         // get new map
+         sparseVec_t& weightVec = wPerTowerPerHit[ hitIdx ];
+
+         // clear
+         usedTowerIndices.clear();
+         usedTowerWeights.clear();
+
+         Float_t hitEnergy = 0;
+         for( weightIter = weightVec.begin(); weightIter != weightVec.end(); ++weightIter ){
+
+            EEmcElement_t element = eemcEnergyPtr->eTow.getByIdx( weightIter->first );
+
+//             cout << " towIdx " << weightIter->first << " energy " << element.energy << " fail " << element.fail
+//                  << " hit " << hitIdx << " weight " << weightIter->second << "/" << denominator[ weightIter->first ] << endl;
+
+            if( !mCheckTowerBits || !element.fail ){
+               weightIter->second /= denominator[ weightIter->first ];
+               Float_t energy = element.energy;
+               energy *= weightIter->second;
+
+               if( energy ){
+                  hitEnergy += energy;
+                  usedTowerIndices.push_back( weightIter->first );
+                  usedTowerWeights.push_back( weightIter->second );
+               };
+            };
+         };
+
+//          cout << "main Idx = " << hitIter->getTowerIdx() << " hitEnergy = " << hitEnergy << endl;
+         hitIter->setEnergy( hitEnergy );
+         hitIter->setUsedTowers( usedTowerIndices, usedTowerWeights );
+
+         if( hitEnergy <= 0 ){
+            hitIter->setIsValid(0);
+            ++nInvalid;
+         };
+//          cout << "--------------------" << endl;
+      };
+
+      // check for invalid
+      while( nInvalid ){
+         // find first invalid one
+         for( hitIter = hitVec.begin(); hitIter != hitVec.end() && hitIter->isValid(); ++hitIter ){ /* */};
+
+         // remove it
+         hitVec.erase( hitIter );
+         --nInvalid;
+      };
+   };
+
+   return kStOK;
+};
+
+/// Considers both the SMD energy and a leakage function
+Float_t StEEmcEnergyApportionerIU_t::smdSumAndLeakageWeightFunc( const StEEmcHit_t &hit, Int_t thisTowIdx ){
+
+   // assume towerer neighbors hit tower, or wouldn't have gotten to this point
+
+   // Get eta & phi bins for this tower
+   Short_t phiBin = 0, etaBin = 0;
+   StEEmcGeoId_t::decodeTow( thisTowIdx, phiBin, etaBin );
+   Double_t xTower[2] = { phiBin, etaBin };
+
+   // Get eta & phi bins for the tower beneath the point, i.e. hit
+   Int_t towIdx = hit.getTowerIdx();
+   Short_t etaHitTower, phiHitTower;
+   StEEmcGeoId_t::decodeTow( towIdx, phiHitTower, etaHitTower );
+
+   // Get the position of the point on the endcap.
+   // Return 0 if not on the endcap.
+   Int_t sec,sub,eta;
+   Float_t dphi,deta;
+
+   if ( !mEEmcGeomSimple.getTower( hit.getPosition(), sec, sub, eta, dphi, deta ) )
+      return 0;
+
+   dphi /= 2.0;
+   deta /= 2.0;
+
+   // Position of the point in fractional eta, phi space
+   Double_t xHit[2] = {
+      phiHitTower + dphi,
+      etaHitTower + deta
+   };
+
+   Double_t funcVal = eeTowerFunction( xTower, xHit );
+
+   //LOG_INFO << "eee " << "tower IDs " << tower.index() << ' ' << hitTower.index() << ", eefunc = " << funcVal << endm;
+
+   if( funcVal < 0 )
+      funcVal = 0;
+
+   if( funcVal > 0 )
+      funcVal *= ( hit.getEnergyU()*hit.getWeightU() + hit.getEnergyV()*hit.getWeightV() );
+
+   return funcVal;
+};
+
+Float_t StEEmcEnergyApportionerIU_t::smdSumWeightFunc( const StEEmcHit_t &hit, Int_t thisTowIdx ){
+   return ( hit.getEnergyU()*hit.getWeightU() + hit.getEnergyV()*hit.getWeightV() );
+};
+
+void StEEmcEnergyApportionerIU_t::setWeightFunction( WeightFunction_t funcType ){
+   switch( funcType ){
+   case SMD_SUM:
+      weightFunc = &StEEmcEnergyApportionerIU_t::smdSumWeightFunc;
+      break;
+   case SMD_SUM_AND_LEAKAGE:
+      weightFunc = &StEEmcEnergyApportionerIU_t::smdSumAndLeakageWeightFunc;
+      break;
+   };
+};
+
+ClassImp( StEEmcEnergyApportionerIU_t );
+
+/*
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.18 2012/05/25 16:20:17 sgliske Exp $
+ * $Log: StEEmcEnergyApportionerIU.cxx,v $
+ * Revision 1.18  2012/05/25 16:20:17  sgliske
+ * ready for production (I hope)
+ *
+ * Revision 1.17  2012/05/23 19:58:38  sgliske
+ * updates
+ *
+ * Revision 1.16  2012/05/18 22:12:30  sgliske
+ * switched to EEmcTree containers
+ *
+ * Revision 1.15  2012/05/17 22:47:02  sgliske
+ * working on switching to EEmcTree containers
+ *
+ * Revision 1.14  2012/01/09 16:12:49  sgliske
+ * fixed some comments
+ *
+ * Revision 1.13  2011/08/18 15:48:38  sgliske
+ * update
+ *
+ * Revision 1.12  2011/08/16 13:33:18  sgliske
+ * debugging MC
+ *
+ * Revision 1.11  2011/08/09 20:36:09  sgliske
+ * working on adding MC support to AnalysisTreeMaker
+ *
+ * Revision 1.10  2011/08/05 13:52:35  sgliske
+ * cross check complete
+ *
+ * Revision 1.9  2011/08/03 22:16:52  sgliske
+ * still debugging
+ *
+ * Revision 1.8  2011/08/02 16:52:02  sgliske
+ * debugging
+ *
+ * Revision 1.7  2011/07/25 21:40:29  sgliske
+ * update
+ *
+ * Revision 1.6  2011/07/21 21:17:37  sgliske
+ * update
+ *
+ * Revision 1.5  2011/07/20 21:35:26  sgliske
+ * update
+ *
+ * Revision 1.4  2011/07/13 20:24:45  sgliske
+ * update
+ *
+ * Revision 1.3  2011/07/11 15:14:31  sgliske
+ * before making StHitData class
+ *
+ * Revision 1.2  2011/07/07 20:53:04  sgliske
+ * update
+ *
+ * Revision 1.1  2011/07/05 21:48:19  sgliske
+ * split from StEEmcAnalysisTreeMaker
+ *
+ * Revision 1.1  2011/06/29 21:39:42  sgliske
+ * update
+ *
+ * Revision 1.1  2011/06/23 21:55:04  sgliske
+ * daily update
+ */
+@
+
+
+1.18
+log
+@ready for production (I hope)
+@
+text
+@d237 1
+a237 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.17 2012/05/23 19:58:38 sgliske Exp $
+d239 3
+@
+
+
+1.17
+log
+@updates
+@
+text
+@d14 1
+d65 3
+a67 2
+         Int_t eta = towIdx / kEEmcNumEtas;
+         Int_t phiBin = towIdx % kEEmcNumEtas;
+d70 2
+d73 3
+a75 9
+         Int_t phiBinLeft = phiBin - 1;
+         if( phiBinLeft == -1 )
+            phiBinLeft += kEEmcNumPhiBins;
+         Int_t towIdxLeft    = phiBinLeft*kEEmcNumEtas + eta;
+
+         Int_t phiBinRight = phiBin + 1;
+         if( phiBinRight == kEEmcNumPhiBins )
+            phiBinRight = 0;
+         Int_t towIdxRight    = phiBinLeft*kEEmcNumEtas + eta;
+d77 1
+a77 2
+         neighborIndices.push_back( towIdx );
+         if( eta < kEEmcNumEtas -1 ){
+d79 3
+a81 3
+            neighborIndices.push_back( towIdx+1 );
+            neighborIndices.push_back( towIdxRight+1 );
+            neighborIndices.push_back( towIdxLeft+1 );
+d83 2
+a84 1
+         if( eta > 0 ){
+d86 3
+a88 3
+            neighborIndices.push_back( towIdx-1 );
+            neighborIndices.push_back( towIdxRight-1 );
+            neighborIndices.push_back( towIdxLeft-1 );
+d91 1
+d117 1
+d133 3
+d149 1
+d157 1
+d180 3
+a182 4
+   Double_t xTower[2] = {
+      static_cast< Double_t >( thisTowIdx / kEEmcNumEtas ),
+      static_cast< Double_t >( thisTowIdx % kEEmcNumEtas )
+   };
+d186 2
+a187 2
+   Double_t etaHitTower = static_cast< Double_t >( towIdx / kEEmcNumEtas );
+   Double_t phiHitTower = static_cast< Double_t >( towIdx % kEEmcNumEtas );
+d237 1
+a237 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.16 2012/05/18 22:12:30 sgliske Exp $
+d239 3
+@
+
+
+1.16
+log
+@switched to EEmcTree containers
+@
+text
+@d131 1
+a131 1
+            EEmcElement_t element = eemcEnergyPtr->etow.getByIdx( weightIter->first );
+d233 1
+a233 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.15 2012/05/17 22:47:02 sgliske Exp $
+d235 3
+@
+
+
+1.15
+log
+@working on switching to EEmcTree containers
+@
+text
+@d131 1
+a131 3
+            Bool_t fail = 0;
+            Float_t energy = 0;
+            eemcEnergyPtr->etow.getByIdx( weightIter->first, fail, energy );
+d133 1
+a133 1
+            if( !mCheckTowerBits || !fail ){
+d135 1
+d233 1
+a233 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.14 2012/01/09 16:12:49 sgliske Exp $
+d235 3
+@
+
+
+1.14
+log
+@fixed some comments
+@
+text
+@d11 1
+a21 2
+                                                             mHitMakerPtr(0),
+                                                             mNeedToClear(1),
+d23 1
+a23 1
+   mIsReady = 0;
+d26 2
+a27 26
+void StEEmcEnergyApportionerIU_t::clear(){
+   if( mNeedToClear ){
+      for( Float_t *p = mSumOfWeights; p < mSumOfWeights + kEEmcNumTowers; ++p )
+         (*p) = 0;
+      storedFracHitInTower.clear();
+   };
+
+   mNeedToClear = 0;
+};
+
+Int_t StEEmcEnergyApportionerIU_t::SetHitMakerPtr( StEEmcHitMaker_t *hitMakerPtr ){
+   Int_t ierr = kStOK;
+
+   if( !hitMakerPtr ){
+      LOG_FATAL << "::SetHitMakerPtr(...) given invalid pointer." << endm;
+      ierr = kStFatal;
+   } else {
+      mHitMakerPtr = hitMakerPtr;
+      mIsReady = 1;
+   };
+
+   return ierr;
+};
+
+
+Int_t StEEmcEnergyApportionerIU_t::find( const StSimpleClusterVec_t& towerClusterVec,
+d31 1
+a31 3
+      // clear and set to clear again
+      if( mNeedToClear )
+         clear();
+d33 12
+a44 2
+      mNeedToClear = 1;
+      Int_t nInvalid = 0;
+d51 3
+a53 3
+      //LOG_INFO << "eee " << "denominators" << endm;
+
+      for( hitIter = hitVec.begin(); hitIter != hitVec.end(); ++hitIter ){
+d56 2
+a57 1
+         Float_t hitSMDE = hitIter->getEnergyU()*hitIter->getWeightU() + hitIter->getEnergyV()*hitIter->getWeightV();
+d59 2
+a60 2
+         // scale, doesn't affect anything, but easier for debugging
+         hitSMDE /= 0.014;
+d62 30
+a91 2
+         //LOG_INFO << "eee SMD E " << hitIter->getEnergyU()*hitIter->getWeightU() << ' ' 
+         //         << hitIter->getEnergyV()*hitIter->getWeightV() << ' ' << hitSMDE << endm;
+d93 12
+a104 31
+         // sum up all contributions to the energy at each point
+         const StEEmcTower &tower = *mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, hitIter->getTowerIdx() );
+         mSumOfWeights[ tower.index() ] += (this->*weightFunc)( hitSMDE, *hitIter, tower );
+
+         //LOG_INFO << "eee " << "sum for " << tower.index() << " += " << (this->*weightFunc)( hitSMDE, *hitIter, tower ) << endm;
+
+         //LOG_INFO << "eee --> Tower " << tower.index() << " number of neighbors " << tower.numberOfNeighbors() << endm;
+         //          {
+         //             Int_t i = tower.index();
+         //             Int_t phibin = i / 12;
+         //             Int_t etabin = i % 12;
+         //             Int_t sector    = phibin / 5;
+         //             Int_t subsector = phibin % 5;
+         //             LOG_INFO << getEventNum() << " eee1 --> Tower " << sector << ' ' << subsector << ' ' << etabin << ", E = " << tower.energy() << endm;
+         //          };
+
+         // loop over neighboring towers
+         for ( Int_t i=0; i<tower.numberOfNeighbors(); ++i ){
+            if( tower.neighbor(i).index() != tower.index() ){
+               const StEEmcTower &neighbor = tower.neighbor(i);
+               mSumOfWeights[ neighbor.index() ] += (this->*weightFunc)( hitSMDE, *hitIter, neighbor );
+
+               //LOG_INFO << "eee " << "sum for " << neighbor.index() << " += " << (this->*weightFunc)( hitSMDE, *hitIter, neighbor ) << endm;
+               //                {
+               //                   Int_t i = neighbor.index();
+               //                   Int_t phibin = i / 12;
+               //                   Int_t etabin = i % 12;
+               //                   Int_t sector    = phibin / 5;
+               //                   Int_t subsector = phibin % 5;
+               //                   LOG_INFO << getEventNum() << " eee2 --> Tower " << sector << ' ' << subsector << ' ' << etabin << ", E = " << neighbor.energy() << endm;
+               //               };
+a108 2
+      //LOG_INFO << "eee " << "numerators" << endm;
+
+d113 10
+a122 4
+      // Now that have all the deminators, re-iterate and compute the
+      // energies.  Note: so far the hit's energy is related to the SMD.
+      // This will change in the following loop.
+      for( hitIter = hitVec.begin(); hitIter != hitVec.end(); ++hitIter ){
+d124 1
+d128 2
+a129 27
+         const StEEmcTower &tower = *mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, hitIter->getTowerIdx() );
+         Float_t frac = 0.0;
+         Float_t hitSMDE = hitIter->getEnergyU()*hitIter->getWeightU() + hitIter->getEnergyV()*hitIter->getWeightV();
+         hitSMDE /= 0.014;
+
+         // Set fraction if tower didn't fail. NOTE: these critereon
+         // where not considered when computing the sum of weights, thus
+         // the normalization is off.
+         Bool_t towOK = 1;
+         if( mCheckTowerBits )
+            towOK = (!tower.fail() && !tower.stat());
+
+         if ( towOK && mSumOfWeights[tower.index()] )
+            frac = (this->*weightFunc)( hitSMDE, *hitIter, tower ) / mSumOfWeights[ tower.index() ];
+
+         
+
+         //LOG_INFO << "eee " << hitIter->getID() << ", tow " << tower.index() << ' ' << tower.energy() << ", frac = " << frac << " = "
+         //         << (this->*weightFunc)( hitSMDE, *hitIter, tower ) << " / " << mSumOfWeights[ tower.index() ] << endm;
+
+         // contribution from this tower to the energy
+         Float_t hitEnergy = frac * tower.energy();
+
+         if( frac ){
+            usedTowerIndices.push_back( tower.index() );
+            usedTowerWeights.push_back( frac );
+         };
+d131 12
+a142 15
+         // Loop over neighboring towers and repeat
+         for ( Int_t i=0; i < tower.numberOfNeighbors(); ++i ){
+            const StEEmcTower &neighbor = tower.neighbor(i);
+
+            Bool_t neighborOK = 1;
+            if( mCheckTowerBits )
+               neighborOK = (!neighbor.stat() && !neighbor.fail());
+
+            if ( neighborOK && mSumOfWeights[ neighbor.index() ] && tower.neighbor(i).index() != tower.index() ){
+               frac = (this->*weightFunc)( hitSMDE, *hitIter, neighbor ) / mSumOfWeights[ neighbor.index() ];
+               hitEnergy += frac * neighbor.energy();
+
+               if( frac ){
+                  usedTowerIndices.push_back( neighbor.index() );
+                  usedTowerWeights.push_back( frac );
+a143 4
+
+               //LOG_INFO << "eee " << hitIter->getID() << ", tow " << neighbor.index() << ' ' << neighbor.energy() << ", frac = " << frac << " = "
+               //         << (this->*weightFunc)( hitSMDE, *hitIter, neighbor ) << " / " << mSumOfWeights[ neighbor.index() ] << endm;
+
+a146 1
+
+d170 2
+a171 20
+/// Optimizer for the fracHitInTower function and multiplies by SMDresponse,
+/// i.e. keeps track of previous calls to fracHitInTower function.
+Float_t StEEmcEnergyApportionerIU_t::smdSumAndLeakageWeightFunc( double SMDresponse, const StEEmcHit_t &hit, const StEEmcTower &tower ){
+
+   // the combined hit/tower ID 
+   Int_t ID = (kEEmcNumTowers+1)*hit.getID() + tower.index();
+
+   // iterator to stored value
+   std::map< Int_t, Float_t >::iterator iter = storedFracHitInTower.find( ID );
+
+   // if not precomputed, then compute, save into the map of stored
+   // values, and set the iterator to the new value
+   if( iter == storedFracHitInTower.end() )
+      iter = storedFracHitInTower.insert( std::pair< Int_t, Float_t >( ID, fracHitInTower( hit, tower ) ) ).first;
+
+   //LOG_INFO << "eee " << "frac hit in tower: " << hit.getID() << ", " << tower.index() << " = " << iter->second << endm;
+
+   return SMDresponse * (iter->second);
+};
+
+d173 1
+a173 19
+/// Returns the fraction of the point's energy expected in tower.
+Float_t StEEmcEnergyApportionerIU_t::fracHitInTower( const StEEmcHit_t &hit, const StEEmcTower &tower ){
+   const StEEmcTower &hitTower = *mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, hit.getTowerIdx() );
+
+//   //LOG_INFO << "eee " << "tower IDs " << tower.index() << ' ' << hitTower.index() << endm;
+//    //LOG_INFO << "eee " << "tower neighbors: ";
+//    for( Int_t i = 0; i<tower.numberOfNeighbors(); ++i )
+//       //LOG_INFO << "eee " << tower.neighbor(i).index() << ' ';
+//    //LOG_INFO << "eee " << endm;
+//    //LOG_INFO << "eee " << "hit tower neighbors: ";
+//    for( Int_t i = 0; i< hitTower.numberOfNeighbors(); ++i )
+//       //LOG_INFO << "eee " << hitTower.neighbor(i).index() << ' ';
+//    //LOG_INFO << "eee " << endm;
+//    //LOG_INFO << "eee " << "Are neighbors? " << tower.isNeighbor( hitTower ) << ' ' << hitTower.isNeighbor( tower ) << endm;
+
+   // if the tower is not a neighbor of the tower beneath
+   // the point, return nothing
+   if ( !tower.isNeighbor( hitTower )  )
+      return 0;
+d177 2
+a178 2
+      static_cast< Double_t >( tower.phibin() ),
+      static_cast< Double_t >( tower.etabin() )
+d181 4
+a184 3
+   // Get eta & phi bins for the tower beneath the point
+   Double_t etaHitTower = static_cast< Double_t >( hitTower.etabin() );
+   Double_t phiHitTower = static_cast< Double_t >( hitTower.phibin() );
+d197 1
+a197 1
+   // Position of the point in fractional eta,phi space
+d207 7
+a213 1
+   return (funcVal > 0 ? funcVal : 0);
+d216 3
+a230 6
+Float_t StEEmcEnergyApportionerIU_t::smdSumWeightFunc( double SMDresponse, const StEEmcHit_t &hit, const StEEmcTower &tower ){
+   return SMDresponse;
+};
+
+
+
+d234 1
+a234 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.13 2011/08/18 15:48:38 sgliske Exp $
+d236 3
+@
+
+
+1.13
+log
+@update
+@
+text
+@d2 1
+a2 1
+ * \class StEEmcStEEmcEnergyApportioner_t
+d301 1
+a301 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.12 2011/08/16 13:33:18 sgliske Exp $
+d303 3
+@
+
+
+1.12
+log
+@debugging MC
+@
+text
+@d88 8
+a95 8
+         {
+            Int_t i = tower.index();
+            Int_t phibin = i / 12;
+            Int_t etabin = i % 12;
+            Int_t sector    = phibin / 5;
+            Int_t subsector = phibin % 5;
+            LOG_INFO << getEventNum() << " eee1 --> Tower " << sector << ' ' << subsector << ' ' << etabin << ", E = " << tower.energy() << endm;
+         };
+d102 1
+d104 8
+a111 11
+
+               {
+                  Int_t i = neighbor.index();
+                  Int_t phibin = i / 12;
+                  Int_t etabin = i % 12;
+                  Int_t sector    = phibin / 5;
+                  Int_t subsector = phibin % 5;
+                  LOG_INFO << getEventNum() << " eee2 --> Tower " << sector << ' ' << subsector << ' ' << etabin << ", E = " << neighbor.energy() << endm;
+               };
+
+
+d301 1
+a301 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.11 2011/08/09 20:36:09 sgliske Exp $
+d303 3
+@
+
+
+1.11
+log
+@working on adding MC support to AnalysisTreeMaker
+@
+text
+@d88 8
+d103 11
+a182 1
+         //LOG_INFO << "eee " << "\tfinal E = " << hitEnergy << endm;
+d303 1
+a303 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.10 2011/08/05 13:52:35 sgliske Exp $
+d305 3
+@
+
+
+1.10
+log
+@cross check complete
+@
+text
+@d8 1
+d101 4
+d109 4
+d127 1
+d136 5
+d153 5
+d167 2
+d285 1
+a285 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.9 2011/08/03 22:16:52 sgliske Exp $
+d287 3
+@
+
+
+1.9
+log
+@still debugging
+@
+text
+@d65 1
+a65 1
+      LOG_INFO << "eee " << "---------------> Energy Apportioner <---------------" << endm;
+d67 1
+a67 1
+      LOG_INFO << "eee " << "denominators" << endm;
+d70 1
+a70 1
+         LOG_INFO << "eee " << '\t' << (*hitIter) << endm;
+d77 2
+a78 2
+         LOG_INFO << "eee SMD E " << hitIter->getEnergyU()*hitIter->getWeightU() << ' ' 
+                  << hitIter->getEnergyV()*hitIter->getWeightV() << ' ' << hitSMDE << endm;
+d84 1
+a84 1
+         LOG_INFO << "eee " << "sum for " << tower.index() << " += " << (this->*weightFunc)( hitSMDE, *hitIter, tower ) << endm;
+d86 1
+a86 1
+         LOG_INFO << "eee --> Tower " << tower.index() << " number of neighbors " << tower.numberOfNeighbors() << endm;
+d93 1
+a93 1
+               LOG_INFO << "eee " << "sum for " << neighbor.index() << " += " << (this->*weightFunc)( hitSMDE, *hitIter, neighbor ) << endm;
+d98 1
+a98 1
+      LOG_INFO << "eee " << "numerators" << endm;
+d120 2
+a121 2
+         LOG_INFO << "eee " << hitIter->getID() << ", tow " << tower.index() << ' ' << tower.energy() << ", frac = " << frac << " = "
+                  << (this->*weightFunc)( hitSMDE, *hitIter, tower ) << " / " << mSumOfWeights[ tower.index() ] << endm;
+d138 2
+a139 2
+               LOG_INFO << "eee " << hitIter->getID() << ", tow " << neighbor.index() << ' ' << neighbor.energy() << ", frac = " << frac << " = "
+                        << (this->*weightFunc)( hitSMDE, *hitIter, neighbor ) << " / " << mSumOfWeights[ neighbor.index() ] << endm;
+d144 1
+a144 1
+         LOG_INFO << "eee " << "\tfinal E = " << hitEnergy << endm;
+d192 2
+a193 2
+//   LOG_INFO << "eee " << "tower IDs " << tower.index() << ' ' << hitTower.index() << endm;
+//    LOG_INFO << "eee " << "tower neighbors: ";
+d195 3
+a197 3
+//       LOG_INFO << "eee " << tower.neighbor(i).index() << ' ';
+//    LOG_INFO << "eee " << endm;
+//    LOG_INFO << "eee " << "hit tower neighbors: ";
+d199 3
+a201 3
+//       LOG_INFO << "eee " << hitTower.neighbor(i).index() << ' ';
+//    LOG_INFO << "eee " << endm;
+//    LOG_INFO << "eee " << "Are neighbors? " << tower.isNeighbor( hitTower ) << ' ' << hitTower.isNeighbor( tower ) << endm;
+d263 1
+a263 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.8 2011/08/02 16:52:02 sgliske Exp $
+d265 3
+@
+
+
+1.8
+log
+@debugging
+@
+text
+@d1 1
+a1 1
+/*!
+d5 1
+a5 1
+ * Weihong/Jason's energy sharing method
+d19 1
+d21 2
+a22 1
+                                                             mNeedToClear(1) {
+d65 1
+a65 1
+      //LOG_INFO << "eee " << "---------------> Energy Apportioner <---------------" << endm;
+d72 7
+a78 1
+         Float_t hitSMDE = hitIter->getEnergyU() + hitIter->getEnergyV();
+d82 5
+a86 2
+         mSumOfWeights[ tower.index() ] += hitSMDE * fracHitInTowerOpt( *hitIter, tower );
+         LOG_INFO << "eee " << "sum for " << tower.index() << " += " << hitSMDE * fracHitInTowerOpt( *hitIter, tower ) << " = " << hitSMDE << " * " << fracHitInTowerOpt( *hitIter, tower ) << endm;
+d92 2
+a93 2
+               mSumOfWeights[ neighbor.index() ] += hitSMDE * fracHitInTowerOpt( *hitIter, neighbor );
+               LOG_INFO << "eee " << "sum for " << neighbor.index() << " += " << hitSMDE * fracHitInTowerOpt( *hitIter, neighbor ) << endm;
+d106 2
+a107 1
+         Float_t hitSMDE = hitIter->getEnergyU() + hitIter->getEnergyV();
+d112 7
+a118 2
+         if ( !tower.fail() && !tower.stat() && mSumOfWeights[tower.index()] )
+            frac = hitSMDE * fracHitInTowerOpt( *hitIter, tower ) / mSumOfWeights[ tower.index() ];
+d120 2
+a121 1
+         LOG_INFO << "eee " << hitIter->getID() << ", frac = " << frac << " = " << hitSMDE << " * " << fracHitInTowerOpt( *hitIter, tower ) << " / " << mSumOfWeights[ tower.index() ] << endm;
+d129 7
+a135 2
+            if ( !neighbor.stat() && !neighbor.fail() && mSumOfWeights[ neighbor.index() ] && tower.neighbor(i).index() != tower.index() ){
+               frac = hitSMDE * fracHitInTowerOpt( *hitIter, neighbor ) / mSumOfWeights[ neighbor.index() ];
+d137 4
+d144 1
+a144 1
+         LOG_INFO << "eee " << '\t' << (*hitIter) << endm;
+d167 3
+a169 3
+/// Optimizer for the fracHitInTower function.
+/// Keeps track of previous calls and returns that value.
+Float_t StEEmcEnergyApportionerIU_t::fracHitInTowerOpt( const StEEmcHit_t &hit, const StEEmcTower &tower ){
+d184 1
+a184 1
+   return iter->second;
+d192 2
+a193 2
+//   //LOG_INFO << "eee " << "tower IDs " << tower.index() << ' ' << hitTower.index() << endm;
+//    //LOG_INFO << "eee " << "tower neighbors: ";
+d195 3
+a197 3
+//       //LOG_INFO << "eee " << tower.neighbor(i).index() << ' ';
+//    //LOG_INFO << "eee " << endm;
+//    //LOG_INFO << "eee " << "hit tower neighbors: ";
+d199 3
+a201 3
+//       //LOG_INFO << "eee " << hitTower.neighbor(i).index() << ' ';
+//    //LOG_INFO << "eee " << endm;
+//    //LOG_INFO << "eee " << "Are neighbors? " << tower.isNeighbor( hitTower ) << ' ' << hitTower.isNeighbor( tower ) << endm;
+d237 1
+a237 1
+   LOG_INFO << "eee " << "tower IDs " << tower.index() << ' ' << hitTower.index() << ", eefunc = " << funcVal << endm;
+d242 18
+d263 1
+a263 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.7 2011/07/25 21:40:29 sgliske Exp $
+d265 3
+@
+
+
+1.7
+log
+@update
+@
+text
+@d63 1
+a63 1
+      //LOG_INFO << "---------------> Energy Apportioner <---------------" << endm;
+d65 1
+a65 1
+      //LOG_INFO << "denominators" << endm;
+d68 1
+a68 1
+         //LOG_INFO << '\t' << (*hitIter) << endm;
+d75 1
+a75 1
+         //LOG_INFO << "sum for " << tower.index() << " += " << hitSMDE * fracHitInTowerOpt( *hitIter, tower ) << endm;
+d82 1
+a82 1
+               //LOG_INFO << "sum for " << neighbor.index() << " += " << hitSMDE * fracHitInTowerOpt( *hitIter, neighbor ) << endm;
+d87 1
+a87 1
+      //LOG_INFO << "numerators" << endm;
+d103 1
+a103 1
+         //LOG_INFO << hitIter->getID() << ", frac = " << frac << " = " << hitSMDE << " * " << fracHitInTowerOpt( *hitIter, tower ) << " / " << mSumOfWeights[ tower.index() ] << endm;
+d117 1
+a117 1
+         //LOG_INFO << '\t' << (*hitIter) << endm;
+d155 1
+a155 1
+   //LOG_INFO << "frac hit in tower: " << hit.getID() << ", " << tower.index() << " = " << iter->second << endm;
+d165 2
+a166 2
+//   //LOG_INFO << "tower IDs " << tower.index() << ' ' << hitTower.index() << endm;
+//    //LOG_INFO << "tower neighbors: ";
+d168 3
+a170 3
+//       //LOG_INFO << tower.neighbor(i).index() << ' ';
+//    //LOG_INFO << endm;
+//    //LOG_INFO << "hit tower neighbors: ";
+d172 3
+a174 3
+//       //LOG_INFO << hitTower.neighbor(i).index() << ' ';
+//    //LOG_INFO << endm;
+//    //LOG_INFO << "Are neighbors? " << tower.isNeighbor( hitTower ) << ' ' << hitTower.isNeighbor( tower ) << endm;
+d210 1
+a210 1
+   //LOG_INFO << "tower IDs " << tower.index() << ' ' << hitTower.index() << ", eefunc = " << funcVal << endm;
+d218 1
+a218 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.6 2011/07/21 21:17:37 sgliske Exp $
+d220 3
+@
+
+
+1.6
+log
+@update
+@
+text
+@d58 1
+d120 14
+d218 1
+a218 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.5 2011/07/20 21:35:26 sgliske Exp $
+d220 3
+@
+
+
+1.5
+log
+@update
+@
+text
+@d62 1
+a62 1
+      LOG_INFO << "---------------> Energy Apportioner <---------------" << endm;
+d64 1
+a64 1
+      LOG_INFO << "denominators" << endm;
+d67 1
+a67 1
+         hitIter->setEnergy( hitIter->getEnergyU() + hitIter->getEnergyV() );
+d69 1
+a69 1
+         LOG_INFO << '\t' << (*hitIter) << endm;
+d73 2
+a74 1
+         mSumOfWeights[ tower.index() ] += hitIter->getEnergy() * fracHitInTowerOpt( *hitIter, tower );
+d78 5
+a82 2
+            const StEEmcTower &neighbor = tower.neighbor(i);
+            mSumOfWeights[ neighbor.index() ] += hitIter->getEnergy() * fracHitInTowerOpt( *hitIter, neighbor );
+d86 1
+a86 1
+      LOG_INFO << "numerators" << endm;
+d94 1
+d99 2
+a100 2
+         if ( !tower.fail() && !tower.stat() && mSumOfWeights[tower.index()] > 0 )
+            frac = hitIter->getEnergy() * fracHitInTowerOpt( *hitIter, tower ) / mSumOfWeights[ tower.index() ];
+d102 1
+a102 1
+         LOG_INFO << hitIter->getID() << ", frac = " << frac << " = " << hitIter->getEnergy() << " * " << fracHitInTowerOpt( *hitIter, tower ) << " / " << mSumOfWeights[ tower.index() ] << endm;
+d110 2
+a111 2
+            if ( !neighbor.stat() && !neighbor.fail() && !mSumOfWeights[ neighbor.index() ] > 0 ){
+               frac = hitIter->getEnergy() * fracHitInTowerOpt( *hitIter, neighbor ) / mSumOfWeights[ neighbor.index() ];
+d116 2
+a118 2
+
+         LOG_INFO << '\t' << "frac = " << frac << ", " << (*hitIter) << endm;
+d140 2
+d150 11
+d163 2
+a164 2
+   if ( !tower.isNeighbor( hitTower ) );
+   return 0;
+d180 1
+d193 5
+a197 1
+   return eeTowerFunction( xTower, xHit );
+d203 1
+a203 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.4 2011/07/13 20:24:45 sgliske Exp $
+d205 3
+@
+
+
+1.4
+log
+@update
+@
+text
+@d52 4
+d57 23
+a79 18
+   // clear and set to clear again
+   if( mNeedToClear )
+      clear();
+
+   mNeedToClear = 1;
+
+   // iterate over hits
+   StEEmcHitVec_t::iterator hitIter = hitVec.begin();
+
+   for( ; hitIter != hitVec.end(); ++hitIter ){
+      // sum up all contributions to the energy at each point
+      const StEEmcTower &tower = *mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, hitIter->getTowerIdx() );
+      mSumOfWeights[ tower.index() ] += hitIter->getEnergy() * fracHitInTowerOpt( *hitIter, tower );
+
+      // loop over neighboring towers
+      for ( Int_t i=0; i<tower.numberOfNeighbors(); i++ ){
+         const StEEmcTower &neighbor = tower.neighbor(i);
+         mSumOfWeights[ neighbor.index() ] += hitIter->getEnergy() * fracHitInTower( *hitIter, neighbor );
+a80 1
+   };
+d82 27
+a108 23
+   // Now that have all the deminators, re-iterate and compute the
+   // energies.  Note: so far the hit's energy is related to the SMD.
+   // This will change in the following loop.
+   for( ; hitIter != hitVec.end(); ++hitIter ){
+
+      const StEEmcTower &tower = *mHitMakerPtr->getTowerPtr( StEEmcHitMaker_t::TOWER, hitIter->getTowerIdx() );
+      Float_t frac = 0.0;
+
+      // Set fraction if tower didn't fail. NOTE: these critereon
+      // where not considered when computing the sum of weights, thus
+      // the normalization is off.
+      if ( !tower.fail() && !tower.stat() && mSumOfWeights[tower.index()] > 0 )
+         frac = hitIter->getEnergy() * fracHitInTowerOpt( *hitIter, tower ) / mSumOfWeights[ tower.index() ];
+
+      // contribution from this tower to the energy
+      Float_t hitEnergy = frac * tower.energy();
+
+      // Loop over neighboring towers and repeat
+      for ( Int_t i=0; i < tower.numberOfNeighbors(); ++i ){
+         const StEEmcTower &neighbor = tower.neighbor(i);
+         if ( !neighbor.stat() && !neighbor.fail() && !mSumOfWeights[ neighbor.index() ] > 0 ){
+            frac = hitIter->getEnergy() * fracHitInTower( *hitIter, neighbor ) / mSumOfWeights[ neighbor.index() ];
+            hitEnergy += frac * neighbor.energy();
+d110 4
+a114 2
+
+      hitIter->setEnergy( hitEnergy );
+d180 1
+a180 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.3 2011/07/11 15:14:31 sgliske Exp $
+d182 3
+@
+
+
+1.3
+log
+@before making StHitData class
+@
+text
+@a3 13
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.2 2011/07/07 20:53:04 sgliske Exp $
+ * $Log: StEEmcEnergyApportionerIU.cxx,v $
+ * Revision 1.2  2011/07/07 20:53:04  sgliske
+ * update
+ *
+ * Revision 1.1  2011/07/05 21:48:19  sgliske
+ * split from StEEmcAnalysisTreeMaker
+ *
+ * Revision 1.1  2011/06/29 21:39:42  sgliske
+ * update
+ *
+ * Revision 1.1  2011/06/23 21:55:04  sgliske
+ * daily update
+d18 4
+a21 10
+StEEmcEnergyApportionerIU_t::StEEmcEnergyApportionerIU_t( StEEmcA2EMaker *a2EMakerPtr ) : StEEmcEnergyApportioner_t(),
+                                                                                          mA2EMakerPtr( a2EMakerPtr),
+                                                                                          mNeedToClear(1) {
+   if( !mA2EMakerPtr ){
+      LOG_FATAL << "StEEmcEnergyApportionerIU_t::StEEmcEnergyApportionerIU_t( StEEmcA2EMaker *a2EMakerPtr )" << endm;
+      LOG_FATAL << "\ta2EMakerPtr = 0!" << endm;
+      return;
+   };
+
+   mIsReady = 1;
+d34 15
+d64 1
+a64 1
+      StEEmcTower &tower = mA2EMakerPtr->tower( hitIter->getTowerIdx() );
+d69 1
+a69 1
+         StEEmcTower &neighbor = tower.neighbor(i);
+d79 1
+a79 1
+      StEEmcTower &tower = mA2EMakerPtr->tower( hitIter->getTowerIdx() );
+d93 1
+a93 1
+         StEEmcTower &neighbor = tower.neighbor(i);
+d127 1
+a127 1
+   const StEEmcTower& hitTower = mA2EMakerPtr->tower( hit.getTowerIdx() );
+d164 19
+@
+
+
+1.2
+log
+@update
+@
+text
+@d4 1
+a4 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.1 2011/07/05 21:48:19 sgliske Exp $
+d6 3
+d166 2
+@
+
+
+1.1
+log
+@split from StEEmcAnalysisTreeMaker
+@
+text
+@d4 1
+a4 1
+ * $Id: StEEmcEnergyApportionerIU.cxx,v 1.1 2011/06/29 21:39:42 sgliske Exp $
+d6 3
+d26 1
+d51 1
+a51 1
+                                         const StSimpleClusterVec_t stripClusterVec[],
+@
+

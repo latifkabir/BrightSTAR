@@ -1,0 +1,66 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2012.11.26.19.37.34;	author sgliske;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2012.06.01.22.08.51;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Moved to StRoot/StEEmcPool/EEmcTreeContainers
+@
+text
+@/*
+ * Created by S. Gliske, May 2012
+ *
+ * Description: Load all the dictionaries needed for the EEmcTree,
+ * allowing use of the EEmcTree outside of the STAR framework.
+ *
+ * For usage, see description in file makeDictionaries.C
+ * 
+ */
+
+void loadEEmcTreeDictionaries(){
+   gSystem->Load("EEmcTreeContainers/EEmcEnergy_cxx.so");
+   gSystem->Load("EEmcTreeContainers/EEmcSmdCluster_cxx.so");
+   gSystem->Load("EEmcTreeContainers/EEmcHit_cxx.so");
+   gSystem->Load("EEmcTreeContainers/EEmcParticleCandidate_cxx.so");
+   gSystem->Load("EEmcTreeContainers/EEmc2ParticleCandidate_cxx.so");
+};
+
+/*
+ * $Id: loadEEmcTreeDictionaries.C,v 1.1 2012/06/01 22:08:51 sgliske Exp $
+ * $Log: loadEEmcTreeDictionaries.C,v $
+ * Revision 1.1  2012/06/01 22:08:51  sgliske
+ * creation
+ *
+ */
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d20 5
+a24 2
+ * $Id: $
+ * $Log: $
+@
+

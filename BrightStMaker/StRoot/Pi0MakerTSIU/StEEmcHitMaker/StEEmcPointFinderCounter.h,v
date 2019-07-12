@@ -1,0 +1,186 @@
+head	1.4;
+access;
+symbols
+	response:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.12.15.22.21.18;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.12.15.22.03.44;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.12.15.18.06.02;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@removed unused makers
+@
+text
+@/*!
+ * \class StEEmcPointFinderCounter_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Does not actually make points, but instead counts the types of configurations present, i.e
+ * the combinations of the number of u and v clusters per sector.
+ * 
+*/
+
+#ifndef _ST_POINT_FINDER_COUNTER_H_
+#define _ST_POINT_FINDER_COUNTER_H_
+
+#include <set>
+
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StRoot/StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
+#include "StRoot/StEEmcUtil/EEmcSmdMap/EEmcSmdMap.h"
+#include "StRoot/StEEmcUtil/StEEmcSmd/EEmcSmdGeom.h"
+
+#include "StEEmcPointFinderTopo.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+#include "StESMDClustersPerSector.h"
+
+class StEEmcHitMaker_t;
+
+class StEEmcPointFinderCounter_t : public StEEmcPointFinderTopo_t {
+
+ public:
+   StEEmcPointFinderCounter_t();
+   ~StEEmcPointFinderCounter_t();
+
+   /// find some some points
+   virtual Int_t find( const StSimpleClusterVec_t &towerClusterVec,
+                       const StESMDClustersVec_t &smdClusterVec,
+                       StEEmcHitVec_t& hitVec );
+
+ protected:
+   // find points on a minimal set of u and v clusters
+   virtual Int_t findHits( const StClusterPool_t& uClusPool, const StClusterPool_t& vClusPool, StEEmcHitVec_t& newHits );
+
+   // counts
+   enum { kMaxNum = 5 };
+   Int_t mCounts[kMaxNum][kMaxNum], mNonZeroEvents, mThisEventCouldMakeHits;
+
+ private:
+   ClassDef( StEEmcPointFinderCounter_t, 1 );
+
+};
+
+#endif
+
+/*
+ * $Id: StEEmcPointFinderCounter.h,v 1.3 2011/12/15 22:21:18 sgliske Exp $
+ * $Log: StEEmcPointFinderCounter.h,v $
+ * Revision 1.3  2011/12/15 22:21:18  sgliske
+ * update
+ *
+ * Revision 1.2  2011/12/15 22:03:44  sgliske
+ * Made child class of StEEmcPointFinderTopo_t
+ *
+ * Revision 1.1  2011/12/15 18:06:02  sgliske
+ * creation
+ *
+ */
+@
+
+
+1.3
+log
+@update
+@
+text
+@d55 1
+a55 1
+ * $Id: StEEmcPointFinderCounter.h,v 1.2 2011/12/15 22:03:44 sgliske Exp $
+d57 3
+@
+
+
+1.2
+log
+@Made child class of StEEmcPointFinderTopo_t
+@
+text
+@d41 1
+a41 1
+   virtual Int_t findAssignments( const StClusterPool_t& uClusPool, const StClusterPool_t& vClusPool, StAssignmentVec_t& assignments );
+d55 1
+a55 1
+ * $Id: StEEmcPointFinderCounter.h,v 1.1 2011/12/15 18:06:02 sgliske Exp $
+d57 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d21 1
+a21 1
+#include "StEEmcPointFinder.h"
+a23 1
+#include "StEEmcHitMaker.h"
+d26 3
+a28 1
+class StEEmcPointFinderCounter_t : public StEEmcPointFinder_t {
+a33 3
+   /// clear things before doing the finding for the next event
+   virtual void clear(){ /* */ };
+
+a38 2
+   Int_t SetHitMakerPtr( StEEmcHitMaker_t *hitMakerPtr );
+
+d40 2
+a41 18
+   // functions used to sort clusters
+   // defined here so is inlined
+   struct clusterIdLessThan {
+      const Bool_t operator()( const StSimpleCluster_t *a, const StSimpleCluster_t *b) const {
+         // check for 0
+         if (a == 0) {
+            return b != 0; // if b is also 0, then they are equal, hence a is not < than b
+         } else if (b == 0) {
+            return false;
+         } else {
+            return a->getID() < b->getID();
+         };
+      };
+   };
+
+   // typedefs
+   typedef std::set< const StSimpleCluster_t*, clusterIdLessThan > StClusterPool_t;
+   //typedef std::set< const StSimpleCluster_t*, clusterIdLessThan > StClusterSet_t;
+d45 1
+a45 4
+   Int_t mCounts[kMaxNum][kMaxNum];
+
+   // other
+
+d55 5
+a59 2
+ * $Id: $
+ * $Log: $
+@
+

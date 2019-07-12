@@ -1,0 +1,164 @@
+head	1.4;
+access;
+symbols
+	response:1.3;
+locks; strict;
+comment	@// @;
+
+
+1.4
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2011.12.06.22.36.35;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.30.23.03.14;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.11.21.28.13;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlNaiveDistStripModel_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * See header for description.
+ *
+ */
+
+#include "Rtypes.h"
+#include "StEEmcAnlShowerShapeModel.h"
+#include "StEEmcAnlNaiveDistStripModel.h"
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/StEEmcPool/StEEmcPointMap/StEEmcPointMap.h"
+#include "StRoot/StEEmcPool/StEEmcGeoId/StEEmcGeoId.h"
+
+#include "StEEmcAnlHit.h"
+#include "assert.h"
+
+// constructor
+StEEmcAnlNaiveDistStripModel_t::StEEmcAnlNaiveDistStripModel_t() : StEEmcAnlShowerShapeModel_t(), mWeightFunc(0), mFactor(1) { /* */ };
+
+// deconstructor
+StEEmcAnlNaiveDistStripModel_t::~StEEmcAnlNaiveDistStripModel_t(){ /* */ };
+
+/// Initialize
+Int_t StEEmcAnlNaiveDistStripModel_t::Init(){
+   Int_t ierr = kStOk;
+
+   if( !mWeightFunc ){
+      LOG_FATAL << "Pointer to weight function is null" << endm;
+      ierr = kStFatal;
+   };
+
+   if( !ierr && mWeightFunc->IsZombie() ){
+      LOG_FATAL << "Weight function is a zombie" << endm;
+      ierr = kStFatal;
+   };
+
+   return ierr;
+};
+
+// get energy
+Float_t StEEmcAnlNaiveDistStripModel_t::getEnergyFromHitIntoElement( const StEEmcAnlHit_t& hit, Short_t geoId ){
+   Float_t dca = StEEmcPointMap_t::instance().getStripDCA( hit.getX(), hit.getY(), geoId );
+   if( mFactor )
+      dca /= mFactor;
+
+#ifdef DEBUG
+   {
+      Short_t sector, strip;
+      Bool_t layerIsV;
+
+      StEEmcGeoId_t::decodeSmd( geoId, sector, layerIsV, strip );
+      cout << "sss hit at " << hit.getX() << ' ' << hit.getY()
+           << " strip is " << geoId << ' ' << sector << ' ' << (layerIsV ? 'v' : 'u') << ' ' << strip
+           << " DCA is " << ( mFactor ? dca*mFactor : dca ) << " factor is " << mFactor 
+           << " weight is " << mWeightFunc->Eval( dca )
+           << endl;
+   };
+#endif
+
+   return mWeightFunc->Eval( dca );
+};
+
+ClassImp( StEEmcAnlNaiveDistStripModel_t );
+
+/*
+ * $Id: StEEmcAnlNaiveDistStripModel.cxx,v 1.3 2011/12/06 22:36:35 sgliske Exp $
+ * $Log: StEEmcAnlNaiveDistStripModel.cxx,v $
+ * Revision 1.3  2011/12/06 22:36:35  sgliske
+ * update
+ *
+ * Revision 1.2  2011/11/30 23:03:14  sgliske
+ * today
+ *
+ * Revision 1.1  2011/11/11 21:28:13  sgliske
+ * daily update
+ *
+ * 
+ */
+@
+
+
+1.3
+log
+@update
+@
+text
+@d69 1
+a69 1
+ * $Id: StEEmcAnlNaiveDistStripModel.cxx,v 1.2 2011/11/30 23:03:14 sgliske Exp $
+d71 3
+@
+
+
+1.2
+log
+@today
+@
+text
+@a16 1
+
+d18 1
+d69 1
+a69 1
+ * $Id: StEEmcAnlNaiveDistStripModel.cxx,v 1.1 2011/11/11 21:28:13 sgliske Exp $
+d71 3
+@
+
+
+1.1
+log
+@daily update
+@
+text
+@d15 2
+d49 13
+a61 1
+   //cout << "strip model: " << dca << ' ' << mFactor << ' ' << mWeightFunc->Eval( dca ) << endl;
+d69 5
+a73 2
+ * $Id: $
+ * $Log: $
+@
+

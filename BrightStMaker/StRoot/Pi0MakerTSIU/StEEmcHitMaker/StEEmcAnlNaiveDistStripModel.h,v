@@ -1,0 +1,101 @@
+head	1.2;
+access;
+symbols
+	response:1.1;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.11.21.28.14;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlNaiveDistStripModel_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Evaluate given function f(x) at x = DCA(point and strip)/mFactor.
+ *
+ */
+
+#ifndef _EEMC_ANL_SHOWER_SHAPE_MODEL_NAIVE_DIST_STRIP_H_
+#define _EEMC_ANL_SHOWER_SHAPE_MODEL_NAIVE_DIST_STRIP_H_
+
+#include <TF1.h>
+
+#include "Stypes.h"
+#include "StEEmcAnlShowerShapeModel.h"
+
+// the class
+class StEEmcAnlNaiveDistStripModel_t : public StEEmcAnlShowerShapeModel_t {
+ public:
+   /// Construtor, deconstructor
+   StEEmcAnlNaiveDistStripModel_t();
+   virtual ~StEEmcAnlNaiveDistStripModel_t();
+
+   // default copy constructor, eq. op. OK
+
+   /// Initialize
+   virtual Int_t Init();
+
+   /// Find all the hits
+   virtual Float_t getEnergyFromHitIntoElement( const StEEmcAnlHit_t& hitPtr, Short_t geoId );
+
+   /// set the weight function
+   void setWeightFunction( TF1* func );
+   void setFactor( Float_t factor );
+
+ protected:
+   TF1* mWeightFunc;
+   Float_t mFactor;   // in units of [cm.]
+
+ private:
+   ClassDef( StEEmcAnlNaiveDistStripModel_t, 1 );
+};
+
+// inline functions
+
+inline void StEEmcAnlNaiveDistStripModel_t::setWeightFunction( TF1* func ){ mWeightFunc = func; };
+inline void StEEmcAnlNaiveDistStripModel_t::setFactor( Float_t factor ){ mFactor = factor; };
+
+#endif
+
+/*
+ * $Id: StEEmcAnlNaiveDistStripModel.h,v 1.1 2011/11/11 21:28:14 sgliske Exp $
+ * $Log: StEEmcAnlNaiveDistStripModel.h,v $
+ * Revision 1.1  2011/11/11 21:28:14  sgliske
+ * daily update
+ *
+ * 
+ */
+@
+
+
+1.1
+log
+@daily update
+@
+text
+@d53 5
+a57 2
+ * $Id: $
+ * $Log: $
+@
+

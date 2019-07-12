@@ -1,0 +1,800 @@
+head	1.8;
+access;
+symbols
+	response:1.7;
+locks; strict;
+comment	@// @;
+
+
+1.8
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.7;
+
+1.7
+date	2011.11.18.01.47.54;	author sgliske;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2011.11.18.01.47.03;	author sgliske;	state dead;
+branches;
+next	1.5;
+
+1.5
+date	2011.11.11.23.01.46;	author sgliske;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.11.11.21.28.19;	author sgliske;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.11.11.04.15.36;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.11.10.23.43.26;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.10.23.33.33;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.8
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class StEEmcAnlSplitHitMorhac_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * Description: see header
+ *
+ */
+
+#ifdef DEBUG
+#undef DEBUG
+#endif
+
+#include <map>
+#include "assert.h"
+
+#include "Stypes.h"
+#include "StEEmcAnlSplitHitMorhac.h"
+
+#include "StRoot/St_base/Stypes.h"
+#include "StRoot/St_base/StMessMgr.h"
+#include "StRoot/StEEmcPool/StEEmcPointMap/StEEmcPointMap.h"
+#include "StRoot/StEEmcPool/StEEmcGeoId/StEEmcGeoId.h"
+#include "StEEmcAnlHit.h"
+#include "AnlEMPoint.h"
+
+StEEmcAnlSplitHitMorhac_t::StEEmcAnlSplitHitMorhac_t() : 
+   peakFinderPtr(0),
+   mDoMarkov(1),
+   mRemoveBkg(1),
+   mMaxNumPoints(4),
+   mMinNumStrips(5),
+   mSideStrips(5),
+   mExtraSideStrips(5),
+   mNumDeconIters(3),
+   mAverWindow(3),
+   mNumToSum(2),
+   mResolution(1),
+   mStartWidth(1.5),
+   mStopWidth(5),
+   mWidthStepSize(0.1),
+   mThreshold(0.005)
+ { /* */ };
+
+StEEmcAnlSplitHitMorhac_t::~StEEmcAnlSplitHitMorhac_t(){ 
+   if( peakFinderPtr )
+      delete peakFinderPtr;
+};
+
+Int_t StEEmcAnlSplitHitMorhac_t::Init(){
+   peakFinderPtr = new TSpectrum( mMaxNumPoints, mResolution );
+
+   if( mThreshold > 100 ){
+      LOG_WARN << "Must specificy a threshold below 100.  Resetting to 99.9" << endm;
+      mThreshold = 99.9;
+   };
+
+   if( mThreshold <= 0 ){
+      LOG_WARN << "Must specificy a positive threshold.  Resetting to 1" << endm;
+      mThreshold = 1;
+   };
+
+   return kStOk;
+};
+
+Int_t StEEmcAnlSplitHitMorhac_t::splitHit( const StEEmcAnlHit_t& hit, Bool_t& doSplit, Bool_t& doInvalidate, AnlEMPoint_t& point1, AnlEMPoint_t& point2 ){
+   Int_t ierr = kStOk;
+   doSplit = 0;
+   doInvalidate = 0;
+
+   // clear array
+   for( Int_t i=0; i<kMaxNumLayers; ++i )
+      for( Float_t *p = mStripEnergyArray[i]; p != &mStripEnergyArray[i][kEEmcNumStrips]; ++p )
+         (*p) = 0;
+
+   // determine the number of layers involved
+   // some iterators
+   StEEmcAnlHitList_t::iterator hitIter;
+   StEEmcAnlElementSet_t::const_iterator stripSetIter;
+
+   std::map< Float_t, Int_t > sectorPlaneToIdxMap;
+   std::map< Float_t, Int_t >::iterator sectorPlaneToIdxMapIter;
+   std::vector< Int_t > sectorPlaneVec;
+
+   Int_t nPeaks[kMaxNumLayers];
+   AnlEMPointVec_t peakPerLayer[kMaxNumLayers];
+
+   // fill the mStripLayer array by looping over all strips in the hit
+   const StEEmcAnlElementSet_t stripSet = hit.getStripSet();
+   for( stripSetIter = stripSet.begin(); stripSetIter != stripSet.end(); ++stripSetIter ){
+      Short_t sector, strip;
+      Bool_t layerIsV;
+
+      StEEmcGeoId_t::decodeSmd( stripSetIter->getGeoId(), sector, layerIsV, strip );
+      Int_t sectorPlane = sector*2 + layerIsV;
+
+      sectorPlaneToIdxMapIter = sectorPlaneToIdxMap.find( sectorPlane );
+      if( sectorPlaneToIdxMapIter == sectorPlaneToIdxMap.end() ){
+         sectorPlaneVec.push_back( sectorPlane );
+         sectorPlaneToIdxMap[ sectorPlane ] = sectorPlaneVec.size()-1;
+      };
+
+      Int_t idx = sectorPlaneToIdxMap[ sectorPlane ];
+
+      ierr = kStErr;
+      if( idx < kMaxNumLayers ){
+         ierr = kStOk;
+
+         Float_t *stripArray = mStripEnergyArray[ idx ];
+
+         Float_t e = stripSetIter->getEnergy();
+         if( e > 10 ){
+            LOG_WARN << "Sanity check failure: SMD Strip with > 10 GeV energy deposited. Strip will be ignored." << endm;
+            e = 0;
+         };
+
+         stripArray[ strip ] = e;
+      };
+
+
+      //LOG_INFO << "morhac: hit " << hit.getKey() << " " << sector << ' ' << layerIsV << ' ' << strip << ' ' << e << endm;
+   };
+
+   Int_t nLayers = sectorPlaneVec.size();
+#ifdef DEBUG
+   LOG_INFO << "nLayers = " << nLayers << endm;
+#endif
+
+   // invalidated the hit if it contains less than two layers
+   if( nLayers < 2 ){
+      // flag to invalidate hit
+      doInvalidate = 1;
+   } else if (!ierr ){
+      // determine the number of peaks per layer
+
+      Int_t possibilities = 1;
+      Int_t nWithMultiplePeaks = 0;
+      for( Int_t idx = 0; idx < nLayers; ++idx ){
+         Float_t *stripEnergyArray = mStripEnergyArray[ idx ];
+         Int_t& nPeaks_ = nPeaks[ idx ];
+         nPeaks_ = 0;
+
+         // find the first non-zero strip
+         Float_t *stripArrStart = stripEnergyArray;
+         for( ; stripArrStart != &stripEnergyArray[kEEmcNumStrips] && (*stripArrStart == 0); ++stripArrStart );
+
+         // find the last non-zero strip
+         Float_t *stripArrEnd = &stripEnergyArray[kEEmcNumStrips-1];
+         for( ; stripArrEnd != stripArrStart && !(*stripArrEnd); --stripArrEnd );
+
+         // total number of strips considered in the array
+         Int_t nStrips = (Int_t)(stripArrEnd-stripArrStart);
+         Int_t nOffset = (Int_t)(stripArrStart-stripEnergyArray);
+
+         if( stripArrEnd - stripArrStart > mMinNumStrips ){
+
+            // let there be 'mSideStrips' zero strips on the left side
+            stripArrStart -= mSideStrips;
+            if( stripArrStart < stripEnergyArray )
+               stripArrStart = stripEnergyArray;
+
+            // let there be 'mSideStrips' zero strips on the right side
+            stripArrEnd += mSideStrips;
+            if( stripArrEnd >= &stripEnergyArray[kEEmcNumStrips] )
+               stripArrEnd = &stripEnergyArray[kEEmcNumStrips-1];
+
+            // update
+            nStrips = (Int_t)(stripArrEnd-stripArrStart);
+            nOffset = (Int_t)(stripArrStart-stripEnergyArray);
+
+            Float_t startWidth = mStartWidth;
+            Float_t stopWidth = mStopWidth;
+
+            // do some calculations to avoid clipping window errors
+            Int_t numberIterations = (int)(7 * stopWidth + 0.5); // copied from TSpectrum
+            if( nStrips < 2*numberIterations + 1 ){
+
+               // shift endpoints out by 'mExtraSideStrips'
+               stripArrStart -= mExtraSideStrips;
+               if( stripArrStart < stripEnergyArray )
+                  stripArrStart = stripEnergyArray;
+
+               stripArrEnd += mExtraSideStrips;
+               if( stripArrEnd >= &stripEnergyArray[kEEmcNumStrips] )
+                  stripArrEnd = &stripEnergyArray[kEEmcNumStrips-1];
+
+               // update
+               nStrips = (Int_t)(stripArrEnd-stripArrStart);
+               nOffset = (Int_t)(stripArrStart-stripEnergyArray);
+
+               // keep shifting outward until have at least 15 strips
+               while( nStrips < 15 ){
+                  --stripArrStart;
+                  if( stripArrStart < stripEnergyArray )
+                     stripArrStart = stripEnergyArray;
+
+                  ++stripArrEnd;
+                  if( stripArrEnd >= &stripEnergyArray[kEEmcNumStrips] )
+                     stripArrEnd = &stripEnergyArray[kEEmcNumStrips-1];
+
+                  nStrips = (Int_t)(stripArrEnd-stripArrStart);
+                  nOffset = (Int_t)(stripArrStart-stripEnergyArray);
+               };
+
+               if( nStrips < 2*numberIterations + 1 ){
+                  // now update startWidth
+                  stopWidth = (nStrips-2.)/14.;
+
+                  if( startWidth >= stopWidth )
+                     startWidth = (nStrips-3.)/14.;
+
+#ifdef DEBUG
+                  LOG_INFO << "nStrips is " << nStrips << ", new widths are " << startWidth << ' ' << stopWidth << endm;
+#endif
+
+                  if( startWidth < 1 )
+                     startWidth = 1;
+
+                  if( stopWidth <= 1 )
+                     stopWidth = startWidth + 0.1*mWidthStepSize;
+               };
+            };
+
+            for( Float_t width = startWidth; !nPeaks_ && width < stopWidth; width += mWidthStepSize ){
+#ifdef DEBUG
+               Int_t numberIterations = (int)(7 * width + 0.5); // copied from TSpectrum
+               //LOG_INFO << "Trying with width = " << width << " in " << startWidth << ' ' << stopWidth << endm;
+               //LOG_INFO << "nstrips = " << nStrips << ' ' << 2*numberIterations+1 << endm;
+               if( nStrips < 2*numberIterations + 1 ){
+                  LOG_INFO << "Expect clipping window error: " << nStrips << ' ' << width << endm;
+               };
+#endif
+               nPeaks_ = peakFinderPtr->SearchHighRes( stripArrStart, mDeconvoluted, nStrips, width,
+                                                       mThreshold, mRemoveBkg, mNumDeconIters, mDoMarkov, mAverWindow );
+            };
+
+            if( !nPeaks_ ){
+               // try one last time without background subtraction
+               nPeaks_ = peakFinderPtr->SearchHighRes( stripArrStart, mDeconvoluted, nStrips, startWidth,
+                                                       mThreshold, 0, mNumDeconIters, mDoMarkov, mAverWindow );
+            };
+         }; // minimum number of strips to call peak finder with
+
+         AnlEMPointVec_t &peakPerThisLayer = peakPerLayer[idx];
+         if( nPeaks_ ){
+            // store the peak positions and energies
+            Float_t *stripPos = peakFinderPtr->GetPositionX();
+            //Float_t *energy   = peakFinderPtr->GetPositionY();   // seems unreliable
+
+            assert( nPeaks_ == peakFinderPtr->GetNPeaks() );
+
+            for( Int_t i=0; i<nPeaks_; ++i ){
+               // recompute the energy
+               stripPos[i] += nOffset;
+               Int_t idx1 = stripPos[i]-mNumToSum;
+               if( idx1 < 0 )
+                  idx1 = 0;
+               Int_t idx2 = stripPos[i]+mNumToSum;
+               if( idx2 > kEEmcNumStrips )
+                  idx2 = kEEmcNumStrips;
+
+               Float_t e = 0;
+               for( Int_t k = idx1; k < idx2; ++k )
+                  e += stripEnergyArray[ k ];
+
+               peakPerThisLayer.push_back( AnlEMPoint_t( e, stripPos[i], 0 ) );
+            };
+
+            possibilities *= nPeaks_;
+
+            if( nPeaks_ > 1 )
+               ++nWithMultiplePeaks;
+         } else {
+            // store the energy weighted average value
+            Float_t e = 0, x = 0;
+            Int_t n = 0;
+            for( Float_t *p = stripArrStart; p != stripArrEnd; ++p, ++n ){
+               x += n*(*p);
+               e += (*p);
+            };
+
+            if( e )
+               x /= e;
+            if( n )
+               e /= n;
+
+            peakPerThisLayer.push_back( AnlEMPoint_t( e, x, 0 ) );
+         };
+      };
+
+      if( possibilities > 1 ){
+         doSplit = 1;
+
+         // now decide how to line up the various peaks per layer
+         if( nLayers == 2 ){
+            // standard case: just two layers. 
+            // make sure are a 'u' and 'v' layer in the same sector
+
+            Int_t sector0 = sectorPlaneVec[0]/2;
+            Char_t layer0 = (sectorPlaneVec[0]%2 ? 'u' : 'v' );
+
+            Int_t sector1 = sectorPlaneVec[1]/2;
+            Char_t layer1 = (sectorPlaneVec[1]%2 ? 'u' : 'v' );
+
+            if( sector0 != sector1 || layer0 == layer1 ){
+               // flag to invalidate hit
+               doInvalidate = 1;
+            } else {
+               AnlEMPointVec_t &uPeakVec = ( layer0 == 'u' ? peakPerLayer[0] : peakPerLayer[1] );
+               AnlEMPointVec_t &vPeakVec = ( layer0 == 'v' ? peakPerLayer[0] : peakPerLayer[1] );
+
+               std::sort( uPeakVec.begin(), uPeakVec.end(), &AnlEMPoint_t::energyLessThan );
+               std::sort( vPeakVec.begin(), vPeakVec.end(), &AnlEMPoint_t::energyLessThan );
+
+               // debug
+#ifdef DEBUG
+               {
+                  for( UInt_t i = 0; i < uPeakVec.size(); ++i ){
+                     LOG_INFO << "u " << uPeakVec[i].X() << ' ' << uPeakVec[i].W() << endm;
+                  };
+                  for( UInt_t i = 0; i < vPeakVec.size(); ++i ){
+                     LOG_INFO << "v " << vPeakVec[i].X() << ' ' << vPeakVec[i].W() << endm;
+                  };
+               };
+#endif
+
+               Float_t u1=-1, u2=-1, v1=-1, v2=-1;
+               if( uPeakVec.size() == 1 ){
+                  // a Nx1 condition: 1 u, N v (but N >= 2)
+                  // first set to u,v coordinates, then convert to X,Y
+
+                  point1.W() = uPeakVec[0].W() + vPeakVec[0].W();
+                  u1 = uPeakVec[0].X();
+                  v1 = vPeakVec[0].X();
+
+                  point2.W() = uPeakVec[0].W() + vPeakVec[1].W();
+                  u2 = uPeakVec[0].X();
+                  v2 = vPeakVec[1].X();
+
+               } else if( vPeakVec.size() == 1 ){
+                  // a Nx1 condition: 1 u, N v (but N >= 2)
+                  // first set to u,v coordinates, then convert to X,Y
+
+                  point1.W() = uPeakVec[0].W() + vPeakVec[0].W();
+                  u1 = uPeakVec[0].X();
+                  v1 = vPeakVec[0].X();
+
+                  point2.W() = uPeakVec[1].W() + vPeakVec[0].W();
+                  u2 = uPeakVec[1].X();
+                  v2 = vPeakVec[0].X();
+
+               } else {
+                  // a NxM condition: N u, M v (both M,N >= 2)
+
+#ifdef USE_E_MATCHING
+                  // line up two with the highest energy
+                  point1.W() = uPeakVec[0].W() + vPeakVec[0].W();
+                  u1 = uPeakVec[0].X();
+                  v1 = vPeakVec[0].X();
+
+                  // line up next two
+                  point2.W() = uPeakVec[1].W() + vPeakVec[1].W();
+                  u2 = uPeakVec[1].X();
+                  v2 = vPeakVec[1].X();
+#else
+                  // don't want to do double split, so decide which of the two splits is better.
+                  //cout << uPeakVec.size() << ' ' << vPeakVec.size() << endl;
+
+                  Float_t uDist2 = (uPeakVec[0].X() - uPeakVec[1].X());
+                  uDist2 *= uDist2;
+
+                  Float_t vDist2 = (vPeakVec[0].X() - vPeakVec[1].X());
+                  vDist2 *= vDist2;
+
+                  point1.W() = uPeakVec[0].W() + vPeakVec[0].W();
+                  point2.W() = uPeakVec[1].W() + vPeakVec[1].W();
+
+
+                  // split the one with the larger distance
+                  if( uDist2 > vDist2 ){
+                     // use the two u's and the energy weighted position for the v's
+                     u1 = uPeakVec[0].X();
+                     v1 = (vPeakVec[0].W()*vPeakVec[0].X() + vPeakVec[1].W()*vPeakVec[1].X())/(vPeakVec[0].W() + vPeakVec[1].W());
+
+                     u2 = uPeakVec[1].X();
+                     v2 = v1;
+                  } else {
+                     // use the two v's and the energy weighted position for the u's
+                     u1 = (uPeakVec[0].W()*uPeakVec[0].X() + uPeakVec[1].W()*uPeakVec[1].X())/(uPeakVec[0].W() + uPeakVec[1].W());
+                     v1 = vPeakVec[0].X();
+
+                     u2 = u1;
+                     v2 = vPeakVec[1].X();
+                  };
+#endif
+               };
+
+               StEEmcPointMap_t::instance().convertStripUVtoXY( sector0, u1, v1, point1.X(), point1.Y() );
+               StEEmcPointMap_t::instance().convertStripUVtoXY( sector0, u2, v2, point2.X(), point2.Y() );
+
+#ifdef DEBUG
+               LOG_INFO << "Hit 1: " << u1 << ' ' << v1 << " -> " << point1.X() << ' ' << point1.Y() << endm;
+               LOG_INFO << "Hit 2: " << u2 << ' ' << v2 << " -> " << point2.X() << ' ' << point2.Y() << endm;
+#endif
+            };
+         } else {
+            LOG_FATAL << "Not yet programmed multilayer matching" << endm;
+            ierr = kStFatal;
+         };
+      };
+   };
+
+   return ierr;
+};
+
+
+ClassImp( StEEmcAnlSplitHitMorhac_t );
+
+/*
+ * $Id: StEEmcAnlSplitHitMorhac.cxx,v 1.7 2011/11/18 01:47:54 sgliske Exp $
+ *
+ * $Log: StEEmcAnlSplitHitMorhac.cxx,v $
+ * Revision 1.7  2011/11/18 01:47:54  sgliske
+ * today
+ *
+ * Revision 1.5  2011/11/11 23:01:46  sgliske
+ * daily update
+ *
+ * Revision 1.4  2011/11/11 21:28:19  sgliske
+ * daily update
+ *
+ * Revision 1.3  2011/11/11 04:15:36  sgliske
+ * update: it compiles!
+ *
+ * Revision 1.2  2011/11/10 23:43:26  sgliske
+ * update
+ *
+ * Revision 1.1  2011/11/10 23:33:33  sgliske
+ * Re-arranged hit splitting & added new base class and algos
+ *
+ * 
+ */
+@
+
+
+1.7
+log
+@today
+@
+text
+@d420 1
+a420 1
+ * $Id: StEEmcAnlSplitHitMorhac.cxx,v 1.5 2011/11/11 23:01:46 sgliske Exp $
+d423 3
+@
+
+
+1.6
+log
+@today
+@
+text
+@d23 1
+a24 1
+#include "StRoot/StEEmcPool/StEEmcGeoId/StEEmcGeoId.h"
+d367 1
+a367 1
+                  cout << uPeakVec.size() << ' ' << vPeakVec.size() << endl;
+@
+
+
+1.5
+log
+@daily update
+@
+text
+@d420 1
+a420 1
+ * $Id: StEEmcAnlSplitHitMorhac.cxx,v 1.4 2011/11/11 21:28:19 sgliske Exp $
+d423 3
+@
+
+
+1.4
+log
+@daily update
+@
+text
+@d140 2
+d147 7
+a153 1
+         if( &stripEnergyArray[kEEmcNumStrips] - stripArrStart > mMinNumStrips ){
+d155 1
+a155 3
+            // find the last non-zero strip
+            Float_t *stripArrEnd = &stripEnergyArray[kEEmcNumStrips-1];
+            for( ; stripArrEnd != stripArrStart && !(*stripArrEnd); --stripArrEnd );
+d167 3
+a169 6
+            // total number of strips considered in the array
+            Int_t nStrips = (Int_t)(stripArrEnd-stripArrStart);
+            Int_t nOffset = (Int_t)(stripArrStart-stripEnergyArray);
+
+            Int_t& nPeaks_ = nPeaks[ idx ];
+            nPeaks_ = 0;
+d242 1
+d244 21
+a264 21
+            AnlEMPointVec_t &peakPerThisLayer = peakPerLayer[idx];
+            if( nPeaks_ ){
+               // store the peak positions and energies
+               Float_t *stripPos = peakFinderPtr->GetPositionX();
+               //Float_t *energy   = peakFinderPtr->GetPositionY();   // seems unreliable
+
+               assert( nPeaks_ == peakFinderPtr->GetNPeaks() );
+
+               for( Int_t i=0; i<nPeaks_; ++i ){
+                  // recompute the energy
+                  stripPos[i] += nOffset;
+                  Int_t idx1 = stripPos[i]-mNumToSum;
+                  if( idx1 < 0 )
+                     idx1 = 0;
+                  Int_t idx2 = stripPos[i]+mNumToSum;
+                  if( idx2 > kEEmcNumStrips )
+                     idx2 = kEEmcNumStrips;
+
+                  Float_t e = 0;
+                  for( Int_t k = idx1; k < idx2; ++k )
+                     e += stripEnergyArray[ k ];
+d266 2
+a267 2
+                  peakPerThisLayer.push_back( AnlEMPoint_t( e, stripPos[i], 0 ) );
+               };
+d269 1
+a269 1
+               possibilities *= nPeaks_;
+d271 10
+a280 10
+               if( nPeaks_ > 1 )
+                  ++nWithMultiplePeaks;
+            } else {
+               // store the energy weighted average value
+               Float_t e = 0, x = 0;
+               Int_t n = 0;
+               for( Float_t *p = stripArrStart; p != stripArrEnd; ++p, ++n ){
+                  x += n*(*p);
+                  e += (*p);
+               };
+d282 4
+a285 4
+               if( e )
+                  x /= e;
+               if( n )
+                  e /= n;
+d287 1
+a287 2
+               peakPerThisLayer.push_back( AnlEMPoint_t( e, x, 0 ) );
+            };
+d355 1
+d365 1
+a365 2
+
+#ifdef USE_DIST
+d379 1
+a379 1
+                  // split the one with the smaller distance (as will be hardest to distinguish later
+d420 1
+a420 1
+ * $Id: StEEmcAnlSplitHitMorhac.cxx,v 1.3 2011/11/11 04:15:36 sgliske Exp $
+d423 3
+@
+
+
+1.3
+log
+@update: it compiles!
+@
+text
+@d10 4
+d15 1
+d29 2
+d32 6
+a37 1
+   mSideStrips(2),
+d42 2
+a43 5
+   mThreshold(0.005),
+   mRemoveBkg(1),
+   mNumDeconIters(3),
+   mDoMarkov(1),
+   mAverWindow(3) { /* */ };
+d53 10
+a85 1
+   Int_t nLayers = sectorPlaneVec.size();
+d110 8
+a117 1
+         stripArray[ strip ] = stripSetIter->getEnergy();
+d119 3
+d124 4
+d145 94
+a238 2
+         // let there be 'mSideStrips' zero strips on the side
+         for( Int_t i=0; i<mSideStrips && stripArrStart != stripEnergyArray; ++i, --stripArrStart );
+a239 20
+         // find the last non-zero strip
+         Float_t *stripArrEnd = &stripEnergyArray[kEEmcNumStrips-1];
+         for( ; stripArrEnd != stripArrStart && !(*stripArrEnd); --stripArrEnd );
+
+         // let there be 'mSideStrips' zero strips on the side
+         for( Int_t i=0; i<mSideStrips && stripArrEnd != &stripEnergyArray[kEEmcNumStrips-1]; ++i, ++stripArrEnd );
+
+         // total number of strips considered in the array
+         Int_t nStrips = (Int_t)(stripArrEnd-stripEnergyArray);
+
+         Float_t width;
+         Int_t& nPeaks_ = nPeaks[ idx ];
+         for( width = mStartWidth; !nPeaks_ && width < mStopWidth; width += mWidthStepSize )
+            nPeaks_ = peakFinderPtr->SearchHighRes( stripArrStart, mDeconvoluted, nStrips, width,
+                                                    mThreshold, mRemoveBkg, mNumDeconIters, mDoMarkov, mAverWindow );
+
+         if( nPeaks_ ){
+            // store the peak positions and energies
+            Float_t *stripPos = peakFinderPtr->GetPositionX();
+            Float_t *energy   = peakFinderPtr->GetPositionY();
+d241 20
+d262 2
+a263 2
+            for( Int_t i=0; i<nPeaks_; ++i )
+               peakPerThisLayer.push_back( AnlEMPoint_t( stripPos[i], 0, energy[i] ) );
+d265 1
+a265 1
+            possibilities *= nPeaks_;
+d267 18
+a284 2
+            if( nPeaks_ > 1 )
+               ++nWithMultiplePeaks;
+d309 16
+a324 1
+               Float_t u1, u2, v1, v2;
+a350 1
+                  // first set to u,v coordinates, then convert to X,Y
+d352 1
+a352 1
+                  // match the highest peaks
+d357 1
+a357 1
+                  // match the second highest peaks
+d359 12
+a370 2
+                  u1 = uPeakVec[1].X();
+                  v1 = vPeakVec[1].X();
+d372 21
+d397 5
+d417 1
+a417 1
+ * $Id: StEEmcAnlSplitHitMorhac.cxx,v 1.2 2011/11/10 23:43:26 sgliske Exp $
+d420 3
+@
+
+
+1.2
+log
+@update
+@
+text
+@d20 1
+d47 1
+a47 1
+Int_t StEEmcAnlSplitHitMorhac_t::splitHit( const StEEmcAnlHit_t& hit, Bool_t& doSplit, AnlEMPoint_t& point1, AnlEMPoint_t& point2 ){
+d49 2
+d66 4
+d91 1
+a91 1
+         Int_t *stripArray = mStripLayer[ idx ];
+a95 3
+   Int_t nPeaks[kMaxNumLayers];
+   Int_t nLayers = sectorPlaneVec.size();
+   StAnlEMPointVec_t peakPerLayer[kMaxNumLayers];
+d99 2
+a100 1
+      hit.invalidate();
+d104 2
+d127 1
+a127 1
+         Int_t nPeaks_ = &nPeaks[ idx ];
+d129 2
+a130 1
+            nPeaks_ = spec->SearchHighRes( uStart, uStripsDecon, nU, width, mThreshold, mRemoveBkg, mNumDeconIters, mDoMarkov, mAverWindow );
+d134 3
+a136 3
+            Float_t *stripPos = spec->GetX();
+            Float_t *energy = spec->GetY();
+            StAnlEMPointVec_t &peakPerThisLayer = peakPerLayer[idx];
+d139 6
+a144 1
+               peakPerThisLayer.push_back( StAnlEMPoint_t( stripPos[i], 0, energy[i] ) );
+d148 2
+a149 1
+      // now decide how to line up the various peaks per layer
+d151 67
+a217 2
+      // not yet programmed
+      assert( 1==0 );
+d220 1
+d227 1
+a227 1
+ * $Id: StEEmcAnlSplitHitMorhac.cxx,v 1.1 2011/11/10 23:33:33 sgliske Exp $
+d230 3
+@
+
+
+1.1
+log
+@Re-arranged hit splitting & added new base class and algos
+@
+text
+@d10 2
+d28 6
+a33 1
+   mWidthStepSize(0.1) { /* */ };
+d41 1
+a41 1
+   peakFinderPtr = new TSpectrum( mMaxNumPtrs, mResolution );
+d66 2
+a67 1
+      Short_t sector, layerIsV, strip;
+d69 1
+a69 1
+      StEEmcGeoId_t::decodeSmd( stripSet->getGeoId(), sector, layerIsV, strip );
+a72 1
+      Int_t idx = -1;
+d78 1
+a78 1
+      Int_t idx = sectorPlaneToIdx[ sectorPlane ];
+d137 2
+d147 5
+a151 1
+ * $Id:  $
+a152 1
+ * $Log: $
+@
+

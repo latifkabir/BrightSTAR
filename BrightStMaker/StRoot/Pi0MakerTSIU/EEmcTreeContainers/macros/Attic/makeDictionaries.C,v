@@ -1,0 +1,133 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2012.11.26.19.37.34;	author sgliske;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2012.06.14.05.38.50;	author sgliske;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2012.06.01.22.10.24;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2012.06.01.22.08.51;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@Moved to StRoot/StEEmcPool/EEmcTreeContainers
+@
+text
+@/*
+ * Created by S. Gliske, May 2012
+ *
+ * Description: Compile all the dictionaries needed for the EEmcTree,
+ * allowing use of the EEmcTree outside of the STAR framework.
+ *
+ * Assuming one is in the directory of this file on a system with the
+ * full CVS (such as BNL RCF), one can make a tar file by doing
+ *
+ * cd ..
+ * tar -czf EEmcTreeContainers.tar.gz EEmcTreeContainers/*.cxx EEmcTreeContainers/*.h EEmcTreeContainers/macros/*.C
+ * 
+ * One can than copy the file EEmcTreeContainers.tar.gz to some
+ * directory, on possibly some other machine, and do the following
+ *
+ * tar -xzf EEmcTreeContainers.tar.gz
+ * cd EEmcTreeContainers
+ * mv macros/*.C .
+ * rmdir macros
+ * root -b makeDictionaries.C
+ * cd ..
+ *
+ * Assuming one's analysis code is ran from the directory where
+ * EEmcTreeContainers.tar.gz was unpacked via the above commands, then
+ * in one's macros one can load the libraries via
+ *
+ * gROOT->LoadMacro("EEmcTreeContainers/loadEEmcTreeDictionaries.C");
+ * loadEEmcTreeDictionaries();
+ * 
+ */
+
+void makeDictionaries(){
+   gROOT->ProcessLine(".L EEmcEnergy.cxx++");
+   gROOT->ProcessLine(".L EEmcSmdCluster.cxx++");
+   gROOT->ProcessLine(".L EEmcHit.cxx++");
+   gROOT->ProcessLine(".L EEmcParticleCandidate.cxx++");
+   gROOT->ProcessLine(".L EEmc2ParticleCandidate.cxx++");
+   gROOT->ProcessLine(".L McParticle.cxx++");
+};
+
+/*
+ * $Id: makeDictionaries.C,v 1.3 2012/06/14 05:38:50 sgliske Exp $
+ * $Log: makeDictionaries.C,v $
+ * Revision 1.3  2012/06/14 05:38:50  sgliske
+ * Added McParticle
+ *
+ * Revision 1.2  2012/06/01 22:10:24  sgliske
+ * fixed directory structure
+ *
+ * Revision 1.1  2012/06/01 22:08:51  sgliske
+ * creation
+ *
+ */
+@
+
+
+1.3
+log
+@Added McParticle
+@
+text
+@d42 1
+a42 1
+ * $Id: makeDictionaries.C,v 1.2 2012/06/01 22:10:24 sgliske Exp $
+d44 3
+@
+
+
+1.2
+log
+@fixed directory structure
+@
+text
+@d38 1
+d42 1
+a42 1
+ * $Id: makeDictionaries.C,v 1.1 2012/06/01 22:08:51 sgliske Exp $
+d44 3
+@
+
+
+1.1
+log
+@creation
+@
+text
+@d11 1
+a11 1
+ * tar -czf EEmcTreeContainers.tar.gz EEmcTreeContainers
+d18 2
+d41 5
+a45 2
+ * $Id: $
+ * $Log: $
+@
+

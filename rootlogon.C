@@ -51,6 +51,10 @@
     gSystem->Load("StDbBroker");
     gSystem->Load("StEEmcPoolmuDst");
 
+    //----------- FMS Related -----------------
+    gSystem->Load("StFmsUtil");
+    gSystem->Load("StFmsDbMaker");
+  
     //------ Bright Maker -------------
     gSystem->Load("BrEEmcMaker");
     gSystem->Load("BrExampleMaker");

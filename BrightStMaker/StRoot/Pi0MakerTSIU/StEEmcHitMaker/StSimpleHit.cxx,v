@@ -1,0 +1,70 @@
+head	1.3;
+access;
+symbols
+	response:1.2;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2012.11.26.19.40.36;	author sgliske;	state dead;
+branches;
+next	1.2;
+
+1.2
+date	2011.07.20.21.35.26;	author sgliske;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.07.05.21.48.20;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@moved to official StEEmcPool
+@
+text
+@/*!
+ *
+ * \class StSimpleHit_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ * $Id: 
+ * $Log:
+ *
+ * Root stuff for the class.  See the header file.
+ */
+
+#include "StSimpleHit.h"
+
+std::ostream &operator<<( std::ostream &out, const StSimpleHit_t &hit ){
+   out << "hit " << hit.mID << " at " << hit.mX << ' ' << hit.mY << ' ' << hit.mZ << ", E = " << hit.mE;
+   return out;
+};
+
+ClassImp(StSimpleHit_t);
+@
+
+
+1.2
+log
+@update
+@
+text
+@@
+
+
+1.1
+log
+@split from StEEmcAnalysisTreeMaker
+@
+text
+@d13 5
+@
+

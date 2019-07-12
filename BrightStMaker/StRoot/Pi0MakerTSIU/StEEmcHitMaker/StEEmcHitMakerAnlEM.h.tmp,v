@@ -1,0 +1,189 @@
+head	1.2;
+access;
+symbols
+	response:1.1;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2012.10.09.03.57.20;	author sgliske;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.02.20.54.24;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class EEmcHitMakerAnlEM_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * A conglomerate hit finder that uses an EM-type algorithm--actually
+ * alternating between EM on the strips and EM on the towers.  This is
+ * a holistic approach, rather than dividing the task into clustering,
+ * point finding, and energy sharing.  The algorithm can be
+ * initialized with any tower cluster finder algorithm, i.e. any
+ * StEEmcTowerClusterFinder_t class.
+ *
+ * The basic steps are:
+ * I) Initialize
+ * II) Determine the strip energies
+ * III) Estimate the hit position
+ * IV) Determine the tower energies
+ * V) Estimate the hit energy
+ * VI) Merge hits
+ * VII) check stopping critera and possibly return to step II.
+ *
+ */
+
+#ifndef _EEMC_HIT_MAKER_ANL_EM_H_
+#define _EEMC_HIT_MAKER_ANL_EM_H_
+
+#include <TF1.h>
+#include <TMinuit.h>
+
+#include "StRoot/StEEmcPool/StEEmcPointMap/StEEmcPointMap.h"
+
+/// Include related classes
+#include "StEEmcHitMaker.h"
+#include "StSimpleCluster.h"
+#include "StEEmcHit.h"
+#include "StEEmcAnlElement.h"
+#include "StEEmcAnlHit.h"
+#include "StEEmcTowerClusterFinder.h"
+
+
+// the class
+class StEEmcHitMakerAnlEM_t : public StEEmcHitMaker_t {
+ public:
+   /// Construtor
+   StEEmcHitMakerAnlEM_t( const Char_t *myName,             // name of this maker in the StMaker hash table
+                          const Char_t *responseMakerName,  // name of the keeper in charge of the response
+                          StEEmcTowerClusterFinder_t* towerClusterFinder ); // for initalizing
+
+   // do to: write copy constructor, eq. op.
+
+   /// Deconstructor
+   virtual ~StEEmcHitMakerAnlEM_t();
+
+   /// Initialize
+   Int_t Init();
+
+   /// Find all the hits
+   Int_t Make();
+
+   /// Clear for next event
+   void  Clear(Option_t *opts="");
+
+   /// modifiers (setting parameters)
+   void setStripInclDist( Float_t val ){ mStripInclDist = val; };
+   void setTowerInclDist( Float_t val ){ mTowerInclDist = val; };
+   void setStripMinWeight( Float_t val ){ mStripMinWeight = val; };
+   void setTowerMinWeight( Float_t val ){ mTowerMinWeight = val; };
+   void setMaxEigenvalue( Float_t val ){ mMaxEigenvalue = val; };
+   void setMinHitDist( Float_t val ){ mMinHitDist = val; };
+   void setMaxIters( Int_t val ){ mMaxIters = val; };
+   void setMaxRenormIters( Int_t val ){ mMaxRenormIters = val; };
+   void setStripDistFunc( TF1* func ){ mStripDistFunc = func; };
+   void setTowerDistFunc( TF1* func ){ mTowerDistFunc = func; };
+   void setPointDistFunc( TF1* func ){ mPointDistFunc = func; };
+
+ protected:
+   /// pointers to finders for initialization
+   StEEmcTowerClusterFinder_t *mTowerClusterFinder;
+
+   // function members
+   Int_t init();
+   Int_t updateEnergies( Bool_t doTowers );
+   Int_t divideHits();
+   Int_t estimatePositions();
+   Int_t estimatePositionSingleSector( const StEEmcAnlElementPtrSet_t& stripSet, Float_t& x, Float_t& y );
+   Int_t estimatePositionSplitSector( const StEEmcAnlHit_t& hit, Float_t& x, Float_t& y );
+   Int_t merge();
+   Bool_t stop();
+   Int_t convertAnlHitToEEmcHit();
+
+   // vector of hits
+   StEEmcAnlHitList_t mAnlHitList;   //!
+
+   // sets to find total depositied energy in the strips/towers per hit
+   StEEmcAnlElementSet_t mStripDepositedEnergy;
+   StEEmcAnlElementSet_t mTowerDepositedEnergy;
+
+   // parameters
+   Float_t mStripInclDist;
+   Float_t mStripMinWeight;
+   TF1 *mStripDistFunc;
+   Float_t mMaxEigenvalue;
+   Float_t mTowerInclDist;
+   Float_t mTowerMinWeight;
+   TF1 *mTowerDistFunc;
+   Float_t mMinHitDist;
+   Int_t mMaxIters;
+   Int_t mMaxRenormIters;
+   Int_t mMaxMinuitIters;
+   Float_t mMinuitTolerance;
+   Float_t mMinuitStepSize;
+   PointDistFunc_t *mPointDistanceFunc;
+
+   // class for points
+   struct AnlEMPoint_t {
+      Float_t mW, mX, mY;
+      AnlEMPoint_t( Float_t w, Float_t x, Float_t y ) : mW(w), mX(x), mY(y) { /* */ };
+   };
+
+   // Minuit
+   TMinuit *mMinuit;
+
+ private:
+   ClassDef( StEEmcHitMakerAnlEM_t, 1 );
+};
+
+#endif
+
+/*
+ * $Id: StEEmcHitMakerAnlEM.h.tmp,v 1.1 2011/11/02 20:54:24 sgliske Exp $
+ *
+ * $Log: StEEmcHitMakerAnlEM.h.tmp,v $
+ * Revision 1.1  2011/11/02 20:54:24  sgliske
+ * update
+ *
+ * Revision 1.3  2011/09/01 21:52:49  sgliske
+ * Working on ANL EM Algo -- still
+ *
+ * Revision 1.2  2011/08/31 22:05:43  sgliske
+ * Working on ANL EM Algo
+ *
+ * Revision 1.1  2011/08/30 21:46:21  sgliske
+ * creation
+ *
+ * 
+ */
+@
+
+
+1.1
+log
+@update
+@
+text
+@d130 5
+a134 1
+ * $Id: StEEmcHitMakerAnlEM.h,v 1.3 2011/09/01 21:52:49 sgliske Exp $
+a135 1
+ * $Log: StEEmcHitMakerAnlEM.h,v $
+@
+

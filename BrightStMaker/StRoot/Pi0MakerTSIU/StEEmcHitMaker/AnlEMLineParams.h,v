@@ -1,0 +1,85 @@
+head	1.2;
+access;
+symbols
+	response:1.1;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2012.10.09.03.57.19;	author sgliske;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2011.11.11.21.28.06;	author sgliske;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@removed unused makers
+@
+text
+@/*!
+ *
+ * \class AnlEMLineParams_t
+ * \author Stephen Gliske <sgliske@@anl.gov>
+ *
+ * A structure used in the StEEmcHitMakerAnlEM_t class to keep track of line parameters and a few other things.
+ *
+ */
+
+#ifndef _EEMC_ANL_LINE_PARAMS_H_
+#define _EEMC_ANL_LINE_PARAMS_H_
+
+#include <vector>
+
+class AnlEMLineParams_t;
+
+typedef std::vector< AnlEMLineParams_t > AnlEMLineParamsVec_t;
+
+// class for points
+class AnlEMLineParams_t {
+ private:
+   Short_t mSector;
+   Float_t mA, mB, mW;
+
+ public:
+   AnlEMLineParams_t( Short_t sector, Float_t w, Float_t a, Float_t b ) : mSector(sector), mA(a), mB(b), mW(w) { /* */ };
+
+   Short_t& sector(){ return mSector; };
+   Float_t& a(){ return mA; };
+   Float_t& b(){ return mB; };
+   Float_t& weight(){ return mW; };
+};
+
+#endif
+
+/*
+ * $Id: AnlEMLineParams.h,v 1.1 2011/11/11 21:28:06 sgliske Exp $
+ * $Log: AnlEMLineParams.h,v $
+ * Revision 1.1  2011/11/11 21:28:06  sgliske
+ * daily update
+ *
+ * 
+ */
+@
+
+
+1.1
+log
+@daily update
+@
+text
+@d37 5
+a41 2
+ * $Id:$
+ * $Log: $
+@
+
