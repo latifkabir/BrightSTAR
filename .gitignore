@@ -23,3 +23,5 @@ temp/
 .root_history
 .consign
 *.dat
+.project
+.cproject
