@@ -16,8 +16,8 @@ ROOTCINT  = rootcint
 ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
 CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker -L ${STARHOME}/libBrStar/lib -lBrStar
-MODULES   = StMuDSTMaker/COMMON StChain St_base Star2Root StEvent StarClassLibrary 
-SRC_DIR   = $(addprefix ${STAR}/StRoot/,$(MODULES))
+MODULES = .part4/include .part8/include .part9/include 
+SRC_DIR   =   $(addprefix ${STAR}/,$(MODULES)) 
 LIB_INCLUDE  = $(addprefix -I,$(SRC_DIR)) -I${STAR}/StRoot/ -I${STARHOME}/libBrStar/src/ 
 
 all: libStAnalysis

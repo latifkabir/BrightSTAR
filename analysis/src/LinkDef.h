@@ -7,5 +7,6 @@
 #pragma link C++ function EEmcReadDemo2;                  // Read EEMC data
 #pragma link C++ function EEmcQA;                         // Various EEMC distributions
 #pragma link C++ function EEmcEvent;                      // Various EEMC distributions
+#pragma link C++ function FmsQA;                          // Various EEMC distributions
 
 #endif

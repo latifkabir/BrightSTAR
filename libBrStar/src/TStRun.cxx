@@ -5,7 +5,7 @@
 // URL: jlab.org/~latif
 
 #include "TStRun.h"
-#include "StMuDstMaker.h"
+#include "StMuDSTMaker/COMMON/StMuDstMaker.h"
 #include "TStar.h"
 #include "TStRunList.h"
 
