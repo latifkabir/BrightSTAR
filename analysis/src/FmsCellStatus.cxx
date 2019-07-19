@@ -79,42 +79,47 @@ void FmsCellStatus(TString inFile)
 	    MaxCh = iMaxCh;
 	for (Int_t l = 0; l < MaxCh; l++)
 	{
+	    cout << i<<"\t"<<l <<endl;
+	    if(adcDist[i][l] == NULL)
+		continue;
 	    if(fmsDBMaker->getGain(i + 8, l + 1) == 0.0)
 		continue;
+	    det_ch.det = (i + 8);
+	    det_ch.ch = (l + 1);
 	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
 
 	    if(adcDist[i][l]->GetEntries() == 0)
 	    {
-		det_ch.det = (i + 8);
-		det_ch.ch = (l + 1);
 		deadChList.push_back(det_ch);
 		text->SetTextColor(kGreen);
 		text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
 		continue;
 	    }
 	    else if(adcDist[i][l]->GetEntries() < 1000 && adcDist[i][l]->GetEntries() > 0)
-	    {
-		det_ch.det = (i + 8);
-		det_ch.ch = (l + 1);
+	    {	
 		badChList.push_back(det_ch);
 		text->SetTextColor(kRed);
 		text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
 		continue;
 	    }
-	    for(Int_t m = 1; m <= 10; ++m)
+	    else
 	    {
-		if(adcDist[i][l]->GetBinContent(m) == 0)
+		for(Int_t m = 1; m <= 10; ++m)
 		{
-		    det_ch.det = (i + 8);
-		    det_ch.ch = (l + 1);
-		    bitShChList.push_back(det_ch);
-		    text->SetTextColor(kBlue);
-		    text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
-		    continue;
+		    if(adcDist[i][l]->GetBinContent(m) == 0)
+		    {
+			bitShChList.push_back(det_ch);
+			text->SetTextColor(kBlue);
+			text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
+			break;
+		    }
+		    else if(m == 10)
+		    {
+			text->SetTextColor(kBlack);
+			text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
+		    }
 		}
 	    }
-	    text->SetTextColor(kBlack);
-	    text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
 	}
     }
     //-----------------------------------------------------
@@ -130,6 +135,5 @@ void FmsCellStatus(TString inFile)
     cout << "List of bit-shifted channels:" <<endl;
     for(it = bitShChList.begin(); it != bitShChList.end(); ++ it)
 	cout << it->det << "\t"<< it->ch <<endl;
-    
-    file->Close();    
+
 }
