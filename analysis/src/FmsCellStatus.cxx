@@ -6,6 +6,7 @@
 
 #include "StRootInclude.h"
 #include "RootInclude.h"
+#include "TStar.h"
 
 void FmsCellStatus(TString inFile)
 {
@@ -30,7 +31,7 @@ void FmsCellStatus(TString inFile)
     const Int_t oMaxCh = 571; 
     const Int_t iMaxCh = 288;
     TH1F *adcDist[4][oMaxCh]; //Initilize the 1D histogram.
-    TStar::ExistIfInvalid(inFile);
+    TStar::ExitIfInvalid(inFile);
     TFile *file = new TFile(inFile);
     struct DetChPair
     {
@@ -106,7 +107,7 @@ void FmsCellStatus(TString inFile)
 		{
 		    det_ch.det = (i + 8);
 		    det_ch.ch = (l + 1);
-		    bitShChList.push_back();
+		    bitShChList.push_back(det_ch);
 		    text->SetTextColor(kBlue);
 		    text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
 		    continue;

@@ -11,6 +11,7 @@ Note: This script keep printing database status printout for every event unless 
 #include "StRootInclude.h"
 #include "RootInclude.h"
 #include "cppInclude.h"
+#include "TStar.h"
 
 void FmsQAusingMaker(TString fileList, TString outFileName)
 {   
@@ -36,8 +37,8 @@ void FmsQAusingMaker(TString fileList, TString outFileName)
     Int_t iEvent = 0; 
     Int_t channel; 
     Int_t detID;
-    const oMaxCh = 571; 
-    const iMaxCh = 288;
+    const Int_t oMaxCh = 571; 
+    const Int_t iMaxCh = 288;
     TH1F *adcDist[4][oMaxCh]; 
     
     for(Int_t i = 0; i < 4; ++i)
