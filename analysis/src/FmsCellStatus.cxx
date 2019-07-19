@@ -135,5 +135,4 @@ void FmsCellStatus(TString inFile)
     cout << "List of bit-shifted channels:" <<endl;
     for(it = bitShChList.begin(); it != bitShChList.end(); ++ it)
 	cout << it->det << "\t"<< it->ch <<endl;
-
 }
