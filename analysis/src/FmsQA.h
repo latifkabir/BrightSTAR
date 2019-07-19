@@ -5,4 +5,4 @@
 // URL: jlab.org/~latif
 
 #include "TString.h"
-void FmsQA(TString fileList = "resources/temp/FmsFileList.list");
+void FmsQA(TString fileList = "resources/temp/FmsFileList.list", TString outFileName = "results/root/FmsQA.root");

@@ -8,17 +8,19 @@
 Note: This script keep printing database status printout for every event unless you set the timestamp (day and year).
 
  */
+#include "StRootInclude.h"
+#include "RootInclude.h"
+#include "cppInclude.h"
 
 void FmsQAusingMaker(TString fileList, TString outFileName)
 {   
-    gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
-    loadSharedLibraries();
-    TFile *f = new TFile("FmsQA.root","recreate"); //Creates a root file that will hold the histograms.
+    TStar::ExitIfInvalid(fileList);
+    
+    TFile *f = new TFile(outFileName,"recreate"); 
 	
     StChain *chain = new StChain;
-    StMuDstMaker *mMaker = new StMuDstMaker(0,0,"","resources/temp/FmsFileList.list","", 1000);
+    StMuDstMaker *mMaker = new StMuDstMaker(0, 0, "", fileList, "", 1000);
     mMaker->SetStatus("*",0);
-    //mMaker->SetStatus("MuEvent*",1); // YOu need to enable this to get time from event info. Currently it prints table for every event, we we disable it and set time-stamp manually for the DB.
     mMaker->SetStatus("Fms*",1);
     //connect to STAR FMS database
     St_db_Maker *stDb = new St_db_Maker("StarDb", "MySQL:StarDb");
@@ -26,37 +28,37 @@ void FmsQAusingMaker(TString fileList, TString outFileName)
     StFmsDbMaker *fmsDBMaker = new StFmsDbMaker("FmsDbMk");
     fmsDBMaker->Init();
     
-    StMuDst *mDst =  mMaker->muDst();  //Get the Tree from MuDst.
+    StMuDst *mDst =  mMaker->muDst(); 
     TChain *ch = mMaker->chain();
 	
     StMuFmsCollection *fmsMuColl;
-    StMuFmsHit *hit;                          // Look at StMuFmsHit documentaion.    
-    int iEvent = 0; // Event number.
-    int channel; 
-    int detID;
+    StMuFmsHit *hit;                         
+    Int_t iEvent = 0; 
+    Int_t channel; 
+    Int_t detID;
     const oMaxCh = 571; 
     const iMaxCh = 288;
-    TH1F *adcDist[4][oMaxCh]; //Initilize the 1D histogram.
+    TH1F *adcDist[4][oMaxCh]; 
     
-    for(int i = 0; i < 4; ++i)
+    for(Int_t i = 0; i < 4; ++i)
     {
-	int MaxCh;
+	Int_t MaxCh;
 	if(i == 0 || i == 1)
 	    MaxCh = oMaxCh;
 	else
 	    MaxCh = iMaxCh;
-	for (int l = 0; l < MaxCh; l++) 
+	for (Int_t l = 0; l < MaxCh; l++) 
 	{
 	    TString title = "adcDist_";
 	    title += (i + 8);        
 	    title += "_";        
 	    title += (l + 1);        
-	    adcDist[i][l] = new TH1F(title, title, 300, 0.0, 500); //Creating 1D histograms for each channel.
+	    adcDist[i][l] = new TH1F(title, title, 300, 0.0, 500); 
 	}   
     }
 
     chain->Init();
-    for(int evt = 0; evt < ch->GetEntries(); ++evt)
+    for(Int_t evt = 0; evt < ch->GetEntries(); ++evt)
     {
 	if(evt % 1000 == 0)
 	    cout << "Events processed:"<< evt <<endl;
@@ -71,13 +73,13 @@ void FmsQAusingMaker(TString fileList, TString outFileName)
 	    continue;
 	}
        
-	for(int j = 0; j < fmsMuColl->numberOfHits(); j++) //For loop to fill each channel histogram.
+	for(Int_t j = 0; j < fmsMuColl->numberOfHits(); j++) 
 	{	     
-	    hit = fmsMuColl->getHit(j);       //Look at documentaion for hit.
-	    detID = hit->detectorId();        //Gets detector ID for each event.
-	    channel = hit->channel();         //Gets channel for each event. 288 for small/oMaxCh for large.
+	    hit = fmsMuColl->getHit(j);      
+	    detID = hit->detectorId();       
+	    channel = hit->channel();        
 	    if(detID >= 8 && detID <= 11)     // Exclude detector IDs corresponding to FPOST, FPS, FPD etc.
-		adcDist[detID - 8][channel - 1]->Fill(hit->adc()); //fill the histogram with adc data. Note: channel number starts from 1.	    
+		adcDist[detID - 8][channel - 1]->Fill(hit->adc()); 
 	}
     }
 
@@ -87,16 +89,16 @@ void FmsQAusingMaker(TString fileList, TString outFileName)
     
     f->cd();
 
-    for(int i = 0; i < 4; ++i)
+    for(Int_t i = 0; i < 4; ++i)
     {
-	int MaxCh;
+	Int_t MaxCh;
 	if(i == 0 || i == 1)
 	    MaxCh = oMaxCh;
 	else
 	    MaxCh = iMaxCh;
-	for (int l = 0; l < MaxCh; l++)
+	for (Int_t l = 0; l < MaxCh; l++)
 	{
-	    if(fmsDBMaker->getGain(i + 8, l + 1) != 0.0)
+	    if(fmsDBMaker->getGain(i + 8, l + 1) != 0.0)  //Exclude unphysical cells
 		adcDist[i][l]->Write();
 	}
     }

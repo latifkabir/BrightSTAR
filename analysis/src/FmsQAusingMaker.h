@@ -4,4 +4,6 @@
 // Created: Thu Jul 18 23:10:08 2019 (-0400)
 // URL: jlab.org/~latif
 
-void FmsQAusingMaker(TString fileList, TString outFileName);
+#include "TString.h"
+
+void FmsQAusingMaker(TString fileList = "resources/temp/FmsFileList.list", TString outFileName = "/results/root/FmsQA.root");

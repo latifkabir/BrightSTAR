@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void FmsQA(TString fileList)
+void FmsQA(TString fileList, TString outFileName)
 {
     // No need for compiled code and if you load the library from rootlogon.C
     // gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
@@ -12,11 +12,11 @@ void FmsQA(TString fileList)
 
     struct DetChPair
     {
-	int det;
-	int ch;
+	Int_t det;
+	Int_t ch;
     } det_ch;
     
-    TFile *f = new TFile("FmsQA.root","recreate"); //Creates a root file that will hold the histograms.
+    TFile *f = new TFile(outFileName,"recreate"); //Creates a root file that will hold the histograms.
 	
     StChain *chain = new StChain;
     StMuDstMaker *mMaker = new StMuDstMaker(0,0,"", fileList, "", 10000); //Opens the STAR data to be used.
@@ -36,11 +36,11 @@ void FmsQA(TString fileList)
     TBranch *br = ch->GetBranch("FmsHit");  //Get the FmsHit branch.
     ch->SetBranchAddress("FmsHit",&array);  // Setting the branch address.
 
-    int iEvent = 0; // Event number.
-    int channel; 
-    int detID;
-    const int oMaxCh = 571; 
-    const int iMaxCh = 288;
+    Int_t iEvent = 0; // Event number.
+    Int_t channel; 
+    Int_t detID;
+    const Int_t oMaxCh = 571; 
+    const Int_t iMaxCh = 288;
     TH1F *adcDist[4][oMaxCh]; //Initilize the 1D histogram.
 
     vector < DetChPair > deadChList;
@@ -48,19 +48,19 @@ void FmsQA(TString fileList)
     vector < DetChPair > hotChList;
     vector < DetChPair > bitShChList;
     
-    for(int i = 0; i < 4; ++i)
+    for(Int_t i = 0; i < 4; ++i)
     {
-	int MaxCh;
+	Int_t MaxCh;
 	if(i == 0 || i == 1)
 	    MaxCh = oMaxCh;
 	else
 	    MaxCh = iMaxCh;
-	for (int l = 0; l < MaxCh; l++) 
+	for (Int_t l = 0; l < MaxCh; l++) 
 	{
 	    TString title = "adcDist_";
 	    title += (i + 8);        
 	    title += "_";        
-	    title += l;        
+	    title += (l +1);        
 	    adcDist[i][l] = new TH1F(title, title, 300, 0.0, 500); //Creating 1D histograms for each channel.
 	}   
     }
@@ -73,9 +73,9 @@ void FmsQA(TString fileList)
 	if(iEvent % 1000 == 0)
 	    cout << "Events processed:"<< iEvent <<endl;
 	
-	int nHits = array->GetEntriesFast();
+	Int_t nHits = array->GetEntriesFast();
 
-	for(int j = 0; j < nHits; j++) //For loop to fill each channel histogram.
+	for(Int_t j = 0; j < nHits; j++) //For loop to fill each channel histogram.
 	{	     
 	    hit = (StMuFmsHit*) array->At(j); //Look at documentaion for hit.
 	    detID = hit->detectorId();        //Gets detector ID for each event.
@@ -95,14 +95,14 @@ void FmsQA(TString fileList)
 
     f->cd();
     
-    for(int i = 0; i < 4; ++i)
+    for(Int_t i = 0; i < 4; ++i)
     {
-	int MaxCh;
+	Int_t MaxCh;
 	if(i == 0 || i == 1)
 	    MaxCh = oMaxCh;
 	else
 	    MaxCh = iMaxCh;
-	for (int l = 0; l < MaxCh; l++)
+	for (Int_t l = 0; l < MaxCh; l++)
 	{
 	    if(fmsDBMaker->getGain(i + 8, l + 1) != 0.0)
 		adcDist[i][l]->Write();
