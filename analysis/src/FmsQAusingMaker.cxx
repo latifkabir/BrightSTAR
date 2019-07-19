@@ -9,7 +9,7 @@ Note: This script keep printing database status printout for every event unless 
 
  */
 
-void FmsQAusingMaker()
+void FmsQAusingMaker(TString fileList, TString outFileName)
 {   
     gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
     loadSharedLibraries();

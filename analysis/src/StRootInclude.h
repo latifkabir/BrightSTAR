@@ -31,8 +31,12 @@
 #include "StEEmcUtil/database/EEmcDbItem.h"
 #include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
 #include "StEEmcUtil/StEEmcSmd/StEEmcSmdGeom.h"
-//#include "StEmcUtil/database/StBemcTables.h"
+#include "StEmcUtil/database/StBemcTables.h"
 
+// BEMC
+#include "StDaqLib/EMC/StEmcDecoder.h"
+#include "StEmcUtil/database/StBemcTables.h"
+#include "StEmcRawMaker/defines.h"
 
 //FMS
 #include "StMuDSTMaker/COMMON/StMuFmsHit.h"

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void FmsQA()
+void FmsQA(TString fileList)
 {
     // No need for compiled code and if you load the library from rootlogon.C
     // gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
@@ -19,7 +19,7 @@ void FmsQA()
     TFile *f = new TFile("FmsQA.root","recreate"); //Creates a root file that will hold the histograms.
 	
     StChain *chain = new StChain;
-    StMuDstMaker *mMaker = new StMuDstMaker(0,0,"","resources/temp/FmsFileList.list","", 10000); //Opens the STAR data to be used.
+    StMuDstMaker *mMaker = new StMuDstMaker(0,0,"", fileList, "", 10000); //Opens the STAR data to be used.
     //connect to STAR FMS database
     St_db_Maker *stDb = new St_db_Maker("StarDb", "MySQL:StarDb");    
     StFmsDbMaker *fmsDBMaker = new StFmsDbMaker("FmsDbMk");
@@ -112,11 +112,11 @@ void FmsQA()
 		det_ch.ch = (l + 1);
 		deadChList.push_back(det_ch);
 	    }
-	    else if(adcDist[i][l]->GetEntries() < 100 && fmsDBMaker->getGain(i + 8, l + 1) != 0.0)
+	    else if(adcDist[i][l]->GetEntries() < 1000 && adcDist[i][l]->GetEntries() > 0 && fmsDBMaker->getGain(i + 8, l + 1) != 0.0)
 	    {
 		det_ch.det = i + 8;
 		det_ch.ch = (l + 1);
-		deadChList.push_back(det_ch);
+		badChList.push_back(det_ch);
 	    }
 	}
     }

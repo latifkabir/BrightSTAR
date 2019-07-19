@@ -4,4 +4,5 @@
 // Created: Thu Jul 18 11:14:24 2019 (-0400)
 // URL: jlab.org/~latif
 
-void FmsQA();
+#include "TString.h"
+void FmsQA(TString fileList = "resources/temp/FmsFileList.list");
