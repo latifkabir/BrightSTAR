@@ -43,10 +43,13 @@ void FmsCellStatus(TString inFile)
     vector < DetChPair > badChList;
     vector < DetChPair > hotChList;
     vector < DetChPair > bitShChList;
-    TH2D *hist2d = new TH2D("FMSMap", "FMS Cell Status Map", 100, -101.0, 101.0, 100, -101.0, 101.0);
+    TH2D *hist2d = new TH2D("FMSMap", "FMS Cell Status Map", 100, -101.0, 101.0, 150, -101.0, 101.0);
     TText *text = new TText();
     text->SetTextSize(0.015);
     StThreeVectorF fmsVec;
+    Double_t x, y;
+    Double_t x_offset = -1.5;
+    Double_t y_offset = -1.5;
     
     for(Int_t i = 0; i < 4; ++i)
     {
@@ -65,10 +68,11 @@ void FmsCellStatus(TString inFile)
 	    hist_name += (l + 1);        
 	    adcDist[i][l] = (TH1F*) file->Get(hist_name);
 	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
-	    hist2d->Fill(fmsVec.x(), fmsVec.y(), i + l);	    
+	    hist2d->Fill(fmsVec.x(), fmsVec.y(), i +8);
 	}   
     }
     hist2d->Draw("colz");
+    Int_t eBinCounter = 0;
     //------------------------------------------------------------
     for(Int_t i = 0; i < 4; ++i)
     {
@@ -79,44 +83,45 @@ void FmsCellStatus(TString inFile)
 	    MaxCh = iMaxCh;
 	for (Int_t l = 0; l < MaxCh; l++)
 	{
-	    cout << i<<"\t"<<l <<endl;
-	    if(adcDist[i][l] == NULL)
-		continue;
 	    if(fmsDBMaker->getGain(i + 8, l + 1) == 0.0)
 		continue;
 	    det_ch.det = (i + 8);
 	    det_ch.ch = (l + 1);
 	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
-
+        x = fmsVec.x() + x_offset;
+        y = fmsVec.y() + y_offset;
 	    if(adcDist[i][l]->GetEntries() == 0)
 	    {
 		deadChList.push_back(det_ch);
 		text->SetTextColor(kGreen);
-		text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
+		text->DrawText(x, y, Form("%i", l + 1));
 		continue;
 	    }
 	    else if(adcDist[i][l]->GetEntries() < 1000 && adcDist[i][l]->GetEntries() > 0)
 	    {	
 		badChList.push_back(det_ch);
 		text->SetTextColor(kRed);
-		text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
+		text->DrawText(x, y, Form("%i", l + 1));
 		continue;
 	    }
 	    else
 	    {
+	    eBinCounter = 0;
 		for(Int_t m = 1; m <= 10; ++m)
 		{
-		    if(adcDist[i][l]->GetBinContent(m) == 0)
+			if(adcDist[i][l]->GetBinContent(m) == 0)
+				++eBinCounter;
+		    if(eBinCounter >= 3)
 		    {
-			bitShChList.push_back(det_ch);
-			text->SetTextColor(kBlue);
-			text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
-			break;
+				bitShChList.push_back(det_ch);
+				text->SetTextColor(kBlue);
+				text->DrawText(x, y, Form("%i", l + 1));
+				break;
 		    }
 		    else if(m == 10)
 		    {
-			text->SetTextColor(kBlack);
-			text->DrawText(fmsVec.x(), fmsVec.y(), Form("%i", l + 1));
+			//text->SetTextColor(kBlack);
+			//text->DrawText(x, y, Form("%i", l + 1));
 		    }
 		}
 	    }
@@ -135,4 +140,5 @@ void FmsCellStatus(TString inFile)
     cout << "List of bit-shifted channels:" <<endl;
     for(it = bitShChList.begin(); it != bitShChList.end(); ++ it)
 	cout << it->det << "\t"<< it->ch <<endl;
+
 }
