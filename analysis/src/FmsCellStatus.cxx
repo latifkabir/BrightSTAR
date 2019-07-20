@@ -137,6 +137,9 @@ void FmsCellStatus(TString inFile)
     //-----------------------------------------------------
     vector <DetChPair>::iterator it;
     c0->Print("results/pdf/FMS_Channel_Status_Map.pdf", "pdf");
+    .q
+	 .q
+	 
     c1->Print("results/pdf/FMS_DeadChannel.pdf(", "pdf");
     c2->Print("results/pdf/FMS_BadChannel.pdf(", "pdf");
     c3->Print("results/pdf/FMS_BitShChannel.pdf(", "pdf");
@@ -145,7 +148,7 @@ void FmsCellStatus(TString inFile)
     {
 	cout << it->det << "\t"<< it->ch<<endl;
 	c1->cd();
-	adcDist[it->det - 1][it->ch -1]->Draw();
+	adcDist[it->det -1][it->ch -1]->Draw();
 	c1->Print("results/pdf/FMS_DeadChannel.pdf", "pdf");
     }
     cout << "List of bad channels:" <<endl;
@@ -153,7 +156,7 @@ void FmsCellStatus(TString inFile)
     {
 	cout << it->det << "\t"<< it->ch <<endl;
 	c2->cd();
-	adcDist[i][l]->Draw();
+	adcDist[it->det -1][it->ch -1]->Draw();
 	c2->Print("results/pdf/FMS_BadChannel.pdf", "pdf");
     }
     cout << "List of bit-shifted channels:" <<endl;
@@ -161,7 +164,7 @@ void FmsCellStatus(TString inFile)
     {
 	cout << it->det << "\t"<< it->ch <<endl;
 	c3->cd();
-	adcDist[i][l]->Draw();
+	adcDist[it->det -1][it->ch -1]->Draw();
 	c3->Print("results/pdf/FMS_BitShChannel.pdf", "pdf");
     }
     c1->Print("results/pdf/FMS_DeadChannel.pdf)", "pdf");
