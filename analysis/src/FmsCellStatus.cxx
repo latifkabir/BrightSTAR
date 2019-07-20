@@ -136,10 +136,7 @@ void FmsCellStatus(TString inFile)
     }
     //-----------------------------------------------------
     vector <DetChPair>::iterator it;
-    c0->Print("results/pdf/FMS_Channel_Status_Map.pdf", "pdf");
-    .q
-	 .q
-	 
+    c0->Print("results/pdf/FMS_Channel_Status_Map.pdf", "pdf");	 
     c1->Print("results/pdf/FMS_DeadChannel.pdf(", "pdf");
     c2->Print("results/pdf/FMS_BadChannel.pdf(", "pdf");
     c3->Print("results/pdf/FMS_BitShChannel.pdf(", "pdf");
