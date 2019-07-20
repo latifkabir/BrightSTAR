@@ -10,6 +10,7 @@
 
 void FmsCellStatus(TString inFile)
 {
+    gROOT->SetBatch(kTRUE); 
     //--------------------------------------------
     //Need for DB access
     StChain *chain = new StChain;
@@ -46,6 +47,11 @@ void FmsCellStatus(TString inFile)
     TH2D *hist2d = new TH2D("FMSMap", "FMS Cell Status Map", 100, -101.0, 101.0, 150, -101.0, 101.0);
     TText *text = new TText();
     text->SetTextSize(0.015);
+    TCanvas *c0 = new TCanvas("c0", "FMS Cell Status Map");
+    TCanvas *c1 = new TCanvas("c1", "Dead");
+    TCanvas *c2 = new TCanvas("c2", "Bad");
+    TCanvas *c3 = new TCanvas("c3", "Bit Shifted");
+    
     StThreeVectorF fmsVec;
     Double_t x, y;
     Double_t x_offset = -1.5;
@@ -71,6 +77,7 @@ void FmsCellStatus(TString inFile)
 	    hist2d->Fill(fmsVec.x(), fmsVec.y(), i +8);
 	}   
     }
+    c0->cd();
     hist2d->Draw("colz");
     Int_t eBinCounter = 0;
     //------------------------------------------------------------
@@ -88,8 +95,8 @@ void FmsCellStatus(TString inFile)
 	    det_ch.det = (i + 8);
 	    det_ch.ch = (l + 1);
 	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
-        x = fmsVec.x() + x_offset;
-        y = fmsVec.y() + y_offset;
+	    x = fmsVec.x() + x_offset;
+	    y = fmsVec.y() + y_offset;
 	    if(adcDist[i][l]->GetEntries() == 0)
 	    {
 		deadChList.push_back(det_ch);
@@ -106,17 +113,17 @@ void FmsCellStatus(TString inFile)
 	    }
 	    else
 	    {
-	    eBinCounter = 0;
+		eBinCounter = 0;
 		for(Int_t m = 1; m <= 10; ++m)
 		{
-			if(adcDist[i][l]->GetBinContent(m) == 0)
-				++eBinCounter;
+		    if(adcDist[i][l]->GetBinContent(m) == 0)
+			++eBinCounter;
 		    if(eBinCounter >= 3)
 		    {
-				bitShChList.push_back(det_ch);
-				text->SetTextColor(kBlue);
-				text->DrawText(x, y, Form("%i", l + 1));
-				break;
+			bitShChList.push_back(det_ch);
+			text->SetTextColor(kBlue);
+			text->DrawText(x, y, Form("%i", l + 1));
+			break;
 		    }
 		    else if(m == 10)
 		    {
@@ -128,17 +135,38 @@ void FmsCellStatus(TString inFile)
 	}
     }
     //-----------------------------------------------------
-    vector <DetChPair>::iterator it;    
+    vector <DetChPair>::iterator it;
+    c0->Print("results/pdf/FMS_Channel_Status_Map.pdf", "pdf");
+    c1->Print("results/pdf/FMS_DeadChannel.pdf(", "pdf");
+    c2->Print("results/pdf/FMS_BadChannel.pdf(", "pdf");
+    c3->Print("results/pdf/FMS_BitShChannel.pdf(", "pdf");
     cout << "List of dead channels:" <<endl;
     for(it = deadChList.begin(); it != deadChList.end(); ++ it)
+    {
 	cout << it->det << "\t"<< it->ch<<endl;
-    
+	c1->cd();
+	adcDist[i][l]->Draw();
+	c1->Print("results/pdf/FMS_DeadChannel.pdf", "pdf");
+    }
     cout << "List of bad channels:" <<endl;
     for(it = badChList.begin(); it != badChList.end(); ++ it)
+    {
 	cout << it->det << "\t"<< it->ch <<endl;
-
+	c2->cd();
+	adcDist[i][l]->Draw();
+	c2->Print("results/pdf/FMS_BadChannel.pdf", "pdf");
+    }
     cout << "List of bit-shifted channels:" <<endl;
     for(it = bitShChList.begin(); it != bitShChList.end(); ++ it)
+    {
 	cout << it->det << "\t"<< it->ch <<endl;
-
+	c3->cd();
+	adcDist[i][l]->Draw();
+	c3->Print("results/pdf/FMS_BitShChannel.pdf", "pdf");
+    }
+    c1->Print("results/pdf/FMS_DeadChannel.pdf)", "pdf");
+    c2->Print("results/pdf/FMS_BadChannel.pdf)", "pdf");
+    c3->Print("results/pdf/FMS_BitShChannel.pdf)", "pdf");
+    
+    fmsDBMaker->dumpFmsBitShiftGain();
 }
