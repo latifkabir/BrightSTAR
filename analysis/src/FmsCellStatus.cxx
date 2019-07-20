@@ -145,7 +145,7 @@ void FmsCellStatus(TString inFile)
     {
 	cout << it->det << "\t"<< it->ch<<endl;
 	c1->cd();
-	adcDist[i][l]->Draw();
+	adcDist[it->det - 1][it->ch -1]->Draw();
 	c1->Print("results/pdf/FMS_DeadChannel.pdf", "pdf");
     }
     cout << "List of bad channels:" <<endl;
