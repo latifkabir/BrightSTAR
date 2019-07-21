@@ -61,7 +61,7 @@ void FmsQA(TString fileList, TString outFileName)
 	    title += (i + 8);        
 	    title += "_";        
 	    title += (l +1);        
-	    adcDist[i][l] = new TH1F(title, title, 300, 0.0, 500); //Creating 1D histograms for each channel.
+	    adcDist[i][l] = new TH1F(title, title + (TString)";ADC count", 300, 0.0, 500); //Creating 1D histograms for each channel.
 	}   
     }
 

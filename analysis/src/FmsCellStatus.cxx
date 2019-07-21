@@ -10,7 +10,8 @@
 
 void FmsCellStatus(TString inFile)
 {
-    gROOT->SetBatch(kTRUE); 
+    gROOT->SetBatch(kTRUE);
+    //gStyle->SetOptLogy(1);
     //--------------------------------------------
     //Need for DB access
     StChain *chain = new StChain;
@@ -56,11 +57,6 @@ void FmsCellStatus(TString inFile)
     Double_t x, y;
     Double_t x_offset = -1.5;
     Double_t y_offset = -1.5;
-    Int_t nBins = adcDist[0][459-1]->GetNbinsX();
-    Int_t bin_low = (Int_t)(nBins*0.05);
-    Int_t bin_hi = (Int_t)(nBins*0.50);
-    Int_t refEntries = (Int_t)(0.15*adcDist[0][459-1]->Integral(bin_low, bin_hi)); // 15% entries of reference histogram in the specified window  
-    Double_t refRMS = 2.0;
     
     for(Int_t i = 0; i < 4; ++i)
     {
@@ -82,6 +78,13 @@ void FmsCellStatus(TString inFile)
 	    hist2d->Fill(fmsVec.x(), fmsVec.y(), i +8);
 	}   
     }
+    Int_t nBins = adcDist[0][459-1]->GetNbinsX();
+    Int_t bin_low = (Int_t)(nBins*0.05);
+    Int_t bin_hi = (Int_t)(nBins*0.50);
+    Int_t refIntegral1 = (Int_t)(0.15*adcDist[0][459-1]->Integral(bin_low, bin_hi)); // 15% entries of reference histogram in the specified window
+    Int_t refIntegral2 = 10;
+    Double_t refRMS = 2.0;
+    
     c0->cd();
     hist2d->Draw("colz");
     Int_t eBinCounter = 0;
@@ -109,7 +112,9 @@ void FmsCellStatus(TString inFile)
 		text->DrawText(x, y, Form("%i", l + 1));
 		continue;
 	    }
-	    else if((adcDist[i][l]->GetEntries() < refRMS && adcDist[i][l]->GetEntries() > 0) || (adcDist[i][l]->GetRMS() < refRMS))
+	    else if((adcDist[i][l]->Integral(bin_low, bin_hi) < refIntegral1 && adcDist[i][l]->GetEntries() > 0)
+		    || (adcDist[i][l]->GetRMS() < refRMS)
+		    || adcDist[i][l]->Integral(150, 250) < refIntegral2)
 	    {	
 		badChList.push_back(det_ch);
 		text->SetTextColor(kRed);
@@ -141,14 +146,30 @@ void FmsCellStatus(TString inFile)
     }
     //-----------------------------------------------------
     vector <DetChPair>::iterator it;
+    ofstream deadList("results/pdf/6.FMS_QA/deadList.txt");
+    ofstream badList("results/pdf/6.FMS_QA/badList.txt");
+    ofstream bitShList("results/pdf/6.FMS_QA/bitShList.txt");
+    if(!badList || !bitShList)
+    {
+	cout<< "Unable to create channel list"<<endl;
+	return;
+    }
     c0->Print("results/pdf/FMS_Channel_Status_Map.pdf", "pdf");	 
     c1->Print("results/pdf/FMS_DeadChannel.pdf(", "pdf");
     c2->Print("results/pdf/FMS_BadChannel.pdf(", "pdf");
     c3->Print("results/pdf/FMS_BitShChannel.pdf(", "pdf");
+
+    cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<< endl;
+    cout<< "Total dead channels: "<< deadChList.size() << endl;
+    cout<< "Total bad channels: "<< badChList.size() << endl;
+    cout<< "Total bit-shifted channels: "<< bitShChList.size() << endl;
+    cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<< endl;
+    
     cout << "List of dead channels:" <<endl;
     for(it = deadChList.begin(); it != deadChList.end(); ++ it)
     {
 	cout << it->det << "\t"<< it->ch<<endl;
+	deadList << it->det << "\t"<< it->ch<<endl;
 	c1->cd();
 	adcDist[it->det - 8][it->ch -1]->Draw();
 	c1->Print("results/pdf/FMS_DeadChannel.pdf", "pdf");
@@ -157,6 +178,7 @@ void FmsCellStatus(TString inFile)
     for(it = badChList.begin(); it != badChList.end(); ++ it)
     {
 	cout << it->det << "\t"<< it->ch <<endl;
+	badList << it->det << "\t"<< it->ch <<endl;
 	c2->cd();
 	adcDist[it->det - 8][it->ch -1]->Draw();
 	c2->Print("results/pdf/FMS_BadChannel.pdf", "pdf");
@@ -165,6 +187,7 @@ void FmsCellStatus(TString inFile)
     for(it = bitShChList.begin(); it != bitShChList.end(); ++ it)
     {
 	cout << it->det << "\t"<< it->ch <<endl;
+	bitShList << it->det << "\t"<< it->ch <<endl;
 	c3->cd();
 	adcDist[it->det - 8][it->ch -1]->Draw();
 	c3->Print("results/pdf/FMS_BitShChannel.pdf", "pdf");
@@ -173,5 +196,8 @@ void FmsCellStatus(TString inFile)
     c2->Print("results/pdf/FMS_BadChannel.pdf)", "pdf");
     c3->Print("results/pdf/FMS_BitShChannel.pdf)", "pdf");
     
-    fmsDBMaker->dumpFmsBitShiftGain();
+    //fmsDBMaker->dumpFmsBitShiftGain();
+    deadList.close();
+    badList.close();
+    bitShList.close();
 }
