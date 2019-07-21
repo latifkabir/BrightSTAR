@@ -56,6 +56,11 @@ void FmsCellStatus(TString inFile)
     Double_t x, y;
     Double_t x_offset = -1.5;
     Double_t y_offset = -1.5;
+    Int_t nBins = adcDist[0][459-1]->GetNbinsX();
+    Int_t bin_low = (Int_t)(nBins*0.05);
+    Int_t bin_hi = (Int_t)(nBins*0.50);
+    Int_t refEntries = (Int_t)(0.15*adcDist[0][459-1]->Integral(bin_low, bin_hi)); // 15% entries of reference histogram in the specified window  
+    Double_t refRMS = 2.0;
     
     for(Int_t i = 0; i < 4; ++i)
     {
@@ -104,7 +109,7 @@ void FmsCellStatus(TString inFile)
 		text->DrawText(x, y, Form("%i", l + 1));
 		continue;
 	    }
-	    else if(adcDist[i][l]->GetEntries() < 1000 && adcDist[i][l]->GetEntries() > 0)
+	    else if((adcDist[i][l]->GetEntries() < refRMS && adcDist[i][l]->GetEntries() > 0) || (adcDist[i][l]->GetRMS() < refRMS))
 	    {	
 		badChList.push_back(det_ch);
 		text->SetTextColor(kRed);
