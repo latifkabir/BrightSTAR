@@ -8,5 +8,5 @@ Directory structure
 
 - `libBrStar`: Main Bright STAR classes. Functionality added on top on `StRoot`. Class name starts with `TSt`.
 - `BrightStMaker`: StMaker scripts for batch farm job submission. Used to generate user defined pico DST.
-- `analysis`: Main analysis scripts for the physics analysis. A_N specific scripts starts with `An`. Detector specific script starts with 
+- `analysis`: Main analysis scripts for the physics analysis. A_N specific scripts starts with `An`. Detector specific scripts start with 
    the acronym of the detector.
