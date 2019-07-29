@@ -50,14 +50,25 @@
     gSystem->Load("StEmcTriggerMaker");
     gSystem->Load("StDbBroker");
     gSystem->Load("StEEmcPoolmuDst");
-
+    gSystem->Load("StEEmcA2EMaker");
+    gSystem->Load("StEEmcPoolEEmcTreeContainers");
+    
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
     gSystem->Load("StFmsDbMaker");
-  
+
+    //-------------Trigger --------------
+    gSystem->Load("StTriggerUtilities");
+
+    //------------- Spin DB -----------------
+    gSystem->Load("StSpinDbMaker");
+    
     //------ Bright Maker -------------
-    gSystem->Load("BrEEmcMaker");
-    gSystem->Load("BrExampleMaker");
+    gSystem->Load("libBrEEmcMaker");
+    gSystem->Load("libBrRpMaker");
+    gSystem->Load("libBrExampleMaker");
+    gSystem->Load("libRunMacros");
+    //gSystem->Load("libPi0MakerIU");
     
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";
