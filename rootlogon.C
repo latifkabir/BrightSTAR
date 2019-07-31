@@ -68,7 +68,7 @@
     gSystem->Load("libBrRpMaker");
     gSystem->Load("libBrExampleMaker");
     gSystem->Load("libRunMacros");
-    //gSystem->Load("libPi0MakerIU");
+    //gSystem->Load("libStEEmcIUPi0");
     
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";

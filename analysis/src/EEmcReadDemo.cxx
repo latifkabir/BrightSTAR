@@ -54,8 +54,8 @@ void EEmcReadDemo(Int_t runNo, Int_t maxFiles)
 	    cout<<"No EMC data for this event"<<endl;
 	    continue;
 	}
-
-	Int_t nClusEEMC = emcMuColl->getNClusters(5);  // 5 is the detector id for eemc
+	//The following line did NOT work 
+	Int_t nClusEEMC = emcMuColl->getNClusters(5);  // 5 is the detector id for eemc??? This did NOT work.
 	//std::cout<<nClusEEMC<<std::endl;
 	dist->Fill(nClusEEMC);
 	for(Int_t i = 0; i < nClusEEMC; ++i)
