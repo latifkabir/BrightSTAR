@@ -79,6 +79,36 @@ void help()
 	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
     }
     myFile2.close();
+
+    str =  TStar::Config->GetStarHome() + (string)"/runMacros/src/";
+    str = str + "LinkDef.h";
+    //cout << str <<endl;
+
+    ifstream myFile3(str.c_str());
+    if(!myFile3)
+    {
+	cout << "Source file NOT found" <<endl;
+	return;
+    }
+    cout << "\t\t=================================================================================" <<endl;
+
+    cout << "\t\t|\t\t\t   Functions inside Run Macros   \t\t\t|" <<endl;
+    cout << "\t\t=================================================================================" <<endl;
+  
+    while(getline(myFile3,str))
+    {
+	lineStr = str.c_str();
+	if(str[0]=='/' && str[1]=='/')
+	    continue;
+	if(str == "#endif")
+	    continue;
+	if(str == "#ifdef __CINT__")
+	    continue;
+	//cout << str <<endl;
+	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
+    }
+    myFile3.close();
+    
     cout<< "-------------------------------------------------------------------------------------------" <<endl;  
     cout << "| Type 'help(\"function or class name\")' for details of any specific function or class     |"<<endl;
     cout<<  "-------------------------------------------------------------------------------------------" <<endl;  
@@ -99,6 +129,13 @@ void help(string file)
         myFile.open(str.c_str());	
     }
 
+    if(!myFile)
+    {
+	str =  TStar::Config->GetStarHome() + (string)"/runMacros/src/";
+	str = str+file + ".h";
+        myFile.open(str.c_str());	
+    }
+    
     if(!myFile)
     {
 	cout << "Source file NOT found" <<endl;

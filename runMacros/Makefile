@@ -15,10 +15,10 @@ endif
 ROOTCINT  = rootcint
 ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
-CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker -L ${STARHOME}/libBrStar/lib -L ${STARHOME}/BrightStMaker/.sl73_gcc485/lib -lBrStar -lBrEEmcMaker -lBrExampleMaker -lBrRpMaker
+CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker -L ${STARHOME}/libBrStar/lib -L ${STARHOME}/.sl73_gcc485/lib -lBrStar -lBrEEmcMaker -lBrExampleMaker -lBrRpMaker
 MODULES = .part4/include .part8/include .part9/include 
 SRC_DIR   = $(addprefix ${STAR}/,$(MODULES))
-LIB_INCLUDE  = $(addprefix -I,$(SRC_DIR)) -I${STAR}/StRoot/ -I${STARHOME}/libBrStar/macros/ -I${STARHOME}/BrightStMaker/StRoot
+LIB_INCLUDE  = $(addprefix -I,$(SRC_DIR)) -I${STAR}/StRoot/ -I${STARHOME}/StRoot
 
 all: libRunMacros
 
@@ -26,30 +26,30 @@ clean: libRunMacros_clean
 clear: libRunMacros_clear
 
 
-libRunMacros: .sl73_gcc485/lib/libRunMacros.so
-libRunMacros_base= $(wildcard macros/*.cxx)  
-libRunMacros_inc	= $(patsubst macros/%.cxx, ./%.h,$(libRunMacros_base)) 
-libRunMacros_obj	= $(patsubst macros/%.cxx, macros/%.o,$(libRunMacros_base))
+libRunMacros: ../.sl73_gcc485/lib/libRunMacros.so
+libRunMacros_base= $(wildcard src/*.cxx)  
+libRunMacros_inc	= $(patsubst src/%.cxx, ./%.h,$(libRunMacros_base)) 
+libRunMacros_obj	= $(patsubst src/%.cxx, src/%.o,$(libRunMacros_base))
 
-.sl73_gcc485/lib/libRunMacros.so: $(libRunMacros_obj)  macros/libRunMacros_Dict.o
+../.sl73_gcc485/lib/libRunMacros.so: $(libRunMacros_obj)  src/libRunMacros_Dict.o
 	$(CXX) -o $@ $(CXXFLAGS) -shared -Wl,-soname,libRunMacros.so $^	
 	@echo "                                                                        "
 	@echo "-----------------------------------------------------------------------"
 	@echo "Finished the compilation!"
 	@echo "-----------------------------------------------------------------------"
-macros/%.o:macros/%.cxx
+src/%.o:src/%.cxx
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) $(LIB_INCLUDE) $(ROOTFLAGS) $<
 
-macros/libRunMacros_Dict.cxx:
-	cd macros/; $(ROOTCINT) -f libRunMacros_Dict.cxx -c $(libRunMacros_inc) LinkDef.h
+src/libRunMacros_Dict.cxx:
+	cd src/; $(ROOTCINT) -f libRunMacros_Dict.cxx -c $(libRunMacros_inc) LinkDef.h
 
 libRunMacros_clean:
 	rm -f $(libRunMacros_obj)
-	rm -f  macros/*_Dict.*
-	rm -f .sl73_gcc485/lib/libRunMacros.so
+	rm -f  src/*_Dict.*
+	rm -f ../.sl73_gcc485/lib/libRunMacros.so
 
 libRunMacros_clear:
 	rm -f $(libRunMacros_obj)
-	rm -f  macros/*_Dict.*
+	rm -f  src/*_Dict.*
 
 

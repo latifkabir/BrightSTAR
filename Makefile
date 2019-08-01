@@ -11,16 +11,16 @@ endif
 # directories
 LIB_DIR = libBrStar
 ANA_DIR = analysis
-
+MACRO_DIR = runMacros
 # makefile name
 MAKE_FILE = Makefile
 
 ####### Build rules
 first: all
 
-.PHONY: lib ana
+.PHONY: lib ana cons macro
 
-all: lib ana
+all: lib ana cons macro 
 	@echo "done!"	
 lib:
 	$(MAKE) -C $(LIB_DIR) -f $(MAKE_FILE)
@@ -28,8 +28,14 @@ lib:
 ana: lib
 	$(MAKE) -C $(ANA_DIR) -f $(MAKE_FILE)
 
+macro: cons
+	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE)
+
+cons:
+	cons
+
 ####### Clean
-clean: cleanlib cleanana 
+clean: cleanlib cleanana cleanmacro cleancons 
 
 .PHONY: cleanlib cleanana 
 
@@ -39,3 +45,8 @@ cleanlib:
 cleanana:
 	$(MAKE) -C $(ANA_DIR) -f $(MAKE_FILE) clean
 
+cleanmacro:
+	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE) clean
+
+cleancons:
+	rm -r .sl73_gcc485/*
