@@ -41,6 +41,12 @@
     gSystem->Load("StMuDSTMaker");  
     cout<<"\t\t done loading libStMuDSTMaker.so ...."<<endl;
 
+    //-------------Trigger --------------
+    gSystem->Load("StTriggerUtilities");
+
+    //------------- Spin DB -----------------
+    gSystem->Load("StSpinDbMaker");
+
     //-------- EEMC Related ------------
     gSystem->Load("St_db_Maker");
     gSystem->Load("StEEmcDbMaker");
@@ -57,11 +63,6 @@
     gSystem->Load("StFmsUtil");
     gSystem->Load("StFmsDbMaker");
 
-    //-------------Trigger --------------
-    gSystem->Load("StTriggerUtilities");
-
-    //------------- Spin DB -----------------
-    gSystem->Load("StSpinDbMaker");
     
     //------ Bright Maker -------------
     gSystem->Load("libBrEEmcMaker");

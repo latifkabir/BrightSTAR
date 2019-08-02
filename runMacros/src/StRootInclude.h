@@ -1,1 +1,1 @@
-../../analysis/src/StRootInclude.h
+../../include/StRootInclude.h
