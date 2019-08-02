@@ -13,6 +13,7 @@
 #pragma link C++ function RunEEmcQAMaker;                        // Read EEMC QA Maker
 #pragma link C++ function RunEEmcEvtDispMaker;                   // Read EEMC event display with ADC and enegry event by event for Tower, SMD, Pre-1, 2 and Post 
 #pragma link C++ function RunEEmcEvtDispEngMaker;                // Read EEMC event display with enegry event by event for Tower, SMD, Pre-1, 2 and Post 
-//#pragma link C++ function RunEEmcMakerGeomEx;                  // Read EEMC data
-
+#pragma link C++ function RunEEmcMakerGeomEx;                    // Read EEMC geometry info example
+#pragma link C++ function RunEEmcIUPi0;                          // Pi0 reconsntruction in EEMC  using IU algorithm
+#pragma link C++ function RunEEmcTreeMakerPart1;                  // EEMC reconstruction using TSIU algorithm. This is step no. 1 out of 3 of the process. This is the algorithm followed for the analysis.
 #endif
