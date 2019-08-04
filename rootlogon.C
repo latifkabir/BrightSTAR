@@ -13,7 +13,7 @@
     if(getenv("STARHOME") == NULL)
     {
     	cout<<"Please run \"source setup.[c]sh\" to load environments before you start ROOT"<<endl;
-	gApplication->Terminate();
+    	gApplication->Terminate();
     }
 
     //--------- Dynamically link needed shared lib----------------
@@ -57,8 +57,9 @@
     gSystem->Load("StDbBroker");
     gSystem->Load("StEEmcPoolmuDst");
     gSystem->Load("StEEmcA2EMaker");
-    gSystem->Load("StEEmcPoolEEmcTreeContainers");
-    
+    gSystem->Load("StEEmcPoolEEmcTreeContainers");  //Note: Atypical shared object name
+    gSystem->Load("StEEmcTreeMaker");
+        
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
     gSystem->Load("StFmsDbMaker");

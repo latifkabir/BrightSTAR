@@ -7,6 +7,15 @@
 #ifndef ST_ROOT_INCLUDE
 #define ST_ROOT_INCLUDE
 
+//======= Star Library =============
+// Do NOT include the following headers.
+// #include "StarClassLibrary/StThreeVector.hh"
+// #include "StarClassLibrary/StLorentzVectorF.hh"
+
+//============= St Event ==========
+#include "StEvent/StEvent.h"
+#include "StEvent/StFmsCollection.h"
+
 //==========MuDST==================
 #include "StMuDSTMaker/COMMON/StMuDstMaker.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
@@ -62,6 +71,9 @@
 #include "StMuDSTMaker/COMMON/StMuFmsUtil.h"
 #include "StMuDSTMaker/COMMON/StMuFmsInfo.h"
 #include "StFmsDbMaker/StFmsDbMaker.h"
+#include "StEvent/StFmsPointPair.h"
+
+#include "StEvent/StFmsPointPair.h"
 
 //=========Trigger=============
 #include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"
