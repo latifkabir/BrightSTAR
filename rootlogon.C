@@ -83,12 +83,14 @@
     gSystem->Load("StEpcMaker");
     
     //------ Bright Maker -------------
+    gSystem->Load("BrExampleMaker");
     gSystem->Load("BrEEmcMaker");
     gSystem->Load("BrRpMaker");
-    gSystem->Load("BrExampleMaker");
+    gSystem->Load("BrFmsMaker");    
+
     gSystem->Load("libRunMacros");
     //gSystem->Load("StEEmcIUPi0");
-    gSystem->Load("BrFmsTreeMaker");    
+
 
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";
