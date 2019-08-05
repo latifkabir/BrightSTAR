@@ -17,6 +17,7 @@
     }
 
     //--------- Dynamically link needed shared lib----------------
+    
     //MuDST Related
     gSystem->Load("libStTableUtilities");
     gSystem->Load("libTable");
@@ -43,12 +44,19 @@
 
     //-------------Trigger --------------
     gSystem->Load("StTriggerUtilities");
-
-    //------------- Spin DB -----------------
+    //------------- DB -----------------
+    gSystem->Load("StTpcDb");
     gSystem->Load("StSpinDbMaker");
-
-    //-------- EEMC Related ------------
     gSystem->Load("St_db_Maker");
+    gSystem->Load("StDbBroker");
+    gSystem->Load("StDbUtilities");
+    gSystem->Load("StDetectorDbMaker");
+
+    //--------- StEvent ----------------
+    //gSystem->Load("StEvent");
+    gSystem->Load("StEventMaker");
+    
+    //-------- EEMC Related ------------
     gSystem->Load("StEEmcDbMaker");
     gSystem->Load("StEEmcUtil");
     gSystem->Load("StEmcRawMaker");
@@ -63,15 +71,25 @@
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
     gSystem->Load("StFmsDbMaker");
-
+    gSystem->Load("StFmsHitMaker");
+    gSystem->Load("StFmsPointMaker");
+    gSystem->Load("StFmsFpsMaker");
+    gSystem->Load("libMinuit.so");
+    
+    //---------- EMC (BEMC) ------------------
+    gSystem->Load("StEmcRawMaker");
+    gSystem->Load("StEmcADCtoEMaker");
+    gSystem->Load("StEmcTriggerMaker");
+    gSystem->Load("StEpcMaker");
     
     //------ Bright Maker -------------
-    gSystem->Load("libBrEEmcMaker");
-    gSystem->Load("libBrRpMaker");
-    gSystem->Load("libBrExampleMaker");
+    gSystem->Load("BrEEmcMaker");
+    gSystem->Load("BrRpMaker");
+    gSystem->Load("BrExampleMaker");
     gSystem->Load("libRunMacros");
-    //gSystem->Load("libStEEmcIUPi0");
-    
+    //gSystem->Load("StEEmcIUPi0");
+    gSystem->Load("BrFmsTreeMaker");    
+
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";
     int status1 = gSystem->Load("libBrStar.so");
@@ -86,14 +104,14 @@
     	cout << "attempt completed !!\n\n";
     else
     	cout << "attempt failed.\n\n";
+
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square
     gStyle->SetMarkerStyle(4);    // Circle
     gStyle->SetMarkerSize(.4);     // larger than half a pixel ...
     gStyle->SetMarkerColor(kBlack);
     //gStyle->SetMarkerColor(kRed);
-
-    
+   
     //------------- Plotting Style -----------------------------
     TStyle* dStyle = new TStyle("Bright_Star_Style", "Bright_Star_Style");
     dStyle->Reset("Modern");
@@ -159,7 +177,6 @@
     Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
     Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
     TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-    gStyle->SetNumberContours(NCont);
-   
+    gStyle->SetNumberContours(NCont);   
 }
 

@@ -79,7 +79,7 @@ void FmsPi0InvMass1()
 		    continue;
 		    
 		massDist->Fill(pairM);
-		xyDist->Fill(pi0_x, pi0_y); //Position of pi0
+		xyDist->Fill(pi0_x, pi0_y); //Position of pi0 in FMS coordinate. You need to convert to STAR coordinate using DB to get expected distribution.
 	    }	
 	}	
     }

@@ -14,6 +14,7 @@
 
 //============= St Event ==========
 #include "StEvent/StEvent.h"
+#include "StEventMaker/StEventMaker.h"
 #include "StEvent/StFmsCollection.h"
 
 //==========MuDST==================
