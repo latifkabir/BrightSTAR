@@ -67,7 +67,9 @@
     gSystem->Load("StEEmcA2EMaker");
     gSystem->Load("StEEmcPoolEEmcTreeContainers");  //Note: Atypical shared object name
     gSystem->Load("StEEmcTreeMaker");
-        
+    gSystem->Load("StEEmcHitMaker");
+    gSystem->Load("StEEmcIUPi0");
+    
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
     gSystem->Load("StFmsDbMaker");
@@ -89,8 +91,6 @@
     gSystem->Load("BrFmsMaker");    
 
     gSystem->Load("libRunMacros");
-    //gSystem->Load("StEEmcIUPi0");
-
 
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";

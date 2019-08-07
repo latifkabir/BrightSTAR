@@ -7,7 +7,10 @@
 #ifdef __CINT__
 
 #pragma link C++ function RunDeltaPhiMaker;                      // Read Track Info data (example/Demo)
+
+
 #pragma link C++ function RunRpQAMaker;                          // Read RP QA Maker
+
 
 #pragma link C++ function RunEEmcMakerEx1;                       // Read EEMC data (example/Demo)
 #pragma link C++ function RunEEmcQAMaker;                        // Read EEMC QA Maker
@@ -16,4 +19,9 @@
 #pragma link C++ function RunEEmcMakerGeomEx;                    // Read EEMC geometry info example
 #pragma link C++ function RunEEmcIUPi0;                          // Pi0 reconsntruction in EEMC  using IU algorithm
 #pragma link C++ function RunEEmcTreeMakerPart1;                 // EEMC reconstruction using TSIU algorithm. This is step no. 1 out of 3 of the process. This is the algorithm followed for the analysis.
+#pragma link C++ function RunEEmcTreeMakerPart2and3;             // EEMC reconstruction using TSIU algorithm. This is step no. 2 and 3 out of 3 of the process. This is the algorithm followed for the analysis.
+
+
+#pragma link C++ function RunFmsTreeMaker;                       // FMS reconstruction 
+
 #endif

@@ -1,6 +1,6 @@
 /*
   NOTE: The option to run this script on MC data has been completely renoved.
-  If you need that option, check the original script  under STAR CVS.
+  If you need that option, check the original script  under STAR CVS. -- Latif Kabir
 
  
   * Created May 2012, by S. Gliske
@@ -11,36 +11,22 @@
   * Note: much of this script is based on Alice's runABClusterMaker.C 
   * and Weihong's runEEmcPi0.C
   * 
+  *   This script has been modified for data only -- Latif Kabir
+  * 
   */
 
 #include "StRootInclude.h"
 
-// forward declarations
-// class StChain;
-// class St_db_Maker;
-// class StEEmcDbMaker;
-// class StMuDstMaker;
-// class StEEmcA2EMaker;
-// class StSpinDbMaker;
-// class StEEmcSlowMaker;
-
-// class StSpinInfoMaker_t;
-// class StEEmcEnergyMaker_t;
-// class StEEmcTreeMaker_t;
-// class StMcEEmcTreeMaker_t;
-// class StTrigCounter;
-
 //
 // the main routine
 //
-void RunEEmcTreeMakerPart1( Long_t neventsIn, 
-			    Long_t neventsOut, 
-			    const Char_t *inputFileName,
+void RunEEmcTreeMakerPart1(const Char_t *inputFileName,
 			    const Char_t *outputFileName,
 			    Int_t displayFreq,
 			    Bool_t isMC)
 {
-
+    cout << "\033[1;31m=============== This script requires a custom StMuDstMaker library.====================================\033[0m"<<endl;
+    
     //
     // some variables that others tend to make global
     //
@@ -54,45 +40,14 @@ void RunEEmcTreeMakerPart1( Long_t neventsIn,
     StEEmcTreeMaker_t   *treeMakerPtr     = 0;
     StMcEEmcTreeMaker_t *mcTreeMakerPtr   = 0;
     StSpinInfoMaker_t   *spinInfoMakerPtr = 0;
+
+    Long_t neventsIn = -1; 
+    Long_t neventsOut = -1;
     
-    std::cout << "***** Loading libraries *****" << endl;
-    /*
-    gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
-    loadSharedLibraries();
-    assert( !gSystem->Load("StDetectorDbMaker"));
-    assert( !gSystem->Load("StTpcDb"));
-    assert( !gSystem->Load("StDbUtilities"));
-    assert( !gSystem->Load("StDbBroker"));
-    assert( !gSystem->Load("St_db_Maker"));
-    assert( !gSystem->Load("StEEmcUtil")); // needed by eemcDb
-    assert( !gSystem->Load("StEEmcDbMaker"));
-    assert( !gSystem->Load("StEEmcA2EMaker"));
-    assert( !gSystem->Load("StDaqLib")); // needed by bemcDb
-    assert( !gSystem->Load("StEmcRawMaker"));
-    assert( !gSystem->Load("StEmcADCtoEMaker"));
-
-    if (isMC) {
-	assert( !gSystem->Load("StMcEvent"));
-	assert( !gSystem->Load("StMcEventMaker"));
-	assert( !gSystem->Load("StEmcSimulatorMaker"));
-	assert( !gSystem->Load("StEEmcSimulatorMaker"));
-	assert( !gSystem->Load("StEpcMaker"));
-    }
-    assert( !gSystem->Load("StSpinDbMaker") );
-    assert( !gSystem->Load("StTriggerUtilities"));
-    assert( !gSystem->Load("StEEmcPoolEEmcTreeContainers") );
-    assert( !gSystem->Load("StEEmcTreeMaker") );
-    */
-    //gDebug=5;
-
-    std::cout << "***** Done loading libraries *****" << endl;
-    std::cout << "***** Instanciating all the classes *****" << endl;
-
     //
     // Create the analysis chain
     //
     analysisChain = new StChain("eemcAnalysisChain");
-
 
     //
     // MuDst maker for reading input
@@ -280,15 +235,8 @@ void RunEEmcTreeMakerPart1( Long_t neventsIn,
     // Delete the chain
     //
     // analysisChain->Delete();
-
+    
+    cout << "\033[1;31m=============== This script requires a custom StMuDstMaker library.====================================\033[0m"<<endl;
+    
     return;
 };
-
-/*
- * $Id: makeEEmcTreePart1.C,v 1.1 2012/12/17 20:01:28 sgliske Exp $
- * $Log: makeEEmcTreePart1.C,v $
- * Revision 1.1  2012/12/17 20:01:28  sgliske
- * moved from offline/users/sgliske/StRoot/StEEmcPool/StEEmcTreeMaker/macros
- *
- *
- */

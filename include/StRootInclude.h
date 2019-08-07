@@ -57,7 +57,21 @@
 #include "StEEmcPool/StEEmcTreeMaker/StEEmcEnergyMaker.h"
 #include "StEEmcPool/StEEmcTreeMaker/StSpinInfoMaker.h"
 #include "StEEmcPool/StEEmcTreeMaker/StMcEEmcTreeMaker.h"
+
+
+#include "StEEmcPool/StEEmcHitMaker/StEEmcHitMakerSimple.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcTowerClusterFinder.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcStripClusterFinder.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcStripClusterFinderTSIU.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcPointFinder.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcPointFinderIU.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcEnergyApportioner.h"
+#include "StEEmcPool/StEEmcHitMaker/StEEmcEnergyApportionerIU.h"
+
+
 #include "StEEmcSimulatorMaker/StEEmcSlowMaker.h"
+
+
 
 //===========BEMC===================
 #include "StDaqLib/EMC/StEmcDecoder.h"
@@ -73,8 +87,8 @@
 #include "StMuDSTMaker/COMMON/StMuFmsInfo.h"
 #include "StFmsDbMaker/StFmsDbMaker.h"
 #include "StEvent/StFmsPointPair.h"
-
-#include "StEvent/StFmsPointPair.h"
+#include "StFmsHitMaker/StFmsHitMaker.h"
+#include "StFmsPointMaker/StFmsPointMaker.h"
 
 //=========Trigger=============
 #include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"

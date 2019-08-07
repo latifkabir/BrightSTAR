@@ -1,5 +1,15 @@
-void loadLibraries(bool fmsLibs = true);
-void RunFmsTreeMaker(const char*  inFile = "inFiles_fms.list", const char* outFile = "fmsTreeMaker.root")
+#include <iostream>
+#include "RootInclude.h"
+#include "StRootInclude.h"
+#include "BrightStInclude.h"
+
+/*
+In order to calibrated with gain correction table from a text file, you need the following two files in the current directory:
+FmsGainCorr.txt
+FmsCellStat.txt
+ */
+
+void RunFmsTreeMaker(const char*  inFile, const char* outFile)
 {
 	TStopwatch sw;
 	sw.Start();

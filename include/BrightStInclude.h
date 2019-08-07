@@ -10,5 +10,6 @@
 #include "TStar.h"
 #include "TStRunList.h"
 #include "TStConfig.h"
+#include "TStFmsTreeMaker.h"
 
 #endif
