@@ -109,8 +109,8 @@
 
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square
-    gStyle->SetMarkerStyle(4);    // Circle
-    gStyle->SetMarkerSize(.4);     // larger than half a pixel ...
+    gStyle->SetMarkerStyle(4);      // Circle
+    gStyle->SetMarkerSize(.4);      // larger than half a pixel ...
     gStyle->SetMarkerColor(kBlack);
     //gStyle->SetMarkerColor(kRed);
    

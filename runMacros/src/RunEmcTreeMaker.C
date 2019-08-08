@@ -62,12 +62,16 @@ void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.Mu
 	    cout << emcCollection->barrelPoints().size() << " points in barrel" << endl;
 
 	    StEmcDetector *barrel = emcCollection->detector(kBarrelEmcTowerId);
+	    cout <<"--------->"<< barrel <<endl;
+
 	    if (barrel->cluster()) 
 	    	cout << barrel->cluster()->clusters().size() << " barrel tower clusters" << endl;
 	    StEmcDetector *smde = emcCollection->detector(kBarrelSmdEtaStripId);
+	    cout <<"--------->"<< smde <<endl;
 	    if (smde) 
 	    	cout << smde->cluster()->clusters().size() << " smd eta clusters" << endl;
 	    StEmcDetector *smdp = emcCollection->detector(kBarrelSmdPhiStripId);
+	    cout <<"--------->"<< smdp <<endl;
 	    if (smdp) 
 	    	cout << smdp->cluster()->clusters().size() << " smd phi clusters" << endl;
 	}
