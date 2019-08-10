@@ -6,16 +6,24 @@
 # Created: Sat Jun 22 18:03:20 2019 (-0400)
 # URL: jlab.org/~latif
 
+if [ $# -ne 3 ]
+then
+    echo "Syntax: $0  <Function Name> <RunList>  <OutName>"
+    exit
+fi
+
 #------------------------------------------------------------
-export MACRO=$1
+export FUNCTION=$1
 export RUNLIST=$2
+export OUTNAME=$3
 
 export BASEDIR=`pwd`
 export BASEOUTDIR=jobResults     # .root files directory. Relative to current directory
 export JOBOUTDIR=jobOutput       #stderr, stdout, report etc directory. Relative to current directory
-export OUTNAME='EEmc_Pi0'
 export SOURCE=${BASEDIR}/.sl73_gcc485
 export ROOTSETUP=${BASEDIR}/rootlogon.C
+export MACRO=${BASEDIR}/jobMacro.C
+export SETUPFILE=${BASEDIR}/setup.sh
 #----------------------------------------------------------
 
 #----------------------------------- Configure here -------------------------------
@@ -38,6 +46,12 @@ export TRIG='production_pp200trans_2015'
 #export TRIG ='production_pp200trans_2015||production_fms_pp200trans_2015'
 #--------------------------------------------------------------------------
 
+echo "Generating Job Macro ..."
+echo "void jobMacro(TString fileList, TString outName)" > jobMacro.C	
+echo "{" >> jobMacro.C	
+echo "    gROOT->Macro(\"rootlogon.C\");" >> jobMacro.C
+echo "    $FUNCTION(fileList, outName);" >> jobMacro.C  
+echo "}" >> jobMacro.C
 
 #----------------------------------------------------------------------
 if [ -d $JOBOUTDIR/out_$OUTNAME ]
@@ -60,13 +74,14 @@ do
     export OUTDIR=$BASEOUTDIR/$RUN
     mkdir -p $OUTDIR
     mkdir -p $JOBOUTDIR/log_$OUTNAME/$RUN
-
+    echo "results from run $RUN will be saved in $OUTDIR"
+    echo "stdout and stderr from run $RUN will be saved in $JOBOUTDIR/log_$OUTNAME/$RUN"
     echo
     echo "Submitting job for run" $RUN
 
     star-submit-template \
-	-template Scheduler_template.xml \
-	-entities BASEDIR=$BASEDIR,MACRO=$MACRO,OUTDIR=$OUTDIR,JOBOUTDIR=$JOBOUTDIR,OUTNAME=$OUTNAME,RUN=$RUN,SOURCE=$SOURCE,ROOTSETUP=$ROOTSETUP,FILEN=$FILEN,FILET=$FILET,PROD=$PROD,TRIG=$TRIG
+    	-template Scheduler_template.xml \
+    	-entities BASEDIR=$BASEDIR,MACRO=$MACRO,OUTDIR=$OUTDIR,JOBOUTDIR=$JOBOUTDIR,OUTNAME=$OUTNAME,RUN=$RUN,SOURCE=$SOURCE,ROOTSETUP=$ROOTSETUP,FILEN=$FILEN,FILET=$FILET,PROD=$PROD,TRIG=$TRIG,SETUPFILE=$SETUPFILE 
 
     echo
     sleep 1

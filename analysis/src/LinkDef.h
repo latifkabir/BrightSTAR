@@ -1,6 +1,8 @@
 
 #ifdef __CINT__
 
+#pragma link C++ function SubmitJob;                      // Submit job using star template scheduler
+
 //RP
 #pragma link C++ function RpReadDemo;                     // Read RP data
 #pragma link C++ function RpQA;                           // Various RP distributions

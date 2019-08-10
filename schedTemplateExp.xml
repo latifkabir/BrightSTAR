@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <!DOCTYPE note [
-<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/.sl73_gcc485">
-<!ENTITY MACRO "macros/RunEEmcIUPi0.C">
-<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/BrightStMaker/rootlogon.C">
-<!ENTITY FILEN "~st_physics">
-<!ENTITY TRIG "production_pp200trans_2015">
-<!ENTITY OUTNAME "EEmc_Pi0">
-<!ENTITY PROD "P16id">
-<!ENTITY RUN "16072062">
-<!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR/BrightStMaker">
 <!ENTITY JOBOUTDIR "jobOutput">
+<!ENTITY TRIG "production_pp200trans_2015">
+<!ENTITY MACRO "/star/u/kabir/GIT/BrightSTAR/jobMacro.C">
+<!ENTITY OUTDIR "jobResults/16072047">
+<!ENTITY SETUPFILE "/star/u/kabir/GIT/BrightSTAR/setup.sh">
+<!ENTITY FILEN "~st_physics">
+<!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR">
+<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/.sl73_gcc485">
+<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/rootlogon.C">
+<!ENTITY RUN "16072047">
+<!ENTITY PROD "P16id">
+<!ENTITY OUTNAME "FmsTree">
 <!ENTITY FILET "daq_reco_mudst">
-<!ENTITY OUTDIR "jobResults/16072062">
 ]>
-<!-- Created on Tue Jul  9 05:02:24 2019 -->
+<!-- Created on Sat Aug 10 17:41:40 2019 -->
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
 	<Generator>
@@ -26,7 +27,7 @@
 		set THISRUN = `echo $INPUTFILE0 | sed 's|.*_\([0-9]*\)_.*_\([0-9]*\).MuDst.root|\1_\2|'`
 		set OUTFILE = &OUTNAME;_${THISRUN}.root
 		set OUTDIR  = &OUTDIR;
-		
+		source &SETUPFILE;		
 		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
 
 		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
@@ -39,6 +40,7 @@
 	<Package>
 		<File>file:&MACRO;</File>
 		<File>file:&SOURCE;</File>
+		<File>file:&SETUPFILE;</File>
 		<File>file:&ROOTSETUP;</File>
 	</Package>
 	</SandBox>

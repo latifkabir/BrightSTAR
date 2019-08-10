@@ -11,7 +11,7 @@
 		set THISRUN = `echo $INPUTFILE0 | sed 's|.*_\([0-9]*\)_.*_\([0-9]*\).MuDst.root|\1_\2|'`
 		set OUTFILE = &OUTNAME;_${THISRUN}.root
 		set OUTDIR  = &OUTDIR;
-		
+		source &SETUPFILE;		
 		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
 
 		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
@@ -24,6 +24,7 @@
 	<Package>
 		<File>file:&MACRO;</File>
 		<File>file:&SOURCE;</File>
+		<File>file:&SETUPFILE;</File>
 		<File>file:&ROOTSETUP;</File>
 	</Package>
 	</SandBox>

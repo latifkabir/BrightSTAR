@@ -10,6 +10,7 @@
 #include "TStar.h"
 #include "TStRunList.h"
 #include "TStConfig.h"
-#include "TStFmsTreeMaker.h"
+
+#include "BrFmsMaker/TStFmsTreeMaker.h"
 
 #endif
