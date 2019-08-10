@@ -5,7 +5,8 @@ void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.Mu
 {
     infile = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072047/st_physics_16072047_raw_1000014.MuDst.root";
     //gROOT->Macro("loadMuDst.C");
-
+    gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
+    loadSharedLibraries();
     // Load St_db_Maker and co
     gSystem->Load("StDbLib.so");
     gSystem->Load("StDbBroker.so");
@@ -56,30 +57,36 @@ void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.Mu
 	chain->Make();
 	
 	StEmcCollection *emcCollection = mudst_mk->muDst()->emcCollection();
-
+	
 	if (emcCollection)
 	{
 	    cout << emcCollection->barrelPoints().size() << " points in barrel" << endl;
 
 	    StEmcDetector *barrel = emcCollection->detector(kBarrelEmcTowerId);
-	    cout <<"--------->"<< barrel <<endl;
+	    // cout <<"--------->"<< barrel <<endl;
 
-	    if (barrel->cluster()) 
-	    	cout << barrel->cluster()->clusters().size() << " barrel tower clusters" << endl;
+	    if (barrel)
+	    {
+	    // 	cout << barrel->cluster()->clusters().size() << " barrel tower clusters" << endl;
+	    	cout << barrel->numberOfHits() << " barrel number of hits" << endl;
+		cout << "Hit Energy: " << endl;
+		barrel->getEnergy(1);
+	    }
 	    StEmcDetector *smde = emcCollection->detector(kBarrelSmdEtaStripId);
 	    cout <<"--------->"<< smde <<endl;
 	    if (smde) 
-	    	cout << smde->cluster()->clusters().size() << " smd eta clusters" << endl;
+	    // 	cout << smde->cluster()->clusters().size() << " smd eta clusters" << endl;
+		smde->getEnergy(1);	
 	    StEmcDetector *smdp = emcCollection->detector(kBarrelSmdPhiStripId);
 	    cout <<"--------->"<< smdp <<endl;
 	    if (smdp) 
-	    	cout << smdp->cluster()->clusters().size() << " smd phi clusters" << endl;
+	    // 	cout << smdp->cluster()->clusters().size() << " smd phi clusters" << endl;
+		smdp->getEnergy(1);
 	}
 	else
 	{
 	    cout << "No emc collection!" << endl;
 	}
-    
 	i_event++;
 	chain->Clear();
     }
