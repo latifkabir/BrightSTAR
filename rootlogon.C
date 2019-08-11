@@ -90,18 +90,18 @@
     gSystem->Load("BrRpMaker");
     gSystem->Load("BrFmsMaker");    
 
-    gSystem->Load("/star/u/kabir/GIT/BrightSTAR/runMacros/lib/libRunMacros.so");
+    gSystem->Load("libRunMacros.so");
 
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";
-    int status1 = gSystem->Load("/star/u/kabir/GIT/BrightSTAR/libBrStar/lib/libBrStar.so");
+    int status1 = gSystem->Load("libBrStar.so");
     if(status1>-1)
 	cout << "attempt completed !!\n";
     else
 	cout << "attempt failed.\n";
 
     cout << "\t\t  Attempting to load libStAnalysis.so ...";
-    int status2=gSystem->Load("/star/u/kabir/GIT/BrightSTAR/analysis/lib/libStAnalysis.so");
+    int status2=gSystem->Load("libStAnalysis.so");
     if(status2>-1)
     	cout << "attempt completed !!\n\n";
     else
