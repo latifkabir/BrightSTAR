@@ -55,7 +55,7 @@ foreach RUN (`cat $RUNLIST`)
 	echo "Submitting job for run" $RUN
 
 	star-submit-template \
-	 -template Scheduler_template.xml \
+	 -template scheduler_template.xml \
 	 -entities BASEDIR=$BASEDIR,MACRO=$MACRO,OUTDIR=$OUTDIR,JOBOUTDIR=$JOBOUTDIR,OUTNAME=$OUTNAME,RUN=$RUN,SOURCE=$SOURCE,ROOTSETUP=$ROOTSETUP,FILEN=$FILEN,FILET=$FILET,PROD=$PROD,TRIG=$TRIG
 
 	echo

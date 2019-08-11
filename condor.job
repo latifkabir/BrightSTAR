@@ -1,0 +1,21 @@
+Universe        = vanilla
+Executable      = ./condor.sh
+Requirements    = (CPU_Speed >= 1)
+Rank		= CPU_Speed
+request_memory = 1800M
+request_cpus = 1
+Priority        = 4
+GetEnv          = True
+Initialdir      = /star/u/kabir/GIT/BrightSTAR
+Input           = /dev/null
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process).out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process).err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process).log
+#Notify_user     = kabir@bnl.gov
+when_to_transfer_output = ON_EXIT_OR_EVICT
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072047/st_physics_16072047_raw_1000005.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/FmsQA_16072047_0.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072047/st_physics_16072047_raw_1000014.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/FmsQA_16072047_1.root"
+Queue
+

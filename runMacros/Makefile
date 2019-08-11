@@ -26,12 +26,12 @@ clean: libRunMacros_clean
 clear: libRunMacros_clear
 
 
-libRunMacros: ../.sl73_gcc485/lib/libRunMacros.so
+libRunMacros: lib/libRunMacros.so
 libRunMacros_base= $(wildcard src/*.cxx)  
 libRunMacros_inc	= $(patsubst src/%.cxx, ./%.h,$(libRunMacros_base)) 
 libRunMacros_obj	= $(patsubst src/%.cxx, src/%.o,$(libRunMacros_base))
 
-../.sl73_gcc485/lib/libRunMacros.so: $(libRunMacros_obj)  src/libRunMacros_Dict.o
+lib/libRunMacros.so: $(libRunMacros_obj)  src/libRunMacros_Dict.o
 	$(CXX) -o $@ $(CXXFLAGS) -shared -Wl,-soname,libRunMacros.so $^	
 	@echo "                                                                        "
 	@echo "-----------------------------------------------------------------------"
@@ -46,7 +46,7 @@ src/libRunMacros_Dict.cxx:
 libRunMacros_clean:
 	rm -f $(libRunMacros_obj)
 	rm -f  src/*_Dict.*
-	rm -f ../.sl73_gcc485/lib/libRunMacros.so
+	rm -f lib/libRunMacros.so
 
 libRunMacros_clear:
 	rm -f $(libRunMacros_obj)

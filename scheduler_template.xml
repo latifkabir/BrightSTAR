@@ -11,7 +11,8 @@
 		set THISRUN = `echo $INPUTFILE0 | sed 's|.*_\([0-9]*\)_.*_\([0-9]*\).MuDst.root|\1_\2|'`
 		set OUTFILE = &OUTNAME;_${THISRUN}.root
 		set OUTDIR  = &OUTDIR;
-		source &SETUPFILE;		
+		source &SETUPFILE;
+		ls -ltra
 		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
 
 		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
@@ -26,8 +27,12 @@
 		<File>file:&SOURCE;</File>
 		<File>file:&SETUPFILE;</File>
 		<File>file:&ROOTSETUP;</File>
+		<File>file:&LIBBRIGHT;</File>
+		<File>file:&LIBANA;</File>
+		<File>file:&LIBMACROS;</File>
 	</Package>
 	</SandBox>
 
-	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" />
+	<!-- <input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" /> -->
+	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="1" />
 </job>
