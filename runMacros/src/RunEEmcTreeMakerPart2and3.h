@@ -5,7 +5,7 @@
 // URL: jlab.org/~latif
 
 void RunEEmcTreeMakerPart2and3( const Char_t *eemcTreePart1FileName = "eemcTreeP1.root",
-                                const Char_t *demoOutName = "",
+                                const Char_t *OutNamePostFix = "",
                                 Int_t neventsIn = -1,
                                 Bool_t isMC = 0,
                                 Int_t displayFreq = 100 );

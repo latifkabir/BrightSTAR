@@ -11,6 +11,5 @@
 #include "TStRunList.h"
 #include "TStConfig.h"
 
-#include "BrFmsMaker/TStFmsTreeMaker.h"
 
 #endif

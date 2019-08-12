@@ -1,7 +1,7 @@
 #include <iostream>
 #include "RootInclude.h"
 #include "StRootInclude.h"
-#include "BrightStInclude.h"
+#include "BrFmsMaker/TStFmsTreeMaker.h"
 
 /*
 In order to calibrated with gain correction table from a text file, you need the following two files in the current directory:

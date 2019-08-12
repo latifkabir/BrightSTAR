@@ -39,7 +39,8 @@
     gSystem->Load("StPmdUtil");
     gSystem->Load("StPreEclMaker");
     gSystem->Load("StStrangeMuDstMaker");
-    gSystem->Load("StMuDSTMaker");  
+    gSystem->Load("StMuDSTMaker");
+    //assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StMuDSTMaker.so"));  // Local copy of StMuDstMaker
     cout<<"\t\t done loading libStMuDSTMaker.so ...."<<endl;
 
     //-------------Trigger --------------

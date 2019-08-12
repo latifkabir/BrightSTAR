@@ -10,6 +10,7 @@
 //Batch Farm Job
 #pragma link C++ function SubmitJob;             // Submit job using star template scheduler
 #pragma link C++ function JobStatus;             // Check Job Status
-#pragma link C++ function SubmitCondorJob;       // Sumit Condor Job
+#pragma link C++ function SubmitJob;             // Sumit Condor Job
+#pragma link C++ function SubmitSumsJob;         // Sumit Condor Job
 
 #endif
