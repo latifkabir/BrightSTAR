@@ -2,8 +2,8 @@ Universe        = vanilla
 Executable      = ./condor.sh
 Requirements    = (CPU_Speed >= 1)
 Rank		= CPU_Speed
-request_memory = 1800M
-request_cpus = 1
+request_memory  = 1800M
+request_cpus    = 1
 Priority        = 4
 GetEnv          = True
 Initialdir      = /star/u/kabir/GIT/BrightSTAR
@@ -14,5 +14,53 @@ Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$R
 #Notify_user     = kabir@bnl.gov
 #should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/EEmcTreeMakerPart1_16072061.root	16072061"
++Experiment     = "star"
++Job_Type       = "cas"
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_0.root  16072047_0"
 Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_1.root  16072047_1"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_2.root  16072047_2"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_3.root  16072047_3"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_4.root  16072047_4"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_5.root  16072047_5"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_6.root  16072047_6"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_7.root  16072047_7"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_8.root  16072047_8"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_9.root  16072047_9"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_10.root  16072047_10"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_11.root  16072047_11"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_12.root  16072047_12"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_13.root  16072047_13"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_14.root  16072047_14"
+Queue
+
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_15.root  16072047_15"
+Queue
+

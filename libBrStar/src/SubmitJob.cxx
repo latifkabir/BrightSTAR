@@ -80,7 +80,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 	limit = lastRunOrNfiles;
 	lastRun = firstRun;
     }
-    else if(lastRunOrNfiles > firstRun)
+    else if(lastRunOrNfiles >= firstRun)
 	lastRun = lastRunOrNfiles;
     
     TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());

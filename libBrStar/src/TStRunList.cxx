@@ -139,7 +139,7 @@ Int_t TStRunList::MakeFileList(Int_t firstRun, Int_t lastRunOrNfiles)
 	limit = lastRunOrNfiles;
 	lastRun = firstRun;
     }
-    else if(lastRunOrNfiles > firstRun)
+    else if(lastRunOrNfiles >= firstRun)
 	lastRun = lastRunOrNfiles;
     
     TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
@@ -180,7 +180,7 @@ Int_t TStRunList::PrintFileList(Int_t firstRun, Int_t lastRunOrNfiles)
 	limit = lastRunOrNfiles;
 	lastRun = firstRun;
     }
-    else if(lastRunOrNfiles > firstRun)
+    else if(lastRunOrNfiles >= firstRun)
 	lastRun = lastRunOrNfiles;
     
     TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
