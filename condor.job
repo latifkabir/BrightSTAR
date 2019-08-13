@@ -16,51 +16,165 @@ Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$R
 when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_0.root  16072047_0"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1000003.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_0.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_1.root  16072047_1"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1000012.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_1.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_2.root  16072047_2"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1000014.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_2.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_3.root  16072047_3"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1000018.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_3.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_4.root  16072047_4"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1000019.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_4.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_5.root  16072047_5"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1000024.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_5.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_6.root  16072047_6"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1500003.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_6.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_7.root  16072047_7"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1500011.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_7.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_8.root  16072047_8"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1500014.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_8.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_9.root  16072047_9"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_1500017.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_9.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_10.root  16072047_10"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2000001.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_10.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_11.root  16072047_11"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2000012.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_11.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_12.root  16072047_12"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2000013.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_12.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_13.root  16072047_13"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2000017.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_13.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_14.root  16072047_14"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2000018.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_14.root"
 Queue
 
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/jobResults/RunEEmcTreeMakerPart1_16072047_15.root  16072047_15"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2000021.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_15.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2500005.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_16.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2500011.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_17.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2500014.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_18.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2500018.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_19.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2500020.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_20.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2500024.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_21.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_2500025.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_22.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_3000004.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_23.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_3000012.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_24.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_3000015.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_25.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_3000017.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_26.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_3000019.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_27.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_3000025.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_28.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_3000026.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_29.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4000003.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_30.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4000004.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_31.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4000014.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_32.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4000015.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_33.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4000019.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_34.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4000021.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_35.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4500001.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_36.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4500012.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_37.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4500015.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_38.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4500019.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_39.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4500021.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_40.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_4500025.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_41.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5000002.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_42.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5000011.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_43.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5000014.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_44.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5000017.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_45.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5000020.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_46.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5000024.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_47.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5500003.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_48.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5500012.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_49.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5500014.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_50.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5500017.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_51.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5500020.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_52.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/080/16080002/st_physics_16080002_raw_5500024.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_53.root"
 Queue
 

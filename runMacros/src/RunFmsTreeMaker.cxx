@@ -7,6 +7,9 @@
 In order to calibrated with gain correction table from a text file, you need the following two files in the current directory:
 FmsGainCorr.txt
 FmsCellStat.txt
+
+These files should be under current directory. It is hard coded in FmsDBMaker and must remain in top level directory. 
+
  */
 
 void RunFmsTreeMaker(const char*  inFile, const char* outFile)
@@ -43,7 +46,7 @@ void RunFmsTreeMaker(const char*  inFile, const char* outFile)
 
 	StFmsDbMaker* fmsDb = new StFmsDbMaker("fmsDb");
 	fmsDb->setDebug(0);
-	//fmsDb->readGainCorrFromText(true); cout <<"WARNING! External gain correction factors are being used!\n" <<endl;
+	fmsDb->readGainCorrFromText(true); cout <<"WARNING! External gain correction factors are being used!\n" <<endl;
 
 	StEventMaker*    eventMk    = new StEventMaker();
 	StFmsHitMaker*   fmsHitMk   = new StFmsHitMaker();
@@ -57,7 +60,7 @@ void RunFmsTreeMaker(const char*  inFile, const char* outFile)
 	TString outName(outFile);
 	if (!strcmp(outFile, "")) { outName = inFile; outName.ReplaceAll("MuDst", "fmsTreeMaker"); }
 	fmsTreeMaker->SetOutputName((const char*)outName);
-	//fmsTreeMaker->SetReadBadChannel("FmsCellStat.txt");
+	fmsTreeMaker->SetReadBadChannel("/star/u/kabir/GIT/BrightSTAR/FmsCellStat.txt");
 	fmsTreeMaker->GetQaTree();
 	//fmsTreeMaker->GetMap();
 

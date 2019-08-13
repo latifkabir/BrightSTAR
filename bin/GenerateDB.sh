@@ -7,18 +7,27 @@
 #
 # output is tee'd to $outputfile.*
 
-##------------------------------------------------------------------
+##----------------------- pp 2015 trans physics stream-------------------------------------------
 outputfile_=Run15PhysRunList.json
 tempoutput_=temp.dat
 production_=P16id
 trgsetupname_=production_pp200trans_2015
 storage_=local
-filename_=st_physics_16
+filename_=st_physics
+##------------------------------------------------------------------
+
+##------------------------- pp 2015 trans fms stream -----------------------------------------
+# outputfile_=Run15FmsRunList.json
+# tempoutput_=temp.dat
+# production_=P15ik
+# trgsetupname_=production_pp200trans_2015
+# storage_=local
+# filename_=st_fms
 ##------------------------------------------------------------------
 
 # querey the fileCatalog
 #   vars for awk:      $1   $2      $3   $4   $5   $6       $7   $8     $9
-get_file_list.pl -keys fdid,storage,site,node,path,filename,size,events,runnumber -cond production=$production_,trgsetupname~$trgsetupname_,filename~$filename_,filetype=daq_reco_mudst,storage=$storage_ -limit 0 2>&1 | tee ${tempoutput_}
+get_file_list.pl -keys fdid,storage,site,node,path,filename,size,events,runnumber -cond production=$production_,trgsetupname~$trgsetupname_,filename~$filename_,filetype=daq_reco_mudst,storage=$storage_ -limit 0 -distinct 2>&1 | tee ${tempoutput_}
 
 echo ""
 echo "---------------------------------------------------------"

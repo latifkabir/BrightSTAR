@@ -25,3 +25,6 @@ temp/
 *.dat
 .project
 .cproject
+FmsCellStat.txt
+FmsGainCorr.txt
+.nfs*
