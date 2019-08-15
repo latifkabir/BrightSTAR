@@ -1,7 +1,7 @@
 // Produces both Zilong's off axis cones and
 // Grant's regions underlying event trees
 // Original script name: RunJetFinder2013UePro
-void RunJetFinder(TString mudstfile = "",
+void RunEmcJetFinder(TString mudstfile = "",
 		  const char* jetfile = "st_physics_new.jets.root",
 		  const char* skimfile = "st_physics_new.skim.root",
 		  const char* conesfile = "st_physics_new.ueCones.root",

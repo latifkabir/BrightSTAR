@@ -205,15 +205,18 @@ void SubmitJob(TString functionName, TString inFileName, TString outName)
 
 
 //___________________________________________________________________________________________
-void SubmitSumsJob(TString function, TString runList, TString outName)    
+void SubmitSumsJob(TString function, TString runList, TString outNamePrefix)    
 {
-    TString subScript = TStar::Config->GetStarHome() + (TString)"/SubmitJob.sh";
-    if(gSystem->AccessPathName(subScript))
+    if(outNamePrefix == "")
+	outNamePrefix = function;
+    TString subScript = TStar::Config->GetStarHome() + (TString)"/submitSumsJob.sh";
+    TString subConfig = TStar::Config->GetStarHome() + (TString)"/sumsConfig.sh";
+    if(gSystem->AccessPathName(subScript) || gSystem->AccessPathName(subConfig))
     {
-	cout << "Submission script NOT found at: "<<subScript<<endl;
+	cout << "Submission script or config NOT found"<<endl;
 	return;
     }
     
-    TString command = (TString)".! " + subScript + (TString)"\t" + function + (TString)"\t" + runList + (TString)"\t" + outName;
+    TString command = (TString)".! " + subScript + (TString)"\t" + function + (TString)"\t" + runList + (TString)"\t" + outNamePrefix;
     gROOT->ProcessLine(command);
 }

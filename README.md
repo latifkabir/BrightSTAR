@@ -100,10 +100,10 @@ SubmitSumsJob(TString function, TString runList, TString outName)
 For more options type `help()`
 
 - Submit job using SUMS from terminal:
-Modify `jobMacro.C` accordingly and submit the job as:
+Modify `jobMacro.C` and `sumsConfig.sh` accordingly and submit the job as:
 
 ```
-./submitSumsJob.sh <function name>  <runList>  <outName> 
+./submitSumsJob.sh <function name>  <runList>  <outName>. 
 ```
 
 **Check Job Status**

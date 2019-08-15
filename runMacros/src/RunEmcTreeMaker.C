@@ -33,7 +33,7 @@ void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.Mu
     pre_ecl->setPrint(kFALSE);
     StEpcMaker *epc=new StEpcMaker();
     epc->setPrint(kFALSE);
-
+    epc->setFillHisto(kTRUE);
     chain->Init();
    
     // This is how you can set alternative clustering parameters
@@ -90,4 +90,6 @@ void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.Mu
 	i_event++;
 	chain->Clear();
     }
+
+    chain->Finish();
 }

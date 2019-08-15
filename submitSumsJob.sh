@@ -12,42 +12,11 @@ then
     exit
 fi
 
-#------------------------------------------------------------
 export FUNCTION=$1
 export RUNLIST=$2
 export OUTNAME=$3
 
-export BASEDIR=`pwd`
-export BASEOUTDIR=jobResults     # .root files directory. Relative to current directory
-export JOBOUTDIR=jobOutput       #stderr, stdout, report etc directory. Relative to current directory
-export SOURCE=${BASEDIR}/.sl73_gcc485
-export ROOTSETUP=${BASEDIR}/rootlogon.C
-export MACRO=${BASEDIR}/jobMacro.C
-export SETUPFILE=${BASEDIR}/setup.csh
-export LIBBRIGHT=${BASEDIR}/libBrStar/lib/libBrStar.so
-export LIBANA=${BASEDIR}/analysis/lib/libStAnalysis.so
-export LIBMACROS=${BASEDIR}/runMacros/lib/libRunMacros.so
-#----------------------------------------------------------
-
-#----------------------------------- Configure here -------------------------------
-#RUN15 pp200trans (16066033 - 16093018), physics
-export FILEN='~st_physics'
-export FILET='daq_reco_mudst'
-export PROD='P16id'
-export TRIG='production_pp200trans_2015'
-
-#RUN15 pp200trans (16066033 - 16093018), physics
-# export FILEN='~st_physics'
-# export FILET='daq_reco_mudst'
-# export PROD='P16id'
-# export TRIG='production_pp200trans_2015'
-
-#RUN15 pp200trans (16066033 - 16093018), fms
-#export FILEN='~st_fms_16'
-#export FILET='daq_reco_mudst'
-#export PROD ='P15ik'
-#export TRIG ='production_pp200trans_2015||production_fms_pp200trans_2015'
-#--------------------------------------------------------------------------
+source $PWD/sumsConfig.sh
 
 echo "Generating Job Macro ..."
 echo "void jobMacro(TString fileList, TString outName)" > jobMacro.C	

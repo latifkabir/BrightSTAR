@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <!DOCTYPE note [
-<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/.sl73_gcc485">
-<!ENTITY LIBMACROS "/star/u/kabir/GIT/BrightSTAR/runMacros/lib/libRunMacros.so">
-<!ENTITY LIBANA "/star/u/kabir/GIT/BrightSTAR/analysis">
-<!ENTITY OUTNAME "FmsTreeMaker_Sums.root">
+<!ENTITY LIBANA "/star/u/kabir/GIT/BrightSTAR/analysis/lib/libStAnalysis.so">
+<!ENTITY OUTDIR "jobResults/16072062">
+<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/rootlogon.C">
 <!ENTITY SETUPFILE "/star/u/kabir/GIT/BrightSTAR/setup.csh">
-<!ENTITY OUTDIR "jobResults/16072047">
 <!ENTITY FILEN "~st_physics">
+<!ENTITY MACRO "/star/u/kabir/GIT/BrightSTAR/jobMacro.C">
+<!ENTITY LIBBRIGHT "/star/u/kabir/GIT/BrightSTAR/libBrStar/lib/libBrStar.so">
 <!ENTITY JOBOUTDIR "jobOutput">
 <!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR">
-<!ENTITY TRIG "production_pp200trans_2015">
 <!ENTITY PROD "P16id">
-<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/rootlogon.C">
-<!ENTITY MACRO "/star/u/kabir/GIT/BrightSTAR/jobMacro.C">
-<!ENTITY RUN "16072047">
-<!ENTITY LIBBRIGHT "/star/u/kabir/GIT/BrightSTAR/libBrStar/lib/libBrStar.so">
+<!ENTITY TRIG "production_pp200trans_2015">
+<!ENTITY RUN "16072062">
+<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/.sl73_gcc485">
+<!ENTITY OUTNAME "FmsQA">
 <!ENTITY FILET "daq_reco_mudst">
+<!ENTITY LIBMACROS "/star/u/kabir/GIT/BrightSTAR/runMacros/lib/libRunMacros.so">
 ]>
-<!-- Created on Thu Aug 15 13:05:07 2019 -->
+<!-- Created on Thu Aug 15 14:41:22 2019 -->
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
 	<Generator>
@@ -31,10 +31,9 @@
 		set OUTFILE = &OUTNAME;_${THISRUN}.root
 		set OUTDIR  = &OUTDIR;
 		source &SETUPFILE;
-		ls -ltra
 		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
 
-		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
+		mv *.root $SUBMITTINGDIRECTORY/$OUTDIR/;
 	</command>
 
 	<stdout URL="file:&JOBOUTDIR;/log_&OUTNAME;/&RUN;/$FILEBASENAME.out" />
@@ -52,6 +51,6 @@
 	</Package>
 	</SandBox>
 
-	<!-- <input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" /> -->
-	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="1" />
+	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" />
+	<!-- <input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="1" /> -->
 </job>
