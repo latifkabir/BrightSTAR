@@ -60,7 +60,7 @@ void RunFmsTreeMaker(const char*  inFile, const char* outFile)
 	TString outName(outFile);
 	if (!strcmp(outFile, "")) { outName = inFile; outName.ReplaceAll("MuDst", "fmsTreeMaker"); }
 	fmsTreeMaker->SetOutputName((const char*)outName);
-	fmsTreeMaker->SetReadBadChannel("/star/u/kabir/GIT/BrightSTAR/FmsCellStat.txt");
+	//fmsTreeMaker->SetReadBadChannel("/star/u/kabir/GIT/BrightSTAR/FmsCellStat.txt");
 	fmsTreeMaker->GetQaTree();
 	//fmsTreeMaker->GetMap();
 

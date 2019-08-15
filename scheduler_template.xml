@@ -15,7 +15,7 @@
 		ls -ltra
 		root4star -b -q &MACRO;\(\"$FILELIST\",\"$OUTFILE\"\)
 
-		mv $OUTFILE $SUBMITTINGDIRECTORY/$OUTDIR;
+		mv *.root $SUBMITTINGDIRECTORY/$OUTDIR/;
 	</command>
 
 	<stdout URL="file:&JOBOUTDIR;/log_&OUTNAME;/&RUN;/$FILEBASENAME.out" />

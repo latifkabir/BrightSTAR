@@ -14,6 +14,7 @@
 using namespace std;
 using json = nlohmann::json;
 
+//___________________________________________________________________________________________
 void JobStatus()
 {
     TString star_sh = TStar::Config->GetStarHome() + (TString)"/star";
@@ -26,6 +27,7 @@ void JobStatus()
     gROOT->ProcessLine(command);
 }
 
+//___________________________________________________________________________________________
 void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int_t nFilesPerProcess, TString outName)    
 {
     if(outName == "")
@@ -99,6 +101,11 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 	    rNumber =  (std::to_string((int)j[i]["run"])).c_str();
 	    fileName = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string((int)j[i]["run"]) + "/" + (string)j[i]["data"]["file"];
 	    cout << fileName <<endl;
+	    if(!TStar::IsValid(fileName))
+	    {
+		cout<<"The file path: " << fileName << " is no longer valid. Skipping it." << endl;
+		continue;
+	    }
 	    output_file = outName + "_" + to_string((int)j[i]["run"]) + (string)"_"+ to_string(fileCount) + (string)".root";
 	    arguments = "Arguments       = " + (string)"\"" + fileName + "\t" + output_file + "\"";
 	    condorConfig_out << arguments << endl; 

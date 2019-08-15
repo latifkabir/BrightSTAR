@@ -24,9 +24,9 @@ export SOURCE=${BASEDIR}/.sl73_gcc485
 export ROOTSETUP=${BASEDIR}/rootlogon.C
 export MACRO=${BASEDIR}/jobMacro.C
 export SETUPFILE=${BASEDIR}/setup.csh
-export LIBBRIGHT=${BASEDIR}/libBrStar
-export LIBANA=${BASEDIR}/analysis
-export LIBMACROS=${BASEDIR}/runMacros
+export LIBBRIGHT=${BASEDIR}/libBrStar/lib/libBrStar.so
+export LIBANA=${BASEDIR}/analysis/lib/libStAnalysis.so
+export LIBMACROS=${BASEDIR}/runMacros/lib/libRunMacros.so
 #----------------------------------------------------------
 
 #----------------------------------- Configure here -------------------------------

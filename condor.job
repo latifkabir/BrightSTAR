@@ -19,30 +19,4 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_0000003.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_0.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_1000002.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_1.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_1500002.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_2.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_2000003.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_3.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_2500001.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_4.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_2500016.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_5.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_3000001.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_6.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_4000006.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_7.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_4500002.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_8.root"
-Queue
-
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_4500018.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_9.root"
-Queue
 
