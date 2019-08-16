@@ -19,4 +19,4 @@ endif
 
 setenv STARHOME "$STARHOME"
 setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${STARHOME}:${STARHOME}/libBrStar/lib:${STARHOME}/analysis/lib:${STARHOME}/runMacros/lib:${STARHOME}/.sl73_gcc485/lib"
-echo $LD_LIBRARY_PATH
+

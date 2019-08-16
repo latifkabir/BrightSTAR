@@ -25,8 +25,8 @@ void FmsPi0InvMass1()
     StMuFmsPoint *fmsPoint2;
     
     TChain *ch = muDstMaker->chain();
-    TH1D *massDist = new TH1D("massDist", "massDist", 100, 0.0, 0.0);
-    TH2D *xyDist = new TH2D("xyDist", "xyDist", 100, 0.0, 0.0, 100, 0.0, 0.0);
+    TH1D *massDist = new TH1D("massDist", "massDist", 200, 0.0, 1.0);
+    TH2D *xyDist = new TH2D("xyDist", "xyDist", 300, -3.0, 3.0, 300, -3.0, 3.0);
     Double_t pairE;
     Double_t pairM;
     Double_t zgg;
