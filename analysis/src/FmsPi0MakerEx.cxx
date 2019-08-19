@@ -35,8 +35,6 @@ public:
     }
     Int_t Init()
     {
-	mDst = (StMuDst*)GetInputDS("MuDst");
-
     	mFmsDbMk = static_cast<StFmsDbMaker*>(GetMaker("fmsDb"));
     if (!mFmsDbMk) { LOG_ERROR <<"TStFmsTreeMaker::InitRun - !StFmsDbMaker" <<endl; return kStFatal; }
 
@@ -53,6 +51,7 @@ public:
     }
     Int_t Make()
     {
+	mDst = (StMuDst*)GetInputDS("MuDst");
 	event = (StEvent*)GetInputDS("StEvent");	
 
 	if (!mDst || !event)
