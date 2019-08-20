@@ -16,6 +16,7 @@
 #include "StEvent/StEvent.h"
 #include "StEventMaker/StEventMaker.h"
 #include "StEvent/StFmsCollection.h"
+#include "StEvent/StEmcCollection.h"
 
 //==========MuDST==================
 #include "StMuDSTMaker/COMMON/StMuDstMaker.h"
