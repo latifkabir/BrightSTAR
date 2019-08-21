@@ -37,7 +37,7 @@ Int_t TStFmsQAMaker::Init()
     	LOG_ERROR <<"TStFmsTreeMaker::InitRun - !StFmsDbMaker" <<endl;
     	return kStFatal;
     }
-    mFile = new TFile("FmsQA.root", "RECREATE");
+    mFile = new TFile(mOutName, "RECREATE");
 
     for(Int_t i = 0; i < 4; ++i)
     {
@@ -56,7 +56,7 @@ Int_t TStFmsQAMaker::Init()
 	}   
     }
  
-   return StMaker::Init();
+   return kStOK;
 }
 
 

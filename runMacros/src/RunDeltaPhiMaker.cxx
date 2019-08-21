@@ -1,7 +1,7 @@
 //anaDeltaPhiMaker
 
 #include "StRootInclude.h"
-#include "BrExampleMaker/DeltaPhiMaker.h"
+#include "BrTemplateMaker/DeltaPhiMaker.h"
 
 void RunDeltaPhiMaker(TString inFile, TString outFile, int nEvents)
 {    

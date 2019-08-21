@@ -31,6 +31,7 @@ private:
     const Int_t iMaxCh = 288;
     Int_t mDetId;
     Int_t mChannel;
+    TString mOutName = "FmsQA.root";
 protected:
 
     
@@ -40,9 +41,9 @@ public:
     virtual Int_t Init();
     virtual Int_t  Make();
     virtual Int_t Finish();
+    void SetOutName(TString name){ mOutName = name;}
     // virtual Int_t InitRun  (int runumber){return 0;}; // Overload empty StMaker::InitRun 
     // virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
-
 
     ClassDef(TStFmsQAMaker,1) 
 };

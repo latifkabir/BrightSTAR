@@ -86,7 +86,7 @@
     gSystem->Load("StEpcMaker");
     
     //------ Bright Maker -------------
-    gSystem->Load("BrExampleMaker");
+    gSystem->Load("BrTemplateMaker");
     gSystem->Load("BrEEmcMaker");
     gSystem->Load("BrRpMaker");
     gSystem->Load("BrFmsMaker");    
