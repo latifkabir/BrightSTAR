@@ -1,72 +1,74 @@
-/*
-  Based on StEpcMaker class.
-*/
+// Filename: TStEmcTreeMaker.h
+// Description: 
+// Author: Latif Kabir < kabir@bnl.gov >
+// Created: Mon Aug 19 17:38:04 2019 (-0400)
+// URL: jlab.org/~latif
 
-#ifndef TSTEMCTREEMAKER_H
-#define TSTEMCTREEMAKER_H
+#ifndef TSEMCTREEMAKER_H
+#define TSEMCTREEMAKER_H
+
 #include "StMaker.h"
-#include "StMessMgr.h"
-#include <TH2.h>
+#include "TLorentzVector.h"
+#include "StEmcPoint.h"
+#include "StEpcMaker/StEpcMaker.h"
+#include "StEvent/StEmcPoint.h"
+#include "StEvent/StEmcCollection.h"
+#include "StEmcADCtoEMaker/StEmcADCtoEMaker.h"
+#include "StPreEclMaker/StPreEclMaker.h"
 
 class StEvent;
-class StEmcCollection;
-class StPointCollection;
-
+class StMuDst;
+ 
 class TStEmcTreeMaker : public StMaker
 {
 private:
-    StEvent*             mEvent;
-    StEmcCollection*     mTheEmcCollection;
-    StPointCollection*   mPoint;
-    void                 MakeHistograms();    // Filling QA Histograms
+    StMuDst *mMuDst;  
+    StEvent* mEvent;
+    // Maker to apply calibration
+    StEmcADCtoEMaker *mAdc2E;
+    // Makers for cluster finding
+    StPreEclMaker *mPreEcl;
+    // Collection of points maker
+    StEpcMaker *mEpc;
 
+    StEmcCollection *mEmcCollection;
+    StSPtrVecEmcPoint mEmcPoints;
+    StEmcPoint *mPoint1;
+    StEmcPoint *mPoint2;
+
+    Int_t mNpoints;
+    Double_t mPairE;
+    Double_t mPairM;
+    Double_t mZgg;
+    Double_t mTheta;
+    StThreeVectorF mV1;
+    StThreeVectorF mV2;
+    Double_t mE1;
+    Double_t mE2;
+    Int_t mQ1;
+    Int_t mQ2;
+    Double_t mPi0_x;
+    Double_t mPi0_y;
+    Double_t mPi0_z;
+    TLorentzVector mLV1;
+    TLorentzVector mLV2;
+    TLorentzVector mLV;
+    
 protected:
-    TH1F *m_point_flag;        //! //Point Flag spectra
-    TH1F *m_point_quality;        //! //Point quality spectra
-    TH1F *m_point_energy[4];   //! //Point Energy spectra
-    TH1F *m_point_eta[4];      //! //Point Eta spectra
-    TH1F *m_point_phi[4];      //! //Point Phi spectra
-    // the following histograms will be created and filled only if the
-    // mFilHisto is set to kTRUE
-    TH1F *m_point_sigeta[4];   //! //Point SigmaEta spectra
-    TH1F *m_point_sigphi[4];   //! //Point SigmaPhi spectra
-    TH1F *m_point_trmom[4];    //! //Point TrMom spectra
-    TH1F *m_emc_points[4];     //! //Emc Point multiplicity
 
-    Bool_t mFillHisto;
-
-public:
-    TStEmcTreeMaker(const char *name="epc");
+    
+public: 
+    TStEmcTreeMaker(const char *name  = "EmcTreeMaker");
     virtual ~TStEmcTreeMaker();
     virtual Int_t Init();
     virtual Int_t Make();
     virtual Int_t Finish();
-    virtual Int_t fillStEvent();
-    void    setPrint(Bool_t a)
-    {
-		LOG_INFO << "::setPrint() is obsolete.  Use logger config file to set verbosity instead." << endm;
-    }///< Obsolete function; users can control messages with logger config file.
-    void  setFillHisto(Bool_t a)
-    {
-        mFillHisto = a;
-    } ///< Turns on/off histogram filling
-    virtual void  Browse(TBrowser* b); // StEvent staf will be visible in browser
+    // virtual Int_t InitRun  (int runumber){return 0;}; // Overload empty StMaker::InitRun 
+    // virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
 
-    virtual const char *GetCVS() const
-    {
-        static const char cvs[]=
-            "Tag $Name:  $ $Id: TStEmcTreeMaker.h,v 1.13 2014/08/06 11:43:08 jeromel Exp $ built " __DATE__ " " __TIME__ ;
-        return cvs;
-    }
 
-    ClassDef(TStEmcTreeMaker,0)// EMC-Track match maker
+    ClassDef(TStEmcTreeMaker, 1) 
 };
 
 #endif
-
-
-
-
-
-
 

@@ -78,6 +78,11 @@
 #include "StDaqLib/EMC/StEmcDecoder.h"
 #include "StEmcUtil/database/StBemcTables.h"
 #include "StEmcRawMaker/defines.h"
+#include "StEpcMaker/StEpcMaker.h"
+#include "StEvent/StEmcPoint.h"
+#include "StEvent/StEmcCollection.h"
+#include "StEmcADCtoEMaker/StEmcADCtoEMaker.h"
+#include "StPreEclMaker/StPreEclMaker.h"
 
 //========FMS=====================
 #include "StMuDSTMaker/COMMON/StMuFmsHit.h"

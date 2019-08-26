@@ -56,6 +56,7 @@
     //--------- StEvent ----------------
     //gSystem->Load("StEvent");
     gSystem->Load("StEventMaker");
+    gSystem->Load("StDaqLib");
     
     //-------- EEMC Related ------------
     gSystem->Load("StEEmcDbMaker");
