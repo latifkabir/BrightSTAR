@@ -1,7 +1,7 @@
 // This is an example of how to read the MuDst and do the cluster finding 
 // for the BEMC
 
-void RunEmcPi0Maker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.root", TString outFile = "", const Int_t n_event = 100)
+void EmcPi0Maker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.root", TString outFile = "", const Int_t n_event = 100)
 {
     infile = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072047/st_physics_16072047_raw_1000014.MuDst.root";
 	

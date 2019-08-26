@@ -91,6 +91,7 @@
     gSystem->Load("BrEEmcMaker");
     gSystem->Load("BrRpMaker");
     gSystem->Load("BrFmsMaker");    
+    gSystem->Load("BrEmcMaker");    
 
     gSystem->Load("libRunMacros.so");
 
