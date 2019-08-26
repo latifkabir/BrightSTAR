@@ -9,16 +9,17 @@
 
 #include "StMaker.h"
 #include "TLorentzVector.h"
-#include "StEmcPoint.h"
-#include "StEpcMaker/StEpcMaker.h"
-#include "StEvent/StEmcPoint.h"
-#include "StEvent/StEmcCollection.h"
-#include "StEmcADCtoEMaker/StEmcADCtoEMaker.h"
-#include "StPreEclMaker/StPreEclMaker.h"
+#include "StarClassLibrary/StLorentzVector.hh"
+#include "StarClassLibrary/StLorentzVectorF.hh"
 
 class StEvent;
 class StMuDst;
- 
+class StEmcCollection;
+class StEmcPoint;
+class StEmcADCtoEMaker;
+class StPreEclMaker;
+class StEpcMaker;
+
 class TStEmcTreeMaker : public StMaker
 {
 private:
@@ -32,7 +33,6 @@ private:
     StEpcMaker *mEpc;
 
     StEmcCollection *mEmcCollection;
-    StSPtrVecEmcPoint mEmcPoints;
     StEmcPoint *mPoint1;
     StEmcPoint *mPoint2;
 

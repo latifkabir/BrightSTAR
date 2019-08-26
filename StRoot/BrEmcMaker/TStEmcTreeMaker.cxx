@@ -8,8 +8,13 @@
 #include "TStEmcTreeMaker.h"
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
-#include "/afs/rhic.bnl.gov/star/packages/DEV/.sl73_gcc485/include/StArray.h"
-#include "/afs/rhic.bnl.gov/star/packages/DEV/.sl73_gcc485/include/StContainers.h"
+
+#include "StEmcPoint.h"
+#include "StEpcMaker/StEpcMaker.h"
+#include "StEvent/StEmcPoint.h"
+#include "StEvent/StEmcCollection.h"
+#include "StEmcADCtoEMaker/StEmcADCtoEMaker.h"
+#include "StPreEclMaker/StPreEclMaker.h"
 
 ClassImp(TStEmcTreeMaker)
 
@@ -65,7 +70,7 @@ Int_t TStEmcTreeMaker::Make()
 
     //---------- Access EMC data ---------------
     mEmcCollection = mMuDst->emcCollection();	
-    mEmcPoints = mEmcCollection->barrelPoints();
+    StSPtrVecEmcPoint mEmcPoints = mEmcCollection->barrelPoints();
 
     mNpoints = mEmcPoints.size();
 	
@@ -103,7 +108,6 @@ Int_t TStEmcTreeMaker::Make()
 	    mPairM = mLV.M();					
 	}	
     }
-
         
     return kStOK;
 }
