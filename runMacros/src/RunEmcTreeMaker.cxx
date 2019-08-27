@@ -1,16 +1,14 @@
 // This is an example of how to read the MuDst and do the cluster finding 
 // for the BEMC
 
-// #include "StEmcADCtoEMaker/StEmcADCtoEMaker.h"
-// #include "StPreEclMaker/StPreEclMaker.h"
-// #include "StEpcMaker/StEpcMaker.h"
+#include "RootInclude.h"
+#include "StRootInclude.h"
+#include "BrEmcMaker/TStEmcTreeMaker.h"
 
-void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.root", TString outFile = "", const Int_t n_events = -1)
-{
-    infile = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072047/st_physics_16072047_raw_1000014.MuDst.root";
-	
+void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
+{	
     StChain *chain = new StChain;
-    StMuDstMaker *mudst_mk = new StMuDstMaker(0,0,"",infile,"",999);
+    StMuDstMaker *mudst_mk = new StMuDstMaker(0, 0, "", infile, "", 1000);
     // Need St_db_Maker for Emc calibration
     St_db_Maker *db1 = new St_db_Maker("db","$HOME/StarDb","MySQL:StarDb","$STAR/StarDb");
     chain->SetDEBUG(0);
@@ -26,7 +24,7 @@ void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.Mu
     epc->setFillHisto(kTRUE);
     
     TStEmcTreeMaker *emcTreeMaker = new TStEmcTreeMaker();
-    //emcTreeMaker->SetOutName();
+    emcTreeMaker->SetOutName(outFile);
     
     emcTreeMaker->AddTrigger(480003); //MB
     //emcTreeMaker->AddTrigger(480201);
@@ -42,11 +40,12 @@ void RunEmcTreeMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.Mu
     Int_t nEvents =  mudst_mk->chain()->GetEntries();
     if(n_events != -1)
 	nEvents = n_events;
-    for (i = 0;  i < nEvents; ++i)
+    cout << "Total events to be processed: " << nEvents << endl;
+    for (Int_t i = 0;  i < nEvents; ++i)
     {
 	chain->Make(i);
 	if(i %100 ==0)
-	    cout << "Events processed: "<< i_event <<endl;	   
+	    cout << "Events processed: "<< i <<endl;	   
 	chain->Clear();
     }
     chain->Finish();

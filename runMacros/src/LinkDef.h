@@ -24,4 +24,6 @@
 
 #pragma link C++ function RunFmsTreeMaker;                       // FMS reconstruction 
 
+#pragma link C++ function RunEmcTreeMaker;                       // Emc gamma, pi0 reconstruction 
+
 #endif
