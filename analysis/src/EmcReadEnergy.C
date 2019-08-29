@@ -1,7 +1,7 @@
 // This is an example of how to read the MuDst and do the cluster finding 
 // for the BEMC
 
-void RunEmcMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.root", TString outFile = "", const Int_t n_event=100)
+void EmcReadEnergy(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.root", const Int_t n_event=100)
 {
     infile = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072047/st_physics_16072047_raw_1000014.MuDst.root";
     //gROOT->Macro("loadMuDst.C");
@@ -20,20 +20,20 @@ void RunEmcMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.
     gSystem->Load("StEpcMaker");
 
     StChain *chain=new StChain;
-    StMuDstMaker *mudst_mk = new StMuDstMaker(0,0,"",infile,"",999);
+    StMuDstMaker *mudst_mk=new StMuDstMaker(0,0,"",infile,"",999);
 
     // Need St_db_Maker for Emc calibration
     St_db_Maker *db1 = new St_db_Maker("db","$HOME/StarDb","MySQL:StarDb","$STAR/StarDb");
 
     // Maker to apply calibration
-    StEmcADCtoEMaker *adc_to_e = new StEmcADCtoEMaker();
+    StEmcADCtoEMaker *adc_to_e=new StEmcADCtoEMaker();
     adc_to_e->setPrint(kFALSE);
     // Makers for cluster finding
-    StPreEclMaker *pre_ecl = new StPreEclMaker();
+    StPreEclMaker *pre_ecl=new StPreEclMaker();
     pre_ecl->setPrint(kFALSE);
-    StEpcMaker *epc = new StEpcMaker();
+    StEpcMaker *epc=new StEpcMaker();
     epc->setPrint(kFALSE);
-    epc->setFillHisto(kTRUE);
+
     chain->Init();
    
     // This is how you can set alternative clustering parameters
@@ -59,12 +59,12 @@ void RunEmcMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.
 	StEmcCollection *emcCollection = mudst_mk->muDst()->emcCollection();
 	
 	if (emcCollection)
-	{	    
+	{
 	    cout << emcCollection->barrelPoints().size() << " points in barrel" << endl;
 
 	    StEmcDetector *barrel = emcCollection->detector(kBarrelEmcTowerId);
 	    // cout <<"--------->"<< barrel <<endl;
-	    
+
 	    if (barrel)
 	    {
 	    // 	cout << barrel->cluster()->clusters().size() << " barrel tower clusters" << endl;
@@ -81,7 +81,7 @@ void RunEmcMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.
 	    cout <<"--------->"<< smdp <<endl;
 	    if (smdp) 
 	    // 	cout << smdp->cluster()->clusters().size() << " smd phi clusters" << endl;
-		smdp->getEnergy(1);	    
+		smdp->getEnergy(1);
 	}
 	else
 	{
@@ -90,6 +90,4 @@ void RunEmcMaker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.
 	i_event++;
 	chain->Clear();
     }
-
-    chain->Finish();
 }

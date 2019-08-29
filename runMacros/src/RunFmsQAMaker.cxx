@@ -4,7 +4,13 @@
 // Created: Tue Aug 20 14:14:39 2019 (-0400)
 // URL: jlab.org/~latif
 
-void RunFmsQAMaker()
+#include "RunFmsQAMaker.h"
+#include "StRootInclude.h"
+#include "BrFmsMaker/TStFmsQAMaker.h"
+#include "BrightStInclude.h"
+#include "RootInclude.h"
+
+void RunFmsQAMaker(TString inFile, TString outName, Int_t nEvents)
 {
     TStRunList::MakeFileList(16072057, 1);
     TString fileList = TStar::Config->GetFileList();
@@ -19,8 +25,12 @@ void RunFmsQAMaker()
     muDstMaker->SetStatus("MuEvent*", 1);
     
     TStFmsQAMaker *fmsQA = new TStFmsQAMaker("FmsQAMaker");
+    fmsQA->SetOutName(outName);
+
+    Int_t totEntries = muDstMaker->chain()->GetEntries();
+    Int_t events = (nEvents == -1)? totEntries : nEvents;
     
     chain->Init();    
-    chain->EventLoop(1000);  // Run specified number of events
+    chain->EventLoop(events);  // Run specified number of events
     chain->Finish();
 }

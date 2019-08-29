@@ -108,9 +108,13 @@ void EmcPi0Maker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.
 	{
 	    point1 = emcPoints[i];
 	    // cout << "--------> Energy: "<< point1->energy() <<endl;
-	    //cout << "--------> Position: "<< point1->position().x() <<"\t" << point1->position().y() <<"\t" << point1->position().z() <<endl;
-	    // StPtrVecTrack& tr = point1->track();
-	    // cout <<"num of tracks: " << tr.size() <<endl;
+	    // cout << "--------> Position: "<< point1->position().x() <<"\t" << point1->position().y() <<"\t" << point1->position().z() <<endl;
+	    // cout << "--------->Detector: "<<point1->detector() <<endl;
+	    // cout << "--------->id: "<<point1->id()<<" charge:"<<point1->charge() <<endl;
+	    // cout << "--------->print: "<<point1->print() <<endl;
+
+	    //StPtrVecTrack& tr = point1->track();
+	    //cout <<"------->num of tracks: " << tr.size() <<endl;
 
 	    photonE->Fill(point1->energy());	
 	    //---------- Calculate and fill Pi0 invariant mass --------------

@@ -19,3 +19,12 @@
 #pragma link C++ function FmsPi0MakerEx;                  // FMS Pi0 Invariant mass directly from MuDST files using StFmsPointPair.
 
 #endif
+
+
+/*
+--------  List of yet to be compiled scripts -----------
+EmcPi0Maker     : Pi0 from EMC points
+EmcReadEnergy   : Example to get energy from EMC ADCs
+EmcReadPoint    : Point reconstruction for EMC data
+
+*/

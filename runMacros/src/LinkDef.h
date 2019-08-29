@@ -21,9 +21,20 @@
 #pragma link C++ function RunEEmcTreeMakerPart1;                 // EEMC reconstruction using TSIU algorithm. This is step no. 1 out of 3 of the process. This is the algorithm followed for the analysis. To be run with local StRoot copy.
 #pragma link C++ function RunEEmcTreeMakerPart2and3;             // EEMC reconstruction using TSIU algorithm. This is step no. 2 and 3 out of 3 of the process. This is the algorithm followed for the analysis.
 
-
+#pragma link C++ function RunFmsQAMaker;                         // FMS QA Maker 
 #pragma link C++ function RunFmsTreeMaker;                       // FMS reconstruction 
 
 #pragma link C++ function RunEmcTreeMaker;                       // Emc gamma, pi0 reconstruction 
 
 #endif
+
+
+
+/*
+--------  List of yet to be compiled scripts -----------
+
+RunEmcJetFinder : EMC Jet Tree Maker
+RunPicoDstMaker : Make PicoDST files from MuDst files
+
+
+*/

@@ -4,6 +4,7 @@
 #include "RootInclude.h"
 #include "StRootInclude.h"
 #include "BrEmcMaker/TStEmcTreeMaker.h"
+#include "BrEmcMaker/TStEmcTrackMatchingMaker.h"
 
 void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
 {	
@@ -22,6 +23,8 @@ void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
     StEpcMaker *epc = new StEpcMaker();
     epc->setPrint(kFALSE);
     epc->setFillHisto(kTRUE);
+
+    TStEmcTrackMatchingMaker *trackMatchingMkr = new TStEmcTrackMatchingMaker();
     
     TStEmcTreeMaker *emcTreeMaker = new TStEmcTreeMaker();
     emcTreeMaker->SetOutName(outFile);
@@ -33,7 +36,7 @@ void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
     emcTreeMaker->AddTrigger(480204);   // HT1
     emcTreeMaker->AddTrigger(480205);   // HT2
     //emcTreeMaker->AddTrigger(480206);
-
+    
     chain->Init();
 
     StMuDst *muDst = mudst_mk->muDst();
@@ -44,6 +47,7 @@ void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
     for (Int_t i = 0;  i < nEvents; ++i)
     {
 	chain->Make(i);
+	cout << "-----> Number of primary tracks: "<< mudst_mk->muDst()->numberOfPrimaryTracks() <<endl;
 	if(i %100 ==0)
 	    cout << "Events processed: "<< i <<endl;	   
 	chain->Clear();

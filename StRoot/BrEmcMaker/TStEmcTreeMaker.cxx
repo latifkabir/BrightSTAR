@@ -143,6 +143,7 @@ Int_t TStEmcTreeMaker::Make()
 	mQ[i] = mQ1;
 	
 	mLV1.SetPxPyPzE(mPx[i], mPy[i], mPz[i], mE[i]);
+	//cout<< "Total tracks: " << mPoint1->nTracks() <<endl;
 	//---------- Calculate and fill Pi0 invariant mass --------------
 	for(Int_t j = i + 1; j < mNpoints; ++j)
 	{
