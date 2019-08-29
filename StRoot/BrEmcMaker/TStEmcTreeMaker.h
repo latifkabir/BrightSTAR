@@ -54,29 +54,32 @@ private:
     
     //Buffer for the tree
     Int_t mNpoints;
-    Double_t mX[kMaxPoints];
-    Double_t mY[kMaxPoints];
-    Double_t mZ[kMaxPoints];
-    Double_t mPx[kMaxPoints];
-    Double_t mPy[kMaxPoints];
-    Double_t mPz[kMaxPoints];
-    Double_t mE[kMaxPoints];
-    Int_t mQ[kMaxPoints];
+    Double_t *mX;
+    Double_t *mY;
+    Double_t *mZ;
+    Double_t *mPx;
+    Double_t *mPy;
+    Double_t *mPz;
+    Double_t *mE;
+    Int_t *mQ;
+    Int_t *mNtracks;
     
     Int_t mNpi0;
-    Double_t mPi0X[kMaxPi0];
-    Double_t mPi0Y[kMaxPi0];
-    Double_t mPi0Z[kMaxPi0];
-    Double_t mPi0Px[kMaxPi0];
-    Double_t mPi0Py[kMaxPi0];
-    Double_t mPi0Pz[kMaxPi0];
-    Double_t mPi0E[kMaxPi0];
-    Double_t mPi0M[kMaxPi0];
-    Double_t mPi0theta[kMaxPi0];
-    Double_t mPi0zgg[kMaxPi0];
-    Double_t mPi0dgg[kMaxPi0];
-    Int_t mPi0Q1[kMaxPi0];
-    Int_t mPi0Q2[kMaxPi0];
+    Double_t *mPi0X;
+    Double_t *mPi0Y;
+    Double_t *mPi0Z;
+    Double_t *mPi0Px;
+    Double_t *mPi0Py;
+    Double_t *mPi0Pz;
+    Double_t *mPi0E;
+    Double_t *mPi0M;
+    Double_t *mPi0theta;
+    Double_t *mPi0zgg;
+    Double_t *mPi0dgg;
+    Int_t *mPi0Q1;
+    Int_t *mPi0Q2;
+    Int_t *mPi0nTracks1;
+    Int_t *mPi0nTracks2;
     
 protected:
     void SetBranches();

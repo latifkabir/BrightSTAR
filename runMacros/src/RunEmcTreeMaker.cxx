@@ -47,7 +47,7 @@ void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
     for (Int_t i = 0;  i < nEvents; ++i)
     {
 	chain->Make(i);
-	cout << "-----> Number of primary tracks: "<< mudst_mk->muDst()->numberOfPrimaryTracks() <<endl;
+	//cout << "-----> Number of primary tracks: "<< mudst_mk->muDst()->numberOfPrimaryTracks() <<endl;
 	if(i %100 ==0)
 	    cout << "Events processed: "<< i <<endl;	   
 	chain->Clear();

@@ -11,7 +11,8 @@
 
 class StEvent;
 class StMuDst;
-class StEmcCollection;  
+class StEmcCollection;
+class StEmcPosition;
 
 class TStEmcTrackMatchingMaker : public StMaker
 {
@@ -22,7 +23,7 @@ private:
 protected:
     Int_t MatchToTracks(StEvent *event);    
 public: 
-    TStEmcTrackMatchingMaker(const char *name  = "TemplateMaker");
+    TStEmcTrackMatchingMaker(const char *name  = "TStEmcTrackMatchingMaker");
     virtual ~TStEmcTrackMatchingMaker();
     virtual Int_t Init();
     virtual Int_t Make();

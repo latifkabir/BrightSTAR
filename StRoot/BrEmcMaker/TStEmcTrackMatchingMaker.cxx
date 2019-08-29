@@ -9,6 +9,10 @@
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StEvent/StEmcCollection.h"
+#include "StEmcUtil/geometry/StEmcGeom.h"
+#include "StEmcUtil/projection/StEmcPosition.h"
+#include "StEvent/StEventTypes.h"
+#include "TMath.h"
 
 ClassImp(TStEmcTrackMatchingMaker)
 
@@ -28,17 +32,7 @@ TStEmcTrackMatchingMaker::~TStEmcTrackMatchingMaker()
 //_____________________________________________________________________________ 
 Int_t TStEmcTrackMatchingMaker::Init()
 {
-    // Create tables
-    
-    // Create Histograms
-    
-    // Get pointer to database
-    // mDbMaker = static_cast<StFmsDbMaker*>(GetMaker("fmsDb"));
-    // if (!mDbMaker)
-    // {
-    // 	LOG_ERROR <<"TStFmsTreeMaker::InitRun - !StFmsDbMaker" <<endl;
-    // 	return kStFatal;
-    // }
+    //
     return kStOK;
 }
 
@@ -55,11 +49,12 @@ Int_t TStEmcTrackMatchingMaker::Make()
     }
     
     StEvent *stEvent = mMuDst->createStEvent();
-    stEvent->statistics();
+    //stEvent->statistics();
     //mEvent->statistics();
 
     MatchToTracks(stEvent);
-    
+    delete stEvent;  //Must delete to avoid nasty memory leak
+    stEvent = 0;
     return kStOK;
 }
 
@@ -73,10 +68,12 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks(StEvent *event)
 	cout<<"No EMC data for this event"<<endl;
 	return kStSkip;
     }
-    StSPtrVecEmcPoint& mEmcPoints = mEmcCollection->barrelPoints();
     
-    cout << "------> No of points for matching: "<< mEmcPoints.size() <<endl;
+    StSPtrVecEmcPoint &mEmcPoints = mEmcCollection->barrelPoints();
+    
+    //cout << "------> No of points for matching: "<< mEmcPoints.size() <<endl;
 
+    StEmcPosition emcPosition;
     Float_t field = 0.5;
     StEventSummary *evtSummary = event->summary();
     if (evtSummary)
@@ -87,7 +84,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks(StEvent *event)
     if(nR>0)
     {
         LOG_DEBUG << "Matching to tracks... NP = " << nR << endm;
-        StSPtrVecTrackNode& tracks=event->trackNodes();
+        StSPtrVecTrackNode& tracks = event->trackNodes();
         Int_t nTracks =  tracks.size();
         StThreeVectorD momentum,position;
         for(Int_t t=0;t<nTracks;t++)
@@ -97,7 +94,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks(StEvent *event)
             {
                 if(track->geometry())
                 {
-                    Bool_t tok = mPosition->trackOnEmc(&position,&momentum,
+                    Bool_t tok = emcPosition.trackOnEmc(&position,&momentum,
                                                        track,(Double_t)field,
                                                        (Double_t)geom->Radius());
                     if(tok)
@@ -106,12 +103,11 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks(StEvent *event)
                         Float_t phi = position.phi();
                         if(fabs(eta)<1)
                         {
-                            TIter next(PointsReal());
                             StEmcPoint *cl;
 
                             for(Int_t i=0; i<nR; i++)
                             {
-                                cl = (StEmcPoint*)next();
+                                cl = mEmcPoints[i];
                                 if(cl)
                                 {
                                     StThreeVectorF pos = cl->position();
@@ -131,7 +127,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks(StEvent *event)
 
                                     Float_t dPhi = fabs(phi-phiP);
                                     if (dPhi>TMath::Pi())
-                                        dPhi=2*TMath::Pi()-dPhi;
+                                        dPhi=2.0*TMath::Pi()-dPhi;
 
                                     if(fabs(eta-etaP)<fabs(etaE) && dPhi<fabs(phiE))
                                     {

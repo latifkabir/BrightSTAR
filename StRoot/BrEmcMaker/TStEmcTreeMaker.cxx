@@ -18,13 +18,62 @@ ClassImp(TStEmcTreeMaker)
 //_____________________________________________________________________________ 
 TStEmcTreeMaker::TStEmcTreeMaker(const char *name):StMaker(name)
 {
+    mX = new Double_t[kMaxPoints];
+    mY = new Double_t[kMaxPoints];
+    mZ = new Double_t[kMaxPoints];
+    mPx= new Double_t[kMaxPoints];
+    mPy= new Double_t[kMaxPoints];
+    mPz= new Double_t[kMaxPoints];
+    mE = new Double_t[kMaxPoints];
+    mQ = new Int_t[kMaxPoints];
+    mNtracks = new Int_t[kMaxPoints];
 
+    mPi0X = new Double_t[kMaxPi0];
+    mPi0Y = new Double_t[kMaxPi0];
+    mPi0Z = new Double_t[kMaxPi0];
+    mPi0Px = new Double_t[kMaxPi0];
+    mPi0Py = new Double_t[kMaxPi0];
+    mPi0Pz = new Double_t[kMaxPi0];
+    mPi0E = new Double_t[kMaxPi0];
+    mPi0M = new Double_t[kMaxPi0];
+    mPi0theta = new Double_t[kMaxPi0];
+    mPi0zgg = new Double_t[kMaxPi0];
+    mPi0dgg = new Double_t[kMaxPi0];
+    mPi0Q1 = new Int_t[kMaxPi0];
+    mPi0Q2 = new Int_t[kMaxPi0];
+    mPi0nTracks1 = new Int_t[kMaxPi0];
+    mPi0nTracks2 = new Int_t[kMaxPi0];
 }
 
 //_____________________________________________________________________________ 
 TStEmcTreeMaker::~TStEmcTreeMaker()
 {
     //
+    delete[] mX; 
+    delete[] mY; 
+    delete[] mZ; 
+    delete[] mPx; 
+    delete[] mPy; 
+    delete[] mPz; 
+    delete[] mE; 
+    delete[] mQ; 
+    delete[] mNtracks;
+
+    delete[] mPi0X;
+    delete[] mPi0Y;
+    delete[] mPi0Z;
+    delete[] mPi0Px;
+    delete[] mPi0Py;
+    delete[] mPi0Pz;
+    delete[] mPi0E;
+    delete[] mPi0M;
+    delete[] mPi0theta;
+    delete[] mPi0zgg;
+    delete[] mPi0dgg;
+    delete[] mPi0Q1;
+    delete[] mPi0Q2;
+    delete[] mPi0nTracks1;
+    delete[] mPi0nTracks2;
 }
 
 
@@ -54,6 +103,7 @@ void TStEmcTreeMaker::SetBranches()
     mTree->Branch("point_pz", mPz, "point_pz[point]/D");
     mTree->Branch("point_E", mE, "point_E[point]/D");
     mTree->Branch("point_quality", mQ, "point_quality[point]/I");
+    mTree->Branch("point_nTracks", mNtracks, "point_nTracks[point]/I");
 
     //------- Not sure if I will keep the following for the final version. SInce it's redundent --------------
     mTree->Branch("pi0", &mNpi0, "pi0/I");
@@ -70,6 +120,8 @@ void TStEmcTreeMaker::SetBranches()
     mTree->Branch("pi0_dgg", mPi0dgg, "pi0_dgg[pi0]/D");    
     mTree->Branch("pi0_Q1", mPi0Q1, "pi0_Q1[pi0]/I");    
     mTree->Branch("pi0_Q2", mPi0Q2, "pi0_Q2[pi0]/I");
+    mTree->Branch("pi0_nTracks1", mPi0nTracks1, "pi0_nTracks1[pi0]/I");    
+    mTree->Branch("pi0_nTracks2", mPi0nTracks2, "pi0_nTracks2[pi0]/I");
 }
 
 //_____________________________________________________________________________
@@ -84,6 +136,7 @@ void TStEmcTreeMaker::ResetBuffer()
     memset(mPz, -1, kMaxPoints*sizeof(Double_t));
     memset(mE, -1, kMaxPoints*sizeof(Double_t));
     memset(mQ, -1, kMaxPoints*sizeof(Int_t));
+    memset(mNtracks, -1, kMaxPoints*sizeof(Int_t));
 
     mNpi0 = -1;
     memset(mPi0X, -1, kMaxPoints*sizeof(Double_t));
@@ -99,6 +152,8 @@ void TStEmcTreeMaker::ResetBuffer()
     memset(mPi0dgg, -1, kMaxPoints*sizeof(Double_t));
     memset(mPi0Q1, -1, kMaxPoints*sizeof(Int_t));
     memset(mPi0Q2, -1, kMaxPoints*sizeof(Int_t));
+    memset(mPi0nTracks1, -1, kMaxPoints*sizeof(Int_t));
+    memset(mPi0nTracks2, -1, kMaxPoints*sizeof(Int_t));
 }
 
 //_____________________________________________________________________________
@@ -123,7 +178,7 @@ Int_t TStEmcTreeMaker::Make()
 	cout<<"No EMC data for this event"<<endl;
 	return kStSkip;
     }
-    StSPtrVecEmcPoint mEmcPoints = mEmcCollection->barrelPoints();
+    StSPtrVecEmcPoint& mEmcPoints = mEmcCollection->barrelPoints();
     mNpoints = mEmcPoints.size();
     mNpi0 = 0;
     for(Int_t i = 0; i < mNpoints; ++i)
@@ -141,9 +196,10 @@ Int_t TStEmcTreeMaker::Make()
 	mPz[i] = mE1*mV1.z() / mV1.mag();
 	mE[i] = mE1;
 	mQ[i] = mQ1;
+	mNtracks[i] = mPoint1->nTracks();
 	
 	mLV1.SetPxPyPzE(mPx[i], mPy[i], mPz[i], mE[i]);
-	//cout<< "Total tracks: " << mPoint1->nTracks() <<endl;
+	//cout<< "~~~~~~~~~>Total tracks: " << mPoint1->nTracks() <<endl;
 	//---------- Calculate and fill Pi0 invariant mass --------------
 	for(Int_t j = i + 1; j < mNpoints; ++j)
 	{
@@ -177,7 +233,8 @@ Int_t TStEmcTreeMaker::Make()
 	    mPi0dgg[mNpi0] = (mV1 - mV2).mag();
 	    mPi0Q1[mNpi0] = mQ1;
 	    mPi0Q2[mNpi0] = mQ2;
-	    
+	    mPi0nTracks1[mNpi0] = mPoint1->nTracks();
+	    mPi0nTracks2[mNpi0] = mPoint2->nTracks();
 	    ++mNpi0;
 	}	
     }
