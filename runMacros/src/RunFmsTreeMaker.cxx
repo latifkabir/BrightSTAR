@@ -27,6 +27,11 @@ void RunFmsTreeMaker(const char*  inFile, const char* outFile)
 
 	//Arguments(default): mode, nameMode, directory (./), file, filter (.), max files (10), and name (MuDst)
 	StMuDstMaker* muDstMk = new StMuDstMaker(0, 0, "", inFile, ".MuDst.root", 1000, "MuDst");
+
+	muDstMk->SetStatus("*", 0);
+	muDstMk->SetStatus("Fms*", 1);
+	muDstMk->SetStatus("MuEvent*", 1);
+	
 	cout <<Form("\nEntries in %s: %i", inFile, muDstMk->tree()->GetEntries()) <<endl;
 
 	St_db_Maker* dbMk = new St_db_Maker("db", "MySQL:StarDb", "$STAR/StarDb");

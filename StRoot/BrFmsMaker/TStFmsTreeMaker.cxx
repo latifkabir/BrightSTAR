@@ -14,7 +14,6 @@
 #include "StEvent/StTriggerData.h"
 #include "StEvent/StTriggerId.h"
 #include "StFmsDbMaker/StFmsDbMaker.h"
-#include "StMessMgr.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StMuDSTMaker/COMMON/StMuTypes.hh"
 #include "Stypes.h"

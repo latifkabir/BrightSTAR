@@ -29,12 +29,12 @@ void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
     TStEmcTreeMaker *emcTreeMaker = new TStEmcTreeMaker();
     emcTreeMaker->SetOutName(outFile);
     
-    emcTreeMaker->AddTrigger(480003); //MB
+    // emcTreeMaker->AddTrigger(480003); //MB
     //emcTreeMaker->AddTrigger(480201);
     //emcTreeMaker->AddTrigger(480202);
     //emcTreeMaker->AddTrigger(480203);
-    emcTreeMaker->AddTrigger(480204);   // HT1
-    emcTreeMaker->AddTrigger(480205);   // HT2
+    // emcTreeMaker->AddTrigger(480204);   // HT1
+    // emcTreeMaker->AddTrigger(480205);   // HT2
     //emcTreeMaker->AddTrigger(480206);
     
     chain->Init();

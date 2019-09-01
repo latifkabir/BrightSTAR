@@ -94,6 +94,11 @@ void TStEmcTreeMaker::SetOutName(TString outName)
 //_____________________________________________________________________________
 void TStEmcTreeMaker::SetBranches()
 {
+    mTree->Branch("evt_no", &mEvtNo, "evt_no/I");
+    mTree->Branch("trig_MB", &mMB, "trig_MB/I");
+    mTree->Branch("trig_HT1", &mHT1, "trig_HT1/I");
+    mTree->Branch("trig_HT2", &mHT2, "trig_HT2/I");
+    
     mTree->Branch("point", &mNpoints, "point/I");
     mTree->Branch("point_x", mX, "point_x[point]/D");
     mTree->Branch("point_y", mY, "point_y[point]/D");
@@ -127,6 +132,11 @@ void TStEmcTreeMaker::SetBranches()
 //_____________________________________________________________________________
 void TStEmcTreeMaker::ResetBuffer()
 {
+    mEvtNo = -1;
+    mMB = -1;
+    mHT1 = -1;
+    mHT2 = -1;
+    
     mNpoints = -1;
     memset(mX, -1, kMaxPoints*sizeof(Double_t));
     memset(mY, -1, kMaxPoints*sizeof(Double_t));
@@ -165,12 +175,23 @@ Int_t TStEmcTreeMaker::Make()
 	cout << "TStEmcTreeMaker::Make- Unable to retrieve MuDst" <<endl;
 	return kStFatal;
     }
-    if(mTrigIDs.size() > 0)
-    {
-	if(!Accept(mMuDst->event()))
-	    return kStOK;
-    }
+    // if(mTrigIDs.size() > 0)
+    // {
+    // 	if(!Accept(mMuDst->event()))
+    // 	    return kStOK;
+    // }    
     ResetBuffer();
+
+    mEvtNo = mMuDst->event()->eventNumber(); // To be checked if this is invariant accross production
+    if(HasTrigger(mMuDst->event(), 480003)) //MB
+	mMB = 1;
+    if(HasTrigger(mMuDst->event(), 480204)) //HT1
+	mHT1 = 1;
+    if(HasTrigger(mMuDst->event(), 480205)) //HT2
+	mHT2 = 1;
+    //Process event only if either MB, HT1 or HT2 present
+    if(mMB == -1 && mHT1 == -1 && mHT2 == -1)  
+	return kStOK;
     //---------- Access EMC data ---------------
     mEmcCollection = mMuDst->emcCollection();
     if(!mEmcCollection)
@@ -268,4 +289,17 @@ Bool_t TStEmcTreeMaker::Accept(StMuEvent *muEvent)
 void TStEmcTreeMaker::AddTrigger(Int_t triggerId)
 {
     mTrigIDs.push_back(triggerId);
+}
+
+
+
+//_____________________________________________________________________________
+Bool_t TStEmcTreeMaker::HasTrigger(StMuEvent *muEvent, Int_t triggerId)
+{
+    mTrigMuColl = muEvent->triggerIdCollection();
+    const StTriggerId trgIDs = mTrigMuColl.nominal();
+    if (trgIDs.isTrigger(triggerId))
+	return kTRUE;
+    else
+	return kFALSE;
 }

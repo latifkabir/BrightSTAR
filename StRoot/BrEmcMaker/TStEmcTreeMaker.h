@@ -53,6 +53,11 @@ private:
     StMuTriggerIdCollection mTrigMuColl;
     
     //Buffer for the tree
+    Int_t mEvtNo;
+    Int_t mHT1;
+    Int_t mHT2;
+    Int_t mMB;
+    
     Int_t mNpoints;
     Double_t *mX;
     Double_t *mY;
@@ -85,6 +90,7 @@ protected:
     void SetBranches();
     void ResetBuffer();
     Bool_t Accept(StMuEvent *muEvent);
+    Bool_t HasTrigger(StMuEvent *muEvent, Int_t triggerId);
 public: 
     TStEmcTreeMaker(const char *name  = "EmcTreeMaker");
     virtual ~TStEmcTreeMaker();
