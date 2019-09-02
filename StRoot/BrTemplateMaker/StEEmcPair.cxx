@@ -1,4 +1,4 @@
-#include "StEEmcPair.h"
+#include "BrTemplateMaker/StEEmcPair.h"
 #include "TMath.h"
 ClassImp(StEEmcPair);
 

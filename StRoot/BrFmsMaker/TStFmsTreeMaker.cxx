@@ -35,6 +35,35 @@ ClassImp(TStFmsTreeMaker);
 //-------------------------------------
 void TStFmsTreeMaker::ResetLeaves(void)
 {
+    mTrigBit = -999;
+    mMass    = -999.;
+    mOpenA   = -999.;
+    mZgg     = -999.;
+
+    mPi0Px = -999;
+    mPi0Py = -999;
+    mPi0Pz = -999;
+    mPi0E = -999;
+    mPi0Pt = -999;
+    mPi0X = -999;
+    mPi0Y = -999;
+    
+    for (int i=0; i<2; i++)
+    {
+	mPointPx[i] = -999.;
+	mPointPy[i] = -999.;
+	mPointPz[i] = -999.;
+	mPointE[i] = -999.;
+	mPointX[i] = -999.;
+	mPointY[i] = -999.;
+	
+	mCluTowers[i]	= -999;
+	mCluX[i]		= -999.;
+	mCluY[i]		= -999.;
+	mCluSigmaMax[i] = -999.;
+	mCluSigmaMin[i] = -999.;
+    }
+    
     mHit = 0;
     for (int i=0; i<mHitMax; i++)
     {
@@ -44,23 +73,6 @@ void TStFmsTreeMaker::ResetLeaves(void)
 	mTdc[i]  = -999;
 	mHitE[i] = -999.;
     }
-
-    for (int i=0; i<2; i++)
-    {
-	mCluTowers[i]	= -999;
-	mCluX[i]		= -999.;
-	mCluY[i]		= -999.;
-	mCluSigmaMax[i] = -999.;
-	mCluSigmaMin[i] = -999.;
-	mPointE[i] = -999.;
-	mPointX[i] = -999.;
-	mPointY[i] = -999.;
-    }
-
-    mTrigBit = -999;
-    mMass    = -999.;
-    mOpenA   = -999.;
-    mZgg     = -999.;
 
     return;
 }//ResetDummyIndices
@@ -111,7 +123,11 @@ Int_t TStFmsTreeMaker::CheckFmsTrig(const StTriggerId& trigId)
 }//GetFmsTrigId
 
 //===================================================================
-TStFmsTreeMaker::TStFmsTreeMaker(const char* name) : StMaker(name) {}
+TStFmsTreeMaker::TStFmsTreeMaker(const char* name) : StMaker(name)
+{
+
+    
+}
 
 //===========================
 Int_t TStFmsTreeMaker::Init()
@@ -201,6 +217,38 @@ Int_t TStFmsTreeMaker::InitRun(int runNo)
 
 	int iLeaf = 0;
 	mTree = new TTree("T", "FMS Reconstruction Tree");
+
+	mTree->Branch("pair", 0, "trig/I:mass/F:openA/F:zgg/F");
+	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mTrigBit); iLeaf++;
+	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mMass);    iLeaf++;
+	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mOpenA);   iLeaf++;
+	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mZgg);     iLeaf=0;
+
+
+	mTree->Branch("pi0Px", &mPi0Px, "pi0Px/F");
+	mTree->Branch("pi0Py", &mPi0Py, "pi0Py/F");
+	mTree->Branch("pi0Pz", &mPi0Pz, "pi0Pz/F");
+	mTree->Branch("pi0E", &mPi0E, "pi0E/F");
+	mTree->Branch("pi0Pt", &mPi0Pt, "pi0Pt/F");
+	mTree->Branch("pi0X", &mPi0X, "pi0X/F");
+	mTree->Branch("pi0Y", &mPi0Y, "pi0Y/F");
+	
+	mTree->Branch("points", 0, "pointE[2]/F:pointX[2]/F:pointY[2]/F");
+	((TLeaf*)mTree->GetBranch("points")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mPointE); iLeaf++;
+	((TLeaf*)mTree->GetBranch("points")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mPointX); iLeaf++;
+	((TLeaf*)mTree->GetBranch("points")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mPointY); iLeaf=0;
+
+	mTree->Branch("pointsPx", mPointPx, "pointPx[2]/F");
+	mTree->Branch("pointsPy", mPointPy, "pointPy[2]/F");
+	mTree->Branch("pointsPz", mPointPz, "pointPz[2]/F");
+	
+	mTree->Branch("clusters", 0, "cluTowers[2]/s:cluX[2]/F:cluY[2]/F:cluMax[2]/F:cluMin[2]/F");
+	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluTowers);   iLeaf++;
+	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluX);        iLeaf++;
+	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluY);        iLeaf++;
+	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluSigmaMax); iLeaf++;
+	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluSigmaMin); iLeaf=0;
+	
 	mTree->Branch("hits", 0, "nHit/s:detId[nHit]/s:ch[nHit]/s:pointB[nHit]/s:tdc[nHit]/s:hitE[nHit]/F");
 	((TLeaf*)mTree->GetBranch("hits")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mHit);  iLeaf++;
 	((TLeaf*)mTree->GetBranch("hits")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mDet);  iLeaf++;
@@ -208,21 +256,6 @@ Int_t TStFmsTreeMaker::InitRun(int runNo)
 	((TLeaf*)mTree->GetBranch("hits")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mPtb);  iLeaf++;
 	((TLeaf*)mTree->GetBranch("hits")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mTdc);  iLeaf++;
 	((TLeaf*)mTree->GetBranch("hits")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mHitE); iLeaf=0;
-	mTree->Branch("clusters", 0, "cluTowers[2]/s:cluX[2]/F:cluY[2]/F:cluMax[2]/F:cluMin[2]/F");
-	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluTowers);   iLeaf++;
-	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluX);        iLeaf++;
-	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluY);        iLeaf++;
-	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluSigmaMax); iLeaf++;
-	((TLeaf*)mTree->GetBranch("clusters")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mCluSigmaMin); iLeaf=0;
-	mTree->Branch("points", 0, "pointE[2]/F:pointX[2]/F:pointY[2]/F");
-	((TLeaf*)mTree->GetBranch("points")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mPointE); iLeaf++;
-	((TLeaf*)mTree->GetBranch("points")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mPointX); iLeaf++;
-	((TLeaf*)mTree->GetBranch("points")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mPointY); iLeaf=0;
-	mTree->Branch("pair", 0, "trig/I:mass/F:openA/F:zgg/F");
-	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mTrigBit); iLeaf++;
-	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mMass);    iLeaf++;
-	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mOpenA);   iLeaf++;
-	((TLeaf*)mTree->GetBranch("pair")->GetListOfLeaves()->At(iLeaf))->SetAddress(&mZgg);     iLeaf=0;
 
 	ResetLeaves();
     }
@@ -265,24 +298,28 @@ Int_t TStFmsTreeMaker::Make()
 
     vector<StFmsPointPair*>& PAIRS = mFmsColl->pointPairs();
     const int nPAIRS = mFmsColl->numberOfPointPairs();
+
+    StLorentzVectorD LV;
+    StLorentzVectorF v0;
+    StLorentzVectorF v1;
+    
     for (int a=0; a<nPAIRS; a++)
     {
 	//Access pairs
 	StFmsPointPair* pair = PAIRS[a];
-	if (pair->energy() < 20.) continue;
-	if (pair->mass()   > 1.0) continue;
-	if (pair->zgg()    > 0.7) continue;
 
+	//----> Disabled cut in the Tree Maker level <------------- 
+	// if (pair->energy() < 20.) continue;
+	// if (pair->mass()   > 1.0) continue;
+	// if (pair->zgg()    > 0.7) continue;
+
+	//------ Disbaled single point cluster cut --------
 	//Single point clusters only
-        if (pair->point(0)->nParentClusterPhotons() != 1 ||
-	    pair->point(1)->nParentClusterPhotons() != 1) continue;
+        // if (pair->point(0)->nParentClusterPhotons() != 1 ||
+	//     pair->point(1)->nParentClusterPhotons() != 1) continue;
 
 	const float pairE = pair->energy();
 	const float pairM = pair->mass();
-
-	//-----------------------------------
-
-	bool fillQaTree = false;
 
 	//Access clusters
 	for (int b=0; b<2; b++)
@@ -328,7 +365,10 @@ Int_t TStFmsTreeMaker::Make()
 		mPointE[b] = pair->point(b)->energy();
 		mPointX[b] = pair->point(b)->XYZ().x();
 		mPointY[b] = pair->point(b)->XYZ().y();
-
+		LV = pair->point(b)->fourMomentum();
+		mPointPx[b] = LV.px();
+		mPointPy[b] = LV.py();
+		mPointPz[b] = LV.pz();
 		//Tree, hit
 		for (int c=0; c<nHits; c++)
 		{
@@ -348,21 +388,27 @@ Int_t TStFmsTreeMaker::Make()
 		    mPtb[mHit]  = b;
 		    mTdc[mHit]  = tempTdc;
 		    mHit++;
-
-		    if (pairE<60 && pairM<0.5) fillQaTree = true;
 		}//c, loop over hits
 	    }//QaTree
 
 	}//b, loop over clusters
 
-	if (mGetQaTree && mHit!=0 && fillQaTree) //Tree, points and mass, and fill
+	if (mGetQaTree && mHit!=0) //Tree, points and mass, and fill
 	{
 	    mTrigBit = mTrig;
 	    mMass    = pairM;
 	    mZgg     = pair->zgg();
-
-	    StLorentzVectorF v0 = pair->point(0)->fourMomentum();
-	    StLorentzVectorF v1 = pair->point(1)->fourMomentum();
+	    LV = pair->fourMomentum();
+	    mPi0Px = LV.px();
+	    mPi0Py = LV.py();
+	    mPi0Pz = LV.pz();
+	    mPi0E = LV.e();
+	    mPi0Pt = LV.perp();
+	    mPi0X = pair->x();
+	    mPi0Y = pair->y();
+	    
+	    v0 = pair->point(0)->fourMomentum();
+	    v1 = pair->point(1)->fourMomentum();
 	    mOpenA = acos((v0.px()*v1.px()+v0.py()*v1.py()+v0.pz()*v1.pz()) / (mPointE[0]*mPointE[1]));
 
 	    mTree->Fill();

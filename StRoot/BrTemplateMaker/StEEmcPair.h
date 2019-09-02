@@ -2,7 +2,7 @@
 #define __StEEmcPair_h__
 
 #include "TObject.h"
-#include "StEEmcPoint.h"
+#include "StEEmcPool/StEEmcPointMaker/StEEmcPoint.h"
 #include "TVector3.h"
 #include <vector>
 

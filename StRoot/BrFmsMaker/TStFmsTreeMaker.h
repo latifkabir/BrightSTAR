@@ -59,25 +59,40 @@ private:
 
     //Tree
     static const short mHitMax = 250; //All hit, if reconstructed mass filled to any channel
+
+    int   mTrigBit;
+    float mMass;
+    float mOpenA;
+    float mZgg;
+    
+    float mPi0Px;
+    float mPi0Py;
+    float mPi0Pz;
+    float mPi0E;
+    float mPi0Pt;
+    float mPi0X;
+    float mPi0Y;
+
+    float mPointPx[2];
+    float mPointPy[2];
+    float mPointPz[2];
+    float mPointE[2];
+    float mPointX[2];
+    float mPointY[2];
+
+    short mCluTowers[2];
+    float mCluX[2];
+    float mCluY[2];
+    float mCluSigmaMax[2];
+    float mCluSigmaMin[2];
+    
     short mHit;
     short mCh[mHitMax];
     short mDet[mHitMax];
     short mPtb[mHitMax]; //The point this hit belong: only 0 or 1
     short mTdc[mHitMax];
     float mHitE[mHitMax];
-    short mCluTowers[2];
-    float mCluX[2];
-    float mCluY[2];
-    float mCluSigmaMax[2];
-    float mCluSigmaMin[2];
-    float mPointE[2];
-    float mPointX[2];
-    float mPointY[2];
-    int   mTrigBit;
-    float mMass;
-    float mOpenA;
-    float mZgg;
-
+    
     ClassDef(TStFmsTreeMaker, 1.0);
 };
 

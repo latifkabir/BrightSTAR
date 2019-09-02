@@ -9,22 +9,16 @@
 
 #----------------------------------- Configure here -------------------------------
 #RUN15 pp200trans (16066033 - 16093018), physics
-export FILEN='~st_physics'
-export FILET='daq_reco_mudst'
-export PROD='P16id'
-export TRIG='production_pp200trans_2015'
-
-#RUN15 pp200trans (16066033 - 16093018), physics
 # export FILEN='~st_physics'
 # export FILET='daq_reco_mudst'
 # export PROD='P16id'
 # export TRIG='production_pp200trans_2015'
 
 #RUN15 pp200trans (16066033 - 16093018), fms
-#export FILEN='~st_fms_16'
-#export FILET='daq_reco_mudst'
-#export PROD ='P15ik'
-#export TRIG ='production_pp200trans_2015||production_fms_pp200trans_2015'
+export FILEN='~st_fms_16'
+export FILET='daq_reco_mudst'
+export PROD='P15ik'
+export TRIG='production_pp200trans_2015||production_fms_pp200trans_2015'
 #--------------------------------------------------------------------------
 
 

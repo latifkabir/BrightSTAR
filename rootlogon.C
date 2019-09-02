@@ -17,6 +17,8 @@
     }
 
     //--------- Dynamically link needed shared lib----------------
+    //Root
+    gSystem->Load("libMinuit.so");
     
     //MuDST Related
     gSystem->Load("libStTableUtilities");
@@ -40,7 +42,7 @@
     gSystem->Load("StPreEclMaker");
     gSystem->Load("StStrangeMuDstMaker");
     gSystem->Load("StMuDSTMaker");
-    //assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StMuDSTMaker.so"));  // Local copy of StMuDstMaker
+    //assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StMuDSTMaker.so"));  // Local copy of StMuDstMaker in batch mode
     cout<<"\t\t done loading libStMuDSTMaker.so ...."<<endl;
 
     //-------------Trigger --------------
@@ -67,9 +69,13 @@
     gSystem->Load("StDbBroker");
     gSystem->Load("StEEmcPoolmuDst");
     gSystem->Load("StEEmcA2EMaker");
+    //TSIU Algorithm
     gSystem->Load("StEEmcPoolEEmcTreeContainers");  //Note: Atypical shared object name
     gSystem->Load("StEEmcTreeMaker");
+    //IU Algorithm
     gSystem->Load("StEEmcHitMaker");
+    gSystem->Load("StEEmcClusterMaker");    
+    gSystem->Load("StEEmcPointMaker");
     gSystem->Load("StEEmcIUPi0");
     
     //----------- FMS Related -----------------
@@ -78,7 +84,6 @@
     gSystem->Load("StFmsHitMaker");
     gSystem->Load("StFmsPointMaker");
     gSystem->Load("StFmsFpsMaker");
-    gSystem->Load("libMinuit.so");
     
     //---------- EMC (BEMC) ------------------
     gSystem->Load("StEmcRawMaker");

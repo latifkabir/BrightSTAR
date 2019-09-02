@@ -12,7 +12,7 @@ These files should be under current directory. It is hard coded in FmsDBMaker an
 
  */
 
-void RunFmsTreeMaker(const char*  inFile, const char* outFile)
+void RunFmsTreeMaker(const char*  inFile, const char* outFile, Int_t nEvents)
 {
 	TStopwatch sw;
 	sw.Start();
@@ -24,7 +24,6 @@ void RunFmsTreeMaker(const char*  inFile, const char* outFile)
 	chain->SetDEBUG(0);
 
 	//-------------------------------------------
-
 	//Arguments(default): mode, nameMode, directory (./), file, filter (.), max files (10), and name (MuDst)
 	StMuDstMaker* muDstMk = new StMuDstMaker(0, 0, "", inFile, ".MuDst.root", 1000, "MuDst");
 
@@ -63,17 +62,21 @@ void RunFmsTreeMaker(const char*  inFile, const char* outFile)
 
 	TStFmsTreeMaker* fmsTreeMaker = new TStFmsTreeMaker();
 	TString outName(outFile);
-	if (!strcmp(outFile, "")) { outName = inFile; outName.ReplaceAll("MuDst", "fmsTreeMaker"); }
+	if (!strcmp(outFile, ""))
+	{
+	    outName = inFile; outName.ReplaceAll("MuDst", "fmsTreeMaker");
+	}
 	fmsTreeMaker->SetOutputName((const char*)outName);
 	//fmsTreeMaker->SetReadBadChannel("/star/u/kabir/GIT/BrightSTAR/FmsCellStat.txt");
 	fmsTreeMaker->GetQaTree();
 	//fmsTreeMaker->GetMap();
 
 	//-------------------------------------------
-
+	Int_t events = (nEvents != -1)? nEvents : muDstMk->chain()->GetEntries();
+	
 	chain->Init();
 
-	chain->EventLoop();
+	chain->EventLoop(events);
 	chain->Finish();
 	delete chain;
 

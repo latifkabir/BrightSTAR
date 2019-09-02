@@ -205,7 +205,7 @@ Int_t TStEmcTreeMaker::Make()
     for(Int_t i = 0; i < mNpoints; ++i)
     {
 	mPoint1 = mEmcPoints[i];
-	mV1 = mPoint1->position();
+	mV1 = mPoint1->position();  //Check if primary vertex position to be subtracted ???
 	mE1 = mPoint1->energy();
 	mQ1 = mPoint1->quality();
 

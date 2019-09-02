@@ -6,6 +6,8 @@ then
     exit
 fi
 
+source  ~/TOOLS/root6_18/bin/thisroot.sh
+
 RunList=$1
 FilePrefix=$2
 InputDir=$STARHOME/jobResults
@@ -27,7 +29,8 @@ do
     infile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}_*.root
     outfile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}.root
     echo -e "\n ============== Now Merging Run Number: ${RunNumber} ======================\n"
-    hadd $outfile $infile
+    #hadd $outfile $infile
+    ~/TOOLS/root6_18/bin/hadd $outfile $infile
 
     echo -e "\n-----> Moving the merged file ... ..."
     if [ -f ${OutDir}/${FilePrefix}_${RunNumber}.root ]
