@@ -1,10 +1,10 @@
-// Filename: EEmcComparePi0.C
+// Filename: EEmcTreeAnalysis.C
 // Description: Compare Pi0 recosntruction by IU vs TSIU.
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Aug 14 13:11:17 2019 (-0400)
 // URL: jlab.org/~latif
 
-void EEmcComparePi0()
+void EEmcTreeAnalysis()
 {
     TString tsiuFile = "/star/u/kabir/pwg/results/root/3.Pi0_In_Cal/EEmc_Pi0_TSIU/eemcTreeP3_16072047_57-62_merged.root";
     TString iuFile = "/star/u/kabir/pwg/results/root/3.Pi0_In_Cal/EEmc_Pi0_IU/EEmc_Pi0_IU.root";

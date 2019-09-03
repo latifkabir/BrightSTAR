@@ -27,6 +27,7 @@ public:
     static Int_t PrintFileList(Int_t firstRun, Int_t lastRunOrNfiles = -1);
     static Int_t MakeFileListWithEvents(Int_t minEvents);
     static void PrintFileList();
+    static Int_t ViewRunList(Int_t firstRun, Int_t lastRunOrNruns = -1);
     
     ClassDef(TStRunList,1)
 };

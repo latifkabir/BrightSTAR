@@ -124,7 +124,7 @@ void EmcPi0Maker(TString infile = "~/pwg/data/st_fms_16066050_raw_5000002.MuDst.
 		    continue;
 		
 		point2 = emcPoints[j];
-	        v1 = point1->position();
+	        v1 = point1->position();  //Check if you need to subtract the vertex position
 		//cout << v1.x() <<"\t"<< v1.y() << "\t" <<v1.z() <<endl;
 		v2 = point2->position();
 

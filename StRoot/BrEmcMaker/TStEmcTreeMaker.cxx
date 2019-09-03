@@ -35,6 +35,7 @@ TStEmcTreeMaker::TStEmcTreeMaker(const char *name):StMaker(name)
     mPi0Py = new Double_t[kMaxPi0];
     mPi0Pz = new Double_t[kMaxPi0];
     mPi0E = new Double_t[kMaxPi0];
+    mPi0Pt = new Double_t[kMaxPi0];
     mPi0M = new Double_t[kMaxPi0];
     mPi0theta = new Double_t[kMaxPi0];
     mPi0zgg = new Double_t[kMaxPi0];
@@ -66,6 +67,7 @@ TStEmcTreeMaker::~TStEmcTreeMaker()
     delete[] mPi0Py;
     delete[] mPi0Pz;
     delete[] mPi0E;
+    delete[] mPi0Pt;
     delete[] mPi0M;
     delete[] mPi0theta;
     delete[] mPi0zgg;
@@ -119,6 +121,7 @@ void TStEmcTreeMaker::SetBranches()
     mTree->Branch("pi0_py", mPi0Py, "pi0_py[pi0]/D");
     mTree->Branch("pi0_pz", mPi0Pz, "pi0_pz[pi0]/D");
     mTree->Branch("pi0_E", mPi0E, "pi0_E[pi0]/D");    
+    mTree->Branch("pi0_pt", mPi0Pt, "pi0_pt[pi0]/D");    
     mTree->Branch("pi0_M", mPi0M, "pi0_M[pi0]/D");    
     mTree->Branch("pi0_theta", mPi0theta, "pi0_theta[pi0]/D");    
     mTree->Branch("pi0_zgg", mPi0zgg, "pi0_zgg[pi0]/D");    
@@ -156,6 +159,7 @@ void TStEmcTreeMaker::ResetBuffer()
     memset(mPi0Py, -1, kMaxPoints*sizeof(Double_t));
     memset(mPi0Pz, -1, kMaxPoints*sizeof(Double_t));
     memset(mPi0E, -1, kMaxPoints*sizeof(Double_t));
+    memset(mPi0Pt, -1, kMaxPoints*sizeof(Double_t));
     memset(mPi0M, -1, kMaxPoints*sizeof(Double_t));
     memset(mPi0theta, -1, kMaxPoints*sizeof(Double_t));
     memset(mPi0zgg, -1, kMaxPoints*sizeof(Double_t));
@@ -220,15 +224,15 @@ Int_t TStEmcTreeMaker::Make()
 	mNtracks[i] = mPoint1->nTracks();
 	
 	mLV1.SetPxPyPzE(mPx[i], mPy[i], mPz[i], mE[i]);
-	//cout<< "~~~~~~~~~>Total tracks: " << mPoint1->nTracks() <<endl;
-	//---------- Calculate and fill Pi0 invariant mass --------------
+
+	//---------- Calculate and fill Pi0 kinematic varibles --------------
 	for(Int_t j = i + 1; j < mNpoints; ++j)
 	{
 	    if(j >= mNpoints)
 		continue;
 		
 	    mPoint2 = mEmcPoints[j];
-	    mV2 = mPoint2->position();
+	    mV2 = mPoint2->position(); // Check if primary vertex to be subtracted ???
 	    mE2 = mPoint2->energy();
 	    mQ2 = mPoint2->quality();
 	    mTheta = mV1.angle(mV2);
@@ -238,16 +242,22 @@ Int_t TStEmcTreeMaker::Make()
 	    mPi0Y[mNpi0] = (mE1*mV1.y() + mE2*mV2.y()) / ( mE1 + mE2);
 	    mPi0Z[mNpi0] = (mE1*mV1.z() + mE2*mV2.z()) / ( mE1 + mE2);
 	    
-	    mPi0Px[mNpi0] = mE2*mV2.x() / mV2.mag();
-	    mPi0Py[mNpi0] = mE2*mV2.y() / mV2.mag();
-	    mPi0Pz[mNpi0] = mE2*mV2.z() / mV2.mag();
-	    mPi0E[mNpi0] = mE2;
-
-	    mLV2.SetPxPyPzE(mPi0Px[mNpi0], mPi0Py[mNpi0], mPi0Pz[mNpi0], mE2);
+	    mPx2 = mE2*mV2.x() / mV2.mag();
+	    mPy2 = mE2*mV2.y() / mV2.mag();
+	    mPz2 = mE2*mV2.z() / mV2.mag();
+	    
+	    mLV2.SetPxPyPzE(mPx2, mPy2, mPz2, mE2);
 	    mLV = (mLV1 + mLV2);	  
+
 	    //pairM = TMath::Sqrt(2*mE1*mE2*(1 - TMath::Cos(mTheta)));	 //Method-1
 	    mPairM = mLV.M();  //Method-2
 
+	    mPi0Px[mNpi0] = mLV.Px();
+	    mPi0Py[mNpi0] = mLV.Py()
+	    mPi0Pz[mNpi0] = mLV.Pz()
+	    mPi0E[mNpi0] = mLV.E();
+	    mPi0Pt[mNpi0] = mLV.Pt();
+	    
 	    mPi0M[mNpi0] = mPairM;
 	    mPi0theta[mNpi0] = mTheta;
 	    mPi0zgg[mNpi0] = mZgg;

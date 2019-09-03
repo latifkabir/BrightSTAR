@@ -38,6 +38,9 @@ private:
     StThreeVectorF mV2;
     Double_t mE1;
     Double_t mE2;
+    Doubly mPx2;
+    Doubly mPy2;
+    Doubly mPz2;
     Int_t mQ1;
     Int_t mQ2;
     TLorentzVector mLV1;
@@ -77,6 +80,7 @@ private:
     Double_t *mPi0Py;
     Double_t *mPi0Pz;
     Double_t *mPi0E;
+    Double_t *mPi0Pt;
     Double_t *mPi0M;
     Double_t *mPi0theta;
     Double_t *mPi0zgg;
