@@ -187,6 +187,9 @@
     Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
     Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
     TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-    gStyle->SetNumberContours(NCont);   
+    gStyle->SetNumberContours(NCont);
+
+    using namespace TStar;
+
 }
 

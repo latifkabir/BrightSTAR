@@ -36,11 +36,13 @@ private:
     Double_t mTheta;
     StThreeVectorF mV1;
     StThreeVectorF mV2;
+    StThreeVectorF mPV;
+    StThreeVectorF mVertex;
     Double_t mE1;
     Double_t mE2;
-    Doubly mPx2;
-    Doubly mPy2;
-    Doubly mPz2;
+    Double_t mPx2;
+    Double_t mPy2;
+    Double_t mPz2;
     Int_t mQ1;
     Int_t mQ2;
     TLorentzVector mLV1;

@@ -29,6 +29,7 @@ class TStConfig : public TObject
     string fRunListDB;
     string fFileList;
     string fProdPath;
+    string fTrigDefFile;
     
     void CheckValidity();    
 public:
@@ -49,6 +50,7 @@ public:
     const string & GetRunListDB();
     const string & GetFileList();
     const string & GetProdPath();
+    const string & GetTrigDefFile();
     TString GetRootFileName();
     
     ClassDef(TStConfig,1)

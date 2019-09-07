@@ -22,6 +22,7 @@ private:
     StEmcCollection *mEmcCollection;
 protected:
     Int_t MatchToTracks(StEvent *event);    
+    Int_t MatchToTracks();    
 public: 
     TStEmcTrackMatchingMaker(const char *name  = "TStEmcTrackMatchingMaker");
     virtual ~TStEmcTrackMatchingMaker();

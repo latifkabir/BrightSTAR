@@ -29,7 +29,7 @@ void EmcAnalysis()
     cout << "Total Entries: "<<nEvents<<endl;
 
     // TH1D *hist = new TH1D("hist", "hist", 6, 0, 6);
-    TH1D *hist = new TH1D("hist", "hist", 120, 0, 1.2);
+    TH1D *hist = new TH1D("hist", "hist", 120, 0.0, 0.0);
     TH2D *hist2d = new TH2D("hist2d", "hist2d", 315, 0, 3.14, 120, 0, 1.2);
     TH1D *hist1 = new TH1D("hist1", "hist1", 120, 0, 1.2);
     TH1D *hist2 = new TH1D("hist2", "hist2", 120, 0, 1.2);
@@ -113,8 +113,8 @@ void EmcAnalysis()
 		if( (Q2&1) && (Q2&4) && (Q2&8))
 		    C2 = 4; // tower + smd eta + smd phi
 
-		if(!(C1 == 4 && C2 == 4))
-		    continue;
+		// if(!(C1 == 4 && C2 == 4))
+		//     continue;
 		
 		LV1.SetPxPyPzE(emc->point_px[k], emc->point_py[k], emc->point_pz[k], emc->point_E[k]);
 		LV2.SetPxPyPzE(emc->point_px[l], emc->point_py[l], emc->point_pz[l], emc->point_E[l]);
@@ -126,7 +126,8 @@ void EmcAnalysis()
 
 		dgg = (V1 - V2).Mag();
 		zgg = fabs(LV1.E() - LV2.E()) / (LV1.E() + LV2.E());
-		theta = V1.Angle(V2);
+		//theta = V1.Angle(V2);
+		theta = TMath::RadToDeg()*std::atan2(V1.Cross(V2), V1.Dot(V2));
 		
 		// if( dgg > 100)
 		//     continue;
@@ -134,10 +135,11 @@ void EmcAnalysis()
 		// if(theta  > 0.1)
 		//     continue;
 		
-		if( zgg > 0.7)
-		    continue;		
+		// if( zgg > 0.7)
+		//     continue;		
 
-		hist->Fill(mass);
+		hist->Fill(theta);
+		//hist->Fill(mass);
 		hist2d->Fill(theta, mass);
 		if(pt >0 && pt < 1.0)
 		    hist1->Fill(mass);

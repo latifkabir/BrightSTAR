@@ -45,6 +45,8 @@ void EmcTreeAnalysis()
     //Photon
     //chain->Draw("point_nTracks>>hist(100, 0, 1500)");
     //chain->Draw("point_E>>hist(500, 0, 10)", "point_nTracks == 0");
+
+    chain->Draw("pi0_nTracks1");
     
     //Pi0
     //chain->Draw("pi0_M>>hist(200, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
@@ -68,7 +70,9 @@ void EmcTreeAnalysis()
     //chain->Draw("pi0_dgg", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
     //chain->Draw("pi0_M>>hist(120, 0.0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && pi0_dgg< 100");
 
-    chain->Draw("pi0_theta>>hist(200, 0, 3.14)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
+    //chain->Draw("pi0_theta", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
+    //chain->Draw("pi0_theta>>hist(200, 0, 3.14)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
+    //chain->Draw("pi0_M:pi0_theta>>hist(400, 0, 1.0, 400, 0.0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0", "colz");
     
     // const Int_t pi0 = 1000; 
     // Double_t px;

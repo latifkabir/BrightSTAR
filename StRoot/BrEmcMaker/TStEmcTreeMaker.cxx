@@ -8,7 +8,7 @@
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
-
+#include "StMuDSTMaker/COMMON/StMuPrimaryVertex.h"
 #include "StEmcPoint.h"
 #include "StEvent/StEmcPoint.h"
 #include "StEvent/StEmcCollection.h"
@@ -196,6 +196,8 @@ Int_t TStEmcTreeMaker::Make()
     //Process event only if either MB, HT1 or HT2 present
     if(mMB == -1 && mHT1 == -1 && mHT2 == -1)  
 	return kStOK;
+
+    mVertex = mMuDst->primaryVertex(0)->position();
     //---------- Access EMC data ---------------
     mEmcCollection = mMuDst->emcCollection();
     if(!mEmcCollection)
@@ -216,9 +218,11 @@ Int_t TStEmcTreeMaker::Make()
 	mX[i] = mV1.x();
 	mY[i] = mV1.y();
 	mZ[i] = mV1.z();
-	mPx[i] = mE1*mV1.x() / mV1.mag();
-	mPy[i] = mE1*mV1.y() / mV1.mag();
-	mPz[i] = mE1*mV1.z() / mV1.mag();
+	mPV = (mV1 - mVertex).unit();
+	mPV *= mE1;
+	mPx[i] = mPV.x(); //mE1*mV1.x() / mV1.mag();
+	mPy[i] = mPV.y(); //mE1*mV1.y() / mV1.mag();
+	mPz[i] = mPV.z(); //mE1*mV1.z() / mV1.mag();
 	mE[i] = mE1;
 	mQ[i] = mQ1;
 	mNtracks[i] = mPoint1->nTracks();
@@ -235,16 +239,19 @@ Int_t TStEmcTreeMaker::Make()
 	    mV2 = mPoint2->position(); // Check if primary vertex to be subtracted ???
 	    mE2 = mPoint2->energy();
 	    mQ2 = mPoint2->quality();
-	    mTheta = mV1.angle(mV2);
+	    mTheta = (mV1 - mVertex).angle((mV2 - mVertex));
 	    mZgg = fabs(mE1 - mE2) / (mE1 + mE2);
 	    
-	    mPi0X[mNpi0] = (mE1*mV1.x() + mE2*mV2.x()) / ( mE1 + mE2);
-	    mPi0Y[mNpi0] = (mE1*mV1.y() + mE2*mV2.y()) / ( mE1 + mE2);
-	    mPi0Z[mNpi0] = (mE1*mV1.z() + mE2*mV2.z()) / ( mE1 + mE2);
+	    mPi0X[mNpi0] = (mE1*mV1.x() + mE2*mV2.x()) / (mE1 + mE2);
+	    mPi0Y[mNpi0] = (mE1*mV1.y() + mE2*mV2.y()) / (mE1 + mE2);
+	    mPi0Z[mNpi0] = (mE1*mV1.z() + mE2*mV2.z()) / (mE1 + mE2);
+
+	    mPV = (mV2 - mVertex).unit();
+	    mPV *= mE2;
 	    
-	    mPx2 = mE2*mV2.x() / mV2.mag();
-	    mPy2 = mE2*mV2.y() / mV2.mag();
-	    mPz2 = mE2*mV2.z() / mV2.mag();
+	    mPx2 = mPV.x(); //mE2*mV2.x() / mV2.mag();
+	    mPy2 = mPV.y(); //mE2*mV2.y() / mV2.mag();
+	    mPz2 = mPV.z(); //mE2*mV2.z() / mV2.mag();
 	    
 	    mLV2.SetPxPyPzE(mPx2, mPy2, mPz2, mE2);
 	    mLV = (mLV1 + mLV2);	  
@@ -253,8 +260,8 @@ Int_t TStEmcTreeMaker::Make()
 	    mPairM = mLV.M();  //Method-2
 
 	    mPi0Px[mNpi0] = mLV.Px();
-	    mPi0Py[mNpi0] = mLV.Py()
-	    mPi0Pz[mNpi0] = mLV.Pz()
+	    mPi0Py[mNpi0] = mLV.Py();
+	    mPi0Pz[mNpi0] = mLV.Pz();
 	    mPi0E[mNpi0] = mLV.E();
 	    mPi0Pt[mNpi0] = mLV.Pt();
 	    

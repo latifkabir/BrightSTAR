@@ -102,6 +102,11 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fProdPath = tokens;
 	    }
+	    else if(s == "TRIG_DEF_FILE")
+	    {
+		tokens = strtok(NULL, " :,");
+		fTrigDefFile = tokens;
+	    }
 	    else
 	    {
 		tokens = strtok(NULL, " :,");
@@ -161,6 +166,12 @@ const string& TStConfig::GetProdPath()
     return fProdPath;
 }
 
+const string& TStConfig::GetTrigDefFile()
+{
+    return fTrigDefFile;
+}
+
+
 TString TStConfig::GetRootFileName()
 {
     return (GetFilePath() + (TString)"root/" + (TString)std::to_string(TStar::GetCounter()) + (TString)".root");
@@ -176,9 +187,10 @@ void TStConfig::Print()
     cout << "Results path: "<< GetResultsPath() <<endl;
     cout << "DST read path: "<< GetDSTreadPath() <<endl;
     cout << "DST write path: "<< GetDSTwritePath() <<endl;
-    cout << "Run-list DB file: "<< GetRunListDB() <<endl;
     cout << "File-list: "<< GetFileList() <<endl;
-    cout << "Production data path: "<< GetProdPath() <<endl;
+    cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB() <<endl;
+    cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile() <<endl;
+    cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath() <<endl;
     cout << "==================================================" <<endl;    
 }
 

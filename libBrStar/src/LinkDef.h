@@ -5,6 +5,7 @@
 #pragma link C++ class TStConfig+;               // Star configuration
 #pragma link C++ class TStRun+;                  // Star configuration
 #pragma link C++ class TStRunList+;              // Star configuration
+#pragma link C++ class TStTrigDef+;              // Trigger Definition Reader
 #pragma link C++ function help;                  // Helper function
 #pragma link C++ function history;               // Print Command History
 //Batch Farm Job
