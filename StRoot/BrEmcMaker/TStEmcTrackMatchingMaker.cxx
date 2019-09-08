@@ -9,6 +9,7 @@
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
+#include "StMuDSTMaker/COMMON/StMuTrack.h"
 #include "StEvent/StEmcCollection.h"
 #include "StEmcUtil/geometry/StEmcGeom.h"
 #include "StEmcUtil/projection/StEmcPosition.h"
@@ -20,19 +21,20 @@ ClassImp(TStEmcTrackMatchingMaker)
 //_____________________________________________________________________________ 
 TStEmcTrackMatchingMaker::TStEmcTrackMatchingMaker(const char *name):StMaker(name)
 {
-    //
+
 }
 
 //_____________________________________________________________________________ 
 TStEmcTrackMatchingMaker::~TStEmcTrackMatchingMaker()
 {
-    //
+    //delete mTraits;
 }
 
 
 //_____________________________________________________________________________ 
 Int_t TStEmcTrackMatchingMaker::Init()
 {
+    mTraits = new TStTpcTofPidTraits;     
     //
     return kStOK;
 }
@@ -48,7 +50,7 @@ Int_t TStEmcTrackMatchingMaker::Make()
 	cout << "TStEmcTrackMatchingMaker::Make - No StMuDst event!" <<endl;
 	return kStFatal;
     }
-    
+    ResetPidTraits();    
     //StEvent *stEvent = mMuDst->createStEvent();
     //stEvent->statistics();
     //mEvent->statistics();
@@ -163,7 +165,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
     StSPtrVecEmcPoint &mEmcPoints = mEmcCollection->barrelPoints();
     
     //cout << "------> No of points for matching: "<< mEmcPoints.size() <<endl;
-
+    StMuTrack *muTrack;
     StEmcPosition emcPosition;
     Float_t field = 0.5;
     StEventSummary evtSummary = mMuDst->event()->eventSummary();
@@ -180,7 +182,8 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
         StThreeVectorD momentum,position;
         for(Int_t t=0;t<nTracks;t++)
         {
-            StTrack *track = mMuDst->createStTrack(mMuDst->primaryTracks(t));
+	    muTrack = mMuDst->primaryTracks(t);
+            StTrack *track = mMuDst->createStTrack(muTrack);
             if(track)
             {
                 if(track->geometry())
@@ -198,6 +201,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
 
                             for(Int_t i=0; i<nR; i++)
                             {
+				Int_t nMatchedTracks = 0;
                                 cl = mEmcPoints[i];
                                 if(cl)
                                 {
@@ -205,7 +209,6 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
                                     Float_t etaP = pos.pseudoRapidity();
                                     Float_t phiP = pos.phi();
                                     Float_t D = sqrt(cl->deltaEta()*cl->deltaEta()+cl->deltaPhi()*cl->deltaPhi());
-				    //cout << "deltaEta: "<< cl->deltaEta() <<" deltaPhi: "<< cl->deltaPhi() <<endl;
 
                                     Float_t d = sqrt((eta-etaP)*(eta-etaP)+(phi-phiP)*(phi-phiP));
                                     if(d<D)
@@ -228,8 +231,23 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
                                         Category = Category | 16;
                                         cl->setQuality(Category);
                                         cl->addTrack(track);
-					//cout << "point no. "<< i <<" track no."<<t<<endl;
-					//cout << " etaP: "<<etaP <<" phiP: "<<phiP<<" D: "<<D<<" d: "<<d<<" etaE: "<<etaE<<" phiE: "<< phiE <<" dPhi: "<<dPhi<<endl;
+
+					//--------- Save PID trait information ----------------------
+					mTraits->q[i][nMatchedTracks] = muTrack->charge();
+					mTraits->p[i][nMatchedTracks] = muTrack->p().mag();
+					mTraits->pt[i][nMatchedTracks] = muTrack->pt();
+					mTraits->dca[i][nMatchedTracks] = muTrack->dca().z();
+					mTraits->beta[i][nMatchedTracks] = muTrack->btofPidTraits().beta(); //<------- This should be revisited
+					++nMatchedTracks;
+
+					//--------------- Energy from each detector --------------
+					//Ideally we would alsolike to save energy from Tower, preshower, SMDs
+					//Currently Preshower energy is not set in the reconstruction which is the most relevent part here
+					// cout <<"Total energy: "<< cl->energy()<<endl; //Total energy is the same as the tower energy
+					// cout <<"Energy in EMC Tower: "<< cl->energyInDetector(kBarrelEmcTowerId)<<endl;
+					// cout <<"Pre-shower: "<< cl->energyInDetector(kBarrelEmcPreShowerId)<<endl;
+					// cout <<"SMD phi: "<< cl->energyInDetector(kBarrelSmdPhiStripId) <<endl;
+					// cout <<"SMD eta: "<< cl->energyInDetector(kBarrelSmdEtaStripId) <<endl;					
                                     }
                                 }
                             }
@@ -250,4 +268,14 @@ Int_t TStEmcTrackMatchingMaker::Finish()
     //Write histograms to root file etc.
 
     return kStOK;
+}
+
+//_____________________________________________________________________________
+void TStEmcTrackMatchingMaker::ResetPidTraits()
+{
+    memset(mTraits->q, -999, mMaxPoints*mMaxTracks*sizeof(Int_t));
+    memset(mTraits->p, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
+    memset(mTraits->pt, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
+    memset(mTraits->dca, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
+    memset(mTraits->beta, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
 }

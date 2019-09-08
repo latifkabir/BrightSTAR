@@ -1,0 +1,110 @@
+const Int_t mMax = 1000;
+struct StEvtData
+{
+	// event information
+    Int_t runnumber;
+    Int_t eventnumber;
+    Int_t nprimary;
+    Int_t nglobal;
+    Int_t nrefmult;
+    Int_t npTracks;
+    Int_t ngTracks;
+    Int_t neTracks;
+    Int_t HTID;
+    Double_t zdcRate;
+    Double_t bbcRate;//!
+    Float_t vx;
+    Float_t vy;
+    Float_t vz;
+    Float_t ranking;
+    UShort_t nBTOFMatch;//!
+    UShort_t nBEMCMatch;//!
+    Float_t chi2;//!
+    Float_t bfield;
+    Float_t vpdTstart;//!
+    Float_t vpdTstartError;//!
+    Float_t vpdTdiff;//!
+    Float_t vpdVz;
+    Int_t nVpdEast;//!
+    Int_t nVpdWest;//!
+
+    Float_t ep[40];
+    Float_t ept[40];
+    Float_t epx[40];//!
+    Float_t epy[40];//!
+    Float_t epz[40];//!
+    Float_t ephi[40];
+    Float_t epathlength[40];
+    Float_t edca[40];
+    Float_t eeta[40];
+    Float_t ededx[40];
+    Float_t emSigmaPion[40];
+    Float_t emSigmaKaon[40];
+    Float_t emSigmaProton[40];
+    Float_t emSigmaElectron[40];
+    Int_t echarge[40];
+    Int_t  etrackID[40];
+    Int_t  enftpts[40];
+    Int_t  endedxpts[40];
+    Int_t  enhitsposs[40];//!
+    Int_t  eemcmod[40];//!
+    Int_t  eemceta[40];//!
+    Int_t  eemcsub[40];//!
+    double eemcx[40];
+    double eemcy[40];
+    double eemcz[40];
+
+    Float_t eenergy[40];
+    Float_t eenergy0[40];
+    Float_t ephidist[40];
+    Float_t ezdist[40];
+    Int_t eneta[40];
+    Int_t enphi[40];
+    Float_t edist[40];
+    Int_t eadc[40];
+
+    Int_t etofmatchflag[40];
+    Float_t eylocal[40];//!
+    Float_t ezlocal[40];//!
+    //Float ethetaLocal[40];
+    Float_t etof[40];
+    Float_t etofpathlength[40];
+    Float_t ebeta[40];
+    Float_t eTofSigmaPion[40];//!
+    Float_t eTofSigmaKaon[40];//!
+    Float_t eTofSigmaProton[40];//!
+    Float_t eTofSigmaElectron[40];//!
+
+    Float_t p[1000];
+    Float_t pt[1000];
+    Float_t px[1000];//!
+    Float_t py[1000];//!
+    Float_t pz[1000];//!
+    Float_t phi[1000];
+    Float_t pathlength[1000];
+    Float_t dca[1000];
+    Float_t eta[1000];
+    Float_t dedx[1000];
+    Float_t mSigmaPion[1000];
+    Float_t mSigmaKaon[1000];
+    Float_t mSigmaProton[1000];
+    Float_t mSigmaElectron[1000];
+    Int_t charge[1000];
+    Int_t  trackID[1000];
+    Int_t  nftpts[1000];
+    Int_t  ndedxpts[1000];
+    float  nhitsposs[1000];
+
+    Int_t tofmatchflag[1000];
+    Float_t ylocal[1000];//!
+    Float_t zlocal[1000];//!
+    //Float thetaLocal[1000];
+    Float_t tof[1000];
+    Float_t tofpathlength[1000];
+    Float_t beta[1000];
+    Float_t tofSigmaPion[1000];//!
+    Float_t tofSigmaKaon[1000];//!
+    Float_t tofSigmaProton[1000];//!
+    Float_t tofSigmaElectron[1000];//!
+
+};

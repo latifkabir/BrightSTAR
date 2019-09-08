@@ -17,6 +17,7 @@
 #include "StarClassLibrary/StLorentzVector.hh"
 #include "StarClassLibrary/StLorentzVectorF.hh"
 #include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"
+#include "TStEmcTrackMatchingMaker.h"
 
 class StMuDst;
 class StMuDstEvent;
@@ -30,7 +31,8 @@ private:
     StEmcCollection *mEmcCollection;
     StEmcPoint *mPoint1;
     StEmcPoint *mPoint2;
-
+    TStEmcTrackMatchingMaker *mTrkMatchingMkr;
+    
     Double_t mPairM;
     Double_t mZgg;
     Double_t mTheta;
@@ -62,6 +64,7 @@ private:
     Int_t mHT1;
     Int_t mHT2;
     Int_t mMB;
+    Double_t mVz;
     
     Int_t mNpoints;
     Double_t *mX;
@@ -73,6 +76,8 @@ private:
     Double_t *mE;
     Int_t *mQ;
     Int_t *mNtracks;
+
+    TStTpcTofPidTraits *mTraits;     
     
     Int_t mNpi0;
     Double_t *mPi0X;

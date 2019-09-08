@@ -27,7 +27,7 @@ TStEmcTreeMaker::TStEmcTreeMaker(const char *name):StMaker(name)
     mE = new Double_t[kMaxPoints];
     mQ = new Int_t[kMaxPoints];
     mNtracks = new Int_t[kMaxPoints];
-
+    
     mPi0X = new Double_t[kMaxPi0];
     mPi0Y = new Double_t[kMaxPi0];
     mPi0Z = new Double_t[kMaxPi0];
@@ -100,6 +100,8 @@ void TStEmcTreeMaker::SetBranches()
     mTree->Branch("trig_MB", &mMB, "trig_MB/I");
     mTree->Branch("trig_HT1", &mHT1, "trig_HT1/I");
     mTree->Branch("trig_HT2", &mHT2, "trig_HT2/I");
+
+    mTree->Branch("vz", &mVz, "vz/D");
     
     mTree->Branch("point", &mNpoints, "point/I");
     mTree->Branch("point_x", mX, "point_x[point]/D");
@@ -112,6 +114,12 @@ void TStEmcTreeMaker::SetBranches()
     mTree->Branch("point_quality", mQ, "point_quality[point]/I");
     mTree->Branch("point_nTracks", mNtracks, "point_nTracks[point]/I");
 
+    mTree->Branch("pid_trait_q", mTraits->q, "pid_q[point][point_nTracks[point]]/I");
+    mTree->Branch("pid_trait_p", mTraits->p, "pid_p[point][point_nTracks[point]]/D");
+    mTree->Branch("pid_trait_pt", mTraits->pt, "pid_pt[point][point_nTracks[point]]/D");
+    mTree->Branch("pid_trait_dca", mTraits->dca, "pid_dca[point][point_nTracks[point]]/D");
+    mTree->Branch("pid_trait_beta", mTraits->beta, "pid_beta[point][point_nTracks[point]]/D");
+    
     //------- Not sure if I will keep the following for the final version. SInce it's redundent --------------
     mTree->Branch("pi0", &mNpi0, "pi0/I");
     mTree->Branch("pi0_x", mPi0X, "pi0_x[pi0]/D");
@@ -139,6 +147,8 @@ void TStEmcTreeMaker::ResetBuffer()
     mMB = -1;
     mHT1 = -1;
     mHT2 = -1;
+
+    mVz = -999;
     
     mNpoints = -1;
     memset(mX, -1, kMaxPoints*sizeof(Double_t));
@@ -179,6 +189,12 @@ Int_t TStEmcTreeMaker::Make()
 	cout << "TStEmcTreeMaker::Make- Unable to retrieve MuDst" <<endl;
 	return kStFatal;
     }
+    mTrkMatchingMkr = (TStEmcTrackMatchingMaker*)GetMaker("EmcTrkMatching");
+    if(!mTrkMatchingMkr)
+    {
+	cout << "TStEmcTreeMaker::Make- Unable to retrieve EmcTrackMatchingMaker. Can Not proceed" <<endl;
+	return kStFatal;
+    }
     // if(mTrigIDs.size() > 0)
     // {
     // 	if(!Accept(mMuDst->event()))
@@ -208,6 +224,9 @@ Int_t TStEmcTreeMaker::Make()
     StSPtrVecEmcPoint& mEmcPoints = mEmcCollection->barrelPoints();
     mNpoints = mEmcPoints.size();
     mNpi0 = 0;
+    mVz = mVertex.z();
+    mTraits = mTrkMatchingMkr->GetPidTraits();
+    //memcpy(&q[0][0], &mTraits->q[0][0], 1000*1000*sizeof(Int_t));
     for(Int_t i = 0; i < mNpoints; ++i)
     {
 	mPoint1 = mEmcPoints[i];
@@ -220,9 +239,9 @@ Int_t TStEmcTreeMaker::Make()
 	mZ[i] = mV1.z();
 	mPV = (mV1 - mVertex).unit();
 	mPV *= mE1;
-	mPx[i] = mPV.x(); //mE1*mV1.x() / mV1.mag();
-	mPy[i] = mPV.y(); //mE1*mV1.y() / mV1.mag();
-	mPz[i] = mPV.z(); //mE1*mV1.z() / mV1.mag();
+	mPx[i] = mPV.x(); 
+	mPy[i] = mPV.y(); 
+	mPz[i] = mPV.z(); 
 	mE[i] = mE1;
 	mQ[i] = mQ1;
 	mNtracks[i] = mPoint1->nTracks();
@@ -249,9 +268,9 @@ Int_t TStEmcTreeMaker::Make()
 	    mPV = (mV2 - mVertex).unit();
 	    mPV *= mE2;
 	    
-	    mPx2 = mPV.x(); //mE2*mV2.x() / mV2.mag();
-	    mPy2 = mPV.y(); //mE2*mV2.y() / mV2.mag();
-	    mPz2 = mPV.z(); //mE2*mV2.z() / mV2.mag();
+	    mPx2 = mPV.x(); 
+	    mPy2 = mPV.y(); 
+	    mPz2 = mPV.z(); 
 	    
 	    mLV2.SetPxPyPzE(mPx2, mPy2, mPz2, mE2);
 	    mLV = (mLV1 + mLV2);	  
