@@ -15,26 +15,27 @@
 #include "StEmcUtil/projection/StEmcPosition.h"
 #include "StEvent/StEventTypes.h"
 #include "TMath.h"
+#include <algorithm>
 
 ClassImp(TStEmcTrackMatchingMaker)
 
 //_____________________________________________________________________________ 
 TStEmcTrackMatchingMaker::TStEmcTrackMatchingMaker(const char *name):StMaker(name)
 {
-
+    mTraits = new TStEmcPidTrait();     
 }
 
 //_____________________________________________________________________________ 
 TStEmcTrackMatchingMaker::~TStEmcTrackMatchingMaker()
 {
-    //delete mTraits;
+    delete mTraits;
 }
 
 
 //_____________________________________________________________________________ 
 Int_t TStEmcTrackMatchingMaker::Init()
 {
-    mTraits = new TStTpcTofPidTraits;     
+    ResetPidTraits();    
     //
     return kStOK;
 }
@@ -75,8 +76,6 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks(StEvent *event)
     
     StSPtrVecEmcPoint &mEmcPoints = mEmcCollection->barrelPoints();
     
-    //cout << "------> No of points for matching: "<< mEmcPoints.size() <<endl;
-
     StEmcPosition emcPosition;
     Float_t field = 0.5;
     StEventSummary *evtSummary = event->summary();
@@ -168,6 +167,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
     StMuTrack *muTrack;
     StEmcPosition emcPosition;
     Float_t field = 0.5;
+    Int_t nMatchedTracks;
     StEventSummary evtSummary = mMuDst->event()->eventSummary();
     if (fabs(evtSummary.magneticField()) < 100)
         field = evtSummary.magneticField()/10;
@@ -201,7 +201,6 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
 
                             for(Int_t i=0; i<nR; i++)
                             {
-				Int_t nMatchedTracks = 0;
                                 cl = mEmcPoints[i];
                                 if(cl)
                                 {
@@ -231,14 +230,19 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
                                         Category = Category | 16;
                                         cl->setQuality(Category);
                                         cl->addTrack(track);
+					nMatchedTracks = cl->nTracks();
 
 					//--------- Save PID trait information ----------------------
-					mTraits->q[i][nMatchedTracks] = muTrack->charge();
-					mTraits->p[i][nMatchedTracks] = muTrack->p().mag();
-					mTraits->pt[i][nMatchedTracks] = muTrack->pt();
-					mTraits->dca[i][nMatchedTracks] = muTrack->dca().z();
-					mTraits->beta[i][nMatchedTracks] = muTrack->btofPidTraits().beta(); //<------- This should be revisited
-					++nMatchedTracks;
+					if(i >= mMaxPoints || nMatchedTracks > mMaxPoints)
+					{
+					    LOG_WARN << "Number of points or Tracks exceeded maximum allowed. Skipped those points or tracks." <<endm;
+					    continue;
+					}
+					mTraits->q[i][nMatchedTracks - 1] = muTrack->charge();
+					mTraits->p[i][nMatchedTracks - 1] = muTrack->p().mag();
+					mTraits->pt[i][nMatchedTracks - 1] = muTrack->pt();
+					mTraits->dca[i][nMatchedTracks - 1] = muTrack->dca().z();
+					mTraits->beta[i][nMatchedTracks - 1] = muTrack->btofPidTraits().beta(); //<------- This should be revisited
 
 					//--------------- Energy from each detector --------------
 					//Ideally we would alsolike to save energy from Tower, preshower, SMDs
@@ -273,9 +277,9 @@ Int_t TStEmcTrackMatchingMaker::Finish()
 //_____________________________________________________________________________
 void TStEmcTrackMatchingMaker::ResetPidTraits()
 {
-    memset(mTraits->q, -999, mMaxPoints*mMaxTracks*sizeof(Int_t));
-    memset(mTraits->p, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
-    memset(mTraits->pt, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
-    memset(mTraits->dca, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
-    memset(mTraits->beta, -1, mMaxPoints*mMaxTracks*sizeof(Double_t));
+    std::fill_n(&mTraits->q[0][0], mMaxPoints*mMaxTracks, -999);
+    std::fill_n(&mTraits->p[0][0], mMaxPoints*mMaxTracks, -999);
+    std::fill_n(&mTraits->pt[0][0], mMaxPoints*mMaxTracks, -999);
+    std::fill_n(&mTraits->dca[0][0], mMaxPoints*mMaxTracks, -999);
+    std::fill_n(&mTraits->beta[0][0], mMaxPoints*mMaxTracks, -999);
 }

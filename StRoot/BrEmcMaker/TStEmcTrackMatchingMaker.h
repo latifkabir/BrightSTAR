@@ -8,20 +8,12 @@
 #define TSTEMCTRACKMATCHINGMAKER_H
 
 #include "StMaker.h"
+#include "TStEmcPidTrait.h"
 
 class StEvent;
 class StMuDst;
 class StEmcCollection;
 class StEmcPosition;
-
-struct TStTpcTofPidTraits
-{
-    Int_t q[1000][1000];
-    Double_t p[1000][1000];
-    Double_t pt[1000][1000];
-    Double_t dca[1000][1000];   
-    Double_t beta[1000][1000];
-};
 
 class TStEmcTrackMatchingMaker : public StMaker
 {
@@ -29,9 +21,11 @@ private:
     StMuDst *mMuDst;  
     StEvent* mEvent;
     StEmcCollection *mEmcCollection;
-    static const Int_t mMaxPoints = 1000;
-    static const Int_t mMaxTracks = 1000;
-    TStTpcTofPidTraits *mTraits;     
+    static const Int_t mMaxPoints = 100;
+    static const Int_t mMaxTracks = 100;
+
+    TStEmcPidTrait *mTraits;
+    
 protected:
     Int_t MatchToTracks(StEvent *event);    
     Int_t MatchToTracks();    
@@ -44,7 +38,7 @@ public:
     // virtual Int_t InitRun  (int runumber){return 0;}; // Overload empty StMaker::InitRun 
     // virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
 
-    TStTpcTofPidTraits* GetPidTraits(){ return mTraits;}
+    TStEmcPidTrait* GetPidTraits(){ return mTraits;}
     void ResetPidTraits();
     ClassDef(TStEmcTrackMatchingMaker,1) 
 };

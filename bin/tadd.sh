@@ -29,19 +29,22 @@ cp $RunList $OutDir
 
 while read -r RunNumber
 do
-    infile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}_*.root
-    outfile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}.root
-    echo -e "\n ============== Now Merging Run Number: ${RunNumber} ======================\n"
-    hadd $outfile $infile
-
-    echo -e "\n-----> Moving the merged file ... ..."
-    if [ -f ${OutDir}/${FilePrefix}_${RunNumber}.root ]
+    if [ ${RunNumber} -ne "" ]
     then
-	echo -e "\n--------->Same output file already exist. Saving with time stamp ...\n"
-	mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}_ver$TIME.root
-    else
-	mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}.root
-    fi    
+	infile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}_*.root
+	outfile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}.root
+	echo -e "\n ============== Now Merging Run Number: ${RunNumber} ======================\n"
+	hadd $outfile $infile
+
+	echo -e "\n-----> Moving the merged file ... ..."
+	if [ -f ${OutDir}/${FilePrefix}_${RunNumber}.root ]
+	then
+	    echo -e "\n--------->Same output file already exist. Saving with time stamp ...\n"
+	    mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}_ver$TIME.root
+	else
+	    mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}.root
+	fi
+    fi
 done < $RunList
 
 

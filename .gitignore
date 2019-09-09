@@ -29,3 +29,4 @@ FmsCellStat.txt
 FmsGainCorr.txt
 .nfs*
 schedTemplateExp.xml
+temp*.txt

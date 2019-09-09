@@ -12,6 +12,7 @@
 #include "StEmcPoint.h"
 #include "StEvent/StEmcPoint.h"
 #include "StEvent/StEmcCollection.h"
+#include <algorithm>
 
 ClassImp(TStEmcTreeMaker)
 
@@ -27,6 +28,8 @@ TStEmcTreeMaker::TStEmcTreeMaker(const char *name):StMaker(name)
     mE = new Double_t[kMaxPoints];
     mQ = new Int_t[kMaxPoints];
     mNtracks = new Int_t[kMaxPoints];
+
+    mTraits = new TStEmcPidTrait();     
     
     mPi0X = new Double_t[kMaxPi0];
     mPi0Y = new Double_t[kMaxPi0];
@@ -60,6 +63,8 @@ TStEmcTreeMaker::~TStEmcTreeMaker()
     delete[] mQ; 
     delete[] mNtracks;
 
+    delete mTraits;
+    
     delete[] mPi0X;
     delete[] mPi0Y;
     delete[] mPi0Z;
@@ -114,11 +119,18 @@ void TStEmcTreeMaker::SetBranches()
     mTree->Branch("point_quality", mQ, "point_quality[point]/I");
     mTree->Branch("point_nTracks", mNtracks, "point_nTracks[point]/I");
 
-    mTree->Branch("pid_trait_q", mTraits->q, "pid_q[point][point_nTracks[point]]/I");
-    mTree->Branch("pid_trait_p", mTraits->p, "pid_p[point][point_nTracks[point]]/D");
-    mTree->Branch("pid_trait_pt", mTraits->pt, "pid_pt[point][point_nTracks[point]]/D");
-    mTree->Branch("pid_trait_dca", mTraits->dca, "pid_dca[point][point_nTracks[point]]/D");
-    mTree->Branch("pid_trait_beta", mTraits->beta, "pid_beta[point][point_nTracks[point]]/D");
+    //Making second index a variable ([point_nTracks[point]) was not successful. So it is set to maximum
+    mTree->Branch("pid_trait_q", mTraits->q, "pid_q[point][100]/I");
+    mTree->Branch("pid_trait_p", mTraits->p, "pid_p[point][100]/D");
+    mTree->Branch("pid_trait_pt", mTraits->pt, "pid_pt[point][100]/D");
+    mTree->Branch("pid_trait_dca", mTraits->dca, "pid_dca[point][100]/D");
+    mTree->Branch("pid_trait_beta", mTraits->beta, "pid_beta[point][100]/D");
+    
+    // mTree->Branch("pid_trait_q", mTraits->q, "pid_q[point][point_nTracks[point]]/I");
+    // mTree->Branch("pid_trait_p", mTraits->p, "pid_p[point][point_nTracks[point]]/D");
+    // mTree->Branch("pid_trait_pt", mTraits->pt, "pid_pt[point][point_nTracks[point]]/D");
+    // mTree->Branch("pid_trait_dca", mTraits->dca, "pid_dca[point][point_nTracks[point]]/D");
+    // mTree->Branch("pid_trait_beta", mTraits->beta, "pid_beta[point][point_nTracks[point]]/D");
     
     //------- Not sure if I will keep the following for the final version. SInce it's redundent --------------
     mTree->Branch("pi0", &mNpi0, "pi0/I");
@@ -151,33 +163,33 @@ void TStEmcTreeMaker::ResetBuffer()
     mVz = -999;
     
     mNpoints = -1;
-    memset(mX, -1, kMaxPoints*sizeof(Double_t));
-    memset(mY, -1, kMaxPoints*sizeof(Double_t));
-    memset(mZ, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPx, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPy, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPz, -1, kMaxPoints*sizeof(Double_t));
-    memset(mE, -1, kMaxPoints*sizeof(Double_t));
-    memset(mQ, -1, kMaxPoints*sizeof(Int_t));
-    memset(mNtracks, -1, kMaxPoints*sizeof(Int_t));
+    std::fill_n(mX, kMaxPoints, -1);
+    std::fill_n(mY, kMaxPoints, -1);
+    std::fill_n(mZ, kMaxPoints, -1);
+    std::fill_n(mPx, kMaxPoints, -1);
+    std::fill_n(mPy, kMaxPoints, -1);
+    std::fill_n(mPz, kMaxPoints, -1);
+    std::fill_n(mE, kMaxPoints, -1);
+    std::fill_n(mQ, kMaxPoints, -1);
+    std::fill_n(mNtracks, kMaxPoints, -1);
 
     mNpi0 = -1;
-    memset(mPi0X, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0Y, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0Z, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0Px, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0Py, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0Pz, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0E, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0Pt, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0M, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0theta, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0zgg, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0dgg, -1, kMaxPoints*sizeof(Double_t));
-    memset(mPi0Q1, -1, kMaxPoints*sizeof(Int_t));
-    memset(mPi0Q2, -1, kMaxPoints*sizeof(Int_t));
-    memset(mPi0nTracks1, -1, kMaxPoints*sizeof(Int_t));
-    memset(mPi0nTracks2, -1, kMaxPoints*sizeof(Int_t));
+    std::fill_n(mPi0X, kMaxPoints, -1);
+    std::fill_n(mPi0Y, kMaxPoints, -1);
+    std::fill_n(mPi0Z, kMaxPoints, -1);
+    std::fill_n(mPi0Px, kMaxPoints, -1);
+    std::fill_n(mPi0Py, kMaxPoints, -1);
+    std::fill_n(mPi0Pz, kMaxPoints, -1);
+    std::fill_n(mPi0E, kMaxPoints, -1);
+    std::fill_n(mPi0Pt, kMaxPoints, -1);
+    std::fill_n(mPi0M, kMaxPoints, -1);
+    std::fill_n(mPi0theta, kMaxPoints, -1);
+    std::fill_n(mPi0zgg, kMaxPoints, -1);
+    std::fill_n(mPi0dgg, kMaxPoints, -1);
+    std::fill_n(mPi0Q1, kMaxPoints, -1);
+    std::fill_n(mPi0Q2, kMaxPoints, -1);
+    std::fill_n(mPi0nTracks1,  kMaxPoints, -1);
+    std::fill_n(mPi0nTracks2,  kMaxPoints, -1);
 }
 
 //_____________________________________________________________________________
@@ -189,7 +201,7 @@ Int_t TStEmcTreeMaker::Make()
 	cout << "TStEmcTreeMaker::Make- Unable to retrieve MuDst" <<endl;
 	return kStFatal;
     }
-    mTrkMatchingMkr = (TStEmcTrackMatchingMaker*)GetMaker("EmcTrkMatching");
+    mTrkMatchingMkr = (TStEmcTrackMatchingMaker*)GetMaker("TStEmcTrackMatchingMaker");
     if(!mTrkMatchingMkr)
     {
 	cout << "TStEmcTreeMaker::Make- Unable to retrieve EmcTrackMatchingMaker. Can Not proceed" <<endl;
@@ -214,7 +226,7 @@ Int_t TStEmcTreeMaker::Make()
 	return kStOK;
 
     mVertex = mMuDst->primaryVertex(0)->position();
-    //---------- Access EMC data ---------------
+
     mEmcCollection = mMuDst->emcCollection();
     if(!mEmcCollection)
     {
@@ -225,8 +237,9 @@ Int_t TStEmcTreeMaker::Make()
     mNpoints = mEmcPoints.size();
     mNpi0 = 0;
     mVz = mVertex.z();
-    mTraits = mTrkMatchingMkr->GetPidTraits();
-    //memcpy(&q[0][0], &mTraits->q[0][0], 1000*1000*sizeof(Int_t));
+
+    memcpy(mTraits, mTrkMatchingMkr->GetPidTraits(), sizeof(TStEmcPidTrait));
+   
     for(Int_t i = 0; i < mNpoints; ++i)
     {
 	mPoint1 = mEmcPoints[i];

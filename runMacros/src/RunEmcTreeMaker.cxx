@@ -24,7 +24,7 @@ void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
     epc->setPrint(kFALSE);
     epc->setFillHisto(kTRUE);
 
-    TStEmcTrackMatchingMaker *trackMatchingMkr = new TStEmcTrackMatchingMaker("EmcTrkMatching");
+    TStEmcTrackMatchingMaker *trackMatchingMkr = new TStEmcTrackMatchingMaker();
     
     TStEmcTreeMaker *emcTreeMaker = new TStEmcTreeMaker();
     emcTreeMaker->SetOutName(outFile);
