@@ -8,10 +8,9 @@ void EmcTreeAnalysis()
 {
     const Int_t size = 32;
     Int_t runList[size] = {16072006, 16072007, 16072008, 16072009, 16072010, 16072012, 16072013, 16072014, 16072021, 16072022, 16072023, 16072024, 16072025, 16072026, 16072033, 16072034, 16072035, 16072036, 16072038, 16072039, 16072040, 16072041, 16072042, 16072043, 16072046, 16072047, 16072057, 16072058, 16072059, 16072060, 16072061, 16072062};
+        
+    TString fPath = "/star/u/kabir/GIT/BrightSTAR/results/root/RunEmcTreeMaker/RunEmcTreeMaker_";
     
-    
-    TString fPath = "/star/u/kabir/GIT/BrightSTAR/results/root/3.Pi0_In_Cal/Emc_Pi0/EmcTree_";
-
     TChain *chain = new TChain("T");
     cout << "Total files to be added:"<< size <<endl;
     for(Int_t i = 0; i < size; ++i)
@@ -46,7 +45,7 @@ void EmcTreeAnalysis()
     //chain->Draw("point_nTracks>>hist(100, 0, 1500)");
     //chain->Draw("point_E>>hist(500, 0, 10)", "point_nTracks == 0");
 
-    chain->Draw("pi0_nTracks1");
+    //chain->Draw("pi0_nTracks1>>hist(200, 0, 50)");
     
     //Pi0
     //chain->Draw("pi0_M>>hist(200, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
@@ -55,9 +54,11 @@ void EmcTreeAnalysis()
     // chain->Draw("pi0_M>>hist(120, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && trig_HT2 == 1");
 
     //chain->Draw("pi0_M>>hist(120, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && pi0_Px > 1 && pi0_Pt < 2");
-    
-    //chain->Draw("pi0_zgg>>hist(120, 0, 1.0)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && trig_MB==1");   
 
+    // TFile *file = new TFile("eta_meson.root", "RECREATE");
+    // chain->Draw("pi0_M>>hist(120, 0.0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && pi0_E > 7 && pi0_zgg < 0.7", "");
+    // hist->SetName("eta");
+    // hist->Write();
 
     //chain->Draw("pi0_nTracks1:pi0_nTracks2", "", "colz");
     //chain->Draw("pi0_M>>hist(120, 0, 1.2)", "");

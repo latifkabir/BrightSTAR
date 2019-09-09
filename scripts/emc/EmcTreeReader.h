@@ -36,6 +36,11 @@ public :
    Double_t        point_E[25];   //[point]
    Int_t           point_quality[25];   //[point]
    Int_t           point_nTracks[25];   //[point]
+   Int_t           pid_trait_q[25][100];   //[point]
+   Double_t        pid_trait_p[25][100];   //[point]
+   Double_t        pid_trait_pt[25][100];   //[point]
+   Double_t        pid_trait_dca[25][100];   //[point]
+   Double_t        pid_trait_beta[25][100];   //[point]
    Int_t           pi0;
    Double_t        pi0_x[305];   //[pi0]
    Double_t        pi0_y[305];   //[pi0]
@@ -68,6 +73,11 @@ public :
    TBranch        *b_point_E;   //!
    TBranch        *b_point_quality;   //!
    TBranch        *b_point_nTracks;   //!
+   TBranch        *b_pid_trait_q;   //!
+   TBranch        *b_pid_trait_p;   //!
+   TBranch        *b_pid_trait_pt;   //!
+   TBranch        *b_pid_trait_dca;   //!
+   TBranch        *b_pid_trait_beta;   //!    
    TBranch        *b_pi0;   //!
    TBranch        *b_pi0_x;   //!
    TBranch        *b_pi0_y;   //!
@@ -169,6 +179,11 @@ void EmcTreeReader::Init(TTree *tree)
    fChain->SetBranchAddress("point_E", point_E, &b_point_E);
    fChain->SetBranchAddress("point_quality", point_quality, &b_point_quality);
    fChain->SetBranchAddress("point_nTracks", point_nTracks, &b_point_nTracks);
+   fChain->SetBranchAddress("pid_trait_q", pid_trait_q, &b_pid_trait_q);
+   fChain->SetBranchAddress("pid_trait_p", pid_trait_p, &b_pid_trait_p);
+   fChain->SetBranchAddress("pid_trait_pt", pid_trait_pt, &b_pid_trait_pt);
+   fChain->SetBranchAddress("pid_trait_dca", pid_trait_dca, &b_pid_trait_dca);
+   fChain->SetBranchAddress("pid_trait_beta", pid_trait_beta, &b_pid_trait_beta);   
    fChain->SetBranchAddress("pi0", &pi0, &b_pi0);
    fChain->SetBranchAddress("pi0_x", pi0_x, &b_pi0_x);
    fChain->SetBranchAddress("pi0_y", pi0_y, &b_pi0_y);

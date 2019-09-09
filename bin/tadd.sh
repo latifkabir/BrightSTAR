@@ -29,7 +29,7 @@ cp $RunList $OutDir
 
 while read -r RunNumber
 do
-    if [ ${RunNumber} -ne "" ]
+    if ! [ "${RunNumber}" == "" ]
     then
 	infile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}_*.root
 	outfile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}.root
