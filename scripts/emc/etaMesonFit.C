@@ -29,9 +29,9 @@ void etaMesonFit()
     RooRealVar sigwidth("sigwidth","#pi^{0} width", 0.04, 0.0, 0.5) ;
 
     // --- Build Gaussian or BW PDF ---
-    // RooGaussian signal("signal","signal PDF", mes, sigmean, sigwidth) ;
-    RooBreitWigner signal("signal","signal PDF", mes, sigmean, sigwidth);
-    //RooVoigtian signal("signal","signal PDF",mes, sigmean, sigwidth, sigwidth) ;
+    //RooGaussian signal("signal","signal PDF", mes, sigmean, sigwidth) ;
+    //RooBreitWigner signal("signal","signal PDF", mes, sigmean, sigwidth);
+     RooVoigtian signal("signal","signal PDF",mes, sigmean, sigwidth, sigwidth) ;
     
     // --- Build background PDF part1 ---
     // The names must be diffent in constructor

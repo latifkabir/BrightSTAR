@@ -27,7 +27,7 @@ void EmcTreeAnalysis()
     // chain->Draw("pi0");
     
     //Trigger
-    //chain->Draw("trig_MB", "");
+    // chain->Draw("trig_MB", "");
 
     // chain->Draw("0 >> hist0(5, 0, 5)", "trig_MB == 1 ", "");
     // chain->Draw("1 >> hist1(5, 0, 5)", "trig_HT1 == 1", "");
@@ -42,23 +42,23 @@ void EmcTreeAnalysis()
     // hist0->Draw("sames");
 
     //Photon
-    //chain->Draw("point_nTracks>>hist(100, 0, 1500)");
+    //chain->Draw("point_nTracks>>hist(100, 0, 50)");
     //chain->Draw("point_E>>hist(500, 0, 10)", "point_nTracks == 0");
 
     //chain->Draw("pi0_nTracks1>>hist(200, 0, 50)");
     
     //Pi0
-    //chain->Draw("pi0_M>>hist(200, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
+    //chain->Draw("pi0_M>>hist(200, 0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
     //chain->Draw("pi0_M>>hist(120, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && trig_MB == 1");
     // chain->Draw("pi0_M>>hist(120, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && trig_HT1 == 1");
     // chain->Draw("pi0_M>>hist(120, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && trig_HT2 == 1");
 
     //chain->Draw("pi0_M>>hist(120, 0, 1.2)", "pi0_zgg < 0.7 && pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && pi0_Px > 1 && pi0_Pt < 2");
 
-    // TFile *file = new TFile("eta_meson.root", "RECREATE");
-    // chain->Draw("pi0_M>>hist(120, 0.0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && pi0_E > 7 && pi0_zgg < 0.7", "");
-    // hist->SetName("eta");
-    // hist->Write();
+    TFile *file = new TFile("eta_meson.root", "RECREATE");
+    chain->Draw("pi0_M>>hist(120, 0.0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && pi0_E > 7 && pi0_zgg < 0.7", "");
+    hist->SetName("eta");
+    hist->Write();
 
     //chain->Draw("pi0_nTracks1:pi0_nTracks2", "", "colz");
     //chain->Draw("pi0_M>>hist(120, 0, 1.2)", "");
@@ -68,19 +68,11 @@ void EmcTreeAnalysis()
     //chain->Draw("pi0_M>>hist(120, 0, 1.2)", "pi0_theta < 0.5");
     //chain->Draw("pi0_zgg");    
     //chain->Draw("pi0_zgg", "pi0_theta < 0.5");    
-    //chain->Draw("pi0_dgg", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
+    //chain->Draw("pi0_zgg", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
     //chain->Draw("pi0_M>>hist(120, 0.0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0 && pi0_dgg< 100");
 
     //chain->Draw("pi0_theta", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
     //chain->Draw("pi0_theta>>hist(200, 0, 3.14)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0");
     //chain->Draw("pi0_M:pi0_theta>>hist(400, 0, 1.0, 400, 0.0, 1.2)", "pi0_nTracks1 == 0 && pi0_nTracks2 == 0", "colz");
-    
-    // const Int_t pi0 = 1000; 
-    // Double_t px;
-    // Double_t py;
-    // Double_t pz;
-    // Double_t E;
-
-    //chain->SetBranchAddress("pi0_px", &px);
-    
+        
 }

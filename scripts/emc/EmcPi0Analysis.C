@@ -28,8 +28,8 @@ void EmcPi0Analysis()
     Int_t nEvents = emc->fChain->GetEntries();
     cout << "Total Entries: "<<nEvents<<endl;
 
-    // TH1D *hist = new TH1D("hist", "hist", 6, 0, 6);
-    TH1D *hist = new TH1D("hist", "hist", 120, 0.0, 0.0);
+    TH1D *hist0 = new TH1D("hist", "hist", 200, 0, 1.0);
+    TH1D *hist = new TH1D("eta", "hist", 200, 0.0, 1.2);
     TH2D *hist2d = new TH2D("hist2d", "hist2d", 315, 0, 3.14, 120, 0, 1.2);
     TH1D *hist1 = new TH1D("hist1", "hist1", 120, 0, 1.2);
     TH1D *hist2 = new TH1D("hist2", "hist2", 120, 0, 1.2);
@@ -52,7 +52,10 @@ void EmcPi0Analysis()
     
     for(Int_t evt = 0; evt < nEvents; ++evt)
     {
-	emc->GetEntry(evt);
+	if(evt % 1000 == 0)
+	    cout<<"Events processed: "<< evt<<endl;
+	
+	emc->GetEntry(evt);	
 	//hist->Fill(emc->point);
 
 	Int_t C1 = 0;
@@ -61,57 +64,67 @@ void EmcPi0Analysis()
 	Int_t Q2;
 
 	//------------ Point Analysis -------------------
-	/*	
-	for(Int_t k = 0; k < emc->point; ++k)
-	{
-	    if(emc->point_nTracks[k] > 0)
-		continue;
-	    Q1 = emc->point_quality[k];
-	    //cout << "Q1:"<<Q1 <<endl;
+		
+	// for(Int_t k = 0; k < emc->point; ++k)
+	// {
+	//     if(emc->point_nTracks[k] > 0)
+	// 	continue;
+	//     Q1 = emc->point_quality[k];
+	//     //cout << "Q1:"<<Q1 <<endl;
 
-	    if( (Q1&1) )
-		C1 = 1; // only tower
-	    if( (Q1&1) && (Q1&4))
-		C1 = 2; // tower + smd eta
-	    if( (Q1&1) && (Q1&8))
-		C1 = 3; // tower + smd phi
-	    if( (Q1&1) && (Q1&4) && (Q1&8))
-		C1 = 4; // tower + smd eta + smd phi
-	    hist->Fill(C1);
-	}
-	*/	
+	//     if( (Q1&1) )
+	// 	C1 = 1; // only tower
+	//     if( (Q1&1) && (Q1&4))
+	// 	C1 = 2; // tower + smd eta
+	//     if( (Q1&1) && (Q1&8))
+	// 	C1 = 3; // tower + smd phi
+	//     if( (Q1&1) && (Q1&4) && (Q1&8))
+	// 	C1 = 4; // tower + smd eta + smd phi
+	//     hist0->Fill(C1);
+	// }
+		
 		
 	for(Int_t k = 0; k < emc->point; ++k)
 	{
 	    if(emc->point_nTracks[k] > 0)
 		continue;
+
+	    //eta threshold cut
+	    if(emc->point_E[k] < 3.5)
+		continue;
+	    
 	    for(Int_t l = k + 1; l < emc->point; ++l)
 	    {
 		if(l >= emc->point)
 		    continue;
+		
 		if(emc->point_nTracks[l] > 0)
 		    continue;
 
-		Q1 = emc->point_quality[k];
-		Q2 = emc->point_quality[l];
+		//eta threshold cut
+		if(emc->point_E[l] < 3.5)
+		    continue;
+		
+		// Q1 = emc->point_quality[k];
+		// Q2 = emc->point_quality[l];
 
-		if( (Q1&1) )
-		    C1 = 1; // only tower
-		if( (Q1&1) && (Q1&4))
-		    C1 = 2; // tower + smd eta
-		if( (Q1&1) && (Q1&8))
-		    C1 = 3; // tower + smd phi
-		if( (Q1&1) && (Q1&4) && (Q1&8))
-		    C1 = 4; // tower + smd eta + smd phi
+		// if( (Q1&1) )
+		//     C1 = 1; // only tower
+		// if( (Q1&1) && (Q1&4))
+		//     C1 = 2; // tower + smd eta
+		// if( (Q1&1) && (Q1&8))
+		//     C1 = 3; // tower + smd phi
+		// if( (Q1&1) && (Q1&4) && (Q1&8))
+		//     C1 = 4; // tower + smd eta + smd phi
 
-		if( (Q2&1) )
-		    C2 = 1; // only tower
-		if( (Q2&1) && (Q2&4))
-		    C2 = 2; // tower + smd eta
-		if( (Q2&1) && (Q2&8))
-		    C2 = 3; // tower + smd phi
-		if( (Q2&1) && (Q2&4) && (Q2&8))
-		    C2 = 4; // tower + smd eta + smd phi
+		// if( (Q2&1) )
+		//     C2 = 1; // only tower
+		// if( (Q2&1) && (Q2&4))
+		//     C2 = 2; // tower + smd eta
+		// if( (Q2&1) && (Q2&8))
+		//     C2 = 3; // tower + smd phi
+		// if( (Q2&1) && (Q2&4) && (Q2&8))
+		//     C2 = 4; // tower + smd eta + smd phi
 
 		// if(!(C1 == 4 && C2 == 4))
 		//     continue;
@@ -138,25 +151,25 @@ void EmcPi0Analysis()
 		// if( zgg > 0.7)
 		//     continue;		
 
-		hist->Fill(theta);
-		//hist->Fill(mass);
-		hist2d->Fill(theta, mass);
-		if(pt >0 && pt < 1.0)
-		    hist1->Fill(mass);
-		else if(pt > 1.0 && pt< 2.0)
-		    hist2->Fill(mass);
-		else if(pt > 2.0 && pt< 3.0)
-		    hist3->Fill(mass);
-		else if(pt > 3.0 && pt< 4.0)
-		    hist4->Fill(mass);
-		else if(pt > 4.0 && pt< 5.0)
-		    hist5->Fill(mass);
-		else if(pt > 5.0 && pt< 6.0)
-		    hist6->Fill(mass);
-		else if(pt > 6.0 && pt< 7.0)
-		    hist7->Fill(mass);
-		else if(pt > 7.0 && pt< 8.0)
-		    hist8->Fill(mass);
+		hist0->Fill(zgg);
+		hist->Fill(mass);
+		// hist2d->Fill(theta, mass);
+		// if(pt >0 && pt < 1.0)
+		//     hist1->Fill(mass);
+		// else if(pt > 1.0 && pt< 2.0)
+		//     hist2->Fill(mass);
+		// else if(pt > 2.0 && pt< 3.0)
+		//     hist3->Fill(mass);
+		// else if(pt > 3.0 && pt< 4.0)
+		//     hist4->Fill(mass);
+		// else if(pt > 4.0 && pt< 5.0)
+		//     hist5->Fill(mass);
+		// else if(pt > 5.0 && pt< 6.0)
+		//     hist6->Fill(mass);
+		// else if(pt > 6.0 && pt< 7.0)
+		//     hist7->Fill(mass);
+		// else if(pt > 7.0 && pt< 8.0)
+		//     hist8->Fill(mass);
 	    }
 	}
 	
@@ -205,32 +218,39 @@ void EmcPi0Analysis()
 	*/
     }
     
-    TCanvas *c1 = new TCanvas();
-    c1->Divide(2, 2);
-    c1->cd(1);
-    hist1->Draw();
-    c1->cd(2);
-    hist2->Draw();
-    c1->cd(3);
-    hist3->Draw();
-    c1->cd(4);
-    hist4->Draw();
+    // TCanvas *c1 = new TCanvas();
+    // c1->Divide(2, 2);
+    // c1->cd(1);
+    // hist1->Draw();
+    // c1->cd(2);
+    // hist2->Draw();
+    // c1->cd(3);
+    // hist3->Draw();
+    // c1->cd(4);
+    // hist4->Draw();
 
-    TCanvas *c2 = new TCanvas();
-    c2->Divide(2, 2);
-    c2->cd(1);
-    hist5->Draw();
-    c2->cd(2);
-    hist6->Draw();
-    c2->cd(3);
-    hist7->Draw();
-    c2->cd(4);
-    hist8->Draw();
-
+    // TCanvas *c2 = new TCanvas();
+    // c2->Divide(2, 2);
+    // c2->cd(1);
+    // hist5->Draw();
+    // c2->cd(2);
+    // hist6->Draw();
+    // c2->cd(3);
+    // hist7->Draw();
+    // c2->cd(4);
+    // hist8->Draw();
+    
     TCanvas *c3 = new TCanvas();
     hist->Draw();
 
     TCanvas *c4 = new TCanvas();
-    hist2d->Draw("colz");
+    // //hist2d->Draw("colz");
+    hist0->Draw();
+
+
+    TFile *file = new TFile("eta.root", "RECREATE");
+    hist->Write();
+    file->Close();
 }
 
+//M_{#pi^{0}} [GeV/c^{2}]

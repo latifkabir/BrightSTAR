@@ -1,10 +1,10 @@
-// Filename: EmcAnalysis.C
+// Filename: EmcQAanalysis.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon Sep  2 18:48:47 2019 (-0400)
 // URL: jlab.org/~latif
 
-void EmcAnalysis()
+void EmcQAanalysis()
 {
     gSystem->Load("EmcTreeReader_cxx.so");
 
