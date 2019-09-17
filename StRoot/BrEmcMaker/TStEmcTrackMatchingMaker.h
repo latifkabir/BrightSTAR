@@ -9,6 +9,7 @@
 
 #include "StMaker.h"
 #include "TStEmcPidTrait.h"
+#include "TH1D.h"
 
 class StEvent;
 class StMuDst;
@@ -38,6 +39,10 @@ public:
     // virtual Int_t InitRun  (int runumber){return 0;}; // Overload empty StMaker::InitRun 
     // virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
 
+    //---------- QA Histos ------------------
+    TH1D *h1Eta_p;
+    TH1D *h1Phi_p;
+    //---------------------------------------
     TStEmcPidTrait* GetPidTraits(){ return mTraits;}
     void ResetPidTraits();
     ClassDef(TStEmcTrackMatchingMaker,1) 

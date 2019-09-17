@@ -18,6 +18,12 @@
 #pragma link C++ function FmsPi0InvMass1;                 // FMS Pi0 Invariant mass directly from MuDST files.
 #pragma link C++ function FmsPi0MakerEx;                  // FMS Pi0 Invariant mass directly from MuDST files using StFmsPointPair.
 
+//EMC
+#pragma link C++ function EmcQA;                          // EMC QA 
+
+//TPC
+#pragma link C++ function TpcTrackQA;                     // TPC track properties
+
 #endif
 
 
@@ -26,5 +32,4 @@
 EmcPi0Maker     : Pi0 from EMC points
 EmcReadEnergy   : Example to get energy from EMC ADCs
 EmcReadPoint    : Point reconstruction for EMC data
-TpcTrackQA      : TPC track properties   
 */

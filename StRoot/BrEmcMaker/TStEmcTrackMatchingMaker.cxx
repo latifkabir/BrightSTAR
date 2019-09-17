@@ -29,6 +29,8 @@ TStEmcTrackMatchingMaker::TStEmcTrackMatchingMaker(const char *name):StMaker(nam
 TStEmcTrackMatchingMaker::~TStEmcTrackMatchingMaker()
 {
     delete mTraits;
+    // delete h1Eta_p;
+    // delete h1Phi_p;
 }
 
 
@@ -36,7 +38,10 @@ TStEmcTrackMatchingMaker::~TStEmcTrackMatchingMaker()
 Int_t TStEmcTrackMatchingMaker::Init()
 {
     ResetPidTraits();    
-    //
+    //---
+    h1Eta_p = new TH1D("h1Eta_p", "h1Eta_p", 100, 0, 0);
+    h1Phi_p = new TH1D("h1Phi_p", "h1Phi_p", 100, 0, 0);
+    //---
     return kStOK;
 }
 
@@ -224,7 +229,14 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
                                     if (dPhi>TMath::Pi())
                                         dPhi=2.0*TMath::Pi()-dPhi;
 
-                                    if(fabs(eta-etaP)<fabs(etaE) && dPhi<fabs(phiE))
+				    //----
+				    h1Eta_p->Fill(etaP);
+				    h1Phi_p->Fill(phiP);
+				    Float_t R = sqrt((2*0.05*2*0.05) + (2*0.05*2*0.05));
+				    //----
+				    
+                                    //if(fabs(eta-etaP)<fabs(etaE) && dPhi<fabs(phiE)) //<------ This original implementation was rubbish
+                                    if(d < R)
                                     {
                                         Int_t Category = cl->quality();
                                         Category = Category | 16;
