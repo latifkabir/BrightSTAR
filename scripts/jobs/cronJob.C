@@ -11,6 +11,11 @@ void cronJob()
     SubmitSumsJob("RunEmcTreeMaker", "/star/u/kabir/GIT/BrightSTAR/resources/jobRunList/temp1.txt");
     cout << "Sleepig for a while ..." << endl;
     sleep(80);
+
     cout << "Submitting 2nd batch of jobs ...." << endl;
-    SubmitSumsJob("RunEmcTreeMaker", "/star/u/kabir/GIT/BrightSTAR/resources/jobRunList/temp2.txt");   
+    SubmitSumsJob("RunEmcTreeMaker", "/star/u/kabir/GIT/BrightSTAR/resources/jobRunList/temp2.txt");
+    sleep(80);
+
+    // cout << "Submitting 3nd batch of jobs ...." << endl;
+    // SubmitSumsJob("TpcTrackQA", "/star/u/kabir/GIT/BrightSTAR/resources/jobRunList/temp.txt");
 }

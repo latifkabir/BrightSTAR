@@ -185,7 +185,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
         
         Int_t nTracks =  mMuDst->numberOfPrimaryTracks();
         StThreeVectorD momentum,position;
-        for(Int_t t=0;t<nTracks;t++)
+        for(Int_t t = 0; t < nTracks; t++)
         {
 	    muTrack = mMuDst->primaryTracks(t);
             StTrack *track = mMuDst->createStTrack(muTrack);
@@ -232,7 +232,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
 				    //----
 				    h1Eta_p->Fill(etaP);
 				    h1Phi_p->Fill(phiP);
-				    Float_t R = sqrt((2*0.05*2*0.05) + (2*0.05*2*0.05));
+				    Float_t R = sqrt((2*0.05*2*0.05) + (2*0.05*2*0.05)); // 2 times the size of the tower in eta or phi
 				    //----
 				    
                                     //if(fabs(eta-etaP)<fabs(etaE) && dPhi<fabs(phiE)) //<------ This original implementation was rubbish

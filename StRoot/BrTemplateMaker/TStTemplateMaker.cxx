@@ -50,7 +50,12 @@ Int_t TStTemplateMaker::Make()
     // Get St<det>MuCollection
     // Or Get St<det>Colelction
     // Check if mMuDst or mEvent is valid
-    
+    if(!mMuDst)
+    {
+	LOG_ERROR << "TSt<Template>Maker::Make - No MuDst found" <<endm;
+	return kStFatal;
+    }
+      
     return kStOK;
 }
 
