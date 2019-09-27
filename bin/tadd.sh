@@ -58,7 +58,10 @@ if [ "$option" == "y" ]
 then
     while read -r RunNumber
     do
-	echo "Deleting the directory ... ...: ${InputDir}/${RunNumber}"
-	rm -r ${InputDir}/${RunNumber}
+	if ! [ "${RunNumber}" == "" ]
+	then
+	    echo "Deleting the directory ... ...: ${InputDir}/${RunNumber}"
+	    rm -r ${InputDir}/${RunNumber}
+	fi
     done < $RunList
 fi

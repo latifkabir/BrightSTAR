@@ -4,11 +4,11 @@
 // Created: Thu Sep 26 15:40:09 2019 (-0400)
 // URL: jlab.org/~latif
 
-// #include "RootInclude.h"
-// #include "StRootInclude.h"
+#include "RootInclude.h"
+#include "StRootInclude.h"
+#include "BrPidMaker/TStPidTreeMaker.h"
 
-
-void RunPidTreeMaker(TString infile, TString outFile, const Int_t n_events)
+void RunPidTreeMaker(TString infile, TString outFile, Int_t n_events)
 {	
     StChain *chain = new StChain;
     StMuDstMaker *mudst_mk = new StMuDstMaker(0, 0, "", infile, "", 1000);

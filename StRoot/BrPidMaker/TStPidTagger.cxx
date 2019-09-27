@@ -33,23 +33,11 @@ TStPidTagger::~TStPidTagger()
 //_____________________________________________________________________________ 
 Int_t TStPidTagger::Init()
 {    
-    mnSig_e = 2.0;
-    mMaxM2_e = 0.01;
-    mMinM2_e = -0.01;
-    mMaxP_e = 2.0;
-    mMinP_e = 0.0;
-
     mnSig_pi = 2.0;
     mMaxM2_pi = 0.15;
     mMinM2_pi = 0.0;
     mMaxP_pi = 2.0;
     mMinP_pi = 0.0;
-
-    mnSig_mu = 2.0;
-    mMaxM2_mu = 0.1;
-    mMinM2_mu = -0.1;
-    mMaxP_mu = 2.0;
-    mMinP_mu = 0.0;
 
     mnSig_ka = 2.0;
     mMaxM2_ka = 0.36;
@@ -62,7 +50,19 @@ Int_t TStPidTagger::Init()
     mMinM2_pr = 0.5;
     mMaxP_pr = 2.0;
     mMinP_pr = 0.0;    
-   
+
+    mnSig_e = 2.0;
+    mMaxM2_e = 0.01;
+    mMinM2_e = -0.03;
+    mMaxP_e = 2.0;
+    mMinP_e = 0.0;
+
+    mnSig_mu = 2.0;
+    mMaxM2_mu = 0.1;
+    mMinM2_mu = -0.1;
+    mMaxP_mu = 2.0;
+    mMinP_mu = 0.0;
+    
     return 0;
 }
 

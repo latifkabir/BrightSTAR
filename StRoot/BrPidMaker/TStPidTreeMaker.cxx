@@ -62,17 +62,17 @@ Int_t TStPidTreeMaker::Init()
     mEmcRadius = (Double_t)StEmcGeom::instance("bemc")->Radius(); 
     
     mDedxVsQp = new TH2D("hDedxVsQp", "dE/dx vs qx|p| (No cut); qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
-    mM2VsQp = new TH2D("hM2VsQp", "m^{2} vs qx|p| (No cut); qx|p| [GeV/c]; m^{2} [(GeV/c)^{2}]", 100, -3.0, 3.0, 100, -0.1, 2.0);
+    mM2VsQp = new TH2D("hM2VsQp", "m^{2} vs qx|p| (No cut); qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 2.0);
     mDedxVsQp_e = new TH2D("hDedxVsQp_e", "dE/dx vs qx|p| for electron; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
-    mM2VsQp_e = new TH2D("hM2VsQp_e", "m^{2} vs qx|p| for electron; qx|p| [GeV/c]; m^{2} [(GeV/c)^{2}]", 100, -3.0, 3.0, 100, -0.1, 2.0);
+    mM2VsQp_e = new TH2D("hM2VsQp_e", "m^{2} vs qx|p| for electron; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.05, 0.05);
     mDedxVsQp_pi = new TH2D("hDedxVsQp_pi", "dE/dx vs qx|p| for Pion; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
-    mM2VsQp_pi = new TH2D("hM2VsQp_pi", "m^{2} vs qx|p| for Pion; qx|p| [GeV/c]; m^{2} [(GeV/c)^{2}]", 100, -3.0, 3.0, 100, -0.1, 2.0);
+    mM2VsQp_pi = new TH2D("hM2VsQp_pi", "m^{2} vs qx|p| for Pion; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.1, 0.3);
     mDedxVsQp_pr = new TH2D("hDedxVsQp_pr", "dE/dx vs qx|p| for Proton; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
-    mM2VsQp_pr = new TH2D("hM2VsQp_pr", "m^{2} vs qx|p| for Proton; qx|p| [GeV/c]; m^{2} [(GeV/c)^{2}]", 100, -3.0, 3.0, 100, -0.1, 2.0);
+    mM2VsQp_pr = new TH2D("hM2VsQp_pr", "m^{2} vs qx|p| for Proton; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, 0.0, 2.0);
     mDedxVsQp_ka = new TH2D("hDedxVsQp_ka", "dE/dx vs qx|p| for Kaon; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
-    mM2VsQp_ka = new TH2D("hM2VsQp_ka", "m^{2} vs qx|p| for Kaon; qx|p| [GeV/c]; m^{2} [(GeV/c)^{2}]", 100, -3.0, 3.0, 100, -0.1, 2.0);
+    mM2VsQp_ka = new TH2D("hM2VsQp_ka", "m^{2} vs qx|p| for Kaon; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, 0.0, 0.5);
     mDedxVsQp_mu = new TH2D("hDedxVsQp_mu", "dE/dx vs qx|p| for Muon; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
-    mM2VsQp_mu = new TH2D("hM2VsQp_mu", "m^{2} vs qx|p| for Muon; qx|p| [GeV/c]; m^{2} [(GeV/c)^{2}]", 100, -3.0, 3.0, 100, -0.1, 2.0);
+    mM2VsQp_mu = new TH2D("hM2VsQp_mu", "m^{2} vs qx|p| for Muon; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 0.4);
     
     return kStOK;    
 }
@@ -194,7 +194,7 @@ Int_t TStPidTreeMaker::Make()
 	    return -1;
 	}
 	
-	//---------The following order is important and to be finalized later ----------------
+	//---------The particle tagging order is very important and to be finalized later ----------------
 	//---- Pion -----
 	pid = mPidTagger->TagPion();
 	if(pid == mPidTagger->kPionId)
@@ -319,8 +319,8 @@ void TStPidTreeMaker::FillHist(Int_t particleId)
 	    mDedxVsQp_mu->Fill(mTrack->p().mag()*mTrack->charge(), mTrack->dEdx()*1.0e6);
 	    mM2VsQp_mu->Fill(mTrack->p().mag()*mTrack->charge(), mPidTagger->GetM2mu()); 
 	    break;		
-        defaut:
-	    break;
+        // defaut:
+	//     break;
     }
 }
 
