@@ -4,15 +4,15 @@
 // Created: Mon Aug 19 17:37:54 2019 (-0400)
 // URL: jlab.org/~latif
 
-#include "TStEmcTreeMaker.h"
+#include <algorithm>
+
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StMuDSTMaker/COMMON/StMuPrimaryVertex.h"
-#include "StEmcPoint.h"
 #include "StEvent/StEmcPoint.h"
 #include "StEvent/StEmcCollection.h"
-#include <algorithm>
+#include "TStEmcTreeMaker.h"
 
 ClassImp(TStEmcTreeMaker)
 
@@ -190,6 +190,13 @@ void TStEmcTreeMaker::ResetBuffer()
     std::fill_n(mPi0Q2, kMaxPoints, -1);
     std::fill_n(mPi0nTracks1,  kMaxPoints, -1);
     std::fill_n(mPi0nTracks2,  kMaxPoints, -1);
+
+    std::fill_n(&mTraits->q[0][0],  100*100, -999);
+    std::fill_n(&mTraits->p[0][0],  100*100, -999);
+    std::fill_n(&mTraits->pt[0][0],  100*100, -999);
+    std::fill_n(&mTraits->beta[0][0],  100*100, -999);
+    std::fill_n(&mTraits->dca[0][0],  100*100, -999);
+    
 }
 
 //_____________________________________________________________________________

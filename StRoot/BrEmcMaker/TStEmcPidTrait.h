@@ -11,7 +11,7 @@ struct TStEmcPidTrait
 {
     Int_t q[100][100];
     Double_t p[100][100];
-    Double_t pt[100][1000];
+    Double_t pt[100][100];
     Double_t dca[100][100];   
     Double_t beta[100][100];
 };

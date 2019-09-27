@@ -90,7 +90,7 @@ void EmcPi0Analysis()
 		continue;
 
 	    //eta threshold cut
-	    if(emc->point_E[k] < 3.5)
+	    if(emc->point_E[k] > 3.5)
 		continue;
 	    
 	    for(Int_t l = k + 1; l < emc->point; ++l)
@@ -102,7 +102,7 @@ void EmcPi0Analysis()
 		    continue;
 
 		//eta threshold cut
-		if(emc->point_E[l] < 3.5)
+		if(emc->point_E[l] > 3.5)
 		    continue;
 		
 		// Q1 = emc->point_quality[k];

@@ -62,6 +62,7 @@ void TpcTrackQA(TString fileList, TString outFile)
     TH2D *hVxy = new TH2D("h2dVxy", "Vertex xy; Vertex x [cm]; Vertex y [cm]", 100, -5, 5, 100, -5, 5);
     TH1D *hVz_all = new TH1D("hVz_all", "Vertex z for all vertices; Vertex z [cm]", 200, -200, 200);
     TH1D *hMom = new TH1D("hMom", "Momentum p; p [GeV/c]", 200, 0, 10);
+    TH1D *hPt = new TH1D("hPt", "P_{T}; P_{T} [GeV/c]", 200, 0, 5);
     TH1D *hPhi = new TH1D("hPhi", "Track phi; Track #phi [deg]", 200, -180, 180);
     TH1D *hEta = new TH1D("hEta", "Track Eta; #eta", 200, -2.0, 2.0);
     TH1D *hNhitsPoss = new TH1D("hNhitsPoss", "nHits Possible; nHits Possible", 100, 0, 100);
@@ -70,6 +71,8 @@ void TpcTrackQA(TString fileList, TString outFile)
     TH1D *hDcaGlobal = new TH1D("hDcaGlobal", "DCA Global; DCA [cm]", 200, 0, 4.0);
     TH2D *hDedxVsQp = new TH2D("hDedxVsQp", "dE/dx vs qx|p|; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
     TH2D *hm2VsQp = new TH2D("hm2VsQp", "m^{2} vs qx|p|; qx|p| [GeV/c]; m^{2} [(GeV/c)^{2}]", 100, -3.0, 3.0, 100, 0, 2.0);
+    TH2D *hPtVsEta = new TH2D("hPtVsEta", "P_{T} vs #eta; #eta; P_{T} [GeV/c]", 100, -2.0, 2.0, 100, 0, 5.0);
+    TH2D *hPhiVsEta = new TH2D("hPhiVsEta", "#phi vs #eta; #eta; #phi [deg]", 100, -2.0, 2.0, 100, -185, 185.0);
     
     chain->Init();
     Int_t nEvents = muDstMaker->chain()->GetEntries();
@@ -123,6 +126,8 @@ void TpcTrackQA(TString fileList, TString outFile)
 	    hMom->Fill(track->p().mag());
 	    hPhi->Fill(track->phi()*TMath::RadToDeg());
 	    hEta->Fill(track->eta());
+	    hPhiVsEta->Fill(track->eta(), track->phi()*TMath::RadToDeg());
+	    hPtVsEta->Fill(track->eta(), track->pt());
 	    hNhitsPoss->Fill(track->nHitsPoss());
 	    hNhitsFit->Fill(track->nHitsFit());
 	    hNhitsDedx->Fill(track->nHitsDedx());

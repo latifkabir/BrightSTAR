@@ -20,7 +20,7 @@
     //Root
     gSystem->Load("libMinuit.so");
     
-    //MuDST Related
+    //--------- MuDST Related --------------
     gSystem->Load("libStTableUtilities");
     gSystem->Load("libTable");
     gSystem->Load("libPhysics");
@@ -90,13 +90,34 @@
     gSystem->Load("StEmcADCtoEMaker");
     gSystem->Load("StEmcTriggerMaker");
     gSystem->Load("StEpcMaker");
+
+    //--------- Jet Maker -------------
+    gSystem->Load("StTriggerUtilities");
+    gSystem->Load("StMCAsymMaker");
+    gSystem->Load("StRandomSelector");
     
-    //------ Bright Maker -------------
+    gSystem->Load("libfastjet.so");
+    gSystem->Load("libsiscone.so");
+    gSystem->Load("libsiscone_spherical.so");
+    gSystem->Load("libfastjetplugins.so");
+ 
+    gSystem->Load("StJetFinder");
+    gSystem->Load("StJetSkimEvent");
+    gSystem->Load("StJets");
+    gSystem->Load("StJetEvent");
+    gSystem->Load("StUeEvent");
+    gSystem->Load("StJetMaker");
+    gSystem->Load("StTriggerFilterMaker");
+    
+    //------ Bright Star Maker -------------
     gSystem->Load("BrTemplateMaker");
     gSystem->Load("BrEEmcMaker");
     gSystem->Load("BrRpMaker");
     gSystem->Load("BrFmsMaker");    
     gSystem->Load("BrEmcMaker");    
+    gSystem->Load("BrPidMaker");    
+    //gSystem->Load("BrPicoMaker");  //Need to load dependencies  
+    gSystem->Load("BrFemtoMaker");    
 
     gSystem->Load("libRunMacros.so");
 

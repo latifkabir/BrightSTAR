@@ -11,8 +11,12 @@
 #include "TString.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "TH2D.h"
 #include "TStPidTagger.h"
 #include "TStPidTrait.h"
+
+#include "StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StJetMaker/mudst/StMuEmcPosition.h"
 
 class StEvent;
 class StMuDst;
@@ -24,11 +28,37 @@ private:
     StMuDst *mMuDst;  
     StEvent* mEvent;
     StMuTrack *mTrack;
+
+    Double_t mMom;
+    Double_t mM2;
+    Double_t mBeta;
+    
     TTree *mTree;
     TFile *mFile;
     TString mOutName = "PidTree.root";
     TStPidTagger *mPidTagger;
+    Bool_t mFillHist = kTRUE;//kFALSE;
+
+    StThreeVectorD mMomentum_proj;
+    StThreeVectorD mPosition_proj;
+    StMuEmcPosition mEmcPosition;
+    Double_t mField;
+    Double_t mEmcRadius; 
+    Double_t mEEmcZSMD = kEEmcZSMD;
     
+    TH2D *mDedxVsQp;
+    TH2D *mM2VsQp;
+    TH2D *mDedxVsQp_e;
+    TH2D *mM2VsQp_e;
+    TH2D *mDedxVsQp_pi;
+    TH2D *mM2VsQp_pi;
+    TH2D *mDedxVsQp_pr;
+    TH2D *mM2VsQp_pr;
+    TH2D *mDedxVsQp_ka;
+    TH2D *mM2VsQp_ka;
+    TH2D *mDedxVsQp_mu;
+    TH2D *mM2VsQp_mu;
+
     //Buffer for the tree
     Int_t mEventNo;
     Double_t mVz;
@@ -56,7 +86,8 @@ private:
     
 protected:
     void SetBranches();
-    void ResetBuffer();    
+    void ResetBuffer();
+    void ProjectTrack();
 public: 
     TStPidTreeMaker(const char *name  = "PidTreeMaker");
     virtual ~TStPidTreeMaker();
@@ -66,7 +97,9 @@ public:
     // virtual Int_t InitRun  (int runumber){return 0;}; // Overload empty StMaker::InitRun 
     // virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
     void SetOutName(TString outName) {mOutName = outName;}
-
+    void SetFillHist(Bool_t choice){mFillHist = choice;}
+    void FillHist(Int_t particleId);
+    
     ClassDef(TStPidTreeMaker,1) 
 };
 

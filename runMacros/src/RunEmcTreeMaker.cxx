@@ -54,10 +54,10 @@ void RunEmcTreeMaker(TString infile, TString outFile, const Int_t n_events)
     }
     chain->Finish();
 
-    // TCanvas *c1 = new TCanvas();
-    // trackMatchingMkr->h1Eta_p->Draw();
-    // TCanvas *c2 = new TCanvas();
-    // trackMatchingMkr->h1Phi_p->Draw();
+    TCanvas *c1 = new TCanvas();
+    trackMatchingMkr->h1Eta_p->Draw();
+    TCanvas *c2 = new TCanvas();
+    trackMatchingMkr->h1Phi_p->Draw();
     
     delete chain;
 }

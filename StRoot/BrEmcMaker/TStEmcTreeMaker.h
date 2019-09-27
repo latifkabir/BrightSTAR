@@ -103,7 +103,7 @@ protected:
     void ResetBuffer();
     Bool_t Accept(StMuEvent *muEvent);
     Bool_t HasTrigger(StMuEvent *muEvent, Int_t triggerId);
-public: 
+public:
     TStEmcTreeMaker(const char *name  = "EmcTreeMaker");
     virtual ~TStEmcTreeMaker();
     virtual Int_t Init();

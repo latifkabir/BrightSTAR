@@ -232,7 +232,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
 				    //----
 				    h1Eta_p->Fill(etaP);
 				    h1Phi_p->Fill(phiP);
-				    Float_t R = sqrt((2*0.05*2*0.05) + (2*0.05*2*0.05)); // 2 times the size of the tower in eta or phi
+				    Float_t R = sqrt((0.05*0.05) + (0.05*0.05)); // 0.05 is the size of the tower in eta or phi
 				    //----
 				    
                                     //if(fabs(eta-etaP)<fabs(etaE) && dPhi<fabs(phiE)) //<------ This original implementation was rubbish
@@ -254,10 +254,10 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
 					mTraits->p[i][nMatchedTracks - 1] = muTrack->p().mag();
 					mTraits->pt[i][nMatchedTracks - 1] = muTrack->pt();
 					mTraits->dca[i][nMatchedTracks - 1] = muTrack->dca().z();
-					mTraits->beta[i][nMatchedTracks - 1] = muTrack->btofPidTraits().beta(); //<------- This should be revisited
+					mTraits->beta[i][nMatchedTracks - 1] = muTrack->btofPidTraits().beta(); 
 
 					//--------------- Energy from each detector --------------
-					//Ideally we would alsolike to save energy from Tower, preshower, SMDs
+					//Ideally we would also like to save energy from Tower, preshower, SMDs
 					//Currently Preshower energy is not set in the reconstruction which is the most relevent part here
 					// cout <<"Total energy: "<< cl->energy()<<endl; //Total energy is the same as the tower energy
 					// cout <<"Energy in EMC Tower: "<< cl->energyInDetector(kBarrelEmcTowerId)<<endl;
