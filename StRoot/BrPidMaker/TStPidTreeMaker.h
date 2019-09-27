@@ -88,6 +88,9 @@ protected:
     void SetBranches();
     void ResetBuffer();
     void ProjectTrack();
+    Bool_t AcceptTrigger();
+    Bool_t AcceptTrack();
+    Bool_t AcceptVertex();
 public: 
     TStPidTreeMaker(const char *name  = "PidTreeMaker");
     virtual ~TStPidTreeMaker();

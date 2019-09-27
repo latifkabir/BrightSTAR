@@ -285,7 +285,29 @@ Int_t TStPidTreeMaker::Make()
     return kStOK;
 }
 
+//_____________________________________________________________________________
+Bool_t TStPidTreeMaker::AcceptTrigger()
+{
+    //Trigger cut here
+    //Trigger should be added only from Run Macros.
+    
+    return kTRUE;
+}
+//_____________________________________________________________________________
+Bool_t TStPidTreeMaker::AcceptTrack()
+{
+    //Track quality cut here
 
+    return kTRUE;
+}
+
+//_____________________________________________________________________________
+Bool_t TStPidTreeMaker::AcceptVertex()
+{
+    //Vertex quality cut here
+
+    return kTRUE;
+}
 
 //_____________________________________________________________________________
 void TStPidTreeMaker::FillHist(Int_t particleId)
