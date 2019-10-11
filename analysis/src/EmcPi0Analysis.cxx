@@ -4,23 +4,21 @@
 // Created: Mon Sep  2 18:48:47 2019 (-0400)
 // URL: jlab.org/~latif
 
+#include "EmcTreeReader.h"
+#include "RootInclude.h"
+#include <iostream>
+#include <cmath>
+using namespace std;
+
 void EmcPi0Analysis()
 {
-    gSystem->Load("EmcTreeReader_cxx.so");
-
-    const Int_t size = 32;
-    Int_t runList[size] = {16072006, 16072007, 16072008, 16072009, 16072010, 16072012, 16072013, 16072014, 16072021, 16072022, 16072023, 16072024, 16072025, 16072026, 16072033, 16072034, 16072035, 16072036, 16072038, 16072039, 16072040, 16072041, 16072042, 16072043, 16072046, 16072047, 16072057, 16072058, 16072059, 16072060, 16072061, 16072062};
+    // const Int_t size = 32;
+    // Int_t runList[size] = {16072006, 16072007, 16072008, 16072009, 16072010, 16072012, 16072013, 16072014, 16072021, 16072022, 16072023, 16072024, 16072025, 16072026, 16072033, 16072034, 16072035, 16072036, 16072038, 16072039, 16072040, 16072041, 16072042, 16072043, 16072046, 16072047, 16072057, 16072058, 16072059, 16072060, 16072061, 16072062};
         
-    TString fPath = "/star/u/kabir/GIT/BrightSTAR/results/root/RunEmcTreeMaker/RunEmcTreeMaker_";
-
+    TString fPath = "/star/u/kabir/GIT/BrightSTAR/results/root/RunEmcTreeMaker/RunEmcTreeMaker_*.root/T";
     TChain *chain = new TChain("T");
-    cout << "Total files to be added:"<< size <<endl;
-    for(Int_t i = 0; i < size; ++i)
-    {
-	TString fileName = fPath + Form("%i", runList[i]) + ".root/T";
-	chain->Add(fileName);
-    }
-    
+    Int_t nFiles = chain->Add(fPath);
+    cout << "Total files added:"<< nFiles <<endl;
     cout << "Total events: " << chain->GetEntries() <<endl;
     
     EmcTreeReader * emc = new EmcTreeReader(chain);
@@ -28,7 +26,7 @@ void EmcPi0Analysis()
     Int_t nEvents = emc->fChain->GetEntries();
     cout << "Total Entries: "<<nEvents<<endl;
 
-    TH1D *hist0 = new TH1D("hist", "hist", 200, 0, 1.0);
+    TH1D *hist0 = new TH1D("hist", "hist", 200, 0.0, 0.0);
     TH1D *hist = new TH1D("eta", "hist", 200, 0.0, 1.2);
     TH2D *hist2d = new TH2D("hist2d", "hist2d", 315, 0, 3.14, 120, 0, 1.2);
     TH1D *hist1 = new TH1D("hist1", "hist1", 120, 0, 1.2);
@@ -55,7 +53,8 @@ void EmcPi0Analysis()
 	if(evt % 1000 == 0)
 	    cout<<"Events processed: "<< evt<<endl;
 	
-	emc->GetEntry(evt);	
+	emc->GetEntry(evt);
+	//----> Check if array size exceeded for max points and pi0s.<---
 	//hist->Fill(emc->point);
 
 	Int_t C1 = 0;
@@ -63,7 +62,7 @@ void EmcPi0Analysis()
 	Int_t C2 = 0;
 	Int_t Q2;
 
-	//------------ Point Analysis -------------------
+	//------------ Photon Quality Analysis -------------------
 		
 	// for(Int_t k = 0; k < emc->point; ++k)
 	// {
@@ -88,10 +87,6 @@ void EmcPi0Analysis()
 	{
 	    if(emc->point_nTracks[k] > 0)
 		continue;
-
-	    //eta threshold cut
-	    if(emc->point_E[k] > 3.5)
-		continue;
 	    
 	    for(Int_t l = k + 1; l < emc->point; ++l)
 	    {
@@ -100,31 +95,27 @@ void EmcPi0Analysis()
 		
 		if(emc->point_nTracks[l] > 0)
 		    continue;
-
-		//eta threshold cut
-		if(emc->point_E[l] > 3.5)
-		    continue;
 		
-		// Q1 = emc->point_quality[k];
-		// Q2 = emc->point_quality[l];
+		Q1 = emc->point_quality[k];
+		Q2 = emc->point_quality[l];
 
-		// if( (Q1&1) )
-		//     C1 = 1; // only tower
-		// if( (Q1&1) && (Q1&4))
-		//     C1 = 2; // tower + smd eta
-		// if( (Q1&1) && (Q1&8))
-		//     C1 = 3; // tower + smd phi
-		// if( (Q1&1) && (Q1&4) && (Q1&8))
-		//     C1 = 4; // tower + smd eta + smd phi
+		if( (Q1&1) )
+		    C1 = 1; // only tower
+		if( (Q1&1) && (Q1&4))
+		    C1 = 2; // tower + smd eta
+		if( (Q1&1) && (Q1&8))
+		    C1 = 3; // tower + smd phi
+		if( (Q1&1) && (Q1&4) && (Q1&8))
+		    C1 = 4; // tower + smd eta + smd phi
 
-		// if( (Q2&1) )
-		//     C2 = 1; // only tower
-		// if( (Q2&1) && (Q2&4))
-		//     C2 = 2; // tower + smd eta
-		// if( (Q2&1) && (Q2&8))
-		//     C2 = 3; // tower + smd phi
-		// if( (Q2&1) && (Q2&4) && (Q2&8))
-		//     C2 = 4; // tower + smd eta + smd phi
+		if( (Q2&1) )
+		    C2 = 1; // only tower
+		if( (Q2&1) && (Q2&4))
+		    C2 = 2; // tower + smd eta
+		if( (Q2&1) && (Q2&8))
+		    C2 = 3; // tower + smd phi
+		if( (Q2&1) && (Q2&4) && (Q2&8))
+		    C2 = 4; // tower + smd eta + smd phi
 
 		// if(!(C1 == 4 && C2 == 4))
 		//     continue;
@@ -139,8 +130,8 @@ void EmcPi0Analysis()
 
 		dgg = (V1 - V2).Mag();
 		zgg = fabs(LV1.E() - LV2.E()) / (LV1.E() + LV2.E());
-		//theta = V1.Angle(V2);
-		theta = TMath::RadToDeg()*std::atan2(V1.Cross(V2), V1.Dot(V2));
+		//theta = V1.Angle(V2); // Does not give correct shape
+		theta = TMath::RadToDeg()*std::atan2((V1.Cross(V2)).Mag(), V1.Dot(V2)); //<--- This is not quite right . (V1.Cross(V2)).Mag() is always positive. Should include sign to get fill range.
 		
 		// if( dgg > 100)
 		//     continue;
@@ -151,29 +142,30 @@ void EmcPi0Analysis()
 		// if( zgg > 0.7)
 		//     continue;		
 
-		hist0->Fill(zgg);
+		//hist0->Fill(zgg);
+		hist0->Fill(theta);
 		hist->Fill(mass);
 		// hist2d->Fill(theta, mass);
-		// if(pt >0 && pt < 1.0)
-		//     hist1->Fill(mass);
-		// else if(pt > 1.0 && pt< 2.0)
-		//     hist2->Fill(mass);
-		// else if(pt > 2.0 && pt< 3.0)
-		//     hist3->Fill(mass);
-		// else if(pt > 3.0 && pt< 4.0)
-		//     hist4->Fill(mass);
-		// else if(pt > 4.0 && pt< 5.0)
-		//     hist5->Fill(mass);
-		// else if(pt > 5.0 && pt< 6.0)
-		//     hist6->Fill(mass);
-		// else if(pt > 6.0 && pt< 7.0)
-		//     hist7->Fill(mass);
-		// else if(pt > 7.0 && pt< 8.0)
-		//     hist8->Fill(mass);
+		if(pt >0 && pt < 1.0)
+		    hist1->Fill(mass);
+		else if(pt > 1.0 && pt< 2.0)
+		    hist2->Fill(mass);
+		else if(pt > 2.0 && pt< 3.0)
+		    hist3->Fill(mass);
+		else if(pt > 3.0 && pt< 4.0)
+		    hist4->Fill(mass);
+		else if(pt > 4.0 && pt< 5.0)
+		    hist5->Fill(mass);
+		else if(pt > 5.0 && pt< 6.0)
+		    hist6->Fill(mass);
+		else if(pt > 6.0 && pt< 7.0)
+		    hist7->Fill(mass);
+		else if(pt > 7.0 && pt< 8.0)
+		    hist8->Fill(mass);
 	    }
 	}
 	
-	//---------- Pion Analysis ---------------------
+	//---------- Pion Analysis Using Pion Branches---------------------
 	/*
 	for(Int_t i = 0; i < emc->pi0; ++i)
 	{
@@ -218,27 +210,27 @@ void EmcPi0Analysis()
 	*/
     }
     
-    // TCanvas *c1 = new TCanvas();
-    // c1->Divide(2, 2);
-    // c1->cd(1);
-    // hist1->Draw();
-    // c1->cd(2);
-    // hist2->Draw();
-    // c1->cd(3);
-    // hist3->Draw();
-    // c1->cd(4);
-    // hist4->Draw();
+    TCanvas *c1 = new TCanvas();
+    c1->Divide(2, 2);
+    c1->cd(1);
+    hist1->Draw();
+    c1->cd(2);
+    hist2->Draw();
+    c1->cd(3);
+    hist3->Draw();
+    c1->cd(4);
+    hist4->Draw();
 
-    // TCanvas *c2 = new TCanvas();
-    // c2->Divide(2, 2);
-    // c2->cd(1);
-    // hist5->Draw();
-    // c2->cd(2);
-    // hist6->Draw();
-    // c2->cd(3);
-    // hist7->Draw();
-    // c2->cd(4);
-    // hist8->Draw();
+    TCanvas *c2 = new TCanvas();
+    c2->Divide(2, 2);
+    c2->cd(1);
+    hist5->Draw();
+    c2->cd(2);
+    hist6->Draw();
+    c2->cd(3);
+    hist7->Draw();
+    c2->cd(4);
+    hist8->Draw();
     
     TCanvas *c3 = new TCanvas();
     hist->Draw();

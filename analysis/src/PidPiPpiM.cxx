@@ -6,10 +6,14 @@
 
 // Can provide Rho, K_S^0, etc 
 
-void piPpiM()
-{
-    gSystem->Load("PidTreeReader_cxx.so");
+#include "PidTreeReader.h"
+#include "RootInclude.h"
+#include <iostream>
 
+using namespace std;
+
+void PidPiPpiM()
+{
     TFile *file = new TFile("~/GIT/BrightSTAR/results/root/RunPidTreeMaker/RunPidTreeMaker_16072057.root");
     TTree *t = (TTree*)file->Get("T");
     PidTreeReader *pid = new PidTreeReader(t);
@@ -27,6 +31,7 @@ void piPpiM()
     for(Int_t evt = 0; evt < nEvents; ++evt)
     {
 	pid->GetEntry(evt);
+	//---> Check if the max particle number exceeds the array size in the buffer <---
 	if(evt % 1000 == 0)
 	    cout << "Events analyzed: "<<evt<<endl;
 
@@ -53,6 +58,5 @@ void piPpiM()
 	}
     }
 
-    hist->Draw();
-    
+    hist->Draw();    
 }

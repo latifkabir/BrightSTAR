@@ -20,9 +20,22 @@
 
 //EMC
 #pragma link C++ function EmcQA;                          // EMC QA 
+#pragma link C++ class EmcTreeReader;                     // EMC Tree Reader Class (Auto generated from root file) 
+#pragma link C++ function EmcPi0Analysis;                 // EMC Pi0 Analysis using Emc Tree and reader
 
 //TPC
 #pragma link C++ function TpcTrackQA;                     // TPC track properties
+
+//TPC + BTOF
+#pragma link C++ class PidTreeReader;                     // Charged particle PID tree reader class (auto generated)
+#pragma link C++ function PidEpEm;                        // e+,e- invariant mass from charged particle pid tree
+#pragma link C++ function PidKpKm;                        // K+,K- invariant mass from charged particle pid tree
+#pragma link C++ function PidLambda;                      // Lambda invariant mass of pr,pi- combination from charged particle pid tree 
+#pragma link C++ function PidPiPpiM;                      // pi+,pi- invariant mass from charged particle pid tree
+#pragma link C++ function PidKmPiP;                       // K-,pi+ invariant mass from charged particle pid tree
+
+//Jets
+#pragma link C++ function JetQA1;                         // Jet Data Quality Check
 
 #endif
 

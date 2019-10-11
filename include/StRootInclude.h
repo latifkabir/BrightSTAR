@@ -102,4 +102,16 @@
 #include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"
 #include "StTriggerUtilities/StTriggerSimuMaker.h"
 
+
+//================Jet ===========================
+#include "StSpinPool/StJetEvent/StJetCandidate.h"
+#include "StSpinPool/StJetEvent/StJetEvent.h"
+#include "StSpinPool/StJetSkimEvent/StJetSkimEvent.h"
+#include "StSpinPool/StJetSkimEvent/StJetSkimEvent.h"
+#include "StSpinPool/StJetEvent/StJetVertex.h"
+#include "StSpinPool/StJetEvent/StJetTrack.h"
+#include "StSpinPool/StJetEvent/StJetTower.h"
+
+
+
 #endif

@@ -15,7 +15,6 @@ sched*.package.zip
 sched*.package
 sched*.dataset
 *.session.xml
-tutorials/
 temp_gccflags.c
 *.dat
 temp/
@@ -30,3 +29,4 @@ FmsGainCorr.txt
 .nfs*
 schedTemplateExp.xml
 temp*.txt
+*_cxx.d

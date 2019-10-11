@@ -1,14 +1,16 @@
-// Filename: KpKm.C
+// Filename: PidKpKm.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sun Sep 29 00:03:19 2019 (-0400)
 // URL: jlab.org/~latif
 
+#include "PidTreeReader.h"
+#include "RootInclude.h"
+#include <iostream>
 
-void KpKm()
+using namespace std;
+void PidKpKm()
 {
-    gSystem->Load("PidTreeReader_cxx.so");
-
     TFile *file = new TFile("~/GIT/BrightSTAR/results/root/RunPidTreeMaker/RunPidTreeMaker_16072057.root");
     TTree *t = (TTree*)file->Get("T");
     PidTreeReader *pid = new PidTreeReader(t);

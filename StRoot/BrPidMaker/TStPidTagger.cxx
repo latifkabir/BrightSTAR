@@ -90,7 +90,7 @@ void TStPidTagger::SetTrack(StMuTrack *track)
 Int_t TStPidTagger::TagElectron()
 {
     if(mMom >= mMinP_e && mMom <= mMaxP_e
-       && fabs(mTrack->nSigmaElectron()) < mnSig_e
+       && fabs(mTrack->nSigmaElectron()) < mnSig_e //Also veto on proton/pion for better purity (to be implemented ...)
        && mM2 > mMinM2_e && mM2 < mMaxM2_e)    
 	return kElectronId;    
     else
@@ -99,9 +99,8 @@ Int_t TStPidTagger::TagElectron()
 //_____________________________________________________________________________ 
 Int_t TStPidTagger::TagPion()
 {
-    //cout << mMom <<"\t"<< mTrack->nSigmaPion() <<"\t"<<mM2<<endl;    
      if(mMom >= mMinP_pi && mMom <= mMaxP_pi
-	&& fabs(mTrack->nSigmaPion()) < mnSig_pi
+	&& fabs(mTrack->nSigmaPion()) < mnSig_pi //Also veto on proton/e for better purity (to be implemented ...)
        && mM2 > mMinM2_pi && mM2 < mMaxM2_pi)    
 	return kPionId;    
     else
