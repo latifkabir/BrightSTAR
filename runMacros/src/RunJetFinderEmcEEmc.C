@@ -1,7 +1,8 @@
 // Produces both Zilong's off axis cones and
 // Grant's regions underlying event trees
 // Original script name: RunJetFinder2013UePro
-void RunEmcJetFinder(TString mudstfile = "",
+
+void RunJetFinderEmcEEmc(TString mudstfile = "",
 		  const char* jetfile = "st_physics_new.jets.root",
 		  const char* skimfile = "st_physics_new.skim.root",
 		  const char* conesfile = "st_physics_new.ueCones.root",
@@ -9,8 +10,8 @@ void RunEmcJetFinder(TString mudstfile = "",
     )
 {
     mudstfile = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072047/st_physics_16072047_raw_1000005.MuDst.root";
-    int nevents = 1e+8;
-    printf("mudstfile: %s\n",mudstfile);
+    int nevents = 5000;//1e+8;
+    printf("mudstfile: %s\n",mudstfile.Data());
     printf("jetfile: %s\n",jetfile);
     printf("skimfile: %s\n",skimfile);
     printf("conesfile: %s\n",conesfile);
@@ -64,58 +65,15 @@ void RunEmcJetFinder(TString mudstfile = "",
     StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
 
     // run15 pp200
-    //BBCMB 
-    filterMaker->addTrigger(490003);
-    filterMaker->addTrigger(480501);
-    //filterMaker->addTrigger(430015);
-    //VPDMB
-    /* (Run 13 Values)
-       filterMaker->addTrigger(430001);
-       filterMaker->addTrigger(430011);
-       filterMaker->addTrigger(430021);
-       filterMaker->addTrigger(430031);
-    */
-    //VPDMB-novtx (Run 15)
-    filterMaker->addTrigger(490004);
-    //VPDMB-30 (Run 15)
-    filterMaker->addTrigger(490904);
-    /**JP0
-       filterMaker->addTrigger(430401);
-       filterMaker->addTrigger(430411);
-       filterMaker->addTrigger(430421);
-       filterMaker->addTrigger(430431);
-       //JP0DiJet
-       filterMaker->addTrigger(430407);
-       filterMaker->addTrigger(430417);
-       filterMaker->addTrigger(430427);
-       filterMaker->addTrigger(430437);
-    **/
-    //JP1 (All updated to Run15 values)
-    filterMaker->addTrigger(490404);
-    filterMaker->addTrigger(470404); //Trigger is for Runs outside of runlist I am using
-    /**JP1DiJet
-       filterMaker->addTrigger(430406);
-       filterMaker->addTrigger(430416);
-       filterMaker->addTrigger(430426);
-       filterMaker->addTrigger(430436);
-    **/
+    //BBCMB
+    filterMaker->addTrigger(480003); //No JP0 for run 15 
+    //JP1
+    filterMaker->addTrigger(480414);
     //JP2
-    filterMaker->addTrigger(490401);
-    filterMaker->addTrigger(470401); //Trigger is for Runs outside of runlist I am using
-    //JP2-bsmd
-    filterMaker->addTrigger(470402); //Trigger is for Runs outside of runlist I am using
-    filterMaker->addTrigger(490402);
+    filterMaker->addTrigger(480411);
     //AJP
-    filterMaker->addTrigger(470403); //Trigger is for Runs outside of runlist I am using
-    filterMaker->addTrigger(490403);
-    /* What follows are triggers for Run 13 that I am not using
-    //BAJP
-    filterMaker->addTrigger(430424);
-    filterMaker->addTrigger(430444);
-    //EEMCDiJet
-    filterMaker->addTrigger(430408);
-    filterMaker->addTrigger(430418);
-    */
+    filterMaker->addTrigger(480403);
+
     // star database
     St_db_Maker* starDb = new St_db_Maker("StarDb","MySQL:StarDb");
 

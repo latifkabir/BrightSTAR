@@ -112,3 +112,9 @@ From root prompt do:
 JobStatus()
 ```
 
+
+To Be Done
+-----------
+
+- Emc photon reconstruction: Tpc track veto. Use center of tower for the comparison. Decide if size of twoer is enouugh or 2 x size of the tower to be used.
+- Charged particle pid: for TPC dEdx, use veto on nsig of proton while identifyting pion and so on. See Zinlong's slide.

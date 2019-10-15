@@ -15,9 +15,9 @@
 //#define MONTE_CARLO
 #define NEW 
 
-void RunEEmcIUPi0(  	Char_t *name,
-			Char_t *ofile,
-			Char_t *path, 
+void RunEEmcIUPi0(  	const Char_t *name,
+			const Char_t *ofile,
+			const Char_t *path, 
 			Int_t trigID, 
 			Int_t nfiles)
 		      

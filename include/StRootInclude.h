@@ -101,9 +101,10 @@
 #include "StTriggerId.h"
 #include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"
 #include "StTriggerUtilities/StTriggerSimuMaker.h"
-
+#include "StTriggerUtilities/Bemc/StBemcTriggerSimu.h"
 
 //================Jet ===========================
+#include "StJetFinder/StProtoJet.h"
 #include "StSpinPool/StJetEvent/StJetCandidate.h"
 #include "StSpinPool/StJetEvent/StJetEvent.h"
 #include "StSpinPool/StJetSkimEvent/StJetSkimEvent.h"
@@ -111,7 +112,28 @@
 #include "StSpinPool/StJetEvent/StJetVertex.h"
 #include "StSpinPool/StJetEvent/StJetTrack.h"
 #include "StSpinPool/StJetEvent/StJetTower.h"
-
+#include "StSpinPool/StTriggerFilterMaker/StTriggerFilterMaker.h"
+#include "StJetMaker/StJetMaker2012.h"
+#include "StJetMaker/StAnaPars.h"
+#include "StJetMaker/towers/StjTowerEnergyCorrectionForTracksFraction.h"
+#include "StJetMaker/tracks/StjTrackCutFlag.h"
+#include "StJetMaker/tracks/StjTrackCutNHits.h"
+#include "StJetMaker/tracks/StjTrackCutPossibleHitRatio.h"
+#include "StJetMaker/tracks/StjTrackCutDca.h"
+#include "StJetMaker/tracks/StjTrackCutDcaPtDependent.h"
+#include "StJetMaker/tracks/StjTrackCutPt.h"
+#include "StJetMaker/tracks/StjTrackCutEta.h"
+#include "StJetMaker/tracks/StjTrackCutLastPoint.h"
+#include "StJetMaker/tracks/StjTrackCutTdcaPtDependent.h"
+#include "StJetMaker/towers/StjTowerEnergyCutBemcStatus.h"
+#include "StJetMaker/towers/StjTowerEnergyCutAdc.h"
+#include "StJetMaker/towers/StjTowerEnergyCutEt.h"
+#include "StJetFinder/StProtoJetCutPt.h"
+#include "StJetFinder/StProtoJetCutEta.h"
+#include "StJetFinder/StFastJetAreaPars.h"
+#include "StJetFinder/StFastJetPars.h"
+#include "StJetMaker/StJetSkimEventMaker.h"
+#include "StJetFinder/AbstractFourVec.h"
 
 
 #endif

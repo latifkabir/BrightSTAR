@@ -3,7 +3,7 @@
 #include "StRootInclude.h"
 #include "BrEEmcMaker/TStEEmcMakerGeomEx.h"
 
-int RunEEmcMakerGeomEx( char* file, Int_t nFiles, char* inDir, int nEve)
+int RunEEmcMakerGeomEx( const Char_t* file, Int_t nFiles, const Char_t* inDir, int nEve)
 {
     StChain *chain=0;
     // create chain    
