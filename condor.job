@@ -6,7 +6,8 @@ request_memory  = 1800M
 request_cpus    = 1
 Priority        = 4
 GetEnv          = True
-Initialdir      = /star/u/kabir/GIT/BrightSTAR
+#Initialdir      = /star/u/kabir/GIT/BrightSTAR
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults
 Input           = /dev/null
 Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$RANDOM_INTEGER(0, 10000, 1).out
 Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$RANDOM_INTEGER(0, 10000, 1).err
@@ -16,7 +17,3 @@ Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$R
 when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/080/16080002/st_fms_16080002_raw_0000003.MuDst.root	/star/u/kabir/GIT/BrightSTAR/jobResults/RunFmsTreeMaker_16080002_0.root"
-Queue
-
-

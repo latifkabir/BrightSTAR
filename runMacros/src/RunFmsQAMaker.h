@@ -5,4 +5,4 @@
 // URL: jlab.org/~latif
 #include "TString.h"
 
-void RunFmsQAMaker(TString inFile, TString outName = "FmsQAMaker.root", Int_t nEvents = -1);
+void RunFmsQAMaker(Int_t runNumber = 16072057, Int_t nFiles = 1, TString outName = "FmsQAMaker.root", Int_t nEvents = -1);

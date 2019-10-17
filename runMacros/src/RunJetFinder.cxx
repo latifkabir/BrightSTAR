@@ -10,20 +10,28 @@ This will require fix from the JetMaker side itself.
 #include "TChain.h"
 #include "RunJetFinder.h"
 #include "StRootInclude.h"
+#include "TStTrigDef.h"
 
 using namespace std;
 
-void RunJetFinder(TString inFile, TString outFile, Int_t nevents)
+void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
 {    
     TString MuDst = inFile;
-    TString Jetfile = "st_physics.jets.root";
-    TString Uefile = "st_physics.ueoc.root";
-    TString Skimfile = "st_physics.skim.root";
-        
+    TString Jetfile = (TString)"jets_" + outFilePostFix;
+    TString Uefile = (TString)"ueoc_" + outFilePostFix;
+    TString Skimfile = (TString)"skim_" + outFilePostFix;
+    
+    Int_t trig1 = TStTrigDef::GetTrigId("FMS-JP0");
+    Int_t trig2 = TStTrigDef::GetTrigId("FMS-JP1");
+    Int_t trig3 = TStTrigDef::GetTrigId("FMS-JP2");
+    Int_t trig4 = TStTrigDef::GetTrigId("FMS-DiJP");
+
     cout<< "MuDst file: " << MuDst <<endl;
     cout<< "JetTree file: " << Jetfile <<endl;
     cout<< "SkimTree file: " << Skimfile <<endl;
-  
+    cout << "Triggers: " << trig1 << "\t" << trig2 << "\t" << trig3 << "\t" << trig4 <<endl;
+
+    
     StChain *chain = new StChain;
     StMuDstMaker* muDstMaker = new StMuDstMaker(0,0,"", MuDst,"",1000);
     Int_t nEvents = muDstMaker->chain()->GetEntries();
@@ -33,14 +41,11 @@ void RunJetFinder(TString inFile, TString outFile, Int_t nevents)
     StMuDbReader* muDstDb = StMuDbReader::instance();
 
     StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
-    //BBCMB
-    filterMaker->addTrigger(480003); //No JP0 for run 15 
-    //JP1
-    filterMaker->addTrigger(480414);
-    //JP2
-    filterMaker->addTrigger(480411);
-    //AJP
-    filterMaker->addTrigger(480403);
+
+    filterMaker->addTrigger(trig1); 
+    filterMaker->addTrigger(trig2);
+    filterMaker->addTrigger(trig3);
+    filterMaker->addTrigger(trig4);
    
     St_db_Maker* starDb = new St_db_Maker("StarDb","MySQL:StarDb");
 
@@ -139,4 +144,7 @@ void RunJetFinder(TString inFile, TString outFile, Int_t nevents)
     // Run
     chain->Init();
     chain->EventLoop(nevents);
+
+    cout << "\n\n ----------> End of Jet Finder Tree Maker <---------" <<endl;
+
 }

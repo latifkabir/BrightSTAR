@@ -31,8 +31,7 @@ void JobStatus()
 void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int_t nFilesPerProcess, TString outName)    
 {
     if(outName == "")
-	outName = TStar::Config->GetStarHome() + "/jobResults/" + functionName;
-	// outName = functionName;  // Save locally and then copy back from job sh script
+	 outName = functionName;  // Save locally and then copy back from job sh script
     
     //================================== Create Job Macro =============================
     ofstream macro_out(TStar::Config->GetStarHome() + (TString)("/jobMacro.C"));
@@ -101,11 +100,11 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 	    rNumber =  (std::to_string((int)j[i]["run"])).c_str();
 	    fileName = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string((int)j[i]["run"]) + "/" + (string)j[i]["data"]["file"];
 	    cout << fileName <<endl;
-	    if(!TStar::IsValid(fileName))
-	    {
-		cout<<"The file path: " << fileName << " is no longer valid. Skipping it." << endl;
-		continue;
-	    }
+	    // if(!TStar::IsValid(fileName))
+	    // {
+	    // 	cout<<"The file path: " << fileName << " is no longer valid. Skipping it." << endl;
+	    // 	continue;
+	    // }
 	    output_file = outName + "_" + to_string((int)j[i]["run"]) + (string)"_"+ to_string(fileCount) + (string)".root";
 	    arguments = "Arguments       = " + (string)"\"" + fileName + "\t" + output_file + "\"";
 	    condorConfig_out << arguments << endl; 
@@ -141,8 +140,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 void SubmitJob(TString functionName, TString inFileName, TString outName)    
 {
     if(outName == "")
-	outName = TStar::Config->GetStarHome() + "/jobResults/" + functionName;
-	// outName = functionName;  // Save locally and then copy back from job sh script
+	outName = functionName;  // Save locally and then copy back from job sh script
     
     //================================== Create Job Macro =============================
     ofstream macro_out(TStar::Config->GetStarHome() + (TString)("/jobMacro.C"));

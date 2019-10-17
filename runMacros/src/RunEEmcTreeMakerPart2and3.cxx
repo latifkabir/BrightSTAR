@@ -14,13 +14,13 @@
 // the main routine
 //
 void RunEEmcTreeMakerPart2and3( const Char_t *eemcTreePart1FileName,
-				const Char_t *outNamePostFix,
+				const Char_t *outName,
                                 Int_t neventsIn,
                                 Bool_t isMC,
                                 Int_t displayFreq)
 {
-    TString str1 = (TString)"/star/u/kabir/pwg/jobResults/eemcTreeP2_" + outNamePostFix + (TString)".root";
-    TString str2 = (TString)"/star/u/kabir/pwg/jobResults/eemcTreeP3_" + outNamePostFix + (TString)".root";
+    TString str1 = (TString)"eemcTreeP2_" + outName;
+    TString str2 = (TString)"eemcTreeP3_" + outName;
     const Char_t *eemcTreePart2FileName = str1.Data();
     const Char_t *eemcTreePart3FileName = str2.Data();
 

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <!DOCTYPE note [
-<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/.sl73_gcc485">
+<!ENTITY PROD "P15ik">
 <!ENTITY LIBMACROS "/star/u/kabir/GIT/BrightSTAR/runMacros/lib/libRunMacros.so">
-<!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR">
-<!ENTITY LIBANA "/star/u/kabir/GIT/BrightSTAR/analysis/lib/libStAnalysis.so">
-<!ENTITY FILET "daq_reco_mudst">
-<!ENTITY SETUPFILE "/star/u/kabir/GIT/BrightSTAR/setup.csh">
-<!ENTITY JOBOUTDIR "jobOutput">
-<!ENTITY OUTDIR "jobResults/16072057">
 <!ENTITY MACRO "/star/u/kabir/GIT/BrightSTAR/jobMacro.C">
-<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/rootlogon.C">
-<!ENTITY TRIG "production_pp200trans_2015">
+<!ENTITY TRIG "production_pp200trans_2015||production_fms_pp200trans_2015">
+<!ENTITY OUTNAME "RunJetFinder">
 <!ENTITY LIBBRIGHT "/star/u/kabir/GIT/BrightSTAR/libBrStar/lib/libBrStar.so">
-<!ENTITY FILEN "~st_physics">
-<!ENTITY RUN "16072057">
-<!ENTITY PROD "P16id">
-<!ENTITY OUTNAME "RunPidTreeMaker">
+<!ENTITY FILEN "~st_fms_16">
+<!ENTITY ROOTSETUP "/star/u/kabir/GIT/BrightSTAR/rootlogon.C">
+<!ENTITY SOURCE "/star/u/kabir/GIT/BrightSTAR/.sl73_gcc485">
+<!ENTITY BASEDIR "/star/u/kabir/GIT/BrightSTAR">
+<!ENTITY OUTDIR "jobResults/16072006">
+<!ENTITY RUN "16072006">
+<!ENTITY SETUPFILE "/star/u/kabir/GIT/BrightSTAR/setup.csh">
+<!ENTITY FILET "daq_reco_mudst">
+<!ENTITY LIBANA "/star/u/kabir/GIT/BrightSTAR/analysis/lib/libStAnalysis.so">
+<!ENTITY JOBOUTDIR "jobOutput">
 ]>
-<!-- Created on Thu Sep 26 23:32:49 2019 -->
+<!-- Created on Tue Oct 15 17:04:39 2019 -->
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
 	<Generator>
