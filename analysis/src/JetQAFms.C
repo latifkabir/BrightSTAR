@@ -56,10 +56,10 @@ void JetQA1(
     TH1F* hjetRtJP2 = new TH1F("hjetRtJP2",";jet R_{T} [GeV]",24,0,1.2);
     TH1F* hjetRtBHT3 = new TH1F("hjetRtBHT3",";jet R_{T} [GeV]",24,0,1.2);
     TH1F* hjetRtAJP = new TH1F("hjetRtAJP",";jet R_{T} [GeV]",24,0,1.2);
-    TH1F* hjetetaJP1 = new TH1F("hjetetaJP1",";jet #eta",66,-1.5,1.5);
-    TH1F* hjetetaJP2 = new TH1F("hjetetaJP2",";jet #eta",66,-1.5,1.5);
-    TH1F* hjetetaBHT3 = new TH1F("hjetetaBHT3",";jet #eta",66,-1.5,1.5);
-    TH1F* hjetetaAJP = new TH1F("hjetetaAJP",";jet #eta",66,-1.5,1.5);
+    TH1F* hjetetaJP1 = new TH1F("hjetetaJP1",";jet #eta",66,-1.5,2.5);
+    TH1F* hjetetaJP2 = new TH1F("hjetetaJP2",";jet #eta",66,-1.5,2.5);
+    TH1F* hjetetaBHT3 = new TH1F("hjetetaBHT3",";jet #eta",66,-1.5,2.5);
+    TH1F* hjetetaAJP = new TH1F("hjetetaAJP",";jet #eta",66,-1.5,2.5);
     TH1F* hjetphiJP1 = new TH1F("hjetphiJP1",";jet #phi",120,-3.14159,3.14159);
     TH1F* hjetphiJP2 = new TH1F("hjetphiJP2",";jet #phi",120,-3.14159,3.14159);
     TH1F* hjetphiBHT3 = new TH1F("hjetphiBHT3",";jet #phi",120,-3.14159,3.14159);

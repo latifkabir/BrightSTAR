@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <iomanip>
 #include "json.h"
 #include "RootInclude.h"
 #include "TStar.h"
@@ -105,7 +107,9 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 	    // 	cout<<"The file path: " << fileName << " is no longer valid. Skipping it." << endl;
 	    // 	continue;
 	    // }
-	    output_file = outName + "_" + to_string((int)j[i]["run"]) + (string)"_"+ to_string(fileCount) + (string)".root";
+	    std::stringstream ss;
+	    ss << std::setw(5) << std::setfill('0') << fileCount;
+	    output_file = outName + "_" + to_string((int)j[i]["run"]) + (string)"_"+ ss.str() + (string)".root";
 	    arguments = "Arguments       = " + (string)"\"" + fileName + "\t" + output_file + "\"";
 	    condorConfig_out << arguments << endl; 
 	    condorConfig_out << "Queue\n" << endl;

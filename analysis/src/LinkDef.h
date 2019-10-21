@@ -35,7 +35,7 @@
 #pragma link C++ function PidKmPiP;                       // K-,pi+ invariant mass from charged particle pid tree
 
 //Jets
-#pragma link C++ function JetQA1;                         // Jet Data Quality Check
+#pragma link C++ function JetQA;                          // Jet Data Quality Check
 
 #endif
 

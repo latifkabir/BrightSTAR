@@ -126,6 +126,7 @@
 #include "StJetMaker/tracks/StjTrackCutLastPoint.h"
 #include "StJetMaker/tracks/StjTrackCutTdcaPtDependent.h"
 #include "StJetMaker/towers/StjTowerEnergyCutBemcStatus.h"
+#include "StJetMaker/towers/StjTowerEnergyCutTowerId.h"
 #include "StJetMaker/towers/StjTowerEnergyCutAdc.h"
 #include "StJetMaker/towers/StjTowerEnergyCutEt.h"
 #include "StJetFinder/StProtoJetCutPt.h"

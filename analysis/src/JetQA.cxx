@@ -3,7 +3,7 @@
 #include "cppInclude.h"
 
 
-void JetQA1(
+void JetQA(
             Int_t nentries,
 	    TString jetfile,
 	    TString skimfile,
@@ -33,7 +33,9 @@ void JetQA1(
 
     cout << "Number of files added: "<<nFiles_jet <<endl;
     cout << "Total Entries to be processed: "<< nentries <<endl;
-
+    //Check if added files are sorted properly which is crucial for skimChain vs jetChain synchronization
+    jetChain->ls();
+    skimChain->ls();
     // Set jet buffer
     StJetEvent* jetEvent = 0;
     jetChain->SetBranchAddress("AntiKtR060NHits12",&jetEvent);
@@ -56,10 +58,10 @@ void JetQA1(
     TH1F* hjetRtJP2 = new TH1F("hjetRtJP2",";jet R_{T} [GeV]",24,0,1.2);
     TH1F* hjetRtBHT3 = new TH1F("hjetRtBHT3",";jet R_{T} [GeV]",24,0,1.2);
     TH1F* hjetRtAJP = new TH1F("hjetRtAJP",";jet R_{T} [GeV]",24,0,1.2);
-    TH1F* hjetetaJP1 = new TH1F("hjetetaJP1",";jet #eta",66,-1.5,1.5);
-    TH1F* hjetetaJP2 = new TH1F("hjetetaJP2",";jet #eta",66,-1.5,1.5);
-    TH1F* hjetetaBHT3 = new TH1F("hjetetaBHT3",";jet #eta",66,-1.5,1.5);
-    TH1F* hjetetaAJP = new TH1F("hjetetaAJP",";jet #eta",66,-1.5,1.5);
+    TH1F* hjetetaJP1 = new TH1F("hjetetaJP1",";jet #eta",66,-1.5,2.5);
+    TH1F* hjetetaJP2 = new TH1F("hjetetaJP2",";jet #eta",66,-1.5,2.5);
+    TH1F* hjetetaBHT3 = new TH1F("hjetetaBHT3",";jet #eta",66,-1.5,2.5);
+    TH1F* hjetetaAJP = new TH1F("hjetetaAJP",";jet #eta",66,-1.5,2.5);
     TH1F* hjetphiJP1 = new TH1F("hjetphiJP1",";jet #phi",120,-3.14159,3.14159);
     TH1F* hjetphiJP2 = new TH1F("hjetphiJP2",";jet #phi",120,-3.14159,3.14159);
     TH1F* hjetphiBHT3 = new TH1F("hjetphiBHT3",";jet #phi",120,-3.14159,3.14159);
@@ -887,45 +889,4 @@ void JetQA1(
     // Write histograms and close output file
     ofile->Write();
     ofile->Close();
-}
-
-bool matchedToJetPatch(const StJetCandidate* jet,
-		       const map<int,int>& barrelJetPatches,
-		       const map<int,int>& endcapJetPatches,
-		       const map<int,int>& overlapJetPatches)
-{
-    for (map<int,int>::const_iterator it = barrelJetPatches.begin(); it != barrelJetPatches.end(); ++it)
-    {
-	int id = it->first;
-	int adc = it->second;
-	float eta, phi;
-	assert(StJetCandidate::getBarrelJetPatchEtaPhi(id,eta,phi));
-	float deta = jet->detEta() - eta;
-	float dphi = TVector2::Phi_mpi_pi(jet->phi() - phi);
-	if (fabs(deta) < 0.6 && fabs(dphi) < 0.6) return true;
-    }
-
-    for (map<int,int>::const_iterator it = endcapJetPatches.begin(); it != endcapJetPatches.end(); ++it)
-    {
-	int id = it->first;
-	int adc = it->second;
-	float eta, phi;
-	assert(StJetCandidate::getEndcapJetPatchEtaPhi(id,eta,phi));
-	float deta = jet->detEta() - eta;
-	float dphi = TVector2::Phi_mpi_pi(jet->phi() - phi);
-	if (fabs(deta) < 0.6 && fabs(dphi) < 0.6) return true;
-    }
-
-    for (map<int,int>::const_iterator it = overlapJetPatches.begin(); it != overlapJetPatches.end(); ++it)
-    {
-	int id = it->first;
-	int adc = it->second;
-	float eta, phi;
-	assert(StJetCandidate::getOverlapJetPatchEtaPhi(id,eta,phi));
-	float deta = jet->detEta() - eta;
-	float dphi = TVector2::Phi_mpi_pi(jet->phi() - phi);
-	if (fabs(deta) < 0.6 && fabs(dphi) < 0.6) return true;
-    }
-
-    return false;
 }

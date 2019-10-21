@@ -1,9 +1,7 @@
 /*
   Original script: https://github.com/star-bnl/star-cvs/blob/master/StRoot/StJetMaker/macros/RunJetFinder2012pro.C
 
-The FMS part is added in this run macro, but it will not find ant jet from FMS.
-This will require fix from the JetMaker side itself.
-
+The FMS part is added in this run macro, need benchmarking
 */
 
 #include <iostream>
@@ -20,19 +18,28 @@ void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
     TString Jetfile = (TString)"jets_" + outFilePostFix;
     TString Uefile = (TString)"ueoc_" + outFilePostFix;
     TString Skimfile = (TString)"skim_" + outFilePostFix;
-    
+
+    //------- For FMS stream ----------------
     Int_t trig1 = TStTrigDef::GetTrigId("FMS-JP0");
     Int_t trig2 = TStTrigDef::GetTrigId("FMS-JP1");
     Int_t trig3 = TStTrigDef::GetTrigId("FMS-JP2");
     Int_t trig4 = TStTrigDef::GetTrigId("FMS-DiJP");
 
+    //------- For Physics stream ----------------
+    // Int_t trig1 = TStTrigDef::GetTrigId("BHT0*BBCMB");
+    // Int_t trig2 = TStTrigDef::GetTrigId("JP1");
+    // Int_t trig3 = TStTrigDef::GetTrigId("JP2");
+    // Int_t trig4 = TStTrigDef::GetTrigId("EHT0");
+    
     cout<< "MuDst file: " << MuDst <<endl;
     cout<< "JetTree file: " << Jetfile <<endl;
     cout<< "SkimTree file: " << Skimfile <<endl;
     cout << "Triggers: " << trig1 << "\t" << trig2 << "\t" << trig3 << "\t" << trig4 <<endl;
 
-    
+    gMessMgr->SetLimit("I", 0);   //Disable StInfo messages including Skipped event message
+    //gMessMgr->SetLimit("Q", 0); //Disable StQAInfo messages (includes event processing status)
     StChain *chain = new StChain;
+    
     StMuDstMaker* muDstMaker = new StMuDstMaker(0,0,"", MuDst,"",1000);
     Int_t nEvents = muDstMaker->chain()->GetEntries();
     if(nevents == -1 || nevents > nEvents)
@@ -56,9 +63,9 @@ void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
     StEmcADCtoEMaker* adc = new StEmcADCtoEMaker;
     adc->saveAllStEvent(true);
 
-    // StFmsDbMaker* fmsDb = new StFmsDbMaker;
-    // StFmsHitMaker* fmshitMk = new StFmsHitMaker();
-    // StFmsPointMaker* fmsptMk = new StFmsPointMaker("StFmsPointMaker");
+    StFmsDbMaker* fmsDb = new StFmsDbMaker;
+    StFmsHitMaker* fmshitMk = new StFmsHitMaker();
+    StFmsPointMaker* fmsptMk = new StFmsPointMaker("StFmsPointMaker");
 
     StTriggerSimuMaker* simuTrig = new StTriggerSimuMaker;
     simuTrig->useOnlineDB();
@@ -79,7 +86,7 @@ void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
     anapars12->useTpc = true;
     anapars12->useBemc = true;
     anapars12->useEemc = true;
-    //anapars12->useFms = true;
+    anapars12->useFms = true;
 
     // The classes available for correcting tower energy for tracks are:
     // 1. StjTowerEnergyCorrectionForTracksMip
@@ -144,7 +151,7 @@ void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
     // Run
     chain->Init();
     chain->EventLoop(nevents);
-
+    chain->Finish();
+    delete chain;
     cout << "\n\n ----------> End of Jet Finder Tree Maker <---------" <<endl;
-
 }
