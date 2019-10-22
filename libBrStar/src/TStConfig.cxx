@@ -28,8 +28,8 @@ TStConfig::TStConfig()
     //Following are initial values and are overwritten later from the configuratuion file
     fDataPath = "data/";
     fResultsPath = "results/";
-    fDSTreadPath = "results/";
-    fDSTwritePath = "results/";
+    fDSTpath = "results/";
+    fJobResultsPath = "jobResults/";
     fRunListDB = "resources/RunList.json";
     fFileList = "resources/temp/temp.list";
     fProdPath = "./";
@@ -82,15 +82,15 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fResultsPath = tokens;
 	    }
-	    else if(s == "DST_READ_PATH")
+	    else if(s == "DST_PATH")
 	    {
 		tokens = strtok(NULL, " :,");
-		fDSTreadPath = tokens;
+		fDSTpath = tokens;
 	    }
-	    else if(s == "DST_WRITE_PATH")
+	    else if(s == "JOB_RESULTS_PATH")
 	    {
 		tokens = strtok(NULL, " :,");
-		fDSTwritePath = tokens;
+		fJobResultsPath = tokens;
 	    }
 	    else if(s == "RUN_LIST_DB")
 	    {
@@ -136,14 +136,14 @@ const string& TStConfig::GetFilePath()
     return fResultsPath;
 }
 
-const string& TStConfig::GetDSTreadPath()
+const string& TStConfig::GetDSTpath()
 {
-    return fDSTreadPath;
+    return fDSTpath;
 }
 
-const string& TStConfig::GetDSTwritePath()
+const string& TStConfig::GetJobResultsPath()
 {
-    return fDSTwritePath;
+    return fJobResultsPath;
 }
 
 const string& TStConfig::GetStarHome()
@@ -190,8 +190,8 @@ void TStConfig::Print()
     cout << "Config file: "<< GetConfigPath()<<endl;
     cout << "Data-file path: "<< GetDataPath() <<endl;
     cout << "Results path: "<< GetResultsPath() <<endl;
-    cout << "DST read path: "<< GetDSTreadPath() <<endl;
-    cout << "DST write path: "<< GetDSTwritePath() <<endl;
+    cout << "DST path: "<< GetDSTpath() <<endl;
+    cout << "Job results path: "<< GetJobResultsPath() <<endl;
     cout << "File-list: "<< GetFileList() <<endl;
     cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB() <<endl;
     cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile() <<endl;

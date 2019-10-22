@@ -23,8 +23,8 @@ class TStConfig : public TObject
     string fConfigFile;
     string fDataPath;
     string fResultsPath;
-    string fDSTreadPath;
-    string fDSTwritePath;
+    string fDSTpath;
+    string fJobResultsPath;
     string fStarHome;
     string fRunListDB;
     string fFileList;
@@ -45,8 +45,8 @@ public:
     const string & GetDataPath();
     const string & GetResultsPath();
     const string & GetFilePath();
-    const string & GetDSTreadPath();
-    const string & GetDSTwritePath();
+    const string & GetDSTpath();
+    const string & GetJobResultsPath();
     const string & GetRunListDB();
     const string & GetFileList();
     const string & GetProdPath();

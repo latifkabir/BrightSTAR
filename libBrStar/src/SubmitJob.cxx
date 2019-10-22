@@ -30,13 +30,17 @@ void JobStatus()
 }
 
 //___________________________________________________________________________________________
-void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int_t nFilesPerProcess, TString outName)    
+void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int_t nFilesPerProcess, TString outName, TString jobName)    
 {
     if(outName == "")
 	 outName = functionName;  // Save locally and then copy back from job sh script
-    
+
+    TString starHome = TStar::Config->GetStarHome();
+    TString jobDir = starHome + (TString) "/jobs/" + jobName;
+    TString createJobDir = (TString)".! mkdir -p " + jobDir;
+    gROOT->ProcessLine(createJobDir);    
     //================================== Create Job Macro =============================
-    ofstream macro_out(TStar::Config->GetStarHome() + (TString)("/jobMacro.C"));
+    ofstream macro_out(jobDir + (TString)"/jobMacro.C");
     if(!macro_out)
     {
 	cout << "Unable to create job macro" <<endl;
@@ -44,13 +48,25 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
     }
     macro_out<<"void jobMacro(TString fileList, TString outName)"<<endl;
     macro_out<<"{"<<endl;
-    macro_out<<"\t"<<"gROOT->Macro(\"rootlogon.C\");"<<endl;
+    macro_out<<"\t"<<"gROOT->Macro(\""<<starHome<<"/rootlogon.C\");"<<endl;
     macro_out<<"\t"<<functionName<<"(fileList, outName);"<<endl;
     macro_out<<"}"<<endl;
     macro_out.close();
+    //============================Create Condor execution shell script ========================
+    ofstream shell_out(jobDir + (TString)"/condor.sh");
+    if(!shell_out)
+    {
+	cout << "Unable to create shell script" <<endl;
+	return;
+    }
+    shell_out<<"#!/bin/bash"<<endl;
+    shell_out<<"stardev"<<endl;
+    shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
+    shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
+    shell_out.close();
     
     cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;
-    TString condor_config = TStar::Config->GetStarHome() + (TString)"/jobConfig/condor.config";
+    TString condor_config = starHome + (TString)"/condor/condor.config";
     if(gSystem->AccessPathName(condor_config))
     {
 	cout << "Condor job config NOT found at: "<<condor_config<<endl;
@@ -58,7 +74,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
     }
     
     ifstream condorConfig_in(condor_config);
-    ofstream condorConfig_out(TStar::Config->GetStarHome() + (TString)("/condor.job"));
+    ofstream condorConfig_out(jobDir + (TString)("/condor.job"));
     if(!condorConfig_out)
     {
 	cout<<"Unable to create condor job description file" << endl;
@@ -69,9 +85,10 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
     {
 	condorConfig_out << str <<endl;
     }
+    condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
-    //======================= Get File Path and wtite to condor file descriptor ===================================
+    //======================= Get file path and wtite to condor file descriptor ===================================
     cout << "====================== Reading fileList and writing to Condor Job Description File ... ... ================" <<endl;
     Int_t lastRun = -1;
     Int_t limit = -1;
@@ -91,16 +108,20 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
     json j;
     i >> j;
 
+    Int_t runNumber;
+    Int_t prevRun = -1;
     const char *rNumber;
     string fileName;
     TString output_file;
     string arguments;
+    TString resultDir;
     for(int i = 0; i < j.size(); ++i)
     {
-	if(j[i]["run"] >= firstRun && j[i]["run"] <= lastRun)
+	runNumber = (int)j[i]["run"];
+	if(runNumber >= firstRun && runNumber <= lastRun)
 	{
 	    rNumber =  (std::to_string((int)j[i]["run"])).c_str();
-	    fileName = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string((int)j[i]["run"]) + "/" + (string)j[i]["data"]["file"];
+	    fileName = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + (string)j[i]["data"]["file"];
 	    cout << fileName <<endl;
 	    // if(!TStar::IsValid(fileName))
 	    // {
@@ -109,7 +130,14 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 	    // }
 	    std::stringstream ss;
 	    ss << std::setw(5) << std::setfill('0') << fileCount;
-	    output_file = outName + "_" + to_string((int)j[i]["run"]) + (string)"_"+ ss.str() + (string)".root";
+	    output_file = outName + "_" + to_string(runNumber) + (string)"_"+ ss.str() + (string)".root";
+	    if(runNumber != prevRun)
+	    {
+		resultDir = TStar::Config->GetJobResultsPath() + jobName + (TString)"/" + to_string(runNumber);
+		gROOT->ProcessLine((TString)".! mkdir -p " + resultDir);    
+		condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
+	    }
+	    prevRun = runNumber;
 	    arguments = "Arguments       = " + (string)"\"" + fileName + "\t" + output_file + "\"";
 	    condorConfig_out << arguments << endl; 
 	    condorConfig_out << "Queue\n" << endl;
@@ -128,7 +156,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 	return;
     }
     //======================== Submit the job using condor=======================
-    TString subScript = TStar::Config->GetStarHome() + (TString)"/condor.job";
+    TString subScript = jobDir + (TString)"/condor.job";
     if(gSystem->AccessPathName(subScript))
     {
     	cout << "Submission sh script NOT found at: "<<subScript<<endl;
@@ -141,7 +169,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 }
 
 //_______________________________________________________________________________________________
-void SubmitJob(TString functionName, TString inFileName, TString outName)    
+void SubmitJob(TString functionName, TString inFileName, TString outName,  TString jobName)    
 {
     if(outName == "")
 	outName = functionName;  // Save locally and then copy back from job sh script
@@ -207,7 +235,7 @@ void SubmitJob(TString functionName, TString inFileName, TString outName)
 
 
 //___________________________________________________________________________________________
-void SubmitSumsJob(TString function, TString runList, TString outNamePrefix)    
+void SubmitSumsJob(TString function, TString runList, TString outNamePrefix, TString jobName)    
 {
     if(outNamePrefix == "")
 	outNamePrefix = function;
