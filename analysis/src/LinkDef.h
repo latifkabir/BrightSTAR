@@ -1,6 +1,8 @@
 
 #ifdef __CINT__
 
+#pragma link C++ function JobPrototype;                   // Job prototyping and testing
+
 //RP
 #pragma link C++ function RpReadDemo;                     // Read RP data
 #pragma link C++ function RpQA;                           // Various RP distributions

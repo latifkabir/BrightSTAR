@@ -18,15 +18,20 @@ TStConfig::TStConfig()
     	cout << "\nThe environment STARHOME must be set" <<endl;
     	gApplication->Terminate();
     }
-    else
-	fStarHome = getenv("STARHOME");	
-    fConfigFile = fStarHome + (string)"/config/config.cfg"; 
-    fDataPath = "./data";
-    fResultsPath = "./results";
-    fDSTreadPath = "./results";
-    fDSTwritePath = "./results";
-    fRunListDB = "./resources/RunList.json";
-    fFileList = "./resources/temp/temp.list";
+    else 
+	fStarHome = getenv("STARHOME");
+    //For some terminal, it does not get the environment correctly. For example from SUMS job
+    //Let's hard code it for those cases.
+    if(fStarHome == "")
+	fStarHome = "/star/u/kabir/GIT/BrightSTAR/";
+    fConfigFile = fStarHome + (string)"/config/config.cfg";
+    //Following are initial values and are overwritten later from the configuratuion file
+    fDataPath = "data/";
+    fResultsPath = "results/";
+    fDSTreadPath = "results/";
+    fDSTwritePath = "results/";
+    fRunListDB = "resources/RunList.json";
+    fFileList = "resources/temp/temp.list";
     fProdPath = "./";
     LoadConfig();
 }

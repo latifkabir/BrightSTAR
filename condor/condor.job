@@ -17,3 +17,6 @@ Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$R
 when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/072/16072062/st_fms_16072062_raw_1000002.MuDst.root	JobPrototype_16072062_00000.root"
+Queue
+

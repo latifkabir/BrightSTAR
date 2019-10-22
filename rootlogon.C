@@ -43,7 +43,6 @@
     gSystem->Load("StStrangeMuDstMaker");
     gSystem->Load("StMuDSTMaker");
     //assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StMuDSTMaker.so"));  // Local copy of StMuDstMaker in batch mode
-    cout<<"\t\t done loading libStMuDSTMaker.so ...."<<endl;
 
     //-------------Trigger --------------
     gSystem->Load("StTriggerUtilities");
@@ -108,6 +107,7 @@
     gSystem->Load("StUeEvent");
     gSystem->Load("StJetMaker");
     gSystem->Load("StTriggerFilterMaker");
+    cout<<"\t\t done loading StRoot libraries ...."<<endl;
     
     //------ Bright Star Maker -------------
     gSystem->Load("BrTemplateMaker");
