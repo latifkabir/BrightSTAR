@@ -17,7 +17,7 @@ using namespace std;
 using json = nlohmann::json;
 
 //___________________________________________________________________________________________
-void JobStatus()
+void JobStatus(Int_t level)
 {
     TString star_sh = TStar::Config->GetStarHome() + (TString)"/star";
     if(gSystem->AccessPathName(star_sh))
@@ -25,12 +25,16 @@ void JobStatus()
 	cout << "shell script NOT found at: "<<star_sh<<endl;
 	return;
     }
-    TString command = (TString)".! " + star_sh + (TString)"\t" + "status"; 
+    TString command;
+    if(level > 0)
+	command = (TString)".! " + star_sh + (TString)"\t" + "job-report";
+    else
+	command = (TString)".! " + star_sh + (TString)"\t" + "status"; 
     gROOT->ProcessLine(command);
 }
 
 //___________________________________________________________________________________________
-void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int_t nFilesPerProcess, TString outName, TString jobName)    
+void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TString outName, TString jobName)    
 {
     if(outName == "")
 	 outName = functionName;  // Save locally and then copy back from job sh script
@@ -111,26 +115,42 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
     Int_t runNumber;
     Int_t prevRun = -1;
     const char *rNumber;
+    string filePath;
     string fileName;
+    string fileNumberStr;
     TString output_file;
     string arguments;
     TString resultDir;
+    unsigned firstDelimPos;
+    unsigned endPosOfFirstDelim;
+    unsigned lastDelimPos;
+    const string startDelim = "_raw_";
+    const string stopDelim = ".MuDst.root";
+    
     for(int i = 0; i < j.size(); ++i)
     {
 	runNumber = (int)j[i]["run"];
 	if(runNumber >= firstRun && runNumber <= lastRun)
 	{
 	    rNumber =  (std::to_string((int)j[i]["run"])).c_str();
-	    fileName = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + (string)j[i]["data"]["file"];
-	    cout << fileName <<endl;
-	    // if(!TStar::IsValid(fileName))
+	    fileName = (string)j[i]["data"]["file"];
+	    filePath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
+	    cout << filePath <<endl;
+	    // if(!TStar::IsValid(filePath))
 	    // {
-	    // 	cout<<"The file path: " << fileName << " is no longer valid. Skipping it." << endl;
+	    // 	cout<<"The file path: " << filePath << " is no longer valid. Skipping it." << endl;
 	    // 	continue;
 	    // }
-	    std::stringstream ss;
-	    ss << std::setw(5) << std::setfill('0') << fileCount;
-	    output_file = outName + "_" + to_string(runNumber) + (string)"_"+ ss.str() + (string)".root";
+	    //--------- Extract file number from file-name------
+	    firstDelimPos = fileName.find(startDelim);
+	    endPosOfFirstDelim = firstDelimPos + startDelim.length();
+	    lastDelimPos = fileName.find_first_of(stopDelim, endPosOfFirstDelim);
+	    fileNumberStr = fileName.substr(endPosOfFirstDelim, lastDelimPos - endPosOfFirstDelim);
+	    
+	    //std::stringstream ss;
+	    //ss << std::setw(5) << std::setfill('0') << fileCount;
+	    //output_file = outName + "_" + to_string(runNumber) + (string)"_"+ ss.str() + (string)".root";
+	    output_file = outName + "_" + to_string(runNumber) + (string)"_"+ fileNumberStr + (string)".root";
 	    if(runNumber != prevRun)
 	    {
 		resultDir = TStar::Config->GetJobResultsPath() + jobName + (TString)"/" + to_string(runNumber);
@@ -138,7 +158,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, Int
 		condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
 	    }
 	    prevRun = runNumber;
-	    arguments = "Arguments       = " + (string)"\"" + fileName + "\t" + output_file + "\"";
+	    arguments = "Arguments       = " + (string)"\"" + filePath + "\t" + output_file + "\"";
 	    condorConfig_out << arguments << endl; 
 	    condorConfig_out << "Queue\n" << endl;
 	    

@@ -6,8 +6,8 @@
 
 #include "TString.h"
 
-void JobStatus();
-void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, Int_t nFilesPerProcess = 1, TString outName = "", TString jobName = "condor");    
+void JobStatus(Int_t level = 0);
+void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor");    
 void SubmitJob(TString functionName, TString inFileName, TString outName = "", TString jobName = "condor");    
 void SubmitSumsJob(TString function, TString runList, TString outNamePrefix = "", TString jobName = "sums");
 
