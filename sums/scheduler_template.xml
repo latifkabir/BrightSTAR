@@ -30,7 +30,7 @@
 	</Package>
 	</SandBox>
 
-	<!-- <input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" /> -->
-	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="1" />
+	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" />
+	<!-- <input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="1" /> -->
 	<output fromScratch="*.root" toURL="file:&OUTDIR;/" />
 </job>

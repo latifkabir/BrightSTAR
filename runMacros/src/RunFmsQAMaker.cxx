@@ -10,7 +10,7 @@
 #include "BrightStInclude.h"
 #include "RootInclude.h"
 
-void RunFmsQAMaker(Int_t runNumber, Int_t nFiles, TString outName, Int_t nEvents)
+void RunFmsQAMaker(Int_t runNumber, TString outName, Int_t nFiles, Int_t nEvents)
 {
     TStRunList::MakeFileList(runNumber, nFiles);
     TString fileList = TStar::Config->GetFileList();
