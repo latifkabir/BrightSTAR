@@ -1,22 +1,19 @@
 Universe        = vanilla
-Executable      = ./condor.sh
 Requirements    = (CPU_Speed >= 1)
 Rank		= CPU_Speed
 request_memory  = 1800M
 request_cpus    = 1
 Priority        = 4
 GetEnv          = True
-#Initialdir      = /star/u/kabir/GIT/BrightSTAR
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults
 Input           = /dev/null
 Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$RANDOM_INTEGER(0, 10000, 1).out
 Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$RANDOM_INTEGER(0, 10000, 1).err
 Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/condor_job$(Process)_$RANDOM_INTEGER(0, 10000, 1).log
-#Notify_user     = kabir@bnl.gov
-#should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/072/16072062/st_fms_16072062_raw_1000002.MuDst.root	JobPrototype_16072062_00000.root"
+Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16072062
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/072/16072062/st_fms_16072062_raw_1000002.MuDst.root	JobPrototype_16072062_1000002.root"
 Queue
 
