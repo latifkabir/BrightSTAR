@@ -118,7 +118,8 @@
     gSystem->Load("BrPidMaker");    
     //gSystem->Load("BrPicoMaker");  //Need to load dependencies  
     gSystem->Load("BrFemtoMaker");    
-
+    gSystem->Load("StFmsJetAnalysisMaker");    
+    
     gSystem->Load("libRunMacros.so");
 
     //------- Bright STAR Library --------

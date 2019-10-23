@@ -276,6 +276,12 @@ void SubmitJob(TString functionName, TString inFileName, TString outName,  TStri
     cout << "Submission attempt completed." <<endl;
 }
 
+//___________________________________________________________________________________________
+void SubmitJob(TString functionList)
+{
+    //Read functions from a text file separated by space for each job
+    
+}
 
 //___________________________________________________________________________________________
 void SubmitSumsJob(TString function, TString runList, TString outNamePrefix, TString jobName)    
