@@ -2,7 +2,7 @@
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
 	<Generator>
-		<Location> ./jobOutput </Location>
+		<Location> &JOBOUTDIR; </Location>
 	</Generator>
 
 	<command>
@@ -32,5 +32,5 @@
 
 	<!-- <input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" /> -->
 	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="1" />
-	<output fromScratch="*.root" toURL="file:&BASEDIR;/&OUTDIR;/" />
+	<output fromScratch="*.root" toURL="file:&OUTDIR;/" />
 </job>

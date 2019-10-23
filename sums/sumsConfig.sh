@@ -23,14 +23,13 @@ export TRIG='production_pp200trans_2015||production_fms_pp200trans_2015'
 
 
 #--------------------------------------------------------------------------
-export BASEDIR=`pwd`
-export BASEOUTDIR=jobResults     # .root files directory. Relative to current directory
-export JOBOUTDIR=jobOutput       #stderr, stdout, report etc directory. Relative to current directory
-export SOURCE=${BASEDIR}/.sl73_gcc485
-export ROOTSETUP=${BASEDIR}/rootlogon.C
-export MACRO=${BASEDIR}/jobMacro.C
-export SETUPFILE=${BASEDIR}/setup.csh
-export LIBBRIGHT=${BASEDIR}/libBrStar/lib/libBrStar.so
-export LIBANA=${BASEDIR}/analysis/lib/libStAnalysis.so
-export LIBMACROS=${BASEDIR}/runMacros/lib/libRunMacros.so
+export BASEOUTDIR=${STARHOME}/jobResults     # .root files directory. Relative to current directory
+export JOBOUTDIR=${STARHOME}/jobOutput       #stderr, stdout, report etc directory. Relative to current directory
+export SOURCE=${STARHOME}/.sl73_gcc485
+export ROOTSETUP=${STARHOME}/rootlogon.C
+export MACRO=${STARHOME}/jobs/$JOBNAME/jobMacro.C
+export SETUPFILE=${STARHOME}/setup.csh
+export LIBBRIGHT=${STARHOME}/libBrStar/lib/libBrStar.so
+export LIBANA=${STARHOME}/analysis/lib/libStAnalysis.so
+export LIBMACROS=${STARHOME}/runMacros/lib/libRunMacros.so
 #---------------------------------------------------------------------------

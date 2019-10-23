@@ -6,44 +6,40 @@
 # Created: Sat Jun 22 18:03:20 2019 (-0400)
 # URL: jlab.org/~latif
 
-if [ $# -ne 3 ]
+if [ $# -ne 4 ]
 then
-    echo "Syntax: $0  <Function Name> <RunList>  <OutName>"
+    echo "Syntax: $0  <Function Name> <RunList>  <OutName>  <JobName>"
     exit
 fi
+
+if [ -z "$STARHOME" ]
+then
+    echo "STARHOME must be set. Make sure to source setup.[c]sh"
+    exit
+fi    
 
 export FUNCTION=$1
 export RUNLIST=$2
 export OUTNAME=$3
+export JOBNAME=$4
+export SUMSDIR=$STARHOME/sums
 
-source $PWD/sumsConfig.sh
+source $SUMSDIR/sumsConfig.sh
+
+mkdir -p $STARHOME/jobs/$JOBNAME
+mkdir -p $STARHOME/jobResults/$JOBNAME
 
 echo "Generating Job Macro ..."
-echo "void jobMacro(TString fileList, TString outName)" > jobMacro.C	
-echo "{" >> jobMacro.C	
-echo "    gROOT->Macro(\"rootlogon.C\");" >> jobMacro.C
-echo "    $FUNCTION(fileList, outName);" >> jobMacro.C  
-echo "}" >> jobMacro.C
+echo "void jobMacro(TString fileList, TString outName)" > $STARHOME/jobs/$JOBNAME/jobMacro.C	
+echo "{" >> $STARHOME/jobs/$JOBNAME/jobMacro.C	
+echo "    gROOT->Macro(\"$STARHOME/rootlogon.C\");" >> $STARHOME/jobs/$JOBNAME/jobMacro.C
+echo "    $FUNCTION(fileList, outName);" >> $STARHOME/jobs/$JOBNAME/jobMacro.C  
+echo "}" >> $STARHOME/jobs/$JOBNAME/jobMacro.C
 
-#----------------------------------------------------------------------
-if [ -d $JOBOUTDIR/out_$OUTNAME ]
-then
-    echo "WARNING! A folder with same name exist: delete old one and proceed? [y/n]"
-    read OPTION
-    case $OPTION in
-        y)
-	    echo "Deleting old folders..."
-	    rm -r $JOBOUTDIR/out_$OUTNAME
-	    ;;
-	*)
-	    echo "Abort job submission..."
-	    exit 0
-    esac
-fi
 
 for RUN in `cat $RUNLIST`
 do
-    export OUTDIR=$BASEOUTDIR/$RUN
+    export OUTDIR=$BASEOUTDIR/$JOBNAME/$RUN
     mkdir -p $OUTDIR
     mkdir -p $JOBOUTDIR/log_$OUTNAME/$RUN
     echo "results from run $RUN will be saved in $OUTDIR"
@@ -52,8 +48,8 @@ do
     echo "Submitting job for run" $RUN
 
     star-submit-template \
-    	-template scheduler_template.xml \
-    	-entities BASEDIR=$BASEDIR,MACRO=$MACRO,OUTDIR=$OUTDIR,JOBOUTDIR=$JOBOUTDIR,OUTNAME=$OUTNAME,RUN=$RUN,SOURCE=$SOURCE,ROOTSETUP=$ROOTSETUP,FILEN=$FILEN,FILET=$FILET,PROD=$PROD,TRIG=$TRIG,SETUPFILE=$SETUPFILE,LIBBRIGHT=$LIBBRIGHT,LIBANA=$LIBANA,LIBMACROS=$LIBMACROS 
+    	-template $STARHOME/sums/scheduler_template.xml \
+    	-entities STARHOME=$STARHOME,MACRO=$MACRO,OUTDIR=$OUTDIR,JOBOUTDIR=$JOBOUTDIR,OUTNAME=$OUTNAME,RUN=$RUN,SOURCE=$SOURCE,ROOTSETUP=$ROOTSETUP,FILEN=$FILEN,FILET=$FILET,PROD=$PROD,TRIG=$TRIG,SETUPFILE=$SETUPFILE,LIBBRIGHT=$LIBBRIGHT,LIBANA=$LIBANA,LIBMACROS=$LIBMACROS 
     
     echo
     sleep 1

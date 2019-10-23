@@ -22,8 +22,7 @@ Instruction()
     echo "          Syntax: star <OPTION>"
     echo "                   "			
     echo "          ------------------------------------- List of available options --------------------------------"
-    echo "          clean              : Move intermediate schedular files"
-    echo "          clean-all          : Move intermediate schedular files, file-list and shell scripts"
+    echo "          clean              : Delete schedular files"
     echo "          cancel-job         : Cancel all jobs submitted"
     echo "          file-list          : Print file list"
     echo "          hpss-get           : Restore file from HPSS (tape)"
@@ -111,23 +110,12 @@ case $OPTION in
 	star-submit $2
 	;;
     clean)
-	echo "Now moving intermediate files ...."
-	mv sched*.package.zip jobDir/ 2>/dev/null
-	mv sched*.package jobDir/ 2>/dev/null
-	mv sched*.dataset jobDir/ 2>/dev/null
-	mv *.session.xml jobDir/ 2>/dev/null
-	echo "Deleting log files ..."
-	rm -r jobOutput/*
-	;;
-    clean-all)
-	echo "Now moving intermediate files ...."
-	mv sched*.package.zip jobDir/ 2>/dev/null
-	mv sched*.package jobDir/ 2>/dev/null
-	mv sched*.dataset jobDir/ 2>/dev/null
-	mv *.session.xml jobDir/ 2>/dev/null
-	echo "Deleting log files ..."
+	echo "Deleting files ..."
 	rm -r jobOutput/* 2>/dev/null
-	rm -r jobDir/* 2>/dev/null
+	rm  *.dataset 2>/dev/null
+	rm  *.session.xml 2>/dev/null
+	rm schedTemplateExp.xml 2>/dev/null
+	echo "Done!"
 	;;
     *)
 	echo "                                       "	   
