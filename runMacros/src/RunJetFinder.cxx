@@ -151,7 +151,9 @@ void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
     jetmaker->addUeBranch("OffAxisConesR060", off060);
 
     StFmsAnalysisMaker *fmsJetAnaMaker = new StFmsAnalysisMaker("StFmsAnalysisMaker", jetmaker);
-    fmsJetAnaMaker->SetOutputFile("FmsJetAna.root");
+    TString fmsAnaFile = (TString)"FmsJetAnaTree_" + outFilePostFix;
+    Char_t* fmsAnaFile_ = (Char_t*)fmsAnaFile.Data();
+    fmsJetAnaMaker->SetOutputFile(fmsAnaFile_);
 	
     // Run
     chain->Init();

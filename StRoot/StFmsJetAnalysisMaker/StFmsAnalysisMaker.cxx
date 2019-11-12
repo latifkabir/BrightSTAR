@@ -182,6 +182,8 @@ Int_t StFmsAnalysisMaker::Init()
       mTree->Branch("fmsclusters",&(mFmsclusters),32000,0);
       mTree->Branch("simudiphotons",&(mSimudiphotons),32000,0);
     */
+
+    
     //set branches from jet maker
     // for (size_t iBranch = 0; iBranch < mJetmaker->mJetBranches.size(); ++iBranch) {
     // 	StJetBranch* jetbranch = mJetmaker->mJetBranches[iBranch];
@@ -387,7 +389,6 @@ Int_t StFmsAnalysisMaker::Make()
     int spinbit = -1;
     spinbit = spDb->spin4usingBX7(bunchid);
  	
-
     if(stphysics)
     {		//vertex from TPC, only saves the highest (positively) ranked vertex		
 	Bool_t goodvertex = false;
@@ -429,39 +430,43 @@ Int_t StFmsAnalysisMaker::Make()
 	//RUn11 formula
 	if(bbcTimeBin!=0)  mvertexzyuxi = 633.544 - 0.158*bbcTimeBin; //in cm
 	if(bbcTimeBin==0)  mvertexzyuxi = 0; //in cm
-
-	//for run15
 	/*
-	  UShort_t tdc1east, tdc1west;
-	  UShort_t pmt1east, pmt1west;
-	  UShort_t adc1east, adc1west;
-	  unsigned int tdcMatchEast = 0;
-	  unsigned int tdcMatchWest = 0;
+	//for run15	
+	UShort_t tdc1east, tdc1west;
+	UShort_t pmt1east, pmt1west;
+	UShort_t adc1east, adc1west;
+	unsigned int tdcMatchEast = 0;
+	unsigned int tdcMatchWest = 0;
 
-	  float   bbcTdiff = 0;
-	  bbcTdiff = (float)muDst->event()->triggerData()->bbcTimeDifference();
-	  tdc1east = muDst->event()->triggerData()->bbcEarliestTDC(east);
-	  tdc1west = muDst->event()->triggerData()->bbcEarliestTDC(west);
+	float   bbcTdiff = 0;
+	bbcTdiff = (float)muDst->event()->triggerData()->bbcTimeDifference();
+	tdc1east = muDst->event()->triggerData()->bbcEarliestTDC(east);
+	tdc1west = muDst->event()->triggerData()->bbcEarliestTDC(west);
 
-	  for( int i=1; i<=16; i++ ) {
-	  if( tdc1east==muDst->event()->triggerData()->bbcTDC(east, i) ) {
-	  adc1east = muDst->event()->triggerData()->bbcADC(east, i);
-	  pmt1east = i-1;
-	  ++tdcMatchEast;
-	  }
-	  if( tdc1west==muDst->event()->triggerData()->bbcTDC(west, i) ) {
-	  adc1west = muDst->event()->triggerData()->bbcADC(west, i);
-	  pmt1west = i-1;
-	  ++tdcMatchWest;
-	  }
-	  }
-	  if( tdcMatchEast==1 && tdcMatchWest==1 ) { // BBC slewing correction (east/west)
-	  Float_t zEast = -0.3*( bbcTdiff - mBbcSlew[0][pmt1east][0] - mBbcSlew[0][pmt1east][1]/(mBbcSlew[0][pmt1east][2] + adc1east) );
-	  Float_t zWest = -0.3*( bbcTdiff - mBbcSlew[1][pmt1west][0] - mBbcSlew[1][pmt1west][1]/(mBbcSlew[1][pmt1west][2] + adc1west) );
-	  vertexZ = (zEast + zWest)/2.0;
-	  } else {
-	  vertexZ = -30.0;
-	  }
+	for( int i=1; i<=16; i++ )
+	{
+	    if( tdc1east==muDst->event()->triggerData()->bbcTDC(east, i) )
+	    {
+		adc1east = muDst->event()->triggerData()->bbcADC(east, i);
+		pmt1east = i-1;
+		++tdcMatchEast;
+	    }
+	    if( tdc1west==muDst->event()->triggerData()->bbcTDC(west, i) )
+	    {
+		adc1west = muDst->event()->triggerData()->bbcADC(west, i);
+		pmt1west = i-1;
+		++tdcMatchWest;
+	    }
+	}
+	if( tdcMatchEast==1 && tdcMatchWest==1 )
+	{ // BBC slewing correction (east/west)
+	    Float_t zEast = -0.3*( bbcTdiff - mBbcSlew[0][pmt1east][0] - mBbcSlew[0][pmt1east][1]/(mBbcSlew[0][pmt1east][2] + adc1east) );
+	    Float_t zWest = -0.3*( bbcTdiff - mBbcSlew[1][pmt1west][0] - mBbcSlew[1][pmt1west][1]/(mBbcSlew[1][pmt1west][2] + adc1west) );
+	    vertexZ = (zEast + zWest)/2.0;
+	} else
+	{
+	    vertexZ = -30.0;
+	}
 	*/		
 	//	mvertexz = vertexZ; //Run15
 	mvertexz = mvertexzyuxi;
@@ -501,27 +506,27 @@ Int_t StFmsAnalysisMaker::Make()
     StMuTriggerIdCollection trig = muDst->event()->triggerIdCollection();
     StTriggerId l1trig = trig.nominal();
     
-      if( l1trig.isTrigger(480810) ) (TrigIds).push_back(480810);        //   FMSJP0
-      if( l1trig.isTrigger(480809) ) (TrigIds).push_back(480809);        //   FMSJP1
-      if( l1trig.isTrigger(480808) ) (TrigIds).push_back(480808);        //   FMSJP2
-      if( l1trig.isTrigger(480824) ) (TrigIds).push_back(480824);        //   FMSLgBS1
-      if( l1trig.isTrigger(480804) ) (TrigIds).push_back(480804);        //   FMSLgBS1
-      if( l1trig.isTrigger(480805) ) (TrigIds).push_back(480805);        //   FMSLgBS2
-      if( l1trig.isTrigger(480806) ) (TrigIds).push_back(480806);        //   FMSLgBS3
-      if( l1trig.isTrigger(480821) ) (TrigIds).push_back(480821);        //   FMSSmBS1
-      if( l1trig.isTrigger(480801) ) (TrigIds).push_back(480801);        //   FMSSmBS1
-      if( l1trig.isTrigger(480802) ) (TrigIds).push_back(480802);        //   FMSSmBS2
-      if( l1trig.isTrigger(480803) ) (TrigIds).push_back(480803);        //   FMSSmBS3
+    if( l1trig.isTrigger(480810) ) (TrigIds).push_back(480810);        //   FMSJP0
+    if( l1trig.isTrigger(480809) ) (TrigIds).push_back(480809);        //   FMSJP1
+    if( l1trig.isTrigger(480808) ) (TrigIds).push_back(480808);        //   FMSJP2
+    if( l1trig.isTrigger(480824) ) (TrigIds).push_back(480824);        //   FMSLgBS1
+    if( l1trig.isTrigger(480804) ) (TrigIds).push_back(480804);        //   FMSLgBS1
+    if( l1trig.isTrigger(480805) ) (TrigIds).push_back(480805);        //   FMSLgBS2
+    if( l1trig.isTrigger(480806) ) (TrigIds).push_back(480806);        //   FMSLgBS3
+    if( l1trig.isTrigger(480821) ) (TrigIds).push_back(480821);        //   FMSSmBS1
+    if( l1trig.isTrigger(480801) ) (TrigIds).push_back(480801);        //   FMSSmBS1
+    if( l1trig.isTrigger(480802) ) (TrigIds).push_back(480802);        //   FMSSmBS2
+    if( l1trig.isTrigger(480803) ) (TrigIds).push_back(480803);        //   FMSSmBS3
  
-      if( l1trig.isTrigger(480828) ) (TrigIds).push_back(480828);        //   FMSJP2
-      if( l1trig.isTrigger(480829) ) (TrigIds).push_back(480829);        //   FMSJP1
-      if( l1trig.isTrigger(480830) ) (TrigIds).push_back(480830);        //   FMSJP0
-      if( l1trig.isTrigger(480825) ) (TrigIds).push_back(480825);        //   FMSLgBS2
-      if( l1trig.isTrigger(480826) ) (TrigIds).push_back(480826);        //   FMSLgBS3
-      if( l1trig.isTrigger(480844) ) (TrigIds).push_back(480844);        //   FMSLgBS1
-      if( l1trig.isTrigger(480822) ) (TrigIds).push_back(480822);        //   FMSSmBS2
-      if( l1trig.isTrigger(480843) ) (TrigIds).push_back(480843);        //   FMSSmBS3
-      if( l1trig.isTrigger(480841) ) (TrigIds).push_back(480841);        //   FMSSmBS1
+    if( l1trig.isTrigger(480828) ) (TrigIds).push_back(480828);        //   FMSJP2
+    if( l1trig.isTrigger(480829) ) (TrigIds).push_back(480829);        //   FMSJP1
+    if( l1trig.isTrigger(480830) ) (TrigIds).push_back(480830);        //   FMSJP0
+    if( l1trig.isTrigger(480825) ) (TrigIds).push_back(480825);        //   FMSLgBS2
+    if( l1trig.isTrigger(480826) ) (TrigIds).push_back(480826);        //   FMSLgBS3
+    if( l1trig.isTrigger(480844) ) (TrigIds).push_back(480844);        //   FMSLgBS1
+    if( l1trig.isTrigger(480822) ) (TrigIds).push_back(480822);        //   FMSSmBS2
+    if( l1trig.isTrigger(480843) ) (TrigIds).push_back(480843);        //   FMSSmBS3
+    if( l1trig.isTrigger(480841) ) (TrigIds).push_back(480841);        //   FMSSmBS1
       
     //Run11
     // if( l1trig.isTrigger(89) ) (TrigIds).push_back(89);                //   FMS*BEMC*JP0

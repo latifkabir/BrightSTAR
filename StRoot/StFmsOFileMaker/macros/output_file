@@ -1,0 +1,175 @@
+  *******************************************
+  *                                         *
+  *        W E L C O M E  to  R O O T       *
+  *                                         *
+  *   Version   5.34/30     23 April 2015   *
+  *                                         *
+  *  You are welcome to visit our Web site  *
+  *          http://root.cern.ch            *
+  *                                         *
+  *******************************************
+
+ROOT 5.34/30 (v5-34-30@v5-34-30, Apr 23 2015, 18:31:46 on linux)
+
+CINT/ROOT C/C++ Interpreter version 5.18.00, July 2, 2010
+Type ? for help. Commands must be C++ statements.
+Enclose multiple statements between { }.
+*** Float Point Exception is OFF ***
+ *** Start at Date : Mon Jun 18 11:20:13 2018
+QAInfo:You are using STAR_LEVEL : dev, ROOT_LEVEL : 5.34.30 and node : rcas6007.rcf.bnl.gov 
+
+Processing runMudst4.C...
+Warning in <TClass::TClass>: no dictionary for class StStrangeMuDst is available
+Warning in <TClass::TClass>: no dictionary for class StStrangeAssoc is available
+strangeArrayNames-arrayNames-__NARRAYS__ = 0
+ loading of shared libraries done
+ loading of shared libraries done
+--------------------------- error below here
+BFC:ERROR - TClass::BuildRealData : Cannot find any ShowMembers function for StV0I!
+BFC:ERROR - TClass::BuildRealData : Cannot find any ShowMembers function for StXiI!
+BFC:INFO  - StMuDstMaker::setBranchAddresses : Branch name EpdHit does not exist
+##### void StMuDstMaker::setProbabilityPidFile(const char*) ##### ATTENTION: pid table hardwired to /afs/rhic.bnl.gov/star/packages/DEV/StarDb/dEdxModel/PIDTableP01gl.root
+--------------------------- error above here
+Found 46691 entries in Mudst
+Doing Event=0 to 10000
+BFC:INFO  - Constructing StTriggerDataMaker with name=trgd
+BFC:INFO  - [++++++] begin StFmsOFileMaker construction...
+ pp2ppGeom  paths: LVDT raw data: Alignment/pp2ppRPpositions 
+                   RP_POSITIONS : Alignment/pp2ppOffsets.bin.v1.1.x 
+BFC:INFO  - [++++++] ....constructed.
+StFmsOFileMaker outfile name = st_fms_16088020_raw_5500016.fmsan.root
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain tof
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain svt
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain ssd
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain pxl
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain pmd
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain mtd
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain ist
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain ftpc
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Block domain eemc
+St_db_Maker:INFO  - StDbManagerImpl::lookUpServers(): config file name is /afs/rhic.bnl.gov/star/packages/conf/dbLoadBalancerLocalConfig_BNL.xml
+There is no 1  /star/u/dilks/dbServers.xml
+ looking at 2 /afs/rhic.bnl.gov/star/packages/DEV/StDb/servers/dbServers.xml
+DB OVERRIDE default user with: dilks
+St_db_Maker:INFO  - StDbManagerImpl::lookUpServer() line=696 
+******** Order of Files searched for dbServers ********* 
+  3. /afs/rhic.bnl.gov/star/packages/DEV/StDb/servers/dbServers.xml
+********************************************************
+
+StHyperCacheManager: reading cache config from /afs/rhic.bnl.gov/star/packages/conf/hyperconfig.json
+St_db_Maker:INFO  - StDbLib: db server found in 3 iterations
+St_db_Maker:INFO  - MysqlDb::Connect: Load balancer took 0 ms, will use db12.star.bnl.gov:3316
+St_db_Maker:INFO  - Ssl_cipher = AES128-SHA
+St_db_Maker:INFO  - MysqlDb::Connect(host,user,pw,database,port) line=527 Server Connecting: DB=StarDb  Host=db12.star.bnl.gov:3316
+ --> Connection Time=0.103336 sec    MysqlVersion=5.1.73
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Unknown table tpc/tpcDedxPidAmpDb..tpcDedxPidAmpDb
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Unknown table tpc/tpcGainNorms..tpcGainNorms
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Unknown table tpc/tpcChargeStepCalib..tpcChargeStepCalib
+St_db_Maker:INFO  - St_db_Maker::OpenMySQL : Unknown table tpc/tpcHitErrors..tpcHitErrors
+StDAQMaker:INFO  - Open Input filest_fms_16088020_raw_5500016.MuDst.root
+INFO: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 191]: $Id: daqReader.cxx,v 1.67 2017/06/06 16:01:10 jml Exp $
+StDAQMaker:INFO  - StDAQReader::open the DAQ st_fms_16088020_raw_5500016.MuDst.root via 0daqReader ->0xcd445d0
+TEST ---- daqReaderDS @ 0xcd26038
+TEST ---- daqReader @ 0xcd5cd08
+UCM:INFO  - StageID='1',MessageKey='MemUsed',MessageValue='25'
+UCM:INFO  - StageID='1',MessageKey='ProgSize',MessageValue='377'
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostConstant  has No data for query
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostChannelGeometry  has No data for query
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostSlatId  has No data for query
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostPosition  has No data for query
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostMap  has No data for query
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostGain  has No data for query
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostStatus  has No data for query
+StFmsDbMaker:WARN  - StDbSql::QueryDb(table,time) line=439 fpostPed  has No data for query
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Calibration/fms/fmsTimeDepCorr
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Geometry/fpost/fpostConstant
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Geometry/fpost/fpostChannelGeometry
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Geometry/fpost/fpostSlatId
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Geometry/fpost/fpostPosition
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Geometry/fpost/fpostMap
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Calibration/fpost/fpostGain
+StFmsDbMaker:ERROR - StFmsDbMaker::InitRun - No Calibration/fpost/fpostStatus
+StFmsDbMaker:INFO  - StFmsDbMaker::InitRun - Got Geometry/fms/fmsPositionModel = 1
+StFmsDbMaker:WARN  - StFmsDbMaker::InitRun - fpsMap has more row than fpsConstant
+StFmsDbMaker:WARN  - StFmsDbMaker::InitRun - fpsMap has more slatid than fpsConstant
+StSpinDbMaker:INFO  - spinDb::InitRun=  16088020
+StSpinDbMaker:INFO  - spinDb::RequestDataBase(),
+     event time stamp=1427647338 , yyyy/mm/dd=20150329 hh/mm/ss=164218
+StSpinDbMaker:INFO  - spinDb::table 'spinV124': F18837, B111 Y111 B-+-++-+-+-+--+-++-+--+-+ Y++--++--++--++--++--++-- P2 , bsumma 
+StSpinDbMaker:INFO  - spinDb::table 'spinStar':  R16088020,BXoffsets,pass1 bsumma
+StSpinDbMaker:INFO  - spinDb::table 'spinBXmask': openF17579to, devika&jinlong
+StSpinDbMaker:INFO  - spinDb::Request isValid=1
+StSpinDbMaker:INFO  - spinDb::InitRun mOptimized()  nFillBunch blue=111 yellow=111,  CAD pol pattern=2015_noLabel
+        polDir=Transverse  bXing w/ pol2=102 pol1=18 unPol=0 errPol=0
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/SFS/sfs_index.cxx [line 307]: Error: root is not a valid specifier
+
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 873]: buff = roo  off=0
+WARNING: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 445]: Found a padding bug.  Adding 8192 to event size
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 873]: buff = Sas  off=0
+WARNING: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 445]: Found a padding bug.  Adding 8192 to event size
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 873]: buff = Þ¾ð  off=0
+WARNING: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 445]: Found a padding bug.  Adding 8192 to event size
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 873]: buff = ÷;d  off=0
+WARNING: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 445]: Found a padding bug.  Adding 8192 to event size
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 873]: buff = Õt  off=0
+WARNING: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 445]: Found a padding bug.  Adding 8192 to event size
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 873]: buff = ’  off=0
+WARNING: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 445]: Found a padding bug.  Adding 8192 to event size
+ERROR: .sl73_gcc485/obj/StRoot/RTS/src/DAQ_READER/daqReader.cxx [line 449]: Error finding next event...
+StDAQMaker:INFO  - *** StDAQMaker::Make() == StEOF(2) ***
+QA :INFO  - QAInfo:EventLoop completed code 2
+Mon Jun 18 11:20:34 EDT 2018
+QA :INFO  - QAInfo:Run is finished at Date/Time 20180618/112034; Total events processed :0 and not completed: 0
+QA :INFO  - =================================================================================
+QA :INFO  - QAInfo:Chain              StChain::StChain              Ast = 11.99        Cpu =  0.65 
+QA :INFO  - QAInfo:Maker      StFmsOFileMaker::FmsOFile             Ast =  0.02( 0.1%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker        StFmsFpsMaker::FmsFps               Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker      StFmsPointMaker::StFmsPointMaker      Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker        StFmsHitMaker::StFmsHitMaker        Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker   StTriggerDataMaker::trgd                 Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker         StEventMaker::StEventMaker         Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker     StRtsReaderMaker::rts_reader           Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker           StDAQMaker::daqMk                Ast =  0.51( 4.2%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker        StSpinDbMaker::spinDb               Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker         StFmsDbMaker::fmsDb                Ast =  0.00( 0.0%) Cpu =  0.00( 0.0%) 
+QA :INFO  - QAInfo:Maker          St_db_Maker::db                   Ast =  4.43(36.9%) Cpu =  0.41(63.1%) 
+QA :INFO  - QAInfo:Maker         StMuDstMaker::MuDst                Ast =  7.04(58.7%) Cpu =  0.24(36.9%) 
+StFmsOFileMaker:INFO  - Writing and closing st_fms_16088020_raw_5500016.fmsan.root
+<StDAQMaker::Finish> daqMk: 0 I/O's
+St_db_Maker::Init 
+Real time 0:00:00, CP time 0.160, 3 slices
+      MySQL::Init 
+Real time 0:00:04, CP time 0.250, 2 slices
+St_db_Maker::Make 
+Real time 0:00:00, CP time 0.000, 46 slices
+      MySQL::Make 
+Real time 0:00:05, CP time 0.230, 40 slices
+      MySQL::Data 
+Real time 0:00:05, CP time 0.230, 39 slices
+StChain:INFO  - --------------Error Codes-------------------------
+StChain:INFO  -      nStOK   nStWarn    nStEOF    nStErr  nStFatal
+StChain:INFO  -          4         0         1         0         0
+StChain:INFO  - --------------------------------------------------
+               StMemStat::Summary(calls)        Min        Aver         Max         RMS 
+=============================================================================================
+BFC:INFO  - StDbConfigNodeImpl::printNumberStats() line=458 ******************** Number Stats ******************** 
+Total Number of Nodes        = 364
+Total Number of Tables       = 641
+Total Size of Data in Tables = 437.82 kBytes
+******************************************************
+
+BFC:INFO  - StDbManagerImpl::printTimeStats() line=1609 
+*************************** DataBase ClockTime Stats *************************** 
+Total Time in DB-API       = 10.2404	 sec
+ --------------------- In aggregate ------------------
+ - Prepare Nodes & Servers = 4.25821	 sec --> 41.5825% of total
+ - Select & Retrieve data  = 5.98218	 sec --> 58.4175% of total
+ --------------- In MySQL C-API (approximate) ---------
+ - Connecting to Servers   = 0.103485	 sec --> 1.01056% of total
+ - SQL Query Times         = 9.38175	 sec --> 91.6152% of total
+ - socket transfer Times   = 0.40662	 sec --> 3.97075% of total
+********************************************************************************
+
+
+This is the end of ROOT -- Goodbye
+

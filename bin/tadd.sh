@@ -1,20 +1,21 @@
 #!/bin/bash
 
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
 then
-    echo "Syntax: ./$0 <runList>  <FilePrefix> <optional: use root-6 version = r6>"
+    echo "Syntax: ./$0 <runList>  <FolderName> <FilePrefix> <optional: use root-6 version = r6>"
     exit
 fi
 
-if [ "$3" == "r6" ]
+if [ "$4" == "r6" ]
 then
     source  ~/TOOLS/root6_18/bin/thisroot.sh
 fi
 
 RunList=$1
-FilePrefix=$2
-InputDir=$STARHOME/jobResults
-OutDir=$STARHOME/results/root/${FilePrefix}
+FolderName=$2
+FilePrefix=$3
+InputDir=$STARHOME/jobResults/${FolderName}
+OutDir=$STARHOME/results/root/${FolderName}
 TIME=`date "+%Y%m%d%I"`
 
 mkdir -p $OutDir

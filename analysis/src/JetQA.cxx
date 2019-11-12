@@ -1,41 +1,44 @@
 #include "StRootInclude.h"
 #include "RootInclude.h"
 #include "cppInclude.h"
-
+#include "JetQA.h"
 
 void JetQA(
-            Int_t nentries,
 	    TString jetfile,
 	    TString skimfile,
-	    TString outfile
+	    TString outfile,
+	    Int_t nentries
     )
 {
+
     cout << "nentries = " << nentries << endl;
     cout << "jetfile  = " << jetfile  << endl;
     cout << "skimfile = " << skimfile << endl;
     cout << "outfile = " << outfile << endl;
 
-    // Load libraries
-    // gSystem->Load("StJetEvent");
-    // gSystem->Load("StJetSkimEvent");
-
     // Open jet & skim files
-    TChain* jetChain = new TChain("jet");
-    TChain* skimChain = new TChain("jetSkimTree");
+    TChain* jet = new TChain("jet");
+    TChain* skim = new TChain("jetSkimTree");
 
     Int_t nFiles_jet, nFiles_skim;
-    nFiles_jet = jetChain->Add(jetfile);
-    nFiles_skim = skimChain->Add(skimfile);
+    nFiles_jet = jet->Add(jetfile);
+    nFiles_skim = skim->Add(skimfile);
 
-    Int_t nEvents = jetChain->GetEntries();
+    Int_t nEvents = jet->GetEntries();
     if(nentries == -1 || nentries > nEvents)
 	nentries = nEvents;
 
     cout << "Number of files added: "<<nFiles_jet <<endl;
     cout << "Total Entries to be processed: "<< nentries <<endl;
     //Check if added files are sorted properly which is crucial for skimChain vs jetChain synchronization
-    jetChain->ls();
-    skimChain->ls();
+    jet->ls();
+    skim->ls();
+
+    JetQA(jet, skim, outfile, nentries);
+}
+
+void JetQA(TChain *jetChain, TChain *skimChain, TString outfile, Int_t nentries)
+{
     // Set jet buffer
     StJetEvent* jetEvent = 0;
     jetChain->SetBranchAddress("AntiKtR060NHits12",&jetEvent);
