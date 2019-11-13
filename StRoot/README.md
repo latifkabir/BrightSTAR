@@ -10,7 +10,7 @@ Description of inherited modules
 - BrPicoMaker: Mini Tree maker out of Pico DST files. Modified based on another anallyzer's code.
 - StFmsJetAnalysisMaker: Based on Zhanwen's FMS jet analysis maker.
 - StFmsOFileMaker: Chris Dilks' FMS+RP DST maker
-- StMuRpsUtil: After burner for RP. Not available in STAR-CVS.
+- StMuRpsUtil: After burner for RP. Not available in STAR-CVS. The alignment and hot-strips list are for run 15 only. This will work only from top level directory of Bright STAR.
 
 
 
