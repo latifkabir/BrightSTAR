@@ -52,6 +52,7 @@ RunEmcCalibTreeMaker : EMC Calibration Tree Maker
 RunPicoMiniTreeMaker : Mini Tree Maker from PicoDst
 RunFemtoDstMaker     : Make Femto DST from MuDst
 RunPidTreeMaker      : PID Tree Maker using TPC and BTOF
+
 --------  List of yet to be compiled scripts -----------
 
 RunEmcJetFinder : EMC Jet Tree Maker
@@ -59,5 +60,6 @@ RunPicoDstMaker : Make PicoDST files from MuDst files
 RunEmcCalibTreeMaker : EMC Calibration Tree Maker
 RunPicoMiniTreeMaker : Mini Tree Maker from PicoDst
 RunFemtoDstMaker     : Make Femto DST from MuDst
+RunFmsOFileMaker     : PSU FMS + RP Tree maker 
 
 */

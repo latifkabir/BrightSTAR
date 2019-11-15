@@ -18,7 +18,7 @@
 #pragma link C++ function FmsQAusingMaker;                // FMS QA for cell status using maker
 #pragma link C++ function FmsCellStatus;                  // FMS cell status list and plot
 #pragma link C++ function FmsPi0InvMass1;                 // FMS Pi0 Invariant mass directly from MuDST files.
-#pragma link C++ function FmsPi0MakerEx;                  // FMS Pi0 Invariant mass directly from MuDST files using StFmsPointPair.
+#pragma link C++ function FmsPi0MakerEx;                  // FMS Pi0 Invariant mass with on-the-fly reconstruction.
 
 //EMC
 #pragma link C++ function EmcQA;                          // EMC QA 

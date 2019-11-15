@@ -93,6 +93,7 @@
 #include "StMuDSTMaker/COMMON/StMuFmsInfo.h"
 #include "StFmsDbMaker/StFmsDbMaker.h"
 #include "StEvent/StFmsPointPair.h"
+#include "StEvent/StFmsCollection.h"
 #include "StFmsHitMaker/StFmsHitMaker.h"
 #include "StFmsPointMaker/StFmsPointMaker.h"
 

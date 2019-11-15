@@ -1,5 +1,5 @@
 // Filename: FmsPi0Maker.C
-// Description: Pi0 (two photons) Invariant Mass directly from MuDST files.
+// Description: Pi0 (two photons) Invariant Mass from on the fly recoonstruction.
 // Author: Latif Kabir < latif@jlab.org >
 // Created: Mon May 20 15:04:13 2019 (-0400)
 // URL: jlab.org/~latif
