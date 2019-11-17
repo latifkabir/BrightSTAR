@@ -1,5 +1,6 @@
 #!/bin/bash
 
+## hadd does not add root files in sorted order when the digits are not of the same size. The following solution is a work-around for this.
 ## This is an example only
 ## This is a nasty and hard way of merging root files in sorted order using hadd of the same run.
 ## This is error prone and must check the output from hadd to ensure it did it properly.

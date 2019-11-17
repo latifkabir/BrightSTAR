@@ -17,20 +17,26 @@
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TTree.h"
+#include "TFile.h"
 
 class StEvent;
 class StMuDst;
+class StMuEvent;
 class StFmsPointPair;
 class StFmsCollection;
+class StSpinDbMaker;
 
 class TStFmsRpTreeMaker : public StMaker
 {
 private:
     StMuDst *mMuDst;  
     StEvent *mEvent;
+    StMuEvent *mMuEvent;
     TString mName;
     
-    StFmsDbMaker *mFmsDbMk;    
+    StFmsDbMaker *mFmsDbMk;
+    StSpinDbMaker *mSpinDbMaker;
+    
     StFmsCollection *mFmsColl;    
     StFmsPointPair *mPair;
     TH1D *mHist1d;
@@ -41,10 +47,32 @@ private:
     StMuRpsTrackPoint  *mRpsTrkPoint;
     StMuRpsTrack *mRpsTrk;
 
+    TFile *mFile;
     TTree *mTree;
+    Bool_t mSaveFile;
     static const Int_t kMaxPairs = 1000;
     static const Int_t kMaxRpTracks = 1000;
 
+    Int_t  mBunchid7bit;
+    Int_t  mSpin4bit;
+    vector <Int_t> mTrigIDs;
+    vector <Int_t>::iterator mIt;
+
+    //Event Buffer
+    Int_t mEventId;
+    Short_t mBspin;
+    Short_t mYspin;
+    Int_t mTrigFlag;
+    
+    Int_t mBbcADCSum[2];
+    Int_t mBbcADCSumLarge[2];
+    Int_t mBbcEarliestTDC[2];
+    Int_t mBbcEarliestTDCLarge[2];
+
+    Int_t mZdcADCSum[2];
+    Int_t mVpdADCSum[2];
+    Int_t mTofMultiplicity;
+        
     //FMS Buffer
     //Not sure if saving points or pointPair (and in Lorentz Vector or separate quantity) would be the best option (to be revisited later)
     Int_t mFmsNpairs;
@@ -70,9 +98,10 @@ private:
     Double_t *mRpTrackPt;
     Double_t *mRpTrackXi;
     Double_t *mRpTrackMt;      // -t of the RP track
-    
+
 protected:
-    
+    void SetBranches();
+    void ResetBuffer();
 public: 
     TStFmsRpTreeMaker(const char *name  = "TStFmsRpTreeMaker");
     virtual ~TStFmsRpTreeMaker();
@@ -82,11 +111,12 @@ public:
     Int_t MakeRps();
     Int_t MakeEvent();
     virtual Int_t Finish();
-    // virtual Int_t InitRun  (int runumber){return 0;}; // Overload empty StMaker::InitRun 
-    // virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
+    virtual Int_t InitRun  (int runumber); 
+    virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
     void Set1dHist(TH1D *h1d){ mHist1d = h1d;}
     void Set2dHist(TH2D *h2d){ mHist2d = h2d;}
-
+    void SetTrigIDs(vector<Int_t> trigIDs){ mTrigIDs = trigIDs;}
+    void SetTree(TTree *tree){mTree = tree; mSaveFile = kFALSE;}
     ClassDef(TStFmsRpTreeMaker,1) 
 };
 
