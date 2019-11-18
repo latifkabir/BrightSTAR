@@ -11,14 +11,15 @@
 void RunFmsOFileMaker(TString file="st_fms_16088020_raw_5500016.MuDst.root",Int_t runnum=16088020,
                char * jobid="single",
                int ifile=-1,
-               Int_t nevt=10000 
+               Int_t nevt=10000000 
               )
 {  
   // load libraries
   loadLibs();
 
   //file = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/066/16066033/st_fms_16066033_raw_0000005.MuDst.root";
-  file = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/071/16071046/st_physics_16071046_raw_1500013.MuDst.root";
+  file = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/066/16066050/st_fms_16066050_raw_1000002.MuDst.root";
+
   // instantiate muDstMaker ==========================================================
 
   // chain and mudst maker
@@ -196,7 +197,7 @@ void RunFmsOFileMaker(TString file="st_fms_16088020_raw_5500016.MuDst.root",Int_
 void loadLibs()
 {
   // STAR libraries for chain, MuDST, logger etc
-  gROOT->Macro("loadMuDst.C");
+    //gROOT->Macro("loadMuDst.C");
   gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
   loadSharedLibraries();
   //gROOT->Macro("LoadLogger.C");
@@ -228,7 +229,7 @@ void loadLibs()
   gSystem->Load("StFmsDbMaker");
   gSystem->Load("StFmsHitMaker");
   gSystem->Load("StFmsPointMaker");
-  gSystem->Load("StFmsTriggerMaker");
+  //gSystem->Load("StFmsTriggerMaker");
   gSystem->Load("StFmsFpsMaker");
   gSystem->Load("StMuRpsUtil.so");
 

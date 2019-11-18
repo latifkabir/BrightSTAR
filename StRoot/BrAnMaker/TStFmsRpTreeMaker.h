@@ -46,7 +46,8 @@ private:
     StMuRpsCollection *mRpsMuColl;
     StMuRpsTrackPoint  *mRpsTrkPoint;
     StMuRpsTrack *mRpsTrk;
-
+    Double_t mBeamMom;
+    
     TFile *mFile;
     TTree *mTree;
     Bool_t mSaveFile;
@@ -59,6 +60,7 @@ private:
     vector <Int_t>::iterator mIt;
 
     //Event Buffer
+    Int_t mRunNumber;
     Int_t mEventId;
     Short_t mBspin;
     Short_t mYspin;
@@ -102,6 +104,7 @@ private:
 protected:
     void SetBranches();
     void ResetBuffer();
+    Bool_t AcceptEvent();
 public: 
     TStFmsRpTreeMaker(const char *name  = "TStFmsRpTreeMaker");
     virtual ~TStFmsRpTreeMaker();
@@ -117,6 +120,7 @@ public:
     void Set2dHist(TH2D *h2d){ mHist2d = h2d;}
     void SetTrigIDs(vector<Int_t> trigIDs){ mTrigIDs = trigIDs;}
     void SetTree(TTree *tree){mTree = tree; mSaveFile = kFALSE;}
+    void SetBeamMomentum(Double_t beamMom){ mBeamMom = beamMom;}
     ClassDef(TStFmsRpTreeMaker,1) 
 };
 

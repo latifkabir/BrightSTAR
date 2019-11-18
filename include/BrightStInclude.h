@@ -10,6 +10,7 @@
 #include "TStar.h"
 #include "TStRunList.h"
 #include "TStConfig.h"
+#include "TStTrigDef.h"
 
 
 #endif

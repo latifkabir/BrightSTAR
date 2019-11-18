@@ -12,13 +12,14 @@ endif
 LIB_DIR = libBrStar
 ANA_DIR = analysis
 MACRO_DIR = runMacros
+DIFFANA_DIR = diffAnalysis
 # makefile name
 MAKE_FILE = Makefile
 
 ####### Build rules
 first: all
 
-.PHONY: lib ana cons macro
+.PHONY: lib ana cons macro diff
 
 all: lib ana cons macro 
 	@echo "done!"	
@@ -27,6 +28,9 @@ lib:
 
 ana: lib
 	$(MAKE) -C $(ANA_DIR) -f $(MAKE_FILE)
+
+diff: lib
+	$(MAKE) -C $(DIFFANA_DIR) -f $(MAKE_FILE)
 
 macro: cons
 	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE)
@@ -44,6 +48,9 @@ cleanlib:
 
 cleanana:
 	$(MAKE) -C $(ANA_DIR) -f $(MAKE_FILE) clean
+
+cleandiff:
+	$(MAKE) -C $(DIFFANA_DIR) -f $(MAKE_FILE) clean
 
 cleanmacro:
 	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE) clean

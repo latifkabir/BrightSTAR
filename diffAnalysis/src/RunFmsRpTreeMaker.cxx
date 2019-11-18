@@ -4,14 +4,25 @@
 // Created: Wed Nov 13 17:25:43 2019 (-0500)
 // URL: jlab.org/~latif
 
-void RunFmsRpTreeMaker()
-{
-    TStRunList::MakeFileList(16072057, 1);
-    TString fileList = TStar::Config->GetFileList();
+#include "StRootInclude.h"
+#include "RootInclude.h"
+#include "BrightStInclude.h"
+#include "BrAnMaker/TStFmsRpFilterMaker.h"
+#include "BrAnMaker/TStFmsRpTreeMaker.h"
 
-    TFile *f = new TFile("FmsRpTree.root", "RECREATE");
-    TH1D *massDist = new TH1D("massDist","#pi^{0} invariant mass [GeV]; M_{#pi^{0}} [GeV]",200,0.0,1.0);
-    TH2D *xyDist = new TH2D("xyDist", "xyDist", 200, -100.0, 100.0, 200, -100.0, 100.0);
+#include <vector>
+#include <iostream>
+using namespace std;
+
+void RunFmsRpTreeMaker(TString fileList, TString outFile)
+{
+    //TStRunList::MakeFileList(16072057, 1);
+    //fileList = TStar::Config->GetFileList();
+    //fileList = "/star/u/kabir/pwg/data/st_fms_16066050_raw_5000002.MuDst.root";
+
+    TFile *f = new TFile(outFile, "RECREATE");
+    //1D *massDist = new TH1D("massDist","#pi^{0} invariant mass [GeV]; M_{#pi^{0}} [GeV]",200,0.0,1.0);
+    //2D *xyDist = new TH2D("xyDist", "xyDist", 200, -100.0, 100.0, 200, -100.0, 100.0);
     TTree *tree = new TTree("T", "RP + FMS Tree");
     
     vector<Int_t> trigs(9);
@@ -26,6 +37,8 @@ void RunFmsRpTreeMaker()
     trigs[7] = TStTrigDef::GetTrigId("FMS-lg-bs2");
     trigs[8] = TStTrigDef::GetTrigId("FMS-lg-bs3");
 
+    gMessMgr->SetLimit("I", 0);   //Disable StInfo messages including Skipped event message
+    gMessMgr->SetLimit("Q", 0);   //Disable StQAInfo messages (includes event processing status)
     
     StChain *chain = new StChain;
     StMuDstMaker *muDstMaker = new StMuDstMaker(0, 0, "", fileList, "", 1000);
@@ -40,17 +53,27 @@ void RunFmsRpTreeMaker()
     muDstMaker->SetStatus("Fms*", 1);
     muDstMaker->SetStatus("pp2pp*", 1);
     muDstMaker->SetStatus("MuEvent*", 1);
+
+    //--------------
+    TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("");
+    for(Int_t i = 0; i < trigs.size(); ++i)
+	filterMaker->addTrigger(trigs[i]); 
+
+    //----------------
+
+    
     StEventMaker* eventMk = new StEventMaker();
     StFmsHitMaker*   fmsHitMk   = new StFmsHitMaker();
     StFmsPointMaker* fmsPointMk = new StFmsPointMaker();
     // FPS
     StFmsFpsMaker * fpsMk = new StFmsFpsMaker();
     
-    TStFmsRpTreeMaker *FmsRpTreeMk = new TStFmsRpTreeMaker("Pi0Maker");
-    FmsRpTreeMk->Set1dHist(massDist);
-    FmsRpTreeMk->Set2dHist(xyDist);
+    TStFmsRpTreeMaker *FmsRpTreeMk = new TStFmsRpTreeMaker("TStFmsRpTreeMaker");
+    //FmsRpTreeMk->Set1dHist(massDist);
+    // FmsRpTreeMk->Set2dHist(xyDist);
     FmsRpTreeMk->SetTrigIDs(trigs);
     FmsRpTreeMk->SetTree(tree);
+    FmsRpTreeMk->SetBeamMomentum(100.0);
     
     // mudst reading
     // if 0, get info from StTriggerData from StTriggerDataMaker/StEvent/MuDst
@@ -73,10 +96,16 @@ void RunFmsRpTreeMaker()
     // vertex correction
     // if 0, no vertex correction; if 1, use MuDst BBC vertex based on run11 calibration (needs update?)
     fmsPointMk->setVertexZ(1); // (1)
+
+    Int_t nEvents = muDstMaker->chain()->GetEntries();
+    cout << "Total Events to be processed: "<< nEvents <<endl;
     
     chain->Init();    
-    chain->EventLoop();  // Run specified number of events
+    chain->EventLoop(nEvents);  // Run specified number of events
     chain->Finish();
 
     f->Write();
+    f->Close();
+
+    delete chain;
 }

@@ -18,6 +18,7 @@ ClassImp(TStFmsRpTreeMaker)
 //_____________________________________________________________________________ 
 TStFmsRpTreeMaker::TStFmsRpTreeMaker(const char *name):StMaker(name)
 {
+    mBeamMom = 100.0; //Overwrite from runMacro
     //FMS Buffer
     mFmsPairE = new Double_t[kMaxPairs];
     mFmsPairM = new Double_t[kMaxPairs];
@@ -110,6 +111,7 @@ Int_t TStFmsRpTreeMaker::InitRun(int runnumber)
 void TStFmsRpTreeMaker::SetBranches()
 {
     //Event branches    
+    mTree->Branch("evt_run", &mRunNumber, "evt_run/I");
     mTree->Branch("evt_id", &mEventId, "evt_id/I");
     mTree->Branch("evt_bSpin", &mBspin, "evt_bSpin/S");
     mTree->Branch("evt_ySpin", &mYspin, "evt_ySpin/S");
@@ -152,6 +154,7 @@ void TStFmsRpTreeMaker::SetBranches()
 //_____________________________________________________________________________
 void TStFmsRpTreeMaker::ResetBuffer()
 {
+    mRunNumber = -1;
     mEventId = -1;
     mBspin = 0;
     mYspin = 0;
@@ -198,6 +201,9 @@ Int_t TStFmsRpTreeMaker::Make()
     }
     mMuEvent = mMuDst->event();
 
+    if(!AcceptEvent())
+	return kStSkip;
+    
     ResetBuffer();
     
     Int_t status = kStOK;
@@ -214,13 +220,8 @@ Int_t TStFmsRpTreeMaker::Make()
     return status;    
 }
 //_____________________________________________________________________________
-Int_t TStFmsRpTreeMaker::MakeEvent()
+Bool_t TStFmsRpTreeMaker::AcceptEvent()
 {
-    //bXing id (long, short), evet number, spin state, 
-    //Trigger ids    
-
-    mEventId = mMuEvent->eventId();
-    
     //Trigger flag
     mTrigFlag = 0;
     for(mIt = mTrigIDs.begin(); mIt != mTrigIDs.end(); ++mIt)
@@ -230,11 +231,31 @@ Int_t TStFmsRpTreeMaker::MakeEvent()
 	    break;
     }
     if(mTrigFlag == 0)
-	return kStSkip;
+	return kFALSE;
+    mRpsMuColl = mMuDst->RpsCollection();
+    if(!mRpsMuColl)
+    {
+	cout<<"No RP data for this event"<<endl;
+	return kFALSE;
+    }    
+    if(mRpsMuColl->numberOfTracks() < 1)
+	return kFALSE;
 
     //Skip LED trigger events here
     //Skip abort gap events here
     
+    return kTRUE;
+}
+//_____________________________________________________________________________
+Int_t TStFmsRpTreeMaker::MakeEvent()
+{
+    //bXing id (long, short), evet number, spin state,
+    //Save trigger bit here, chck OFile maker for example
+    
+    //Save Trigger bit here
+    mRunNumber = mMuEvent->runNumber();
+    mEventId = mMuEvent->eventId();
+        
     // BBC, ZDC, VPD branches <------- To be verified/revisited
     for(Int_t ew = 0; ew < 2; ew++)
     {
@@ -354,8 +375,8 @@ Int_t TStFmsRpTreeMaker::MakeRps()
 	mRpTrackPhi[i] = mRpsMuColl->track(i)->phi();
 	mRpTrackPt[i] = mRpsMuColl->track(i)->pt();		
 	mRpTrackP[i] = mRpsMuColl->track(i)->p();		
-	mRpTrackXi[i] = mRpsMuColl->track(i)->xi(100.0); // Beam momentum is approximate		
-	mRpTrackMt[i] = -1.0*mRpsMuColl->track(i)->t(100.0);		
+	mRpTrackXi[i] = mRpsMuColl->track(i)->xi(mBeamMom); // Beam momentum is approximate		
+	mRpTrackMt[i] = -1.0*mRpsMuColl->track(i)->t(mBeamMom);		
     }
             
     return kStOk;    

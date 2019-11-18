@@ -122,7 +122,8 @@
     gSystem->Load("BrAnMaker");    
     
     gSystem->Load("libRunMacros.so");
-
+    gSystem->Load("libDiffAnalysis.so");
+    
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";
     int status1 = gSystem->Load("libBrStar.so");

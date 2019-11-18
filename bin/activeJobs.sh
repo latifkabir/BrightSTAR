@@ -2,4 +2,5 @@
 
 
 #Number of active jobs
-condor_q -global | grep $USER | grep "jobs"  | wc -l
+#condor_q -global | grep $USER | grep "exec"  | wc -l > /star/u/kabir/GIT/BrightSTAR/resources/temp/ActiveJobs.txt
+condor_q -global | grep $USER | grep "condor"  | wc -l > /star/u/kabir/GIT/BrightSTAR/resources/temp/ActiveJobs.txt

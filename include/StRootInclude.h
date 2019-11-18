@@ -96,6 +96,7 @@
 #include "StEvent/StFmsCollection.h"
 #include "StFmsHitMaker/StFmsHitMaker.h"
 #include "StFmsPointMaker/StFmsPointMaker.h"
+#include "StFmsFpsMaker/StFmsFpsMaker.h"
 
 //=========Trigger=============
 #include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"

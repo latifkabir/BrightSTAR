@@ -21,12 +21,12 @@ ClassImp(TStRunList)
 
 TStRunList::TStRunList()
 {
-
+    runList = new TEntryList();
 }
 
 TStRunList::~TStRunList()
 {
-    
+    delete runList;
 }
 
 void TStRunList::PrintRunList()
@@ -259,6 +259,55 @@ Int_t TStRunList::ViewRunList(Int_t firstRun, Int_t lastRunOrNruns)
     }
     i.close();
     return runCount;
+}
+
+TEntryList* TStRunList::GetRunList(Int_t firstRun, Int_t lastRunOrNruns)
+{
+    runList->Reset();
+ 
+    Int_t lastRun = -1;
+    Int_t limit = -1;
+    Int_t runCount = 0;
+    if(firstRun == -1 && lastRunOrNruns == -1)
+    {
+	firstRun = GetFirstRun();
+	lastRunOrNruns = GetLastRun();
+    }
+    
+    if(lastRunOrNruns == -1)
+	lastRun = firstRun;
+    else if(lastRunOrNruns != -1 && lastRunOrNruns < firstRun)
+    {
+	limit = lastRunOrNruns;
+	lastRun = GetLastRun();
+    }
+    else if(lastRunOrNruns >= firstRun)
+	lastRun = lastRunOrNruns;
+     
+    TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
+    std::ifstream i(TStar::Config->GetRunListDB());
+    json j;
+    i >> j;
+
+    Int_t rNumber;
+    Int_t prevRun = 0;
+    for(int i = 0; i < j.size(); ++i)
+    {
+	if(j[i]["run"] >= firstRun && j[i]["run"] <= lastRun)
+	{
+	    rNumber = j[i]["run"];
+	    if(rNumber != prevRun)
+	    {
+		runList->Enter(rNumber);
+		++runCount;
+	    }
+	    prevRun = rNumber;
+	    if(limit == runCount)
+		break;
+        }
+    }
+    i.close();
+    return runList;
 }
 
 
