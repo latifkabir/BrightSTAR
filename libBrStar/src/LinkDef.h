@@ -13,5 +13,6 @@
 #pragma link C++ function JobStatus;             // Check Job Status
 #pragma link C++ function SubmitJob;             // Sumit Condor Job
 #pragma link C++ function SubmitSumsJob;         // Sumit Job using SUMS
+#pragma link C++ function CronJob;               // Cron job for job-submission 
 
 #endif

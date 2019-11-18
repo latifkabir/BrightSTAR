@@ -4,8 +4,22 @@
 // Created: Sun Sep  8 16:58:40 2019 (-0400)
 // URL: jlab.org/~latif
 
-#include<unistd.h> 
-void FmsRpTreeJobs(TString functionName)
+#include <unistd.h>
+#include <fstream>
+#include <iostream>
+#include "TROOT.h"
+#include "TEntryList.h"
+#include "TStar.h"
+#include "TSystem.h"
+
+#include "TStRunList.h"
+#include "TStConfig.h"
+#include "CronJob.h"
+#include "SubmitJob.h"
+
+using namespace std;
+
+void CronJob(TString functionName)
 {
     TStRunList *list = new TStRunList();
     TEntryList *runList = list->GetRunList();
@@ -21,30 +35,30 @@ void FmsRpTreeJobs(TString functionName)
     Int_t runIncrement = 20;
     Int_t activeJobs = 9999;
     Int_t jobThreshold = 100;
-    
-    
+
+    TString command_sh = TStar::Config->GetStarHome() + (TString)"/bin/activeJobs.sh"; 
+    TString fileName = TStar::Config->GetStarHome() + (TString)"/resources/temp/ActiveJobs.txt";
+        
     cout << "First run: "<< firstRun <<endl;
     cout << "Last run: "<< lastRun <<endl;
 
     while(endRun < lastRun || index_e < (totRuns -1))
     {	
 	//Read number of active jobs
-	TString sh_path = "/star/u/kabir/GIT/BrightSTAR/bin/activeJobs.sh";
-	TString command_sh = ".! /star/u/kabir/GIT/BrightSTAR/bin/activeJobs.sh";
-	if(gSystem->AccessPathName(sh_path))
+	if(gSystem->AccessPathName(command_sh))
 	{
-	    cout << "shell script NOT found at: "<<sh_path<<endl;
+	    cout << "shell script NOT found at: "<<command_sh<<endl;
 	    return;
 	}
-	gROOT->ProcessLine(command_sh);
-	ifstream fileName("/star/u/kabir/GIT/BrightSTAR//resources/temp/ActiveJobs.txt");
-	if(!fileName)
+	gROOT->ProcessLine((TString)".! " + command_sh);
+	ifstream inFile(fileName);
+	if(!inFile)
 	{
 	    cout << "Unable to open active job number record"<<endl;
 	    return;
 	}
-	fileName >> activeJobs;
-	fileName.close();
+	inFile >> activeJobs;
+	inFile.close();
 	cout << "Currently number of active jobs: "<< activeJobs <<endl;
 
 	if(activeJobs < jobThreshold)
@@ -57,7 +71,10 @@ void FmsRpTreeJobs(TString functionName)
 	    if(startRun == -1)
 		break;
 	    cout << "Submitting jobs for run range: "<< startRun << " to "<< endRun <<endl;
-	    //echo "This is a Test" | mail -s "New Job Submission" kabir@rcf.rhic.bnl.gov
+	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement);
+	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" kabir@rcf.rhic.bnl.gov";
+	    gROOT->ProcessLine(emailCommand);
+	                           	    
 	    SubmitJob(functionName, startRun, endRun);
 	    index += (runIncrement + 1);
 	    if(index >= totRuns)
