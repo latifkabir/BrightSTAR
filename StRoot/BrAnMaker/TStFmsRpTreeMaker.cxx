@@ -120,7 +120,7 @@ void TStFmsRpTreeMaker::SetBranches()
     mTree->Branch("evt_bSpin", &mBspin, "evt_bSpin/S");
     mTree->Branch("evt_ySpin", &mYspin, "evt_ySpin/S");
     mTree->Branch("evt_nTrig", &mNtrig, "evt_nTrig/I");
-    mTree->Branch("evt_Triggers", &mTriggers, "evt_Triggers[evt_nTrig]/I");
+    mTree->Branch("evt_Triggers", mTriggers, "evt_Triggers[evt_nTrig]/I");
     
     mTree->Branch("evt_bbcADCSum", mBbcADCSum, "evt_bbcADCSum[2]/I");
     mTree->Branch("evt_bbcADCSumLarge", mBbcADCSumLarge, "evt_bbcADCSumLarge[2]/I");
@@ -146,7 +146,7 @@ void TStFmsRpTreeMaker::SetBranches()
 
     //RP branches
     mTree->Branch("rp_nTracks", &mRpNtracks, "rp_nTracks/I");
-    mTree->Branch("rp_trackBranch", mRpTrackBranch, "rp_trackBranch[rp_nTracks]/D");        
+    mTree->Branch("rp_trackBranch", mRpTrackBranch, "rp_trackBranch[rp_nTracks]/I");        
     mTree->Branch("rp_trackTheta", mRpTrackTheta, "rp_trackTheta[rp_nTracks]/D");        
     mTree->Branch("rp_trackTheta_x", mRpTrackTheta_x, "rp_trackTheta_x[rp_nTracks]/D");        
     mTree->Branch("rp_trackTheta_y", mRpTrackTheta_y, "rp_trackTheta_y[rp_nTracks]/D");        

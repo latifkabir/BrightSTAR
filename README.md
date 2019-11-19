@@ -1,14 +1,14 @@
 Bright STAR
 ============
 
-Analysis framework (with brightness) for the STAR data at the RHIC.
+Analysis framework (with brightness) for the STAR data at RHIC.
 
 Directory structure
 --------------------
 
 - `libBrStar`: Main Bright STAR classes. Functionality added on top on `StRoot`. Class name starts with `TSt`.
 - `StRoot`: StRoot classes. Based on StMaker design. Used to generate user defined pico DST.
-- `analysis`: analysis example for each detector.
+- `analysis`: Prototype analysis example for each detector.
 - `diffAnalysis`: Main analysis scripts for the physics analysis. A_N specific scripts starts with `An`. Detector specific scripts start with the acronym of the detector.
 - `runMacros`: Compilable macros to run the Makers from StRoot.
 
