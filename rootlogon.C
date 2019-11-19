@@ -15,7 +15,12 @@
     	cout<<"Please run \"source setup.[c]sh\" to load environments before you start ROOT"<<endl;
     	gApplication->Terminate();
     }
-
+    //-------------------------------------------------------------
+    // if you want to use root.exe instead of root4star, uncomment block below:
+    gSystem->AddDynamicPath("/usr/lib/mysql");
+    gSystem->AddDynamicPath("/usr/lib64/mysql");
+    gSystem->AddDynamicPath("$OPTSTAR/lib/mysql/");
+    gSystem->Load("libmysqlclient");
     //--------- Dynamically link needed shared lib----------------
     //Root
     gSystem->Load("libMinuit.so");
