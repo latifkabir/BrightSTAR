@@ -13,969 +13,1112 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
 Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071010
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16071010_0000003.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092065
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16092065_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071010_1000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_1000012.MuDst.root	RunFmsRpTreeMaker_16092065_1000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071010_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_1000019.MuDst.root	RunFmsRpTreeMaker_16092065_1000019.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16071010_2000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16092065_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071010_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16092065_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16071010_3000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_2000014.MuDst.root	RunFmsRpTreeMaker_16092065_2000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_3000014.MuDst.root	RunFmsRpTreeMaker_16071010_3000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_2000041.MuDst.root	RunFmsRpTreeMaker_16092065_2000041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_4000004.MuDst.root	RunFmsRpTreeMaker_16071010_4000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16092065_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071010_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_2500013.MuDst.root	RunFmsRpTreeMaker_16092065_2500013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071010_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16092065_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_16071010_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071010_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_4000003.MuDst.root	RunFmsRpTreeMaker_16092065_4000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071010/st_fms_adc_16071010_raw_0000005.MuDst.root	RunFmsRpTreeMaker_16071010_0000005.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_4000013.MuDst.root	RunFmsRpTreeMaker_16092065_4000013.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071016
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_1000004.MuDst.root	RunFmsRpTreeMaker_16071016_1000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16092065_4500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_1000016.MuDst.root	RunFmsRpTreeMaker_16071016_1000016.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_4500043.MuDst.root	RunFmsRpTreeMaker_16092065_4500043.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16071016_1500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_4500055.MuDst.root	RunFmsRpTreeMaker_16092065_4500055.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16071016_2000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_5000002.MuDst.root	RunFmsRpTreeMaker_16092065_5000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_2000014.MuDst.root	RunFmsRpTreeMaker_16071016_2000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_5000042.MuDst.root	RunFmsRpTreeMaker_16092065_5000042.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071016_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_5000054.MuDst.root	RunFmsRpTreeMaker_16092065_5000054.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_2500013.MuDst.root	RunFmsRpTreeMaker_16071016_2500013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16092065_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16071016_3000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_16092065_raw_5500043.MuDst.root	RunFmsRpTreeMaker_16092065_5500043.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_3000011.MuDst.root	RunFmsRpTreeMaker_16071016_3000011.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092065/st_fms_adc_16092065_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16092065_0000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071016_4000001.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092066
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_0000004.MuDst.root	RunFmsRpTreeMaker_16092066_0000004.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_4000012.MuDst.root	RunFmsRpTreeMaker_16071016_4000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16092066_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071016_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_1000012.MuDst.root	RunFmsRpTreeMaker_16092066_1000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_4500031.MuDst.root	RunFmsRpTreeMaker_16071016_4500031.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_1000020.MuDst.root	RunFmsRpTreeMaker_16092066_1000020.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_5000003.MuDst.root	RunFmsRpTreeMaker_16071016_5000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16092066_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_5000018.MuDst.root	RunFmsRpTreeMaker_16071016_5000018.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_2000004.MuDst.root	RunFmsRpTreeMaker_16092066_2000004.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_5500005.MuDst.root	RunFmsRpTreeMaker_16071016_5500005.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_2000011.MuDst.root	RunFmsRpTreeMaker_16092066_2000011.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_16071016_raw_5500014.MuDst.root	RunFmsRpTreeMaker_16071016_5500014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_2000018.MuDst.root	RunFmsRpTreeMaker_16092066_2000018.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071016/st_fms_adc_16071016_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071016_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16092066_2500002.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071018
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_0000007.MuDst.root	RunFmsRpTreeMaker_16071018_0000007.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16092066_2500014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_1000004.MuDst.root	RunFmsRpTreeMaker_16071018_1000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16092066_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071018_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16092066_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_2000003.MuDst.root	RunFmsRpTreeMaker_16071018_2000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_4000041.MuDst.root	RunFmsRpTreeMaker_16092066_4000041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071018_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16092066_4500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16071018_3000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_4500035.MuDst.root	RunFmsRpTreeMaker_16092066_4500035.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_3000012.MuDst.root	RunFmsRpTreeMaker_16071018_3000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_4500044.MuDst.root	RunFmsRpTreeMaker_16092066_4500044.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_4000003.MuDst.root	RunFmsRpTreeMaker_16071018_4000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16092066_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071018_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_5000041.MuDst.root	RunFmsRpTreeMaker_16092066_5000041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071018_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16092066_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_5000002.MuDst.root	RunFmsRpTreeMaker_16071018_5000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_16092066_raw_5500037.MuDst.root	RunFmsRpTreeMaker_16092066_5500037.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_16071018_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16071018_5500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092066/st_fms_adc_16092066_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16092066_0000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071018/st_fms_adc_16071018_raw_0000005.MuDst.root	RunFmsRpTreeMaker_16071018_0000005.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092067
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16092067_1000002.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071021
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16071021_1000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_1000012.MuDst.root	RunFmsRpTreeMaker_16092067_1000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_1000014.MuDst.root	RunFmsRpTreeMaker_16071021_1000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_1000021.MuDst.root	RunFmsRpTreeMaker_16092067_1000021.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16071021_1500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16092067_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_2000003.MuDst.root	RunFmsRpTreeMaker_16071021_2000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_2000003.MuDst.root	RunFmsRpTreeMaker_16092067_2000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_2000017.MuDst.root	RunFmsRpTreeMaker_16071021_2000017.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_2000015.MuDst.root	RunFmsRpTreeMaker_16092067_2000015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071021_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_2000022.MuDst.root	RunFmsRpTreeMaker_16092067_2000022.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_2500023.MuDst.root	RunFmsRpTreeMaker_16071021_2500023.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16092067_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16071021_3000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16092067_2500014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_3000013.MuDst.root	RunFmsRpTreeMaker_16071021_3000013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16092067_3000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_4000004.MuDst.root	RunFmsRpTreeMaker_16071021_4000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16092067_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_4000017.MuDst.root	RunFmsRpTreeMaker_16071021_4000017.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_4000017.MuDst.root	RunFmsRpTreeMaker_16092067_4000017.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_4000018.MuDst.root	RunFmsRpTreeMaker_16071021_4000018.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16092067_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071021_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_4500038.MuDst.root	RunFmsRpTreeMaker_16092067_4500038.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_4500030.MuDst.root	RunFmsRpTreeMaker_16071021_4500030.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_4500044.MuDst.root	RunFmsRpTreeMaker_16092067_4500044.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071021_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16092067_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_5000011.MuDst.root	RunFmsRpTreeMaker_16071021_5000011.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_5000031.MuDst.root	RunFmsRpTreeMaker_16092067_5000031.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071021_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16092067_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_5500028.MuDst.root	RunFmsRpTreeMaker_16071021_5500028.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_5500040.MuDst.root	RunFmsRpTreeMaker_16092067_5500040.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_16071021_raw_5500033.MuDst.root	RunFmsRpTreeMaker_16071021_5500033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_5500053.MuDst.root	RunFmsRpTreeMaker_16092067_5500053.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071021/st_fms_adc_16071021_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071021_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_16092067_raw_5500054.MuDst.root	RunFmsRpTreeMaker_16092067_5500054.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071022
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_1000005.MuDst.root	RunFmsRpTreeMaker_16071022_1000005.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092067/st_fms_adc_16092067_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16092067_0000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_1000031.MuDst.root	RunFmsRpTreeMaker_16071022_1000031.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092068
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16092068_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071022_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_1000013.MuDst.root	RunFmsRpTreeMaker_16092068_1000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_1500016.MuDst.root	RunFmsRpTreeMaker_16071022_1500016.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_1500003.MuDst.root	RunFmsRpTreeMaker_16092068_1500003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16071022_2000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16092068_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_2000031.MuDst.root	RunFmsRpTreeMaker_16071022_2000031.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_2000010.MuDst.root	RunFmsRpTreeMaker_16092068_2000010.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16071022_2500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16092068_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_2500003.MuDst.root	RunFmsRpTreeMaker_16071022_2500003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_2500012.MuDst.root	RunFmsRpTreeMaker_16092068_2500012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_2500015.MuDst.root	RunFmsRpTreeMaker_16071022_2500015.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16092068_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16071022_3000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16092068_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_3000012.MuDst.root	RunFmsRpTreeMaker_16071022_3000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_4000019.MuDst.root	RunFmsRpTreeMaker_16092068_4000019.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_4000003.MuDst.root	RunFmsRpTreeMaker_16071022_4000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16092068_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_4000030.MuDst.root	RunFmsRpTreeMaker_16071022_4000030.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_4500042.MuDst.root	RunFmsRpTreeMaker_16092068_4500042.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_4000034.MuDst.root	RunFmsRpTreeMaker_16071022_4000034.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_5000002.MuDst.root	RunFmsRpTreeMaker_16092068_5000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071022_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_5000037.MuDst.root	RunFmsRpTreeMaker_16092068_5000037.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_4500031.MuDst.root	RunFmsRpTreeMaker_16071022_4500031.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16092068_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071022_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_16092068_raw_5500041.MuDst.root	RunFmsRpTreeMaker_16092068_5500041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_5000011.MuDst.root	RunFmsRpTreeMaker_16071022_5000011.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092068/st_fms_adc_16092068_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16092068_0000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16071022_5500002.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092069
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_1000004.MuDst.root	RunFmsRpTreeMaker_16092069_1000004.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_16071022_raw_5500013.MuDst.root	RunFmsRpTreeMaker_16071022_5500013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_1000014.MuDst.root	RunFmsRpTreeMaker_16092069_1000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071022/st_fms_adc_16071022_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071022_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16092069_1500001.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071023
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071023_1000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16092069_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071023_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_2000016.MuDst.root	RunFmsRpTreeMaker_16092069_2000016.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16071023_2000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16092069_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071023_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_2500015.MuDst.root	RunFmsRpTreeMaker_16092069_2500015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16071023_2500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16092069_3000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16071023_3000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_4000002.MuDst.root	RunFmsRpTreeMaker_16092069_4000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_3000011.MuDst.root	RunFmsRpTreeMaker_16071023_3000011.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_4000040.MuDst.root	RunFmsRpTreeMaker_16092069_4000040.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071023_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16092069_4500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071023_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_4500041.MuDst.root	RunFmsRpTreeMaker_16092069_4500041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071023_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16092069_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_5000017.MuDst.root	RunFmsRpTreeMaker_16071023_5000017.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_5000040.MuDst.root	RunFmsRpTreeMaker_16092069_5000040.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_16071023_raw_5500003.MuDst.root	RunFmsRpTreeMaker_16071023_5500003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_5000048.MuDst.root	RunFmsRpTreeMaker_16092069_5000048.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071023/st_fms_adc_16071023_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16071023_0000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16092069_5500001.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071024
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_0000004.MuDst.root	RunFmsRpTreeMaker_16071024_0000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_5500040.MuDst.root	RunFmsRpTreeMaker_16092069_5500040.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_1000006.MuDst.root	RunFmsRpTreeMaker_16071024_1000006.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_16092069_raw_5500041.MuDst.root	RunFmsRpTreeMaker_16092069_5500041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_1000030.MuDst.root	RunFmsRpTreeMaker_16071024_1000030.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092069/st_fms_adc_16092069_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16092069_0000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16071024_1500002.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092070
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16092070_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16071024_2000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_1000014.MuDst.root	RunFmsRpTreeMaker_16092070_1000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_2000028.MuDst.root	RunFmsRpTreeMaker_16071024_2000028.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16092070_1500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071024_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16092070_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_2500022.MuDst.root	RunFmsRpTreeMaker_16071024_2500022.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_2000013.MuDst.root	RunFmsRpTreeMaker_16092070_2000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_3000004.MuDst.root	RunFmsRpTreeMaker_16071024_3000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16092070_2500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_3000012.MuDst.root	RunFmsRpTreeMaker_16071024_3000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16092070_2500014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071024_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16092070_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_4000007.MuDst.root	RunFmsRpTreeMaker_16071024_4000007.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16092070_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071024_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_4000014.MuDst.root	RunFmsRpTreeMaker_16092070_4000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_4500030.MuDst.root	RunFmsRpTreeMaker_16071024_4500030.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16092070_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_5000002.MuDst.root	RunFmsRpTreeMaker_16071024_5000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_4500016.MuDst.root	RunFmsRpTreeMaker_16092070_4500016.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_5000012.MuDst.root	RunFmsRpTreeMaker_16071024_5000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16092070_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071024_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_5000036.MuDst.root	RunFmsRpTreeMaker_16092070_5000036.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_16071024_raw_5500030.MuDst.root	RunFmsRpTreeMaker_16071024_5500030.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_5000043.MuDst.root	RunFmsRpTreeMaker_16092070_5000043.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071024/st_fms_adc_16071024_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071024_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16092070_5500001.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071025
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_1000004.MuDst.root	RunFmsRpTreeMaker_16071025_1000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_5500021.MuDst.root	RunFmsRpTreeMaker_16092070_5500021.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_1000014.MuDst.root	RunFmsRpTreeMaker_16071025_1000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_16092070_raw_5500022.MuDst.root	RunFmsRpTreeMaker_16092070_5500022.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071025_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092070/st_fms_adc_16092070_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16092070_0000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_1500015.MuDst.root	RunFmsRpTreeMaker_16071025_1500015.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092071
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_0000006.MuDst.root	RunFmsRpTreeMaker_16092071_0000006.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_2000004.MuDst.root	RunFmsRpTreeMaker_16071025_2000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16092071_1000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_2000027.MuDst.root	RunFmsRpTreeMaker_16071025_2000027.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_1000015.MuDst.root	RunFmsRpTreeMaker_16092071_1000015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16071025_2500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16092071_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_2500024.MuDst.root	RunFmsRpTreeMaker_16071025_2500024.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16092071_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_2500027.MuDst.root	RunFmsRpTreeMaker_16071025_2500027.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_2000012.MuDst.root	RunFmsRpTreeMaker_16092071_2000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_3000003.MuDst.root	RunFmsRpTreeMaker_16071025_3000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16092071_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_3000012.MuDst.root	RunFmsRpTreeMaker_16071025_3000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_2500015.MuDst.root	RunFmsRpTreeMaker_16092071_2500015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071025_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16092071_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_4000019.MuDst.root	RunFmsRpTreeMaker_16071025_4000019.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16092071_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_4500004.MuDst.root	RunFmsRpTreeMaker_16071025_4500004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_4000020.MuDst.root	RunFmsRpTreeMaker_16092071_4000020.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_4500029.MuDst.root	RunFmsRpTreeMaker_16071025_4500029.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16092071_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_5000003.MuDst.root	RunFmsRpTreeMaker_16071025_5000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_4500016.MuDst.root	RunFmsRpTreeMaker_16092071_4500016.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_5000012.MuDst.root	RunFmsRpTreeMaker_16071025_5000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16092071_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071025_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_5000018.MuDst.root	RunFmsRpTreeMaker_16092071_5000018.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_16071025_raw_5500020.MuDst.root	RunFmsRpTreeMaker_16071025_5500020.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16092071_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071025/st_fms_adc_16071025_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071025_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_16092071_raw_5500027.MuDst.root	RunFmsRpTreeMaker_16092071_5500027.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071026
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16071026_0000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092071/st_fms_adc_16092071_raw_0000004.MuDst.root	RunFmsRpTreeMaker_16092071_0000004.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16071026_1000003.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093001
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_1000005.MuDst.root	RunFmsRpTreeMaker_16093001_1000005.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_1500003.MuDst.root	RunFmsRpTreeMaker_16071026_1500003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_1000013.MuDst.root	RunFmsRpTreeMaker_16093001_1000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_2000005.MuDst.root	RunFmsRpTreeMaker_16071026_2000005.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093001_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071026_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093001_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_2500027.MuDst.root	RunFmsRpTreeMaker_16071026_2500027.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_2000013.MuDst.root	RunFmsRpTreeMaker_16093001_2000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_3000003.MuDst.root	RunFmsRpTreeMaker_16071026_3000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16093001_2500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_3000013.MuDst.root	RunFmsRpTreeMaker_16071026_3000013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_2500015.MuDst.root	RunFmsRpTreeMaker_16093001_2500015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071026_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16093001_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_4500003.MuDst.root	RunFmsRpTreeMaker_16071026_4500003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_4000003.MuDst.root	RunFmsRpTreeMaker_16093001_4000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_4500025.MuDst.root	RunFmsRpTreeMaker_16071026_4500025.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_4000013.MuDst.root	RunFmsRpTreeMaker_16093001_4000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071026_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093001_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_5000016.MuDst.root	RunFmsRpTreeMaker_16071026_5000016.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_4500014.MuDst.root	RunFmsRpTreeMaker_16093001_4500014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_16071026_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071026_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093001_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071026/st_fms_adc_16071026_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16071026_0000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_5000013.MuDst.root	RunFmsRpTreeMaker_16093001_5000013.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071027
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_16071027_raw_0000004.MuDst.root	RunFmsRpTreeMaker_16071027_0000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093001_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_16071027_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16071027_1000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_16093001_raw_5500040.MuDst.root	RunFmsRpTreeMaker_16093001_5500040.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_16071027_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16071027_1500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093001/st_fms_adc_16093001_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16093001_0000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_16071027_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16071027_2000001.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093002
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16093002_1000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_16071027_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071027_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_1000014.MuDst.root	RunFmsRpTreeMaker_16093002_1000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_16071027_raw_5000015.MuDst.root	RunFmsRpTreeMaker_16071027_5000015.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093002_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_16071027_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071027_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093002_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071027/st_fms_adc_16071027_raw_0000005.MuDst.root	RunFmsRpTreeMaker_16071027_0000005.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_2000013.MuDst.root	RunFmsRpTreeMaker_16093002_2000013.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071043
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071043/st_fms_16071043_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071043_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16093002_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071043/st_fms_16071043_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16071043_2000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_2500013.MuDst.root	RunFmsRpTreeMaker_16093002_2500013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071043/st_fms_16071043_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071043_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_3000004.MuDst.root	RunFmsRpTreeMaker_16093002_3000004.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071043/st_fms_16071043_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16071043_3000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093002_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071043/st_fms_16071043_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071043_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_4000014.MuDst.root	RunFmsRpTreeMaker_16093002_4000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071043/st_fms_16071043_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16071043_5500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093002_4500002.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071044
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071044_1000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_4500014.MuDst.root	RunFmsRpTreeMaker_16093002_4500014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071044_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093002_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16071044_2000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_5000002.MuDst.root	RunFmsRpTreeMaker_16093002_5000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_2000012.MuDst.root	RunFmsRpTreeMaker_16071044_2000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093002_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071044_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_5500040.MuDst.root	RunFmsRpTreeMaker_16093002_5500040.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16071044_2500014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_16093002_raw_5500041.MuDst.root	RunFmsRpTreeMaker_16093002_5500041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071044_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093002/st_fms_adc_16093002_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16093002_0000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_4500009.MuDst.root	RunFmsRpTreeMaker_16071044_4500009.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093003
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093003_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071044_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_1000012.MuDst.root	RunFmsRpTreeMaker_16093003_1000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_16071044_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16071044_5500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16093003_1500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071044/st_fms_adc_16071044_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071044_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16093003_2000002.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071045
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_0000006.MuDst.root	RunFmsRpTreeMaker_16071045_0000006.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_2000012.MuDst.root	RunFmsRpTreeMaker_16093003_2000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071045_1000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16093003_2500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_1000015.MuDst.root	RunFmsRpTreeMaker_16071045_1000015.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16093003_2500014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16071045_2000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16093003_3000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_2500013.MuDst.root	RunFmsRpTreeMaker_16071045_2500013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093003_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071045_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16093003_4500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071045_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093003_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_5000013.MuDst.root	RunFmsRpTreeMaker_16071045_5000013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_5000012.MuDst.root	RunFmsRpTreeMaker_16093003_5000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_16071045_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16071045_5500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16093003_5500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071045/st_fms_adc_16071045_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071045_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_16093003_raw_5500015.MuDst.root	RunFmsRpTreeMaker_16093003_5500015.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071046
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071046_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093003/st_fms_adc_16093003_raw_0000004.MuDst.root	RunFmsRpTreeMaker_16093003_0000004.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071046_1000002.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093004
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_0000008.MuDst.root	RunFmsRpTreeMaker_16093004_0000008.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_1000016.MuDst.root	RunFmsRpTreeMaker_16071046_1000016.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093004_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_2000013.MuDst.root	RunFmsRpTreeMaker_16071046_2000013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_1000016.MuDst.root	RunFmsRpTreeMaker_16093004_1000016.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16071046_2500014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16093004_1500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_4000003.MuDst.root	RunFmsRpTreeMaker_16071046_4000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16093004_2000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_4000011.MuDst.root	RunFmsRpTreeMaker_16071046_4000011.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_2000012.MuDst.root	RunFmsRpTreeMaker_16093004_2000012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071046_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16093004_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071046_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_2500015.MuDst.root	RunFmsRpTreeMaker_16093004_2500015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071046_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16093004_3000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_16071046_raw_5500012.MuDst.root	RunFmsRpTreeMaker_16071046_5500012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093004_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071046/st_fms_adc_16071046_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16071046_0000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_4000031.MuDst.root	RunFmsRpTreeMaker_16093004_4000031.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071050
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16071050_0000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093004_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_1000005.MuDst.root	RunFmsRpTreeMaker_16071050_1000005.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_4500020.MuDst.root	RunFmsRpTreeMaker_16093004_4500020.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071050_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093004_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_2000003.MuDst.root	RunFmsRpTreeMaker_16071050_2000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_16093004_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093004_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_2000014.MuDst.root	RunFmsRpTreeMaker_16071050_2000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093004/st_fms_adc_16093004_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16093004_0000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071050_2500001.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093010
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_0000005.MuDst.root	RunFmsRpTreeMaker_16093010_0000005.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_4000003.MuDst.root	RunFmsRpTreeMaker_16071050_4000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093010_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071050_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_1000011.MuDst.root	RunFmsRpTreeMaker_16093010_1000011.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_4500010.MuDst.root	RunFmsRpTreeMaker_16071050_4500010.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093010_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071050_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093010_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_5000012.MuDst.root	RunFmsRpTreeMaker_16071050_5000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_2000013.MuDst.root	RunFmsRpTreeMaker_16093010_2000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_16071050_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071050_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16093010_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071050/st_fms_adc_16071050_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071050_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_2500013.MuDst.root	RunFmsRpTreeMaker_16093010_2500013.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071051
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16071051_1000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16093010_3000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_1000014.MuDst.root	RunFmsRpTreeMaker_16071051_1000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_4000002.MuDst.root	RunFmsRpTreeMaker_16093010_4000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071051_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_4000044.MuDst.root	RunFmsRpTreeMaker_16093010_4000044.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_2000004.MuDst.root	RunFmsRpTreeMaker_16071051_2000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_4000061.MuDst.root	RunFmsRpTreeMaker_16093010_4000061.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_2000012.MuDst.root	RunFmsRpTreeMaker_16071051_2000012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093010_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16071051_2500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_4500045.MuDst.root	RunFmsRpTreeMaker_16093010_4500045.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_2500008.MuDst.root	RunFmsRpTreeMaker_16071051_2500008.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093010_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_2500016.MuDst.root	RunFmsRpTreeMaker_16071051_2500016.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_5000045.MuDst.root	RunFmsRpTreeMaker_16093010_5000045.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071051_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093010_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_4000014.MuDst.root	RunFmsRpTreeMaker_16071051_4000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_5500028.MuDst.root	RunFmsRpTreeMaker_16093010_5500028.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071051_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_adc_16093010_raw_0000004.MuDst.root	RunFmsRpTreeMaker_16093010_0000004.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_4500015.MuDst.root	RunFmsRpTreeMaker_16071051_4500015.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093011
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_0000005.MuDst.root	RunFmsRpTreeMaker_16093011_0000005.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071051_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093011_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_5000011.MuDst.root	RunFmsRpTreeMaker_16071051_5000011.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_1000011.MuDst.root	RunFmsRpTreeMaker_16093011_1000011.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_5500003.MuDst.root	RunFmsRpTreeMaker_16071051_5500003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093011_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_16071051_raw_5500013.MuDst.root	RunFmsRpTreeMaker_16071051_5500013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16093011_2000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071051/st_fms_adc_16071051_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071051_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_2000010.MuDst.root	RunFmsRpTreeMaker_16093011_2000010.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071052
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16071052_0000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16093011_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071052_1000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_2500015.MuDst.root	RunFmsRpTreeMaker_16093011_2500015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_1000019.MuDst.root	RunFmsRpTreeMaker_16071052_1000019.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16093011_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16071052_1500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093011_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16071052_2000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_4000019.MuDst.root	RunFmsRpTreeMaker_16093011_4000019.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_2000032.MuDst.root	RunFmsRpTreeMaker_16071052_2000032.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093011_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071052_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_4500010.MuDst.root	RunFmsRpTreeMaker_16093011_4500010.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_2500019.MuDst.root	RunFmsRpTreeMaker_16071052_2500019.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093011_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_2500026.MuDst.root	RunFmsRpTreeMaker_16071052_2500026.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_5000046.MuDst.root	RunFmsRpTreeMaker_16093011_5000046.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071052_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16093011_5500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_4000022.MuDst.root	RunFmsRpTreeMaker_16071052_4000022.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_16093011_raw_5500045.MuDst.root	RunFmsRpTreeMaker_16093011_5500045.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071052_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093011/st_fms_adc_16093011_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16093011_0000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_4500031.MuDst.root	RunFmsRpTreeMaker_16071052_4500031.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093012
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_0000006.MuDst.root	RunFmsRpTreeMaker_16093012_0000006.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071052_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16093012_1000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_5000032.MuDst.root	RunFmsRpTreeMaker_16071052_5000032.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_1000016.MuDst.root	RunFmsRpTreeMaker_16093012_1000016.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071052_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_1000021.MuDst.root	RunFmsRpTreeMaker_16093012_1000021.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_16071052_raw_5500032.MuDst.root	RunFmsRpTreeMaker_16071052_5500032.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093012_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071052/st_fms_adc_16071052_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071052_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093012_2000001.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071053
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071053_1000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_2000013.MuDst.root	RunFmsRpTreeMaker_16093012_2000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_1000036.MuDst.root	RunFmsRpTreeMaker_16071053_1000036.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16093012_2500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071053_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_2500015.MuDst.root	RunFmsRpTreeMaker_16093012_2500015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_2000003.MuDst.root	RunFmsRpTreeMaker_16071053_2000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_2500043.MuDst.root	RunFmsRpTreeMaker_16093012_2500043.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_2000015.MuDst.root	RunFmsRpTreeMaker_16071053_2000015.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16093012_3000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_2500004.MuDst.root	RunFmsRpTreeMaker_16071053_2500004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093012_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_2500013.MuDst.root	RunFmsRpTreeMaker_16071053_2500013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_4000044.MuDst.root	RunFmsRpTreeMaker_16093012_4000044.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_2500032.MuDst.root	RunFmsRpTreeMaker_16071053_2500032.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16093012_4500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071053_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_4500016.MuDst.root	RunFmsRpTreeMaker_16093012_4500016.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_4000033.MuDst.root	RunFmsRpTreeMaker_16071053_4000033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093012_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_4000039.MuDst.root	RunFmsRpTreeMaker_16071053_4000039.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_5000014.MuDst.root	RunFmsRpTreeMaker_16093012_5000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071053_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093012_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_4500034.MuDst.root	RunFmsRpTreeMaker_16071053_4500034.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_5500035.MuDst.root	RunFmsRpTreeMaker_16093012_5500035.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071053_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_16093012_raw_5500056.MuDst.root	RunFmsRpTreeMaker_16093012_5500056.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_5000015.MuDst.root	RunFmsRpTreeMaker_16071053_5000015.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093012/st_fms_adc_16093012_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16093012_0000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071053_5500001.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093013
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16093013_1000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_16071053_raw_5500035.MuDst.root	RunFmsRpTreeMaker_16071053_5500035.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_1000015.MuDst.root	RunFmsRpTreeMaker_16093013_1000015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071053/st_fms_adc_16071053_raw_0000004.MuDst.root	RunFmsRpTreeMaker_16071053_0000004.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_1000023.MuDst.root	RunFmsRpTreeMaker_16093013_1000023.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071054
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16071054_1000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093013_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_1000035.MuDst.root	RunFmsRpTreeMaker_16071054_1000035.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093013_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071054_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_2000014.MuDst.root	RunFmsRpTreeMaker_16093013_2000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16071054_2000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_2000030.MuDst.root	RunFmsRpTreeMaker_16093013_2000030.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_2000033.MuDst.root	RunFmsRpTreeMaker_16071054_2000033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16093013_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071054_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_2500011.MuDst.root	RunFmsRpTreeMaker_16093013_2500011.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_2500033.MuDst.root	RunFmsRpTreeMaker_16071054_2500033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16093013_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071054_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_4000002.MuDst.root	RunFmsRpTreeMaker_16093013_4000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_4000032.MuDst.root	RunFmsRpTreeMaker_16071054_4000032.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_4000013.MuDst.root	RunFmsRpTreeMaker_16093013_4000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071054_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16093013_4500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_4500033.MuDst.root	RunFmsRpTreeMaker_16071054_4500033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_4500014.MuDst.root	RunFmsRpTreeMaker_16093013_4500014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071054_5000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093013_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_5000032.MuDst.root	RunFmsRpTreeMaker_16071054_5000032.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_5000041.MuDst.root	RunFmsRpTreeMaker_16093013_5000041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071054_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_5000042.MuDst.root	RunFmsRpTreeMaker_16093013_5000042.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_16071054_raw_5500034.MuDst.root	RunFmsRpTreeMaker_16071054_5500034.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093013_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071054/st_fms_adc_16071054_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071054_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_16093013_raw_5500024.MuDst.root	RunFmsRpTreeMaker_16093013_5500024.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071055
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16071055_0000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093013/st_fms_adc_16093013_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16093013_0000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16071055_1000002.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093014
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16093014_0000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_1000016.MuDst.root	RunFmsRpTreeMaker_16071055_1000016.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093014_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16071055_1500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_1000013.MuDst.root	RunFmsRpTreeMaker_16093014_1000013.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16071055_2000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093014_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_2000022.MuDst.root	RunFmsRpTreeMaker_16071055_2000022.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16093014_2000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16071055_2500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_2000014.MuDst.root	RunFmsRpTreeMaker_16093014_2000014.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_2500012.MuDst.root	RunFmsRpTreeMaker_16071055_2500012.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16093014_2500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16071055_4000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_2500012.MuDst.root	RunFmsRpTreeMaker_16093014_2500012.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_4000014.MuDst.root	RunFmsRpTreeMaker_16071055_4000014.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_3000001.MuDst.root	RunFmsRpTreeMaker_16093014_3000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16071055_4500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093014_4000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_4500023.MuDst.root	RunFmsRpTreeMaker_16071055_4500023.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_4000015.MuDst.root	RunFmsRpTreeMaker_16093014_4000015.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_4500043.MuDst.root	RunFmsRpTreeMaker_16071055_4500043.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093014_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_5000002.MuDst.root	RunFmsRpTreeMaker_16071055_5000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_4500022.MuDst.root	RunFmsRpTreeMaker_16093014_4500022.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_5000023.MuDst.root	RunFmsRpTreeMaker_16071055_5000023.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093014_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16071055_5500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_5000041.MuDst.root	RunFmsRpTreeMaker_16093014_5000041.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_16071055_raw_5500022.MuDst.root	RunFmsRpTreeMaker_16071055_5500022.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_5000044.MuDst.root	RunFmsRpTreeMaker_16093014_5000044.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071055/st_fms_adc_16071055_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071055_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093014_5500001.root"
 Queue
 
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16071056
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_1000003.MuDst.root	RunFmsRpTreeMaker_16071056_1000003.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_5500042.MuDst.root	RunFmsRpTreeMaker_16093014_5500042.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_1000013.MuDst.root	RunFmsRpTreeMaker_16071056_1000013.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_5500046.MuDst.root	RunFmsRpTreeMaker_16093014_5500046.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16071056_1500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_adc_16093014_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16093014_0000003.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16071056_2000001.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093015
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_0000005.MuDst.root	RunFmsRpTreeMaker_16093015_0000005.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_2000033.MuDst.root	RunFmsRpTreeMaker_16071056_2000033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_1000010.MuDst.root	RunFmsRpTreeMaker_16093015_1000010.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16071056_2500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093015_2000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_2500025.MuDst.root	RunFmsRpTreeMaker_16071056_2500025.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_2500001.MuDst.root	RunFmsRpTreeMaker_16093015_2500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_2500033.MuDst.root	RunFmsRpTreeMaker_16071056_2500033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_4000002.MuDst.root	RunFmsRpTreeMaker_16093015_4000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_4000002.MuDst.root	RunFmsRpTreeMaker_16071056_4000002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093015_4500002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_4000033.MuDst.root	RunFmsRpTreeMaker_16071056_4000033.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093015_5000001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16071056_4500001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_16093015_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093015_5500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_4500031.MuDst.root	RunFmsRpTreeMaker_16071056_4500031.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093015/st_fms_adc_16093015_raw_0000008.MuDst.root	RunFmsRpTreeMaker_16093015_0000008.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16071056_5000001.root"
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093016
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_0000006.MuDst.root	RunFmsRpTreeMaker_16093016_0000006.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_5000032.MuDst.root	RunFmsRpTreeMaker_16071056_5000032.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093016_1000002.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16071056_5500002.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_1000016.MuDst.root	RunFmsRpTreeMaker_16093016_1000016.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_16071056_raw_5500021.MuDst.root	RunFmsRpTreeMaker_16071056_5500021.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093016_1500001.root"
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/071/16071056/st_fms_adc_16071056_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16071056_0000001.root"
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093016_2000001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_2000018.MuDst.root	RunFmsRpTreeMaker_16093016_2000018.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_2500003.MuDst.root	RunFmsRpTreeMaker_16093016_2500003.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16093016_2500014.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_3000002.MuDst.root	RunFmsRpTreeMaker_16093016_3000002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_4000003.MuDst.root	RunFmsRpTreeMaker_16093016_4000003.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_4000021.MuDst.root	RunFmsRpTreeMaker_16093016_4000021.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_4500002.MuDst.root	RunFmsRpTreeMaker_16093016_4500002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_4500030.MuDst.root	RunFmsRpTreeMaker_16093016_4500030.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093016_5000001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_5000040.MuDst.root	RunFmsRpTreeMaker_16093016_5000040.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093016_5500001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_16093016_raw_5500032.MuDst.root	RunFmsRpTreeMaker_16093016_5500032.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093016/st_fms_adc_16093016_raw_0000002.MuDst.root	RunFmsRpTreeMaker_16093016_0000002.root"
+Queue
+
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093017
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093017_1000002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_1000013.MuDst.root	RunFmsRpTreeMaker_16093017_1000013.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_1500001.MuDst.root	RunFmsRpTreeMaker_16093017_1500001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_2000001.MuDst.root	RunFmsRpTreeMaker_16093017_2000001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_2000014.MuDst.root	RunFmsRpTreeMaker_16093017_2000014.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16093017_2500002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_2500014.MuDst.root	RunFmsRpTreeMaker_16093017_2500014.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_3000004.MuDst.root	RunFmsRpTreeMaker_16093017_3000004.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093017_4000001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_4000037.MuDst.root	RunFmsRpTreeMaker_16093017_4000037.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_4500001.MuDst.root	RunFmsRpTreeMaker_16093017_4500001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_4500041.MuDst.root	RunFmsRpTreeMaker_16093017_4500041.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093017_5000001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_5000013.MuDst.root	RunFmsRpTreeMaker_16093017_5000013.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_5500002.MuDst.root	RunFmsRpTreeMaker_16093017_5500002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_16093017_raw_5500041.MuDst.root	RunFmsRpTreeMaker_16093017_5500041.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093017/st_fms_adc_16093017_raw_0000003.MuDst.root	RunFmsRpTreeMaker_16093017_0000003.root"
+Queue
+
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16093018
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_1000002.MuDst.root	RunFmsRpTreeMaker_16093018_1000002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_1000015.MuDst.root	RunFmsRpTreeMaker_16093018_1000015.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_1500002.MuDst.root	RunFmsRpTreeMaker_16093018_1500002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_2000002.MuDst.root	RunFmsRpTreeMaker_16093018_2000002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_2000012.MuDst.root	RunFmsRpTreeMaker_16093018_2000012.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_2500002.MuDst.root	RunFmsRpTreeMaker_16093018_2500002.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_2500016.MuDst.root	RunFmsRpTreeMaker_16093018_2500016.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_3000003.MuDst.root	RunFmsRpTreeMaker_16093018_3000003.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_4000001.MuDst.root	RunFmsRpTreeMaker_16093018_4000001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_4000012.MuDst.root	RunFmsRpTreeMaker_16093018_4000012.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_4500005.MuDst.root	RunFmsRpTreeMaker_16093018_4500005.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_4500023.MuDst.root	RunFmsRpTreeMaker_16093018_4500023.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_5000001.MuDst.root	RunFmsRpTreeMaker_16093018_5000001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_5000014.MuDst.root	RunFmsRpTreeMaker_16093018_5000014.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_5500001.MuDst.root	RunFmsRpTreeMaker_16093018_5500001.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_5500039.MuDst.root	RunFmsRpTreeMaker_16093018_5500039.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_5500040.MuDst.root	RunFmsRpTreeMaker_16093018_5500040.root"
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_adc_16093018_raw_0000001.MuDst.root	RunFmsRpTreeMaker_16093018_0000001.root"
 Queue
 
