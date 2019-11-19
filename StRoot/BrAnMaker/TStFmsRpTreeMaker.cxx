@@ -9,6 +9,7 @@
 #include "StEvent/StFmsCollection.h"
 #include "StEvent/StEvent.h"
 #include "StEvent/StTriggerData.h"
+#include "StEvent/StTriggerId.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StSpinPool/StSpinDbMaker/StSpinDbMaker.h"
@@ -19,6 +20,8 @@ ClassImp(TStFmsRpTreeMaker)
 TStFmsRpTreeMaker::TStFmsRpTreeMaker(const char *name):StMaker(name)
 {
     mBeamMom = 100.0; //Overwrite from runMacro
+    //Event Buffer
+    mTriggers = new Int_t[kMaxTriggers];
     //FMS Buffer
     mFmsPairE = new Double_t[kMaxPairs];
     mFmsPairM = new Double_t[kMaxPairs];
@@ -46,6 +49,7 @@ TStFmsRpTreeMaker::TStFmsRpTreeMaker(const char *name):StMaker(name)
 //_____________________________________________________________________________ 
 TStFmsRpTreeMaker::~TStFmsRpTreeMaker()
 {
+    delete[] mTriggers;
     //FMS buffer
     delete[] mFmsPairE;
     delete[] mFmsPairM;
@@ -115,6 +119,8 @@ void TStFmsRpTreeMaker::SetBranches()
     mTree->Branch("evt_id", &mEventId, "evt_id/I");
     mTree->Branch("evt_bSpin", &mBspin, "evt_bSpin/S");
     mTree->Branch("evt_ySpin", &mYspin, "evt_ySpin/S");
+    mTree->Branch("evt_nTrig", &mNtrig, "evt_nTrig/I");
+    mTree->Branch("evt_Triggers", &mTriggers, "evt_Triggers[evt_nTrig]/I");
     
     mTree->Branch("evt_bbcADCSum", mBbcADCSum, "evt_bbcADCSum[2]/I");
     mTree->Branch("evt_bbcADCSumLarge", mBbcADCSumLarge, "evt_bbcADCSumLarge[2]/I");
@@ -158,7 +164,9 @@ void TStFmsRpTreeMaker::ResetBuffer()
     mEventId = -1;
     mBspin = 0;
     mYspin = 0;
-    
+    mNtrig = 0;
+
+    std::fill_n(mTriggers, kMaxTriggers, -1);    
     std::fill_n(mBbcADCSum, 2, 0);    
     std::fill_n(mBbcADCSumLarge, 2, 0);    
     std::fill_n(mBbcEarliestTDC, 2, -1);    
@@ -249,13 +257,19 @@ Bool_t TStFmsRpTreeMaker::AcceptEvent()
 //_____________________________________________________________________________
 Int_t TStFmsRpTreeMaker::MakeEvent()
 {
-    //bXing id (long, short), evet number, spin state,
-    //Save trigger bit here, chck OFile maker for example
-    
-    //Save Trigger bit here
+    //Run no. and event no.     
     mRunNumber = mMuEvent->runNumber();
     mEventId = mMuEvent->eventId();
-        
+
+    //Trigger ids
+    mTrigMuColl = &mMuEvent->triggerIdCollection();
+    if(mTrigMuColl)
+    {
+	const StTriggerId trgIDs = mTrigMuColl->nominal();
+	mNtrig = trgIDs.triggerIds().size();
+	for(Int_t i = 0; i < mNtrig; i++)
+	    mTriggers[i] = trgIDs.triggerIds().at(i);
+    }
     // BBC, ZDC, VPD branches <------- To be verified/revisited
     for(Int_t ew = 0; ew < 2; ew++)
     {

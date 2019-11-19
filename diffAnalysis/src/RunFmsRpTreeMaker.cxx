@@ -54,11 +54,10 @@ void RunFmsRpTreeMaker(TString fileList, TString outFile)
     muDstMaker->SetStatus("pp2pp*", 1);
     muDstMaker->SetStatus("MuEvent*", 1);
 
-    //--------------
+    //-------------- Filter/Skip Events if no RP or FMS BS/JP Trigger----------
     TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("");
     for(Int_t i = 0; i < trigs.size(); ++i)
-	filterMaker->addTrigger(trigs[i]); 
-
+    	filterMaker->addTrigger(trigs[i]); 
     //----------------
 
     

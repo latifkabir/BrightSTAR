@@ -21,7 +21,7 @@ first: all
 
 .PHONY: lib ana cons macro diff
 
-all: lib ana cons macro 
+all: lib ana cons macro diff
 	@echo "done!"	
 lib:
 	$(MAKE) -C $(LIB_DIR) -f $(MAKE_FILE)

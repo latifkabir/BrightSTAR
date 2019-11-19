@@ -14,6 +14,7 @@
 #include "StMuDSTMaker/COMMON/StMuRpsCollection.h"
 #include "StMuDSTMaker/COMMON/StMuRpsTrack.h"
 #include "StMuDSTMaker/COMMON/StMuRpsTrackPoint.h"
+#include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TTree.h"
@@ -53,18 +54,22 @@ private:
     Bool_t mSaveFile;
     static const Int_t kMaxPairs = 1000;
     static const Int_t kMaxRpTracks = 1000;
+    static const Int_t kMaxTriggers = 200;
 
     Int_t  mBunchid7bit;
     Int_t  mSpin4bit;
     vector <Int_t> mTrigIDs;
     vector <Int_t>::iterator mIt;
 
+    StMuTriggerIdCollection *mTrigMuColl;
     //Event Buffer
     Int_t mRunNumber;
     Int_t mEventId;
     Short_t mBspin;
     Short_t mYspin;
     Int_t mTrigFlag;
+    Int_t mNtrig;
+    Int_t *mTriggers;
     
     Int_t mBbcADCSum[2];
     Int_t mBbcADCSumLarge[2];
