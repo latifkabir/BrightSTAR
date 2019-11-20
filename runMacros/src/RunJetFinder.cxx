@@ -9,6 +9,7 @@ The FMS part is added in this run macro, need benchmarking
 #include "RunJetFinder.h"
 #include "StRootInclude.h"
 #include "TStTrigDef.h"
+#include "TStRunList.h"
 #include "StFmsJetAnalysisMaker/StFmsAnalysisMaker.h"
 
 using namespace std;
@@ -21,16 +22,22 @@ void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
     TString Skimfile = (TString)"skim_" + outFilePostFix;
 
     //------- For FMS stream ----------------
-    Int_t trig1 = TStTrigDef::GetTrigId("FMS-JP0");
-    Int_t trig2 = TStTrigDef::GetTrigId("FMS-JP1");
-    Int_t trig3 = TStTrigDef::GetTrigId("FMS-JP2");
-    Int_t trig4 = TStTrigDef::GetTrigId("FMS-DiJP");
+    Int_t runNumber = TStRunList::GetRunFromFileName((string)inFile);
+    if(runNumber < 1)
+    {
+	cout << "Unable to get run number" <<endl;
+	return;
+    }
+    Int_t trig1 = TStTrigDef::GetTrigId(runNumber,"FMS-JP0");
+    Int_t trig2 = TStTrigDef::GetTrigId(runNumber,"FMS-JP1");
+    Int_t trig3 = TStTrigDef::GetTrigId(runNumber,"FMS-JP2");
+    Int_t trig4 = TStTrigDef::GetTrigId(runNumber,"FMS-DiJP");
 
     //------- For Physics stream ----------------
-    // Int_t trig1 = TStTrigDef::GetTrigId("BHT0*BBCMB");
-    // Int_t trig2 = TStTrigDef::GetTrigId("JP1");
-    // Int_t trig3 = TStTrigDef::GetTrigId("JP2");
-    // Int_t trig4 = TStTrigDef::GetTrigId("EHT0");
+    // Int_t trig1 = TStTrigDef::GetTrigId(runNumber,"BHT0*BBCMB");
+    // Int_t trig2 = TStTrigDef::GetTrigId(runNumber,"JP1");
+    // Int_t trig3 = TStTrigDef::GetTrigId(runNumber,"JP2");
+    // Int_t trig4 = TStTrigDef::GetTrigId(runNumber,"EHT0");
     
     cout<< "MuDst file: " << MuDst <<endl;
     cout<< "JetTree file: " << Jetfile <<endl;

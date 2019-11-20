@@ -12,6 +12,8 @@
 #include "json.h"
 #include "RootInclude.h"
 #include "TStar.h"
+#include "TStRunList.h"
+#include "TString.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -41,6 +43,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TSt
     else
 	outName.ReplaceAll(".root", "");
     TString starHome = TStar::Config->GetStarHome();
+    TString outDir = starHome + "/jobOutput/";
     TString jobDir = starHome + (TString) "/jobs/" + jobName;
     TString createJobDir = (TString)".! mkdir -p " + jobDir;
     gROOT->ProcessLine(createJobDir);    
@@ -120,13 +123,12 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TSt
     string fileName;
     string fileNumberStr;
     TString output_file;
+    string namePrefix;
     string arguments;
+    string outFile;
+    string errorFile;
+    string logFile;
     TString resultDir;
-    unsigned firstDelimPos;
-    unsigned endPosOfFirstDelim;
-    unsigned lastDelimPos;
-    const string startDelim = "_raw_";
-    const string stopDelim = ".MuDst.root";
     
     for(int i = 0; i < j.size(); ++i)
     {
@@ -142,18 +144,18 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TSt
 	    // 	cout<<"The file path: " << filePath << " is no longer valid. Skipping it." << endl;
 	    // 	continue;
 	    // }
-	    //--------- Extract file number from file-name------
-	    firstDelimPos = fileName.find(startDelim);
-	    endPosOfFirstDelim = firstDelimPos + startDelim.length();
-	    lastDelimPos = fileName.find_first_of(stopDelim, endPosOfFirstDelim);
-	    fileNumberStr = fileName.substr(endPosOfFirstDelim, lastDelimPos - endPosOfFirstDelim);
+	    fileNumberStr = TStRunList::GetFileNoFromFileName(fileName);
 	    
 	    std::stringstream ss;
 	    ss << std::setw(5) << std::setfill('0') << fileCount;
 	    //output_file = outName + "_" + to_string(runNumber) + (string)"_"+ ss.str() + (string)".root";
 	    if(fileNumberStr == "")
 		fileNumberStr = ss.str();
-	    output_file = outName + "_" + to_string(runNumber) + (string)"_"+ fileNumberStr + (string)".root";
+	    namePrefix = outName + "_" + to_string(runNumber) + (string)"_"+ fileNumberStr;
+	    output_file = namePrefix + (string)".root";
+	    outFile = outDir + namePrefix + (string)".out";
+	    errorFile = outDir + namePrefix + (string)".err";
+	    logFile = outDir + namePrefix + (string)".log";
 	    if(runNumber != prevRun)
 	    {
 		resultDir = TStar::Config->GetJobResultsPath() + jobName + (TString)"/" + to_string(runNumber);
@@ -162,7 +164,10 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TSt
 	    }
 	    prevRun = runNumber;
 	    arguments = "Arguments       = " + (string)"\"" + filePath + "\t" + output_file + "\"";
-	    condorConfig_out << arguments << endl; 
+	    condorConfig_out << arguments << endl;
+	    condorConfig_out <<"Output          = "<<outFile<<endl;
+	    condorConfig_out <<"Error           = "<<errorFile<<endl;
+	    condorConfig_out <<"Log             = "<<logFile<<endl;
 	    condorConfig_out << "Queue\n" << endl;
 	    
 	    ++fileCount;
@@ -195,9 +200,16 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TSt
 void SubmitJob(TString functionName, TString inFileName, TString outName,  TString jobName)    
 {
     if(outName == "")
-	outName = functionName + (TString)".root";  // Save locally and then copy back from job sh script
-
+	outName = functionName;  // Save locally and then copy back from job sh script
+    else
+	outName.ReplaceAll(".root", "");
+    TString namePrefix = outName + "_" + to_string(TStRunList::GetRunFromFileName((string)inFileName)) + (TString)"_"+ TStRunList::GetFileNoFromFileName((string)inFileName);
+    outName = namePrefix + (TString)".root" ;    
     TString starHome = TStar::Config->GetStarHome();
+    TString outFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)".out";
+    TString errorFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)".err";
+    TString logFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)".log";
+    TString outDir = starHome + "/jobOutput/";
     TString jobDir = starHome + (TString) "/jobs/" + jobName;
     TString createJobDir = (TString)".! mkdir -p " + jobDir;
     gROOT->ProcessLine(createJobDir);    
@@ -258,7 +270,10 @@ void SubmitJob(TString functionName, TString inFileName, TString outName,  TStri
     gROOT->ProcessLine((TString)".! mkdir -p " + resultDir);
     condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
     arguments = "Arguments       = " + (string)"\"" + inFileName + "\t" + outName + "\"";
-    condorConfig_out << arguments << endl; 
+    condorConfig_out << arguments << endl;
+    condorConfig_out <<"Output          = "<<outFile<<endl;
+    condorConfig_out <<"Error           = "<<errorFile<<endl;
+    condorConfig_out <<"Log             = "<<logFile<<endl;    
     condorConfig_out << "Queue\n" << endl;
 	    
     condorConfig_out.close();

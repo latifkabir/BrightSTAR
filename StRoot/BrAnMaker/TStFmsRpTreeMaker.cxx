@@ -209,8 +209,9 @@ Int_t TStFmsRpTreeMaker::Make()
     }
     mMuEvent = mMuDst->event();
 
-    if(!AcceptEvent())
-	return kStSkip;
+    // Event filtering has been moved to TStFmsRpFilterMaker class.
+    // if(!AcceptEvent())
+    // 	return kStSkip;
     
     ResetBuffer();
     

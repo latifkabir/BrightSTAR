@@ -14,18 +14,18 @@ void GetTriggerId()
     TSQLResult *res;
  
     // list databases available on server
-    printf("\nList all databases on server %s\n", db->GetHost());
-    res = db->GetDataBases();
-    while ((row = res->Next()))
-    {
-	printf("%s\n", row->GetField(0));
-	delete row;
-    }
-    delete res;
+    // printf("\nList all databases on server %s\n", db->GetHost());
+    // res = db->GetDataBases();
+    // while ((row = res->Next()))
+    // {
+    // 	printf("%s\n", row->GetField(0));
+    // 	delete row;
+    // }
+    // delete res;
 
     Int_t runNumber = 16066033;
-    //Get Torus and Solenoid setting
-    TString sql = Form("SELECT idx_rn,idx_trigger,name FROM triggers WHERE idx_rn=%d", runNumber);
+    //TString sql = Form("SELECT idx_rn,idx_trigger,name FROM triggers WHERE idx_rn=%d", runNumber);
+    TString sql = Form("SELECT idx_rn,offlineBit,name FROM triggers WHERE idx_rn=%d", runNumber);
 
 
     res = db->Query(sql);

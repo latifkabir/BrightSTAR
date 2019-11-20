@@ -338,3 +338,42 @@ Int_t TStRunList::MakeFileListWithEvents(Int_t minEvents)
     return fileCount;
 }
 
+Int_t TStRunList::GetRunFromFileName(string fileName)
+{
+    //cout << "-------> Run number extraction from file-name is tuned for FMS-stream only <----" <<endl;
+
+    const string startDelim = "st_fms_"; //Read this from configuration file
+    const string stopDelim = "_raw_";
+    unsigned firstDelimPos;
+    unsigned endPosOfFirstDelim;
+    unsigned lastDelimPos;
+    string runNumberStr;
+    
+    firstDelimPos = fileName.find(startDelim);
+    endPosOfFirstDelim = firstDelimPos + startDelim.length();
+    lastDelimPos = fileName.find_first_of(stopDelim, endPosOfFirstDelim);
+    runNumberStr = fileName.substr(endPosOfFirstDelim, lastDelimPos - endPosOfFirstDelim);
+    //cout << runNumberStr <<endl;
+
+    return atoi(runNumberStr.c_str());
+}
+
+string TStRunList::GetFileNoFromFileName(string fileName)
+{
+    //cout << "-------> Run number extraction from file-name is tuned for FMS-stream only <----" <<endl;
+
+    const string startDelim = "_raw_"; //Read this from configuration file
+    const string stopDelim = ".MuDst.root";
+    unsigned firstDelimPos;
+    unsigned endPosOfFirstDelim;
+    unsigned lastDelimPos;
+    string runNumberStr;
+    
+    firstDelimPos = fileName.find(startDelim);
+    endPosOfFirstDelim = firstDelimPos + startDelim.length();
+    lastDelimPos = fileName.find_first_of(stopDelim, endPosOfFirstDelim);
+    runNumberStr = fileName.substr(endPosOfFirstDelim, lastDelimPos - endPosOfFirstDelim);
+    //cout << runNumberStr <<endl;
+
+    return runNumberStr;
+}

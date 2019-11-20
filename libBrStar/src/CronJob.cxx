@@ -35,6 +35,7 @@ void CronJob(TString functionName)
     Int_t runIncrement = 20;
     Int_t activeJobs = 9999;
     Int_t jobThreshold = 100;
+    Int_t iteration = 0;
 
     TString command_sh = TStar::Config->GetStarHome() + (TString)"/bin/activeJobs.sh"; 
     TString fileName = TStar::Config->GetStarHome() + (TString)"/resources/temp/ActiveJobs.txt";
@@ -70,12 +71,14 @@ void CronJob(TString functionName)
 		endRun = lastRun;      
 	    if(startRun == -1)
 		break;
+	    iteration = (index_e / runIncrement);
+	    TString jobName = functionName + to_string(iteration);
 	    cout << "Submitting jobs for run range: "<< startRun << " to "<< endRun <<endl;
 	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement);
 	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" kabir@rcf.rhic.bnl.gov";
 	    gROOT->ProcessLine(emailCommand);
 	                           	    
-	    SubmitJob(functionName, startRun, endRun);
+	    SubmitJob(functionName, startRun, endRun, "", jobName);
 	    index += (runIncrement + 1);
 	    if(index >= totRuns)
 		index = (totRuns - 1);

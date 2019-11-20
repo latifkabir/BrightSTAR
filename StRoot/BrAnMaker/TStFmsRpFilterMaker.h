@@ -9,6 +9,7 @@
 #endif
 
 #include "StMuDSTMaker/COMMON/StMuRpsCollection.h"
+#include "TH1D.h"
 #include <vector>
 using std::vector;
 
@@ -19,6 +20,7 @@ class TStFmsRpFilterMaker : public StMaker
 {
     StMuDst *mMuDst;
     StMuRpsCollection *mRpsMuColl;
+    TH1D* hEvtCount;
 public:
     TStFmsRpFilterMaker(const char *name = "TStFmsRpFilterMaker");
     virtual ~TStFmsRpFilterMaker();
@@ -38,7 +40,8 @@ public:
 
     virtual const char* GetCVS() const
     {static const char cvs[]="Tag $Name:  $ $Id: TStFmsRpFilterMaker.h,v 1.4 2015/09/09 20:29:39 akio Exp $ built " __DATE__ " " __TIME__; return cvs;}
-    
+
+    void SetHist1d(TH1D* hist1d){ hEvtCount = hist1d;}
 private:
     vector<unsigned int> mGoodTriggers; //!
     vector<unsigned int> mVetoTriggers; //!

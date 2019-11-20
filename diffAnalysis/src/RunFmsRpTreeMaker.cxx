@@ -23,19 +23,26 @@ void RunFmsRpTreeMaker(TString fileList, TString outFile)
     TFile *f = new TFile(outFile, "RECREATE");
     //1D *massDist = new TH1D("massDist","#pi^{0} invariant mass [GeV]; M_{#pi^{0}} [GeV]",200,0.0,1.0);
     //2D *xyDist = new TH2D("xyDist", "xyDist", 200, -100.0, 100.0, 200, -100.0, 100.0);
+    TH1D* hEvtCount = new TH1D("hEvtCount", "Event counts", 20, 0, 20);
     TTree *tree = new TTree("T", "RP + FMS Tree");
     
     vector<Int_t> trigs(9);
     //------- For FMS stream ----------------
-    trigs[0] = TStTrigDef::GetTrigId("FMS-JP0");
-    trigs[1] = TStTrigDef::GetTrigId("FMS-JP1");
-    trigs[2] = TStTrigDef::GetTrigId("FMS-JP2");
-    trigs[3] = TStTrigDef::GetTrigId("FMS-sm-bs1");
-    trigs[4] = TStTrigDef::GetTrigId("FMS-sm-bs2");
-    trigs[5] = TStTrigDef::GetTrigId("FMS-sm-bs3");
-    trigs[6] = TStTrigDef::GetTrigId("FMS-lg-bs1");
-    trigs[7] = TStTrigDef::GetTrigId("FMS-lg-bs2");
-    trigs[8] = TStTrigDef::GetTrigId("FMS-lg-bs3");
+    Int_t runNumber = TStRunList::GetRunFromFileName((string)fileList);
+    if(runNumber < 1)
+    {
+	cout << "Unable to get run number" <<endl;
+	return;
+    }
+    trigs[0] = TStTrigDef::GetTrigId(runNumber, "FMS-JP0");
+    trigs[1] = TStTrigDef::GetTrigId(runNumber,"FMS-JP1");
+    trigs[2] = TStTrigDef::GetTrigId(runNumber,"FMS-JP2");
+    trigs[3] = TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1");
+    trigs[4] = TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2");
+    trigs[5] = TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3");
+    trigs[6] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1");
+    trigs[7] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2");
+    trigs[8] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3");
 
     gMessMgr->SetLimit("I", 0);   //Disable StInfo messages including Skipped event message
     gMessMgr->SetLimit("Q", 0);   //Disable StQAInfo messages (includes event processing status)
@@ -57,7 +64,8 @@ void RunFmsRpTreeMaker(TString fileList, TString outFile)
     //-------------- Filter/Skip Events if no RP or FMS BS/JP Trigger----------
     TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("");
     for(Int_t i = 0; i < trigs.size(); ++i)
-    	filterMaker->addTrigger(trigs[i]); 
+    	filterMaker->addTrigger(trigs[i]);
+    filterMaker->SetHist1d(hEvtCount);
     //----------------
 
     
@@ -73,7 +81,7 @@ void RunFmsRpTreeMaker(TString fileList, TString outFile)
     FmsRpTreeMk->SetTrigIDs(trigs);
     FmsRpTreeMk->SetTree(tree);
     FmsRpTreeMk->SetBeamMomentum(100.0);
-    
+
     // mudst reading
     // if 0, get info from StTriggerData from StTriggerDataMaker/StEvent/MuDst
     // and apply new DB; cluster finding/fitting is redone
@@ -97,7 +105,7 @@ void RunFmsRpTreeMaker(TString fileList, TString outFile)
     fmsPointMk->setVertexZ(1); // (1)
 
     Int_t nEvents = muDstMaker->chain()->GetEntries();
-    cout << "Total Events to be processed: "<< nEvents <<endl;
+    cout << "----------->Total Events to be processed: "<< nEvents <<" <----------------"<<endl;
     
     chain->Init();    
     chain->EventLoop(nEvents);  // Run specified number of events

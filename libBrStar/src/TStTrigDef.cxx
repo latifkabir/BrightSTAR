@@ -29,7 +29,7 @@ TStTrigDef::~TStTrigDef()
     
 }
 
-Int_t TStTrigDef::GetTrigId(TString trigger_name)
+Int_t TStTrigDef::GetTrigId(Int_t runNumber, TString trigger_name)
 {
     TStar::ExitIfInvalid((TString)TStar::Config->GetTrigDefFile());
     std::ifstream i(TStar::Config->GetTrigDefFile());
@@ -37,7 +37,7 @@ Int_t TStTrigDef::GetTrigId(TString trigger_name)
     i >> j;
     
     Int_t trigId = -1;
-    trigId = j[trigger_name.Data()];
+    trigId = j[to_string(runNumber)][trigger_name.Data()];
     i.close();
 
     if( trigId > 0)
