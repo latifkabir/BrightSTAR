@@ -78,7 +78,8 @@ void CronJob(TString functionName)
 	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" kabir@rcf.rhic.bnl.gov";
 	    gROOT->ProcessLine(emailCommand);
 	                           	    
-	    SubmitJob(functionName, startRun, endRun, "", jobName);
+	    //SubmitJob(functionName, startRun, endRun, "", jobName);
+	    SubmitJob(functionName, startRun, endRun);
 	    index += (runIncrement + 1);
 	    if(index >= totRuns)
 		index = (totRuns - 1);

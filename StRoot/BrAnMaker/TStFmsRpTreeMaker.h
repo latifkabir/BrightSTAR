@@ -95,6 +95,8 @@ private:
 
     //RP Buffer
     Int_t mRpNtracks;
+    Int_t *mRpTrackType;       // 1 for global, 0 otherwise
+    Int_t *mRpTrackNplanes;
     Int_t *mRpTrackBranch;  
     Double_t *mRpTrackTheta;   // In units if mrad
     Double_t *mRpTrackTheta_x; // in mrad

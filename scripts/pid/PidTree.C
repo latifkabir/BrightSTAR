@@ -6,7 +6,7 @@
 
 void PidTree()
 {
-    TFile *file = new TFile("~/GIT/BrightSTAR/results/root/RunPidTreeMaker/RunPidTreeMaker_16072057.root");
+    TFile *file = new TFile("~/GIT/BrightSTAR/dst/RunPidTreeMaker/RunPidTreeMaker_16072057.root");
     TTree *t = (TTree*)file->Get("T");
     t->MakeClass("PidTreeReader");    
 }

@@ -34,6 +34,8 @@ TStFmsRpTreeMaker::TStFmsRpTreeMaker(const char *name):StMaker(name)
     mFmsPairY = new Double_t[kMaxPairs];
 
     //RP Buffer
+    mRpTrackType = new Int_t[kMaxRpTracks];
+    mRpTrackNplanes = new Int_t[kMaxRpTracks];
     mRpTrackBranch = new Int_t[kMaxRpTracks];
     mRpTrackTheta = new Double_t[kMaxRpTracks];
     mRpTrackTheta_x = new Double_t[kMaxRpTracks];
@@ -62,6 +64,8 @@ TStFmsRpTreeMaker::~TStFmsRpTreeMaker()
     delete[] mFmsPairY;
 
     //RP Buffer
+    delete[] mRpTrackType;
+    delete[] mRpTrackNplanes;
     delete[] mRpTrackBranch;
     delete[] mRpTrackTheta;
     delete[] mRpTrackTheta_x;
@@ -146,6 +150,8 @@ void TStFmsRpTreeMaker::SetBranches()
 
     //RP branches
     mTree->Branch("rp_nTracks", &mRpNtracks, "rp_nTracks/I");
+    mTree->Branch("rp_trackType", mRpTrackType, "rp_trackType[rp_nTracks]/I");        
+    mTree->Branch("rp_trackNplanes", mRpTrackNplanes, "rp_trackNplanes[rp_nTracks]/I");        
     mTree->Branch("rp_trackBranch", mRpTrackBranch, "rp_trackBranch[rp_nTracks]/I");        
     mTree->Branch("rp_trackTheta", mRpTrackTheta, "rp_trackTheta[rp_nTracks]/D");        
     mTree->Branch("rp_trackTheta_x", mRpTrackTheta_x, "rp_trackTheta_x[rp_nTracks]/D");        
@@ -186,6 +192,8 @@ void TStFmsRpTreeMaker::ResetBuffer()
     std::fill_n(mFmsPairY, kMaxPairs, -999);    
 
     mRpNtracks = 0;
+    std::fill_n(mRpTrackType, kMaxRpTracks, -1);    
+    std::fill_n(mRpTrackNplanes, kMaxRpTracks, -1);    
     std::fill_n(mRpTrackBranch, kMaxRpTracks, -1);    
     std::fill_n(mRpTrackTheta, kMaxRpTracks, -999);    
     std::fill_n(mRpTrackTheta_x, kMaxRpTracks, -999);    
@@ -350,7 +358,8 @@ Int_t TStFmsRpTreeMaker::MakeFms()
 	return kStSkip;
     }
 
-    mPointPairs = mFmsColl->pointPairs();
+    // mPointPairs = mFmsColl->pointPairs();
+    mPointPairs = mFmsColl->pointPairsEnergySorted();
     mFmsNpairs = mFmsColl->numberOfPointPairs();
     for (Int_t i = 0; i < mFmsNpairs; ++i)
     {
@@ -382,6 +391,8 @@ Int_t TStFmsRpTreeMaker::MakeRps()
     mRpNtracks = mRpsMuColl->numberOfTracks();
     for(Int_t i = 0; i < mRpNtracks; ++i)
     {
+	mRpTrackType[i] = (mRpsMuColl->track(i)->type() == StMuRpsTrack::rpsGlobal) ? 1 : 0;
+	mRpTrackNplanes[i] = mRpsMuColl->track(i)->planesUsed();
 	mRpTrackBranch[i] = mRpsMuColl->track(i)->branch();	
 	mRpTrackTheta[i] = 1000.0*mRpsMuColl->track(i)->theta();	
 	mRpTrackTheta_x[i] = 1000.0*mRpsMuColl->track(i)->theta(0);	

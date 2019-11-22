@@ -15,7 +15,7 @@ using namespace RooFit ;
 void etaMesonFit()
 {
     // --- Get Data ----------
-    //TString fileName = "/star/u/kabir/GIT/BrightSTAR/results/root/3.Pi0_In_Cal/Emc_Pi0/eta_meson.root";
+    //TString fileName = "/star/u/kabir/GIT/BrightSTAR/dst/Pi0_In_All_ECal/Emc_Pi0/eta_meson.root";
     TString fileName = "eta.root";
     TFile *file = new TFile(fileName);
     TH1D *eta = (TH1D*)file->Get("eta");

@@ -33,7 +33,7 @@ void RemoveBadFiles()
     {
 	inFile >> dataFileName;
 	//cout << "Data File Name: "<< dataFileName <<endl;
-	run = 16081017;//TStRunList::GetRunFromFileName(dataFileName);
+	run = TStRunList::GetRunFromFileName(dataFileName);
 	runStr = Form("%d", run);
 	//cout << runStr <<endl;
 	fileName = basePath + "" + runStr+ "/RunFmsRpTreeMaker_" + runStr  + "_" + TStRunList::GetFileNoFromFileName(dataFileName) + ".root";
@@ -50,7 +50,8 @@ void RemoveBadFiles()
 		zFile << dataFileName <<endl;
 		command = ".! rm " + fileName;
 		//cout << command <<endl;
-		//gROOT->ProcessLine(command.c_str());
+		// cout << "!!!Removing the file !!!" <<endl;
+		// gROOT->ProcessLine(command.c_str());
 		++numBadFiles;
 	    }
 	    f->Close();

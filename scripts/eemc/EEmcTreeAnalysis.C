@@ -6,8 +6,8 @@
 
 void EEmcTreeAnalysis()
 {
-    TString tsiuFile = "/star/u/kabir/pwg/results/root/3.Pi0_In_Cal/EEmc_Pi0_TSIU/eemcTreeP3_16072047_57-62_merged.root";
-    TString iuFile = "/star/u/kabir/pwg/results/root/3.Pi0_In_Cal/EEmc_Pi0_IU/EEmc_Pi0_IU.root";
+    TString tsiuFile = "/star/u/kabir/pwg/dst/Pi0_In_All_ECal/EEmc_Pi0_TSIU/eemcTreeP3_16072047_57-62_merged.root";
+    TString iuFile = "/star/u/kabir/pwg/dst/Pi0_In_All_ECal/EEmc_Pi0_IU/EEmc_Pi0_IU.root";
 
     TFile *f_ts = new TFile(tsiuFile);
     TFile *f_iu = new TFile(iuFile);

@@ -15,7 +15,7 @@ void EmcPi0Analysis()
     // const Int_t size = 32;
     // Int_t runList[size] = {16072006, 16072007, 16072008, 16072009, 16072010, 16072012, 16072013, 16072014, 16072021, 16072022, 16072023, 16072024, 16072025, 16072026, 16072033, 16072034, 16072035, 16072036, 16072038, 16072039, 16072040, 16072041, 16072042, 16072043, 16072046, 16072047, 16072057, 16072058, 16072059, 16072060, 16072061, 16072062};
         
-    TString fPath = "/star/u/kabir/GIT/BrightSTAR/results/root/RunEmcTreeMaker/RunEmcTreeMaker_*.root/T";
+    TString fPath = "/star/u/kabir/GIT/BrightSTAR/dst/RunEmcTreeMaker/RunEmcTreeMaker_*.root/T";
     TChain *chain = new TChain("T");
     Int_t nFiles = chain->Add(fPath);
     cout << "Total files added:"<< nFiles <<endl;

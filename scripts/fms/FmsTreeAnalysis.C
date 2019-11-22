@@ -7,7 +7,7 @@
 void FmsTreeAnalysis()
 {
 
-    TFile *file = new TFile("/star/u/kabir/GIT/BrightSTAR/results/root/3.Pi0_In_Cal/Fms_Pi0/FmsTree_16080002.root");
+    TFile *file = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/Pi0_In_All_ECal/Fms_Pi0/FmsTree_16080002.root");
     TTree *t = (TTree*)file->Get("T");
     //t->Print();
 
