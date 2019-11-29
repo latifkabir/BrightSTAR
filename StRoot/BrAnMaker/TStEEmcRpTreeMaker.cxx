@@ -1,21 +1,22 @@
-// Filename: TStRpTreeMaker.cxx
+// Filename: TStEEmcRpTreeMaker.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon Aug 19 17:37:54 2019 (-0400)
 // URL: jlab.org/~latif
 
-#include "TStRpTreeMaker.h"
+#include "TStEEmcRpTreeMaker.h"
 #include "StEvent/StEvent.h"
 #include "StEvent/StTriggerData.h"
 #include "StEvent/StTriggerId.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StSpinPool/StSpinDbMaker/StSpinDbMaker.h"
+#include "StEEmcPool/StEEmcTreeMaker/StEEmcTreeMaker.h"
 
-ClassImp(TStRpTreeMaker)
+ClassImp(TStEEmcRpTreeMaker)
 
 //_____________________________________________________________________________ 
-TStRpTreeMaker::TStRpTreeMaker(const char *name):StMaker(name)
+TStEEmcRpTreeMaker::TStEEmcRpTreeMaker(const char *name):StMaker(name)
 {
     mEvtCountHist = new TH1D("EvtCountHist", "Event counts", 20, 0, 20);
     mBeamMom = 100.0; //Overwrite from runMacro
@@ -39,7 +40,7 @@ TStRpTreeMaker::TStRpTreeMaker(const char *name):StMaker(name)
 }
 
 //_____________________________________________________________________________ 
-TStRpTreeMaker::~TStRpTreeMaker()
+TStEEmcRpTreeMaker::~TStEEmcRpTreeMaker()
 {
     delete[] mTriggers;
 
@@ -62,7 +63,7 @@ TStRpTreeMaker::~TStRpTreeMaker()
 
 
 //_____________________________________________________________________________ 
-Int_t TStRpTreeMaker::Init()
+Int_t TStEEmcRpTreeMaker::Init()
 {
     cout << "-------->Triggers Included:" <<endl;
     for(mIt = mTrigIDs.begin(); mIt != mTrigIDs.end(); ++mIt)
@@ -70,14 +71,14 @@ Int_t TStRpTreeMaker::Init()
     
     mFile = new TFile(mOutName, "RECREATE");
     mTree = new TTree("T", "RP Tree");
-
+    mEvtCount = 0;
     SetBranches();
     
     return kStOK;
 }
 
 //_____________________________________________________________________________ 
-Int_t TStRpTreeMaker::InitRun(int runnumber)
+Int_t TStEEmcRpTreeMaker::InitRun(int runnumber)
 {
     mSpinDbMaker = static_cast<StSpinDbMaker*>(GetMaker("spinDb"));
     mSpinDbMaker->print();
@@ -86,7 +87,7 @@ Int_t TStRpTreeMaker::InitRun(int runnumber)
 }
 
 //_____________________________________________________________________________ 
-void TStRpTreeMaker::SetBranches()
+void TStEEmcRpTreeMaker::SetBranches()
 {
     //Event branches    
     mTree->Branch("evt_run", &mRunNumber, "evt_run/I");
@@ -123,7 +124,7 @@ void TStRpTreeMaker::SetBranches()
     mTree->Branch("rp_trackPt", mRpTrackPt, "rp_trackPt[rp_nTracks]/D");
 }
 //_____________________________________________________________________________
-void TStRpTreeMaker::ResetBuffer()
+void TStEEmcRpTreeMaker::ResetBuffer()
 {
     mRunNumber = -1;
     mEventId = -1;
@@ -153,14 +154,14 @@ void TStRpTreeMaker::ResetBuffer()
 }
     
 //_____________________________________________________________________________
-Int_t TStRpTreeMaker::Make()
+Int_t TStEEmcRpTreeMaker::Make()
 {
     mMuDst = (StMuDst*)GetInputDS("MuDst");
     mEvent = (StEvent*)GetInputDS("StEvent");
 
     if (!mMuDst || !mEvent)
     {
-	cout <<"TStRpTreeMaker::Make - !MuDst or !StEvent" <<endl;
+	cout <<"TStEEmcRpTreeMaker::Make - !MuDst or !StEvent" <<endl;
 	return kStErr;
     }
     mMuEvent = mMuDst->event();
@@ -168,6 +169,16 @@ Int_t TStRpTreeMaker::Make()
     // Event filtering has been moved to TStFmsRpFilterMaker class.
     // if(!AcceptEvent())
     // 	return kStSkip;
+
+    mEEmcTreeMaker = (StEEmcTreeMaker_t*)GetMaker("EEmcTreeMkr");
+    if(!mEEmcTreeMaker)
+    {
+	cout << "TStEEmcRpTreemaker::Make !StEEmcTreeMaker_t" <<endl;
+	return kStErr;
+    }
+    //Synchronize RP tree with EEMC part1 tree. Only works if filtering is done on RP track first.
+    if(mEEmcTreeMaker->getNumPart1EventsWritten() != (mEvtCount + 1))
+    	return kStSkip;
     
     ResetBuffer();
     
@@ -179,11 +190,12 @@ Int_t TStRpTreeMaker::Make()
     status = MakeRps();
 
     mTree->Fill();
-
+    ++mEvtCount;
+    
     return status;    
 }
 //_____________________________________________________________________________
-Bool_t TStRpTreeMaker::AcceptEvent()
+Bool_t TStEEmcRpTreeMaker::AcceptEvent()
 {
     //Trigger flag
     mTrigFlag = 0;
@@ -210,7 +222,7 @@ Bool_t TStRpTreeMaker::AcceptEvent()
     return kTRUE;
 }
 //_____________________________________________________________________________
-Int_t TStRpTreeMaker::MakeEvent()
+Int_t TStEEmcRpTreeMaker::MakeEvent()
 {
     //Run no. and event no.     
     mRunNumber = mMuEvent->runNumber();
@@ -294,7 +306,7 @@ Int_t TStRpTreeMaker::MakeEvent()
 }
 
 //_____________________________________________________________________________
-Int_t TStRpTreeMaker::MakeRps()
+Int_t TStEEmcRpTreeMaker::MakeRps()
 {
     mRpsMuColl = mMuDst->RpsCollection();
     if(!mRpsMuColl)
@@ -323,7 +335,7 @@ Int_t TStRpTreeMaker::MakeRps()
     return kStOk;    
 }
 //_____________________________________________________________________________
-Int_t TStRpTreeMaker::Finish()
+Int_t TStEEmcRpTreeMaker::Finish()
 {
     //Write histograms to root file etc.
     mFile->cd();

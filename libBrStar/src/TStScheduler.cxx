@@ -350,10 +350,10 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
     Int_t index_e = 0;
     Int_t startRun = firstRun;
     Int_t endRun;
-    Int_t runIncrement = 20;
+    Int_t runIncrement = 10; //20;
     Int_t activeJobs = 9999;
     Int_t jobThreshold = 100;
-    Int_t sleepTime = 60*60;
+    Int_t sleepTime = 30*60;
     Int_t iteration = 0;
 
     TString command_sh = TStar::Config->GetStarHome() + (TString)"/bin/activeJobs.sh"; 

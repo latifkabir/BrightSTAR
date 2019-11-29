@@ -16,10 +16,11 @@
   */
 
 #include "StRootInclude.h"
-#include "BrAnMaker/TStRpTreeMaker.h"
+#include "BrAnMaker/TStEEmcRpTreeMaker.h"
 #include "BrightStInclude.h"
 #include "BrAnMaker/TStFmsRpFilterMaker.h"
 #include "BrAnMaker/TStFmsRpTreeMaker.h"
+#include "TChain.h"
 //
 // the main routine
 //
@@ -54,9 +55,6 @@ void AnRunEEmcRpTreeMakerPart1(const Char_t *inputFileName,
     StEEmcTreeMaker_t   *treeMakerPtr     = 0;
     StMcEEmcTreeMaker_t *mcTreeMakerPtr   = 0;
     StSpinInfoMaker_t   *spinInfoMakerPtr = 0;
-
-    Long_t neventsIn = 5000;//-1; 
-    Long_t neventsOut = -1;
     
     //
     // Create the analysis chain
@@ -74,6 +72,10 @@ void AnRunEEmcRpTreeMakerPart1(const Char_t *inputFileName,
     muDstMaker->SetStatus("EmcAll",1);
     muDstMaker->SetStatus("pp2pp*", 1);
     muDstMaker->SetStatus("MuEvent*", 1);
+
+    Long_t neventsIn = muDstMaker->chain()->GetEntries();//-1; 
+    Long_t neventsOut = neventsIn; //-1
+    cout << "-------------> Total events to be processed:" << neventsIn <<" <---------------------"<<endl;
 
     //0. <-------------- Filter/Skip Events if no RP or FMS BS/JP Trigger----------
     TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("TStFmsRpFilterMaker");
@@ -207,7 +209,7 @@ void AnRunEEmcRpTreeMakerPart1(const Char_t *inputFileName,
     analysisChain->ls(3);
 
     //------ RP Tree ------------
-    TStRpTreeMaker *rpTreeMaker = new TStRpTreeMaker("TStRpTreeMaker");
+    TStEEmcRpTreeMaker *rpTreeMaker = new TStEEmcRpTreeMaker("TStEEmcRpTreeMaker");
     rpTreeMaker->SetOutFileName((TString)"RpTree_" + (TString)outputFileName);
     rpTreeMaker->SetTrigIDs(trigs);    
     rpTreeMaker->SetBeamMomentum(100.0);
@@ -268,6 +270,8 @@ void AnRunEEmcRpTreeMakerPart1(const Char_t *inputFileName,
     // analysisChain->Delete();
     
     cout << "\033[1;31m=============== This script requires a custom StMuDstMaker library.====================================\033[0m"<<endl;
+
+    cout << "Status:SUCCESS!!" <<endl;
     
     return;
 }
