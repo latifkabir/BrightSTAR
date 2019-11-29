@@ -8,6 +8,7 @@
 #ifndef TAnFmsRpTreeReader_h
 #define TAnFmsRpTreeReader_h
 
+#include <iostream>
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
@@ -21,7 +22,7 @@ class TAnFmsRpTreeReader
     static const Int_t kMaxPairs = 1000;
     static const Int_t kMaxTracks = 1000;
 public :
-    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
+    TChain          *fChain;   //!pointer to the analyzed TTree or TChain
     Int_t           fCurrent; //!current Tree number in a TChain
 
     // Declaration of leaf types
@@ -100,12 +101,12 @@ public :
     TBranch        *b_rp_trackP;   //!
     TBranch        *b_rp_trackPt;   //!
 
-    TAnFmsRpTreeReader(TTree *tree=0);
+    TAnFmsRpTreeReader(TString fileName);
     virtual ~TAnFmsRpTreeReader();
     virtual Int_t    Cut(Long64_t entry);
     virtual Int_t    GetEntry(Long64_t entry);
     virtual Long64_t LoadTree(Long64_t entry);
-    virtual void     Init(TTree *tree);
+    virtual void     Init();
     virtual void     Loop();
     virtual Bool_t   Notify();
     virtual void     Show(Long64_t entry = -1);
@@ -114,9 +115,8 @@ public :
 #endif
 
 #ifdef TAnFmsRpTreeReader_cxx
-TAnFmsRpTreeReader::TAnFmsRpTreeReader(TTree *tree) : fChain(0) 
+TAnFmsRpTreeReader::TAnFmsRpTreeReader(TString fileName)
 {
-
     fms_pairE = new Double_t[kMaxPairs];   //[fms_nPairs]
     fms_pairM = new Double_t[kMaxPairs];   //[fms_nPairs]
     fms_pairPt = new Double_t[kMaxPairs];   //[fms_nPairs]
@@ -140,8 +140,10 @@ TAnFmsRpTreeReader::TAnFmsRpTreeReader(TTree *tree) : fChain(0)
     rp_trackP = new Double_t[kMaxTracks];   //[rp_nTracks]
     rp_trackPt = new Double_t[kMaxTracks];   //[rp_nTracks]
    
+    fChain = new TChain("T");
+    fChain->Add(fileName);
     
-    Init(tree);
+    Init();
 }
 
 TAnFmsRpTreeReader::~TAnFmsRpTreeReader()
@@ -168,7 +170,8 @@ TAnFmsRpTreeReader::~TAnFmsRpTreeReader()
     delete[] rp_trackMt;
     delete[] rp_trackP;
     delete[] rp_trackPt;
-    
+
+    delete fChain;
     // if (!fChain) return;
     // delete fChain->GetCurrentFile();
 }
@@ -193,7 +196,7 @@ Long64_t TAnFmsRpTreeReader::LoadTree(Long64_t entry)
     return centry;
 }
 
-void TAnFmsRpTreeReader::Init(TTree *tree)
+void TAnFmsRpTreeReader::Init()
 {
     // The Init() function is called when the selector needs to initialize
     // a new tree or chain. Typically here the branch addresses and branch
@@ -204,8 +207,11 @@ void TAnFmsRpTreeReader::Init(TTree *tree)
     // (once per file to be processed).
 
     // Set branch addresses and branch pointers
-    if (!tree) return;
-    fChain = tree;
+    if(!fChain)
+    {
+	std::cout << "Invalid TTree" <<std::endl;
+	return;
+    }
     fCurrent = -1;
     fChain->SetMakeClass(1);
 

@@ -23,7 +23,7 @@ export TRIG='production_pp200trans_2015||production_fms_pp200trans_2015'
 
 
 #--------------------------------------------------------------------------
-export BASEOUTDIR=${STARHOME}/jobResults     # .root files directory. Relative to current directory
+export BASEOUTDIR=${STARHOME}/dst            # .root files directory. Relative to current directory
 export JOBOUTDIR=${STARHOME}/jobOutput       #stderr, stdout, report etc directory. Relative to current directory
 export SOURCE=${STARHOME}/.sl73_gcc485
 export ROOTSETUP=${STARHOME}/rootlogon.C

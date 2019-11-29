@@ -112,6 +112,11 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fTrigDefFile = tokens;
 	    }
+	    else if(s == "STREAM_PREFIX")
+	    {
+		tokens = strtok(NULL, " :,");
+		fStreamPrefix = tokens;
+	    }
 	    else
 	    {
 		tokens = strtok(NULL, " :,");
@@ -176,6 +181,12 @@ const string& TStConfig::GetTrigDefFile()
     return fTrigDefFile;
 }
 
+const string& TStConfig::GetStreamPrefix()
+{
+    return fStreamPrefix;
+}
+
+
 
 TString TStConfig::GetRootFileName()
 {
@@ -196,6 +207,7 @@ void TStConfig::Print()
     cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB() <<endl;
     cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile() <<endl;
     cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath() <<endl;
+    cout << "\033[1;31mStream prefix: \033[0m"<< GetStreamPrefix() <<endl;
     cout << "==================================================" <<endl;    
 }
 

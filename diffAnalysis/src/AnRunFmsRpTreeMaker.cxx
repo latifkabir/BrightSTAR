@@ -21,8 +21,6 @@ void AnRunFmsRpTreeMaker(TString fileList, TString outFile)
     //fileList = "/star/u/kabir/pwg/data/st_fms_16066050_raw_5000002.MuDst.root";
 
     TFile *f = new TFile(outFile, "RECREATE");
-    //1D *massDist = new TH1D("massDist","#pi^{0} invariant mass [GeV]; M_{#pi^{0}} [GeV]",200,0.0,1.0);
-    //2D *xyDist = new TH2D("xyDist", "xyDist", 200, -100.0, 100.0, 200, -100.0, 100.0);
     TH1D* hEvtCount = new TH1D("hEvtCount", "Event counts", 20, 0, 20);
     TTree *tree = new TTree("T", "RP + FMS Tree");
     
@@ -62,7 +60,7 @@ void AnRunFmsRpTreeMaker(TString fileList, TString outFile)
     muDstMaker->SetStatus("MuEvent*", 1);
 
     //-------------- Filter/Skip Events if no RP or FMS BS/JP Trigger----------
-    TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("");
+    TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("TStFmsRpFilterMaker");
     for(Int_t i = 0; i < trigs.size(); ++i)
     	filterMaker->addTrigger(trigs[i]);
     filterMaker->SetHist1d(hEvtCount);

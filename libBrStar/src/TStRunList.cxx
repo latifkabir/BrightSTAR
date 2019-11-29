@@ -302,7 +302,7 @@ TEntryList* TStRunList::GetRunList(Int_t firstRun, Int_t lastRunOrNruns)
 		++runCount;
 	    }
 	    prevRun = rNumber;
-	    if(limit == runCount)
+	    if(limit >= runCount)
 		break;
         }
     }
@@ -310,6 +310,22 @@ TEntryList* TStRunList::GetRunList(Int_t firstRun, Int_t lastRunOrNruns)
     return runList;
 }
 
+Int_t TStRunList::GetRunIndex(Int_t runNumber)
+{
+    if(runList)
+	runList->Reset();
+    GetRunList();
+    Int_t run = 0;
+    Int_t index  = -1; 
+    while (run != -1 && run != runNumber) 
+    {
+	run = runList->Next();
+	++index;
+    }
+    if(run != runNumber)
+	index = -1;
+    return index;   
+}
 
 Int_t TStRunList::MakeFileListWithEvents(Int_t minEvents)
 {        
@@ -342,7 +358,7 @@ Int_t TStRunList::GetRunFromFileName(string fileName)
 {
     //cout << "-------> Run number extraction from file-name is tuned for FMS-stream only <----" <<endl;
 
-    const string startDelim = "st_fms_"; //Read this from configuration file
+    const string startDelim = TStar::Config->GetStreamPrefix(); //Read this from configuration file
     const string stopDelim = "_raw_";
     unsigned firstDelimPos;
     unsigned endPosOfFirstDelim;

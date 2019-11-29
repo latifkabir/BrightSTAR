@@ -1,25 +1,46 @@
-// Filename: SubmitJob.cxx
+// Filename: TStScheduler.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
-// Created: Sat Aug 10 17:19:34 2019 (-0400)
+// Created: Wed May 29 00:24:18 2019 (-0400)
 // URL: jlab.org/~latif
 
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <unistd.h>
 #include <sstream>
 #include <iomanip>
+
 #include "json.h"
-#include "RootInclude.h"
+#include "TStScheduler.h"
+#include "TStConfig.h"
 #include "TStar.h"
-#include "TStRunList.h"
 #include "TString.h"
+#include "RootInclude.h"
+#include "TStRunList.h"
+#include "TROOT.h"
+#include "TEntryList.h"
+#include "TSystem.h"
+
 
 using namespace std;
 using json = nlohmann::json;
 
+ClassImp(TStScheduler)
+
+TStScheduler::TStScheduler()
+{
+
+}
+
+TStScheduler::~TStScheduler()
+{
+    
+}
+
+
 //___________________________________________________________________________________________
-void JobStatus(Int_t level)
+void TStScheduler::JobStatus(Int_t level)
 {
     TString star_sh = TStar::Config->GetStarHome() + (TString)"/star";
     if(gSystem->AccessPathName(star_sh))
@@ -36,7 +57,7 @@ void JobStatus(Int_t level)
 }
 
 //___________________________________________________________________________________________
-void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TString outName, TString jobName)    
+void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TString outName, TString jobName)    
 {
     if(outName == "")
 	 outName = functionName;  // Save locally and then copy back from job sh script
@@ -197,7 +218,7 @@ void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TSt
 }
 
 //_______________________________________________________________________________________________
-void SubmitJob(TString functionName, TString inFileName, TString outName,  TString jobName)    
+void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString outName,  TString jobName)    
 {
     if(outName == "")
 	outName = functionName;  // Save locally and then copy back from job sh script
@@ -292,14 +313,14 @@ void SubmitJob(TString functionName, TString inFileName, TString outName,  TStri
 }
 
 //___________________________________________________________________________________________
-void SubmitJob(TString functionList)
+void TStScheduler::SubmitJob(TString functionList)
 {
     //Read functions from a text file separated by space for each job
     
 }
 
 //___________________________________________________________________________________________
-void SubmitSumsJob(TString function, TString runList, TString outNamePrefix, TString jobName)    
+void TStScheduler::SubmitSumsJob(TString function, TString runList, TString outNamePrefix, TString jobName)    
 {
     if(outNamePrefix == "")
 	outNamePrefix = function;
@@ -313,4 +334,79 @@ void SubmitSumsJob(TString function, TString runList, TString outNamePrefix, TSt
     
     TString command = (TString)".! " + subScript + (TString)"\t" + function + (TString)"\t" + runList + (TString)"\t" + outNamePrefix + "\t" + jobName;
     gROOT->ProcessLine(command);
+}
+
+
+void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_run)
+{
+    TStRunList *list = new TStRunList();
+    TEntryList *runList = list->GetRunList(first_run, last_run);
+    //runList->Print("all");
+    Int_t totRuns = runList->GetN();
+    
+    Int_t firstRun = runList->GetEntry(0);
+    Int_t lastRun = runList->GetEntry(totRuns - 1);
+    Int_t index = 0;
+    Int_t index_e = 0;
+    Int_t startRun = firstRun;
+    Int_t endRun;
+    Int_t runIncrement = 20;
+    Int_t activeJobs = 9999;
+    Int_t jobThreshold = 100;
+    Int_t sleepTime = 60*60;
+    Int_t iteration = 0;
+
+    TString command_sh = TStar::Config->GetStarHome() + (TString)"/bin/activeJobs.sh"; 
+    TString fileName = TStar::Config->GetStarHome() + (TString)"/resources/temp/ActiveJobs.txt";
+        
+    cout << "First run: "<< firstRun <<endl;
+    cout << "Last run: "<< lastRun <<endl;
+
+    while(endRun < lastRun || index_e < (totRuns -1))
+    {	
+	//Read number of active jobs
+	if(gSystem->AccessPathName(command_sh))
+	{
+	    cout << "shell script NOT found at: "<<command_sh<<endl;
+	    return;
+	}
+	gROOT->ProcessLine((TString)".! " + command_sh);
+	ifstream inFile(fileName);
+	if(!inFile)
+	{
+	    cout << "Unable to open active job number record"<<endl;
+	    return;
+	}
+	inFile >> activeJobs;
+	inFile.close();
+	cout << "Currently number of active jobs: "<< activeJobs <<endl;
+
+	if(activeJobs < jobThreshold)
+	{
+	    startRun = runList->GetEntry(index);
+	    index_e = (index + runIncrement >= totRuns) ? (totRuns - 1) :  (index + runIncrement);
+	    endRun = runList->GetEntry(index_e);
+	    if(endRun == -1)
+		endRun = lastRun;      
+	    if(startRun == -1)
+		break;
+	    iteration = (index_e / runIncrement);
+	    TString jobName = functionName + to_string(iteration);
+	    cout << "Submitting jobs for run range: "<< startRun << " to "<< endRun <<endl;
+	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement);
+	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" kabir@rcf.rhic.bnl.gov";
+	    gROOT->ProcessLine(emailCommand);
+	                           	    
+	    SubmitJob(functionName, startRun, endRun, "", jobName);
+	    //SubmitJob(functionName, startRun, endRun);
+	    index += (runIncrement + 1);
+	    if(index >= totRuns)
+		index = (totRuns - 1);
+	}
+	else
+	    cout << "Still substantial number of active jobs ..." <<endl;
+
+	cout << "Now sleeping for a while .... ..." <<endl;
+	sleep(sleepTime);	
+    }
 }

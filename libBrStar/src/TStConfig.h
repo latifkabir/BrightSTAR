@@ -30,6 +30,7 @@ class TStConfig : public TObject
     string fFileList;
     string fProdPath;
     string fTrigDefFile;
+    string fStreamPrefix;
     
     void CheckValidity();    
 public:
@@ -51,6 +52,7 @@ public:
     const string & GetFileList();
     const string & GetProdPath();
     const string & GetTrigDefFile();
+    const string & GetStreamPrefix();
     TString GetRootFileName();
     
     ClassDef(TStConfig,1)

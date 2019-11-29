@@ -17,8 +17,9 @@ public:
     TStTrigDef();
     virtual ~TStTrigDef();
 
+    static void MakeTrigIdDB(); 
     static Int_t GetTrigId(Int_t runNumber, TString trigger_name);
-    
+
     ClassDef(TStTrigDef,1)
 };
 #endif

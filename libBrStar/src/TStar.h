@@ -29,6 +29,10 @@ public:
     static void FilePrint(Int_t lowerRange, Int_t upperRange);
     static void FileListing(Int_t lowerRange, Int_t upperRange);
     static void FileListing();
+
+    static void help();
+    static void help(string file);
+    static void history();
     ClassDef(TStar,1)
 };
 

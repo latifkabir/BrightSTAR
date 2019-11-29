@@ -32,6 +32,7 @@ public:
     static void PrintFileList();
     static Int_t ViewRunList(Int_t firstRun, Int_t lastRunOrNruns = -1);
     TEntryList* GetRunList(Int_t firstRun = -1, Int_t lastRunOrNruns = -1);
+    Int_t GetRunIndex(Int_t runNumber);
     static Int_t GetRunFromFileName(string fileName);
     static string GetFileNoFromFileName(string fileName);
     ClassDef(TStRunList,1)
