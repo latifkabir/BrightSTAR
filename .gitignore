@@ -30,3 +30,4 @@ FmsGainCorr.txt
 schedTemplateExp.xml
 temp*.txt
 *_cxx.d
+jobs/

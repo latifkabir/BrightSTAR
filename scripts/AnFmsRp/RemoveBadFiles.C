@@ -13,7 +13,7 @@ using namespace std;
 
 void RemoveBadFiles()
 {
-    string basePath = "/star/u/kabir/GIT/BrightSTAR/jobResults/condor/";
+    string basePath = "/star/u/kabir/GIT/BrightSTAR/dst/FmsRpTreeMaker_ucr_part2/";
     ifstream inFile("/star/u/kabir/GIT/BrightSTAR/resources/temp/temp.list");
     ofstream zFile("Run15ZombieFileListBackup.txt");    
     if(!inFile || !zFile)
