@@ -46,8 +46,8 @@
     gSystem->Load("StPmdUtil");
     gSystem->Load("StPreEclMaker");
     gSystem->Load("StStrangeMuDstMaker");
-    //gSystem->Load("StMuDSTMaker");
-    assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StMuDSTMaker.so"));  // Local copy of StMuDstMaker in batch mode
+    gSystem->Load("StMuDSTMaker");
+    //assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StMuDSTMaker.so"));  // Local copy of StMuDstMaker in batch mode
 
     //-------------Trigger --------------
     gSystem->Load("StTriggerUtilities");

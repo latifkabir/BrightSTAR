@@ -356,8 +356,11 @@ Int_t TStRunList::MakeFileListWithEvents(Int_t minEvents)
 
 Int_t TStRunList::GetRunFromFileName(string fileName)
 {
-    //cout << "-------> Run number extraction from file-name is tuned for FMS-stream only <----" <<endl;
-
+    //cout << "-------> Run number extraction from file-name is tuned for FMS-stream or physics-stream
+    // only as specified in the configuration file <----" <<endl;
+    TString fName = fileName;
+    fName.ReplaceAll("adc_", "");
+    string mFileName = (string)fName;
     const string startDelim = TStar::Config->GetStreamPrefix(); //Read this from configuration file
     const string stopDelim = "_raw_";
     unsigned firstDelimPos;
@@ -365,10 +368,10 @@ Int_t TStRunList::GetRunFromFileName(string fileName)
     unsigned lastDelimPos;
     string runNumberStr;
     
-    firstDelimPos = fileName.find(startDelim);
+    firstDelimPos = mFileName.find(startDelim);
     endPosOfFirstDelim = firstDelimPos + startDelim.length();
-    lastDelimPos = fileName.find_first_of(stopDelim, endPosOfFirstDelim);
-    runNumberStr = fileName.substr(endPosOfFirstDelim, lastDelimPos - endPosOfFirstDelim);
+    lastDelimPos = mFileName.find_first_of(stopDelim, endPosOfFirstDelim);
+    runNumberStr = mFileName.substr(endPosOfFirstDelim, lastDelimPos - endPosOfFirstDelim);
     //cout << runNumberStr <<endl;
 
     return atoi(runNumberStr.c_str());
