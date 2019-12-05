@@ -1,4 +1,4 @@
-// Filename: AnFmsRpQA.C
+// Filename: AnFmsRpCorr.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Thu Nov 21 13:00:15 2019 (-0500)
@@ -9,24 +9,22 @@
 #include "TStRunList.h"
 using namespace std;
 
-void AnFmsRpQA(Int_t firstRun, Int_t lastRun)
+void AnFmsRpCorr(Int_t firstRun, Int_t lastRun)
 {
     TStRunList *list = new TStRunList();
     TEntryList *runList = list->GetRunList(firstRun, lastRun);
     Int_t nRuns = runList->GetN();
     Int_t run;
     TString basePath = "/star/u/kabir/GIT/BrightSTAR/dst/R15FmsRpTree/FmsRpTree_";
-    // TString basePath = "/star/u/kabir/GIT/BrightSTAR/dst/FmsRpTreeMaker_ucr/RunFmsRpTreeMaker_Merger_16067013_to_16080002.root";
     
     Int_t nEntries = 0;
-    Int_t trk_i[2] = { -1, -1};
+    Int_t trk_i =  -1;
     Int_t nTrk = 0;
     Int_t fms_i = -1;
     Bool_t isValid = true;
     Int_t evtCount = 0;
-    Int_t maxRpTracks = 1;
 
-    TFile *fout = new TFile("FmsRpQA.root", "RECREATE");
+    TFile *fout = new TFile("FmsRpCorr.root", "RECREATE");
     TH1D *hist1 = new TH1D("trkP", "trk P; RP track P [GeV/c]", 200, 60, 150);
     TH1D *hist2 = new TH1D("trkPt", "trk Pt; RP track P_{T} [GeV/c]", 200, 0, 2);
     TH1D *hist3 = new TH1D("trkEta", "trk Eta; RP Track #Eta", 200, -10, 10);
@@ -87,8 +85,7 @@ void AnFmsRpQA(Int_t firstRun, Int_t lastRun)
 		cout << "Events processed in this run:"<< (int)(100.0*evt / nEntries) <<" %"<<endl;
 	    
 	    //------------------- RP Cuts --------------------------------
-	    trk_i[0] = -1;
-	    trk_i[1] = -1;
+	    trk_i = -1;
 	    nTrk = 0;
 	    isValid = true;
 	    for(Int_t t = 0; t < reader->rp_nTracks; ++t)
@@ -103,33 +100,30 @@ void AnFmsRpQA(Int_t firstRun, Int_t lastRun)
 		    continue;
 
 		++nTrk;
-		trk_i[nTrk - 1] = t;
-		if(nTrk > maxRpTracks)
+		trk_i = t;
+		if(nTrk > 1) //Allow only one good quality track in the event allowed
 		{
-		    trk_i[0] = -1;
-		    trk_i[1] = -1;
+		    trk_i = -1;
 		    isValid = false;
 		    break;
 		}
 	    }
 
-	    if(!(nTrk > 0 && nTrk <= maxRpTracks && isValid))
+	    if(!(nTrk == 1 && isValid))
 		continue;
 
-	    for(Int_t trk = 0; trk < nTrk; ++trk)
-	    {
-		hist1->Fill(reader->rp_trackP[trk_i[trk]]);		
-		hist2->Fill(reader->rp_trackPt[trk_i[trk]]);
-		hist3->Fill(reader->rp_trackEta[trk_i[trk]]);
-		hist4->Fill(reader->rp_trackPhi[trk_i[trk]]);
-		hist5->Fill(reader->rp_trackXi[trk_i[trk]]);
+	    hist1->Fill(reader->rp_trackP[trk_i]);		
+	    hist2->Fill(reader->rp_trackPt[trk_i]);
+	    hist3->Fill(reader->rp_trackEta[trk_i]);
+	    hist4->Fill(reader->rp_trackPhi[trk_i]);
+	    hist5->Fill(reader->rp_trackXi[trk_i]);
 
-		if(reader->rp_trackBranch[trk_i[trk]] == 0 || reader->rp_trackBranch[trk_i[trk]] == 1) //East RP
-		    hist6->Fill(reader->rp_trackP[trk_i[trk]]);
+	    if(reader->rp_trackBranch[trk_i] == 0 || reader->rp_trackBranch[trk_i] == 1) //East RP
+		hist6->Fill(reader->rp_trackP[trk_i]);
 		
-		if(reader->rp_trackBranch[trk_i[trk]] == 2 || reader->rp_trackBranch[trk_i[trk]] == 3) //West RP
-		    hist7->Fill(reader->rp_trackP[trk_i[trk]]);		
-	    }
+	    if(reader->rp_trackBranch[trk_i] == 2 || reader->rp_trackBranch[trk_i] == 3) //West RP
+		hist7->Fill(reader->rp_trackP[trk_i]);		
+	    
 
 	    //-------------TESTING <??????????????????????????????????????????
 	    // if(reader->fms_nPairs > 1)
@@ -158,11 +152,9 @@ void AnFmsRpQA(Int_t firstRun, Int_t lastRun)
 	    if(!(reader->evt_bbcADCSum[0] > 0))  //bbc 0 is east and 1 is west ???? <--------Check
 		continue;
 
-	    for(Int_t trk = 0; trk < nTrk; ++trk)
-	    {
-		hist2d2->Fill(reader->rp_trackP[trk_i[trk]] + reader->fms_pairE[fms_i], reader->evt_bbcADCSumLarge[1]);
-		hist2d3->Fill(reader->rp_trackP[trk_i[trk]] + reader->fms_pairE[fms_i], reader->evt_bbcADCSum[1]);
-	    }
+	    hist2d2->Fill(reader->rp_trackP[trk_i] + reader->fms_pairE[fms_i], reader->evt_bbcADCSumLarge[1]);
+	    hist2d3->Fill(reader->rp_trackP[trk_i] + reader->fms_pairE[fms_i], reader->evt_bbcADCSum[1]);
+	    
 	    if(reader->evt_bbcADCSum[1] > 60)  //bbc 0 is east and 1 is west ???? <--------Check
 		continue;
 	    
@@ -170,29 +162,31 @@ void AnFmsRpQA(Int_t firstRun, Int_t lastRun)
 		continue;
 	    
 	    //-------------------------- FMS-RP Correlation -------------------------------
-	    for(Int_t trk = 0; trk < nTrk; ++trk)
-	    {
-		if(reader->rp_trackBranch[trk_i[trk]] == 0 || reader->rp_trackBranch[trk_i[trk]] == 1) //East
-		    hist8->Fill(reader->rp_trackP[trk_i[trk]] + reader->fms_pairE[fms_i]);
-		
-		if(reader->rp_trackBranch[trk_i[trk]] == 2 || reader->rp_trackBranch[trk_i[trk]] == 3) //West
-		{
-		    hist9->Fill(reader->rp_trackP[trk_i[trk]] + reader->fms_pairE[fms_i]);
-		    hist2d1->Fill(reader->fms_pairE[fms_i], reader->rp_trackP[trk_i[trk]]);
 
-		    if((reader->rp_trackP[trk_i[trk]] + reader->fms_pairE[fms_i]) > 85 && (reader->rp_trackP[trk_i[trk]] + reader->fms_pairE[fms_i]) < 105) //<-----Add pion mass cut
-		    {
-			hist2d4->Fill(reader->fms_pairPhi[fms_i], reader->rp_trackPhi[trk_i[trk]]);
-			++evtCount;
-		    }		    
-		}
-	    }	    		
+	    //-------------- Veto on East RP track --------------------------
+	    if(reader->rp_trackBranch[trk_i] == 0 || reader->rp_trackBranch[trk_i] == 1) //East
+	    {
+		hist8->Fill(reader->rp_trackP[trk_i] + reader->fms_pairE[fms_i]);
+		continue;
+	    }
+
+	    //--- Ensure track comes from West RP and exclude undecided branch case --------
+	    if(!(reader->rp_trackBranch[trk_i] == 2 || reader->rp_trackBranch[trk_i] == 3)) //West
+		continue;
+	    
+	    hist9->Fill(reader->rp_trackP[trk_i] + reader->fms_pairE[fms_i]);
+	    hist2d1->Fill(reader->fms_pairE[fms_i], reader->rp_trackP[trk_i]);
+
+	    if((reader->rp_trackP[trk_i] + reader->fms_pairE[fms_i]) > 85 && (reader->rp_trackP[trk_i] + reader->fms_pairE[fms_i]) < 105) // <------- Add cut on pion mass
+		hist2d4->Fill(reader->fms_pairPhi[fms_i], reader->rp_trackPhi[trk_i]);
+	    
+	    ++evtCount;
 	}
 	
-        delete reader; //This deletes the TFile as well in the generated code unless removed manually
+        delete reader; //This deletes the TFile as well in the generated code
 	delete chain;
     }
-    cout<<"Total events passed all the cuts:" << evtCount <<endl; 
+    cout<<"Total events passed the cut:" << evtCount <<endl; 
 
     //fout->cd();
     fout->Write();
