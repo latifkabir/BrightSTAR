@@ -58,6 +58,8 @@
 #include "StEEmcPool/StEEmcTreeMaker/StEEmcEnergyMaker.h"
 #include "StEEmcPool/StEEmcTreeMaker/StSpinInfoMaker.h"
 #include "StEEmcPool/StEEmcTreeMaker/StMcEEmcTreeMaker.h"
+#include "StEEmcPool/EEmcTreeContainers/EEmc2ParticleCandidate.h"
+#include "StEEmcPool/EEmcTreeContainers/EEmcParticleCandidate.h"
 
 
 #include "StEEmcPool/StEEmcHitMaker/StEEmcHitMakerSimple.h"

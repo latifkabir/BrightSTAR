@@ -7,6 +7,8 @@
 #include "RootInclude.h"
 #include "TAnEEmcRpTreeReader.h"
 #include "TStRunList.h"
+#include "StEEmcPool/EEmcTreeContainers/EEmc2ParticleCandidate.h"
+#include "StEEmcPool/EEmcTreeContainers/EEmcParticleCandidate.h"
 using namespace std;
 
 void AnEEmcRpCorr(Int_t firstRun, Int_t lastRun)
@@ -28,6 +30,7 @@ void AnEEmcRpCorr(Int_t firstRun, Int_t lastRun)
 
     TFile *fout = new TFile("EEmcRpCorr.root", "RECREATE");
     TH1D *hist0 = new TH1D("pi0M", "Pion M",  200, 0.0, 1.0);
+    TH1D *hist0_ = new TH1D("pi0E", "Pion E",  200, 0.0, 50.0);
     TH1D *hist1 = new TH1D("trkP", "trk P; RP track P [GeV/c]", 200, 60, 150);
     TH1D *hist2 = new TH1D("trkPt", "trk Pt; RP track P_{T} [GeV/c]", 200, 0, 2);
     TH1D *hist3 = new TH1D("trkEta", "trk Eta; RP Track #Eta", 200, -10, 10);
@@ -37,13 +40,20 @@ void AnEEmcRpCorr(Int_t firstRun, Int_t lastRun)
     TH1D *hist7 = new TH1D("trkP_west", "Trk P West; RP track P_{west} [GeV/c]", 200, 60, 150);
     TH1D *hist8 = new TH1D("sumE_east", "E_{p + #pi^{0}}^{East}; E_{p + #pi^{0}}^{East} [GeV]", 200, 60, 200);
     TH1D *hist9 = new TH1D("sumE_west", "Sum E West; E_{p + #pi^{0}}^{West} [GeV]", 200, 60, 200);
-    TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p} vs E_{#pi^{0}}; E_{p} [GeV]; E_{#pi^{0}} [GeV]", 100, 10, 100, 100, 60, 150);
+    TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p} [GeV]", 100, 10, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{East} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
     TH2D *hist2d3 = new TH2D("E_sum_vs_BBC_small", "E_{sum} vs BBC ADC Sum (Small); E_{p + #pi^{0}}^{East} [GeV]; BBC ADC Sum (Small)", 100, 50, 200, 300, 0, 4000);
     TH2D *hist2d4 = new TH2D("p_phi_vs_pion_phi", "#phi_{p} vs #phi_{#pi^{0}}; #phi_{#pi^{0}} [rad]; #phi_{p} [rad]", 100, -3.15, 3.15, 100, -3.15, 3.15);
     
     TH1D *hEvtCount_all = new TH1D("hEvtCount_all", "Event Count", 20, 0, 20);
     TH1D *hEvtCount_temp;
+
+    TClonesArray *photon_arr = new TClonesArray("EEmcParticleCandidate_t");
+    TClonesArray *pion_arr  = new TClonesArray("EEmc2ParticleCandidate_t");
+    EEmc2ParticleCandidate_t *pion;
+    Double_t pionE = 0;
+    Double_t maxEng = 0;
+    Int_t nPions = 0;
     
     for(Int_t r = 0; r < nRuns; ++r)
     {
@@ -122,6 +132,8 @@ void AnEEmcRpCorr(Int_t firstRun, Int_t lastRun)
 	    if((reader->evt_run != reader->mRunNumber) || (reader->evt_id != reader->mEventNumber))
 	    {
 		cout << "The event numbers or run numbers do NOT match. Skipped ...." <<endl;
+		cout << "Run number - RP T: "<< reader->evt_run<<" EEMC T: "<< reader->mRunNumber <<endl;
+		cout << "Event number - RP T: "<< reader->evt_id<<" EEMC T: "<< reader->mEventNumber <<endl;
 		continue;
 	    }
 	    
@@ -164,58 +176,68 @@ void AnEEmcRpCorr(Int_t firstRun, Int_t lastRun)
 		
 	    if(reader->rp_trackBranch[trk_i] == 2 || reader->rp_trackBranch[trk_i] == 3) //West RP
 		hist7->Fill(reader->rp_trackP[trk_i]);		
-	    
-
-	    //-------------TESTING <??????????????????????????????????????????
-	    if(reader->pi0_ > 1)
-	    	continue;
-	    
+	    	    
 	    //------------------------ EEMC Cut -----------------------------------
-	    eemc_i = -1;
-	    Double_t maxEng = 0;
-	    for(Int_t pair = 0; pair < reader->pi0_; ++pair)
+	    pion_arr = reader->pion_array;
+	    photon_arr = reader->photon_array;
+	    
+	    if(!pion_arr || !photon_arr)
 	    {
-		hist0->Fill(reader->pi0_E[pair]);
-		// if(reader->pi0_Z[pair] < 0.8)
-		//     continue;
-		// if(reader->pi0_E[pair] < 13 || reader->pi0_E[pair] > 70)
-		//     continue;
-		// if(pair == 0)
-		// {
-		//     maxEng = reader->pi0_E[pair];
-		//     eemc_i = 0;
-		//     continue;
-		// }
-		// if(reader->pi0_E[pair] > maxEng)		
-		    eemc_i = pair;
-		//break; //consider only highest energy pair of photons
+		cout << "Failed to get pion or photon array" <<endl;
+		return;
 	    }
 
-	    if(eemc_i < 0)
-		continue;
+	    nPions = pion_arr->GetEntriesFast();
+	    //-------------TESTING <?????????????????????????????????????????? --------------------
+	    if(nPions != 1)
+	    	continue;
+	   
+	    eemc_i = -1;
+	    maxEng = 0;
+	    pionE = 0;
+	    for(Int_t pair = 0; pair < nPions; ++pair)
+	    {
+		pion = (EEmc2ParticleCandidate_t*) pion_arr->At(pair);
+		hist0->Fill(pion->M);
+
+		if(pion->Z > 0.8)
+		    continue;
+		if(pion->E < 13 || pion->E > 70)
+		    continue;
+
+		if(pion->E > maxEng)
+		{
+		    eemc_i = pair;
+		    maxEng = pion->E;
+		    pionE = maxEng;		    
+		}
+	    }
 	    
+	    if(eemc_i < 0)
+	    	continue;
+	    hist0_->Fill(pionE);
 	    //------------- BBC and TOF Cut -----------------	    
 	    if(!(reader->evt_tofMultiplicity > 0))
-		continue;
+	    	continue;
 
 	    if(!(reader->evt_bbcADCSum[0] > 0))  //bbc 0 is east and 1 is west ???? <--------Check
-		continue;
+	    	continue;
 
-	    hist2d2->Fill(reader->rp_trackP[trk_i] + reader->pi0_E[eemc_i], reader->evt_bbcADCSumLarge[1]);
-	    hist2d3->Fill(reader->rp_trackP[trk_i] + reader->pi0_E[eemc_i], reader->evt_bbcADCSum[1]);
+	    hist2d2->Fill(reader->rp_trackP[trk_i] + pionE, reader->evt_bbcADCSumLarge[1]);
+	    hist2d3->Fill(reader->rp_trackP[trk_i] + pionE, reader->evt_bbcADCSum[1]);
 	    
 	    if(reader->evt_bbcADCSum[1] > 60)  //bbc 0 is east and 1 is west ???? <--------Check
-		continue;
+	    	continue;
 	    
 	    if(reader->evt_bbcADCSumLarge[1] > 110)  //bbc 0 is east and 1 is west ???? <--------Check
-		continue;
+	    	continue;
 	    
 	    //-------------------------- FMS-RP Correlation -------------------------------
 
 	    //-------------- Veto on East RP track --------------------------
 	    if(reader->rp_trackBranch[trk_i] == 0 || reader->rp_trackBranch[trk_i] == 1) //East
 	    {
-		hist8->Fill(reader->rp_trackP[trk_i] + reader->pi0_E[eemc_i]);
+		hist8->Fill(reader->rp_trackP[trk_i] + pionE);
 		continue;
 	    }
 
@@ -223,15 +245,15 @@ void AnEEmcRpCorr(Int_t firstRun, Int_t lastRun)
 	    if(!(reader->rp_trackBranch[trk_i] == 2 || reader->rp_trackBranch[trk_i] == 3)) //West
 		continue;
 	    
-	    hist9->Fill(reader->rp_trackP[trk_i] + reader->pi0_E[eemc_i]);
-	    hist2d1->Fill(reader->pi0_E[eemc_i], reader->rp_trackP[trk_i]);
+	    hist9->Fill(reader->rp_trackP[trk_i] + pionE);
+	    hist2d1->Fill(pionE, reader->rp_trackP[trk_i]);
 
-	    if((reader->rp_trackP[trk_i] + reader->pi0_E[eemc_i]) > 85 && (reader->rp_trackP[trk_i] + reader->pi0_E[eemc_i]) < 105) // <------- Add cut on pion mass
+	    if((reader->rp_trackP[trk_i] + pionE) > 85 && (reader->rp_trackP[trk_i] + pionE) < 105) // <------- Add cut on pion mass
 		//hist2d4->Fill(reader->fms_pairPhi[eemc_i], reader->rp_trackPhi[trk_i]);	    
-		++evtCount;
+		++evtCount;	   
 	}
 	
-        delete reader; //This deletes the TFile as well in the generated code
+        delete reader; 
 	delete ch_eemc1;
 	delete ch_eemc3;
 	delete ch_rp;

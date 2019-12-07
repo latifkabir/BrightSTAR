@@ -16,7 +16,6 @@ void AnFmsRpQA(Int_t firstRun, Int_t lastRun)
     Int_t nRuns = runList->GetN();
     Int_t run;
     TString basePath = "/star/u/kabir/GIT/BrightSTAR/dst/R15FmsRpTree/FmsRpTree_";
-    // TString basePath = "/star/u/kabir/GIT/BrightSTAR/dst/FmsRpTreeMaker_ucr/RunFmsRpTreeMaker_Merger_16067013_to_16080002.root";
     
     Int_t nEntries = 0;
     Int_t trk_i[2] = { -1, -1};
@@ -139,7 +138,7 @@ void AnFmsRpQA(Int_t firstRun, Int_t lastRun)
 	    fms_i = -1;
 	    for(Int_t pair = 0; pair < reader->fms_nPairs; ++pair)
 	    {
-		if(reader->fms_pairZgg[pair] < 0.8)
+		if(reader->fms_pairZgg[pair] > 0.8)
 		    continue;
 		if(reader->fms_pairE[pair] < 13 || reader->fms_pairE[pair] > 70)
 		    continue;

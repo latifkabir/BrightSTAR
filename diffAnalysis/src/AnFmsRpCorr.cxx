@@ -34,7 +34,7 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun)
     TH1D *hist7 = new TH1D("trkP_west", "Trk P West; RP track P_{west} [GeV/c]", 200, 60, 150);
     TH1D *hist8 = new TH1D("sumE_east", "E_{p + #pi^{0}}^{East}; E_{p + #pi^{0}}^{East} [GeV]", 200, 60, 200);
     TH1D *hist9 = new TH1D("sumE_west", "Sum E West; E_{p + #pi^{0}}^{West} [GeV]", 200, 60, 200);
-    TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p}^{west} vs E_{#pi^{0}}; E_{p}^{west} [GeV]; E_{#pi^{0}} [GeV]", 100, 10, 100, 100, 60, 150);
+    TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p}^{west} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p}^{west} [GeV]", 100, 10, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{East} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
     TH2D *hist2d3 = new TH2D("E_sum_vs_BBC_small", "E_{sum} vs BBC ADC Sum (Small); E_{p + #pi^{0}}^{East} [GeV]; BBC ADC Sum (Small)", 100, 50, 200, 300, 0, 4000);
     TH2D *hist2d4 = new TH2D("p_phi_vs_pion_phi", "#phi_{p} vs #phi_{#pi^{0}}; #phi_{#pi^{0}} [rad]; #phi_{p} [rad]", 100, -3.15, 3.15, 100, -3.15, 3.15);
@@ -133,7 +133,7 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun)
 	    fms_i = -1;
 	    for(Int_t pair = 0; pair < reader->fms_nPairs; ++pair)
 	    {
-		if(reader->fms_pairZgg[pair] < 0.8)
+		if(reader->fms_pairZgg[pair] > 0.8)
 		    continue;
 		if(reader->fms_pairE[pair] < 13 || reader->fms_pairE[pair] > 70)
 		    continue;

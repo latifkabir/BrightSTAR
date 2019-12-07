@@ -16,8 +16,6 @@
 #include <TObject.h>
 #include <TVector3.h>
 
-
-
 class TAnEEmcRpTreeReader
 {
     // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -43,92 +41,12 @@ public :
     TBranch        *b_spinInfo_mSpin4;   //!
     //-------------------------- EEMC Tree part 3 --------------------------------------------------
     // Declaration of leaf types
-    TClonesArray   *photon_array;
-    Int_t           photon_;
-    UInt_t          *photon_fUniqueID;   //[photon_]
-    UInt_t          *photon_fBits;   //[photon_]
-    Int_t           *photon_PID;   //[photon_]
-    Int_t           *photon_hitIdx1;   //[photon_]
-    Float_t         *photon_E;   //[photon_]
-    Float_t         *photon_M;   //[photon_]
-    Float_t         *photon_PT;   //[photon_]
-    UInt_t          *photon_position_fUniqueID;   //[photon_]
-    UInt_t          *photon_position_fBits;   //[photon_]
-    Double_t        *photon_position_fX;   //[photon_]
-    Double_t        *photon_position_fY;   //[photon_]
-    Double_t        *photon_position_fZ;   //[photon_]
-    UInt_t          *photon_momentum_fUniqueID;   //[photon_]
-    UInt_t          *photon_momentum_fBits;   //[photon_]
-    Double_t        *photon_momentum_fX;   //[photon_]
-    Double_t        *photon_momentum_fY;   //[photon_]
-    Double_t        *photon_momentum_fZ;   //[photon_]
-
-    TClonesArray    *pi0_array;
-    Int_t           pi0_;
-    UInt_t          *pi0_fUniqueID;   //[pi0_]
-    UInt_t          *pi0_fBits;   //[pi0_]
-    Int_t           *pi0_PID;   //[pi0_]
-    Int_t           *pi0_hitIdx1;   //[pi0_]
-    Float_t         *pi0_E;   //[pi0_]
-    Float_t         *pi0_M;   //[pi0_]
-    Float_t         *pi0_PT;   //[pi0_]
-    UInt_t          *pi0_position_fUniqueID;   //[pi0_]
-    UInt_t          *pi0_position_fBits;   //[pi0_]
-    Double_t        *pi0_position_fX;   //[pi0_]
-    Double_t        *pi0_position_fY;   //[pi0_]
-    Double_t        *pi0_position_fZ;   //[pi0_]
-    UInt_t          *pi0_momentum_fUniqueID;   //[pi0_]
-    UInt_t          *pi0_momentum_fBits;   //[pi0_]
-    Double_t        *pi0_momentum_fX;   //[pi0_]
-    Double_t        *pi0_momentum_fY;   //[pi0_]
-    Double_t        *pi0_momentum_fZ;   //[pi0_]
-    Int_t           *pi0_hitIdx2;   //[pi0_]
-    Float_t         *pi0_Z;   //[pi0_]
-    Float_t         *pi0_D;   //[pi0_]
+    TClonesArray *photon_array;
+    TClonesArray *pion_array;
 
     // List of branches
-    TBranch        *b_photon_array;
-    TBranch        *b_photon_;   //!
-    TBranch        *b_photon_fUniqueID;   //!
-    TBranch        *b_photon_fBits;   //!
-    TBranch        *b_photon_PID;   //!
-    TBranch        *b_photon_hitIdx1;   //!
-    TBranch        *b_photon_E;   //!
-    TBranch        *b_photon_M;   //!
-    TBranch        *b_photon_PT;   //!
-    TBranch        *b_photon_position_fUniqueID;   //!
-    TBranch        *b_photon_position_fBits;   //!
-    TBranch        *b_photon_position_fX;   //!
-    TBranch        *b_photon_position_fY;   //!
-    TBranch        *b_photon_position_fZ;   //!
-    TBranch        *b_photon_momentum_fUniqueID;   //!
-    TBranch        *b_photon_momentum_fBits;   //!
-    TBranch        *b_photon_momentum_fX;   //!
-    TBranch        *b_photon_momentum_fY;   //!
-    TBranch        *b_photon_momentum_fZ;   //!
-    
-    TBranch        *b_pi0_array;   //!
-    TBranch        *b_pi0_;   //!
-    TBranch        *b_pi0_fUniqueID;   //!
-    TBranch        *b_pi0_fBits;   //!
-    TBranch        *b_pi0_PID;   //!
-    TBranch        *b_pi0_hitIdx1;   //!
-    TBranch        *b_pi0_E;   //!
-    TBranch        *b_pi0_M;   //!
-    TBranch        *b_pi0_PT;   //!
-    TBranch        *b_pi0_position_fUniqueID;   //!
-    TBranch        *b_pi0_position_fBits;   //!
-    TBranch        *b_pi0_position_fX;   //!
-    TBranch        *b_pi0_position_fY;   //!
-    TBranch        *b_pi0_position_fZ;   //!
-    TBranch        *b_pi0_momentum_fUniqueID;   //!
-    TBranch        *b_pi0_momentum_fBits;   //!
-    TBranch        *b_pi0_momentum_fX;   //!
-    TBranch        *b_pi0_momentum_fY;   //!
-    TBranch        *b_pi0_momentum_fZ;   //!
-    TBranch        *b_pi0_hitIdx2;   //!
-    TBranch        *b_pi0_Z;   //!
-    TBranch        *b_pi0_D;   //!
+    TBranch        *b_photon_array;    
+    TBranch        *b_pion_array;   //!
 
 
     //------------- RP Tree -----------------------------------------

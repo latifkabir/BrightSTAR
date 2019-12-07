@@ -27,8 +27,8 @@ void AnEEmcRpChain()
     // chain->MakeClass("AnEEmcTreePart1Reader");
 
     TFile *file = new TFile("EEmcQA.root", "RECREATE");
-    TClonesArray *array_ph = new TClonesArray("EEmcParticleCandidate_t", 100);
-    TClonesArray *array_pi = new TClonesArray("EEmc2ParticleCandidate_t", 100);
+    TClonesArray *array_ph = new TClonesArray("EEmcParticleCandidate_t");
+    TClonesArray *array_pi = new TClonesArray("EEmc2ParticleCandidate_t");
     //TBranch *brPion = ch_eemc->GetBranch("pi0");
     ch_eemc->SetBranchAddress("photon", &array_ph);
     ch_eemc->SetBranchAddress("pi0", &array_pi);

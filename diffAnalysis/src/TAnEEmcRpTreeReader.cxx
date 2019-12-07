@@ -3,56 +3,18 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <iostream>
+#include "StEEmcPool/EEmcTreeContainers/EEmc2ParticleCandidate.h"
+#include "StEEmcPool/EEmcTreeContainers/EEmcParticleCandidate.h"
 
 ClassImp(TAnEEmcRpTreeReader)
 
 TAnEEmcRpTreeReader::TAnEEmcRpTreeReader(TChain *eemc_ch1, TChain *eemc_ch3, TChain *rp_ch) 
 {
-
     //------------ EEMC Tree Part 3 -----------------------------------
-    photon_array = new TClonesArray("Int_t", 100);
-    photon_fUniqueID = new UInt_t[kMaxphoton];   //[photon_]
-    photon_fBits = new UInt_t[kMaxphoton];   //[photon_]
-    photon_PID = new Int_t[kMaxphoton];   //[photon_]
-    photon_hitIdx1 = new Int_t[kMaxphoton];   //[photon_]
-    photon_E = new Float_t[kMaxphoton];   //[photon_]
-    photon_M = new Float_t[kMaxphoton];   //[photon_]
-    photon_PT = new Float_t[kMaxphoton];   //[photon_]
-    photon_position_fUniqueID = new UInt_t[kMaxphoton];   //[photon_]
-    photon_position_fBits = new UInt_t[kMaxphoton];   //[photon_]
-    photon_position_fX = new Double_t[kMaxphoton];   //[photon_]
-    photon_position_fY = new Double_t[kMaxphoton];   //[photon_]
-    photon_position_fZ = new Double_t[kMaxphoton];   //[photon_]
-    photon_momentum_fUniqueID = new UInt_t[kMaxphoton];   //[photon_]
-    photon_momentum_fBits = new UInt_t[kMaxphoton];   //[photon_]
-    photon_momentum_fX = new Double_t[kMaxphoton];   //[photon_]
-    photon_momentum_fY = new Double_t[kMaxphoton];   //[photon_]
-    photon_momentum_fZ = new Double_t[kMaxphoton];   //[photon_]
-
-
-    pi0_array = new TClonesArray("Int_t", 500);
-    pi0_fUniqueID = new UInt_t[kMaxpi0];   //[pi0_]
-    pi0_fBits = new UInt_t[kMaxpi0];   //[pi0_]
-    pi0_PID = new Int_t[kMaxpi0];   //[pi0_]
-    pi0_hitIdx1 = new Int_t[kMaxpi0];   //[pi0_]
-    pi0_E = new Float_t[kMaxpi0];   //[pi0_]
-    pi0_M = new Float_t[kMaxpi0];   //[pi0_]
-    pi0_PT = new Float_t[kMaxpi0];   //[pi0_]
-    pi0_position_fUniqueID = new UInt_t[kMaxpi0];   //[pi0_]
-    pi0_position_fBits = new UInt_t[kMaxpi0];   //[pi0_]
-    pi0_position_fX = new Double_t[kMaxpi0];   //[pi0_]
-    pi0_position_fY = new Double_t[kMaxpi0];   //[pi0_]
-    pi0_position_fZ = new Double_t[kMaxpi0];   //[pi0_]
-    pi0_momentum_fUniqueID = new UInt_t[kMaxpi0];   //[pi0_]
-    pi0_momentum_fBits = new UInt_t[kMaxpi0];   //[pi0_]
-    pi0_momentum_fX = new Double_t[kMaxpi0];   //[pi0_]
-    pi0_momentum_fY = new Double_t[kMaxpi0];   //[pi0_]
-    pi0_momentum_fZ = new Double_t[kMaxpi0];   //[pi0_]
-    pi0_hitIdx2 = new Int_t[kMaxpi0];   //[pi0_]
-    pi0_Z = new Float_t[kMaxpi0];   //[pi0_]
-    pi0_D = new Float_t[kMaxpi0];   //[pi0_]
-    
-    
+    photon_array = new TClonesArray("EEmcParticleCandidate_t");
+    pion_array = new TClonesArray("EEmc2ParticleCandidate_t");
+        
     //--------------- RP Tree ---------------------------------
     rp_trackType = new Int_t[kMaxTracks];   //[rp_nTracks]
     rp_trackNplanes = new Int_t[kMaxTracks];   //[rp_nTracks]
@@ -74,48 +36,9 @@ TAnEEmcRpTreeReader::TAnEEmcRpTreeReader(TChain *eemc_ch1, TChain *eemc_ch3, TCh
 TAnEEmcRpTreeReader::~TAnEEmcRpTreeReader()
 {
     //---------------- EEMC Part 3 ------------------
-    //delete photon_array;
-    delete[] photon_fUniqueID;
-    delete[] photon_fBits;
-    delete[] photon_PID;
-    delete[] photon_hitIdx1;
-    delete[] photon_E;
-    delete[] photon_M;
-    delete[] photon_PT;
-    delete[] photon_position_fUniqueID;
-    delete[] photon_position_fBits;
-    delete[] photon_position_fX;
-    delete[] photon_position_fY;
-    delete[] photon_position_fZ;
-    delete[] photon_momentum_fUniqueID;
-    delete[] photon_momentum_fBits;
-    delete[] photon_momentum_fX;
-    delete[] photon_momentum_fY;
-    delete[] photon_momentum_fZ;
-
-    //delete pi0_array;
-    delete[] pi0_fUniqueID;
-    delete[] pi0_fBits;
-    delete[] pi0_PID;
-    delete[] pi0_hitIdx1;
-    delete[] pi0_E;
-    delete[] pi0_M;
-    delete[] pi0_PT;
-    delete[] pi0_position_fUniqueID;
-    delete[] pi0_position_fBits;
-    delete[] pi0_position_fX;
-    delete[] pi0_position_fY;
-    delete[] pi0_position_fZ;
-    delete[] pi0_momentum_fUniqueID;
-    delete[] pi0_momentum_fBits;
-    delete[] pi0_momentum_fX;
-    delete[] pi0_momentum_fY;
-    delete[] pi0_momentum_fZ;
-    delete[] pi0_hitIdx2;
-    delete[] pi0_Z;
-    delete[] pi0_D;
-
-    
+    delete photon_array;
+    delete pion_array;
+   
     //------------ RP Tree ------------------
     delete[] rp_trackType;
     delete[] rp_trackNplanes;
@@ -134,20 +57,17 @@ TAnEEmcRpTreeReader::~TAnEEmcRpTreeReader()
 
 Int_t TAnEEmcRpTreeReader::GetEntry(Long64_t entry)
 {
+    // std::cout << photon_array <<std::endl;
+    // std::cout << pion_array <<std::endl;
+    // photon_array->Clear();
+    // pion_array->Clear();
     // Read contents of entry.
     if (!fChain_eemc1 || !fChain_eemc3 || !fChain_rp) return 0;
 
     fChain_eemc1->GetEntry(entry);
     fChain_eemc3->GetEntry(entry);
     fChain_rp->GetEntry(entry);
-    if(photon_array)
-	photon_ = photon_array->GetEntries();
-    else
-	photon_ = 0;
-    if(pi0_array)
-	pi0_ = pi0_array->GetEntries();
-    else
-	pi0_ = 0;
+
     return 1;
 	
 }
@@ -183,8 +103,8 @@ void TAnEEmcRpTreeReader::Init(TChain *eemc_ch1, TChain *eemc_ch3, TChain *rp_ch
     
     fCurrent = -1;
     fChain_eemc1->SetMakeClass(1);
-    fChain_eemc3->SetMakeClass(1);
-    fChain_rp->SetMakeClass(1);
+    // fChain_eemc3->SetMakeClass(1);
+    // fChain_rp->SetMakeClass(1);
 
     //-------------------------- EEMC Tree part 1 --------------------------------------------------
     fChain_eemc1->SetBranchAddress("mRunNumber", &mRunNumber, &b_evtHddr_mRunNumber);
@@ -192,45 +112,8 @@ void TAnEEmcRpTreeReader::Init(TChain *eemc_ch1, TChain *eemc_ch3, TChain *rp_ch
     fChain_eemc1->SetBranchAddress("mSpin4", &mSpin4, &b_spinInfo_mSpin4);
     
     //-------------------------- EEMC Tree part 3 --------------------------------------------------
-    fChain_eemc3->SetBranchAddress("photon", &photon_array, &b_photon_array);
-    fChain_eemc3->SetBranchAddress("photon.fUniqueID", photon_fUniqueID, &b_photon_fUniqueID);
-    fChain_eemc3->SetBranchAddress("photon.fBits", photon_fBits, &b_photon_fBits);
-    fChain_eemc3->SetBranchAddress("photon.PID", photon_PID, &b_photon_PID);
-    fChain_eemc3->SetBranchAddress("photon.hitIdx1", photon_hitIdx1, &b_photon_hitIdx1);
-    fChain_eemc3->SetBranchAddress("photon.E", photon_E, &b_photon_E);
-    fChain_eemc3->SetBranchAddress("photon.M", photon_M, &b_photon_M);
-    fChain_eemc3->SetBranchAddress("photon.PT", photon_PT, &b_photon_PT);
-    fChain_eemc3->SetBranchAddress("photon.position.fUniqueID", photon_position_fUniqueID, &b_photon_position_fUniqueID);
-    fChain_eemc3->SetBranchAddress("photon.position.fBits", photon_position_fBits, &b_photon_position_fBits);
-    fChain_eemc3->SetBranchAddress("photon.position.fX", photon_position_fX, &b_photon_position_fX);
-    fChain_eemc3->SetBranchAddress("photon.position.fY", photon_position_fY, &b_photon_position_fY);
-    fChain_eemc3->SetBranchAddress("photon.position.fZ", photon_position_fZ, &b_photon_position_fZ);
-    fChain_eemc3->SetBranchAddress("photon.momentum.fUniqueID", photon_momentum_fUniqueID, &b_photon_momentum_fUniqueID);
-    fChain_eemc3->SetBranchAddress("photon.momentum.fBits", photon_momentum_fBits, &b_photon_momentum_fBits);
-    fChain_eemc3->SetBranchAddress("photon.momentum.fX", photon_momentum_fX, &b_photon_momentum_fX);
-    fChain_eemc3->SetBranchAddress("photon.momentum.fY", photon_momentum_fY, &b_photon_momentum_fY);
-    fChain_eemc3->SetBranchAddress("photon.momentum.fZ", photon_momentum_fZ, &b_photon_momentum_fZ);
-    fChain_eemc3->SetBranchAddress("pi0", &pi0_array, &b_pi0_array);
-    fChain_eemc3->SetBranchAddress("pi0.fUniqueID", pi0_fUniqueID, &b_pi0_fUniqueID);
-    fChain_eemc3->SetBranchAddress("pi0.fBits", pi0_fBits, &b_pi0_fBits);
-    fChain_eemc3->SetBranchAddress("pi0.PID", pi0_PID, &b_pi0_PID);
-    fChain_eemc3->SetBranchAddress("pi0.hitIdx1", pi0_hitIdx1, &b_pi0_hitIdx1);
-    fChain_eemc3->SetBranchAddress("pi0.E", pi0_E, &b_pi0_E);
-    fChain_eemc3->SetBranchAddress("pi0.M", pi0_M, &b_pi0_M);
-    fChain_eemc3->SetBranchAddress("pi0.PT", pi0_PT, &b_pi0_PT);
-    fChain_eemc3->SetBranchAddress("pi0.position.fUniqueID", pi0_position_fUniqueID, &b_pi0_position_fUniqueID);
-    fChain_eemc3->SetBranchAddress("pi0.position.fBits", pi0_position_fBits, &b_pi0_position_fBits);
-    fChain_eemc3->SetBranchAddress("pi0.position.fX", pi0_position_fX, &b_pi0_position_fX);
-    fChain_eemc3->SetBranchAddress("pi0.position.fY", pi0_position_fY, &b_pi0_position_fY);
-    fChain_eemc3->SetBranchAddress("pi0.position.fZ", pi0_position_fZ, &b_pi0_position_fZ);
-    fChain_eemc3->SetBranchAddress("pi0.momentum.fUniqueID", pi0_momentum_fUniqueID, &b_pi0_momentum_fUniqueID);
-    fChain_eemc3->SetBranchAddress("pi0.momentum.fBits", pi0_momentum_fBits, &b_pi0_momentum_fBits);
-    fChain_eemc3->SetBranchAddress("pi0.momentum.fX", pi0_momentum_fX, &b_pi0_momentum_fX);
-    fChain_eemc3->SetBranchAddress("pi0.momentum.fY", pi0_momentum_fY, &b_pi0_momentum_fY);
-    fChain_eemc3->SetBranchAddress("pi0.momentum.fZ", pi0_momentum_fZ, &b_pi0_momentum_fZ);
-    fChain_eemc3->SetBranchAddress("pi0.hitIdx2", pi0_hitIdx2, &b_pi0_hitIdx2);
-    fChain_eemc3->SetBranchAddress("pi0.Z", pi0_Z, &b_pi0_Z);
-    fChain_eemc3->SetBranchAddress("pi0.D", pi0_D, &b_pi0_D);
+    fChain_eemc3->SetBranchAddress("photon", &photon_array);
+    fChain_eemc3->SetBranchAddress("pi0", &pion_array);
 
 
     //-------------------------- RP Tree -----------------------
