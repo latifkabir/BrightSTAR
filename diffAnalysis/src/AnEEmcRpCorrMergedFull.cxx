@@ -37,7 +37,6 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
     TH1D *hist0 = new TH1D("pi0M", "Pion M",  200, 0.0, 1.0);
     TH1D *hist0_ = new TH1D("pi0E", "Pion E",  200, 0.0, 50.0);
     
-
     TH1D *hist1West = new TH1D("trkPwest", "West RP trk P; RP track P [GeV/c]", 200, 60, 150);
     TH1D *hist2West = new TH1D("trkPtWest", "West RP trk Pt; RP track P_{T} [GeV/c]", 200, 0, 2);
     TH1D *hist3West = new TH1D("trkEtaWest", "West RP trk Eta; RP Track #Eta", 200, -10, 10);
@@ -78,8 +77,6 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
     }
     
     //------- Event count after each cut ------------
-    TFile *file = new TFile(fileName_rp);
-    hEvtCount = (TH1D*) file->Get("EvtCountHist");
     Int_t eventCount[5] = {0};
     
     TChain *ch_eemc1 = new TChain("tree");
@@ -195,6 +192,8 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
 	for(Int_t pair = 0; pair < nPions; ++pair)
 	{
 	    pion = (EEmc2ParticleCandidate_t*) pion_arr->At(pair);
+	    if(!pion)
+		continue;
 	    hist0->Fill(pion->M);
 	    hist0_->Fill(pion->E);
 	    
@@ -252,6 +251,8 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
 	    ++eventCount[4];
     }
 
+    TFile *file = new TFile(fileName_rp);
+    hEvtCount = (TH1D*) file->Get("EvtCountHist");
     hEvtCount_all->SetBinContent(2, hEvtCount->GetBinContent(4));
     hEvtCount_all->SetBinContent(4, eventCount[0]);
     hEvtCount_all->SetBinContent(6, eventCount[1]);
