@@ -54,6 +54,7 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
     
     TH1D *hist8 = new TH1D("sumE_east", "E_{p + #pi^{0}}^{East}; E_{p + #pi^{0}}^{East} [GeV]", 100, 60, 200);
     TH1D *hist9 = new TH1D("sumE_west", "E_{p + #pi^{0}}^{West}; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist10 = new TH1D("sumE_west_singPion", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     
     TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p} [GeV]", 100, 10, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{West} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
@@ -68,6 +69,7 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
     EEmc2ParticleCandidate_t *pion;
     Double_t pionE = 0;
     Double_t maxEng = 0;
+    Double_t pionM = 0;
     Int_t nPions = 0;
     		
     if(gSystem->AccessPathName(fileName_eemc1) || gSystem->AccessPathName(fileName_eemc3) || gSystem->AccessPathName(fileName_rp))
@@ -182,9 +184,6 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
 	}
 
 	nPions = pion_arr->GetEntriesFast();
-	//-------------TESTING: Extreme Cut --------------------
-	// if(nPions != 1)
-	//     continue;
 	   
 	eemc_i = -1;
 	maxEng = 0;
@@ -192,28 +191,22 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
 	for(Int_t pair = 0; pair < nPions; ++pair)
 	{
 	    pion = (EEmc2ParticleCandidate_t*) pion_arr->At(pair);
-	    if(!pion)
-		continue;
-	    hist0->Fill(pion->M);
-	    hist0_->Fill(pion->E);
 	    
 	    if(pion->Z > 0.8)
 	        continue;
 	    if(pion->E < 5 || pion->E > 70) //<---------- Used Different lower threshold than FmsRP !!!!!
 	        continue;
-
-	    if(!(pion->M > 0.07 && pion->M < 0.20))     // <------- pion mass cut	     
-		continue;
 	    
 	    if(pion->E > maxEng) //Considering highest energy pion
 	    {
 	        eemc_i = pair;
 		maxEng = pion->E;
-		pionE = maxEng;		    
+		pionE = maxEng;
+		pionM = pion->M;
 	    }
 	}
 
-	if(nTrkEast == 1 && eemc_i > -1)  //Sanity Check
+	if(nTrkEast == 1 && eemc_i > -1 && reader->evt_bbcADCSum[0] < 60 && reader->evt_bbcADCSumLarge[0] < 110)  //Sanity Check
 	    hist8->Fill(reader->rp_trackP[eastTrk_i] + pionE);
 	    
 	if(!(nTrkWest == 1 && nTrkEast == 0)) //Full RP Cuts with One track in west and no track in the east
@@ -224,6 +217,9 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
 	if(eemc_i < 0) //Full EEMC Cuts
 		continue;
 	++eventCount[2]; //Post EEMC cut counter
+
+	hist0->Fill(pion->M);
+	hist0_->Fill(pion->E);
 
 	sumE_w = reader->rp_trackP[westTrk_i] + pionE;
 	//------------- BBC and TOF Cut -----------------	    
@@ -247,7 +243,11 @@ void AnEEmcRpCorrMergedFull(TString dirPath, Int_t maxEvents)
 	hist9->Fill(sumE_w);
 	hist2d1->Fill(pionE, reader->rp_trackP[westTrk_i]);
 
-	if(sumE_w > 85 && sumE_w < 105) // <------- Add cut on pion mass
+	if(nPions == 1)          //Extreme Cut:Single pion in EEMC
+	    hist10->Fill(sumE_w);
+	    
+	if((sumE_w > 70 && sumE_w < 105)    // <------- Add cut on pion mass (WIDER RANGE USED!!)
+	   && (pionM > 0.0 && pionM < 0.3)) // <----- Pion mass range (WIDER RANGE USED!!)
 	    ++eventCount[4];
     }
 

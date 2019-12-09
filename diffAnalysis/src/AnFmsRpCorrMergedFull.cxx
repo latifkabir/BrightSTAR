@@ -33,11 +33,8 @@ void AnFmsRpCorrMergedFull(TString filePath, Int_t maxEvents)
     TH1D *hist4East = new TH1D("trkPhiEast", "East RP trk Phi; RP track #phi [mrad]", 200, -3, 3);
     TH1D *hist5East = new TH1D("trkXiEast", "East RP trk Xi; RP track #xi", 200, 0, 0);
 
-    // Dublication
-    // TH1D *hist6West = new TH1D("trkEta_west", "Trk #eta West; RP track #eta_{west}", 200, -10, 10);
-    // TH1D *hist6East = new TH1D("trkEta_east", "Trk #eta East; RP track #eta_{east}", 200, -10, 10);    
-    // TH1D *hist7West = new TH1D("trkPhi_west", "Trk P West; RP track #phi_{west} [rad]", 200, -3, 3);
-    // TH1D *hist7East = new TH1D("trkPhi_east", "Trk P East; RP track #phi_{east} [rad]", 200, -3, 3);
+    TH1D *hist6 = new TH1D("sumE_west_before", "West Sum E Before BBC and TOF Cut; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist7 = new TH1D("sumE_west_singPion", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     
     TH1D *hist8West = new TH1D("sumE_west", "E_{p + #pi^{0}}^{West}; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     TH1D *hist8East = new TH1D("sumE_east", "E_{p + #pi^{0}}^{East}; E_{p + #pi^{0}}^{East} [GeV]", 100, 60, 200);
@@ -134,11 +131,7 @@ void AnFmsRpCorrMergedFull(TString filePath, Int_t maxEvents)
 		hist5West->Fill(reader->rp_trackXi[westTrk_i]);
 	    }	    
 	}
-	  
-	//-------------TESTING:Extreme cut ------------------------------
-	// if(reader->fms_nPairs > 1)
-	// 	continue;
-	    
+	  	    
 	//------------------------ FMS Cut -----------------------------------
 	fms_i = -1;
 	for(Int_t pair = 0; pair < reader->fms_nPairs; ++pair)
@@ -148,19 +141,15 @@ void AnFmsRpCorrMergedFull(TString filePath, Int_t maxEvents)
 	    
 	    if(reader->fms_pairE[pair] < 12 || reader->fms_pairE[pair] > 70)
 		continue;
-
-	    hist11->Fill(reader->fms_pairM[pair]);
-	    hist12->Fill(reader->fms_pairE[pair]);
-	    hist2d5->Fill(reader->fms_pairX[pair], reader->fms_pairY[pair]);
-	    
-	    if(!(reader->fms_pairM[pair] > 0.07 && reader->fms_pairM[pair] < 0.20))     // <------- pion mass cut	     
-		continue;
-	    
+	    	    
 	    if(fms_i == -1)                        //consider only highest energy pair of photons, note: the Pions are already sorted based on energy
+	    {
 		fms_i = pair;
+		break;
+	    }
 	}
 
-	if(nTrkEast == 1 && fms_i > -1)  //Sanity Check
+	if(nTrkEast == 1 && fms_i > -1 && reader->evt_bbcADCSum[0] < 60 && reader->evt_bbcADCSumLarge[0] < 110)  //Sanity Check
 	    hist8East->Fill(reader->rp_trackP[eastTrk_i] + reader->fms_pairE[fms_i]);
 	    
 	if(!(nTrkWest == 1 && nTrkEast == 0)) //Full RP Cuts with One track in west and no track in the east
@@ -172,10 +161,15 @@ void AnFmsRpCorrMergedFull(TString filePath, Int_t maxEvents)
 	    continue;
 	
 	++eventCount[2]; //Post FMS cut counter
+
+	hist11->Fill(reader->fms_pairM[fms_i]);
+	hist12->Fill(reader->fms_pairE[fms_i]);
+	hist2d5->Fill(reader->fms_pairX[fms_i], reader->fms_pairY[fms_i]);
 	
 	sumE_w = reader->rp_trackP[westTrk_i] + reader->fms_pairE[fms_i];
 	
 	hist13->Fill(reader->evt_tofMultiplicity);
+	hist6->Fill(sumE_w);
 	//------------- BBC and TOF Cut -----------------	    
 	if(!(reader->evt_tofMultiplicity > 0))
 	    continue;
@@ -197,12 +191,15 @@ void AnFmsRpCorrMergedFull(TString filePath, Int_t maxEvents)
 	++eventCount[3];// Post BBC-TOF cut counter
 	
 	//-------------------------- FMS-RP Correlation -------------------------------
-	    
+	if(reader->fms_nPairs == 1)	    //Extreme Cut:Single pion in FMS
+	    hist7->Fill(sumE_w);
+	
 	hist8West->Fill(sumE_w);
 	hist2d1->Fill(reader->fms_pairE[fms_i], reader->rp_trackP[westTrk_i]);
 
 	//----------------------------- Diffractive p + p -----> pi^0 + p + X event cut ------------------------
-	if(sumE_w > 85 && sumE_w < 105)    // <------- Energy Conservation cut
+	if((sumE_w > 80 && sumE_w < 107)    // <------- Energy Conservation cut (WIDER RANGE USED!!)
+	   && (reader->fms_pairM[fms_i] > 0.0 && reader->fms_pairM[fms_i] < 0.25)) // <----- Pion mass range (WIDER RANGE USED!!)
 	{
 	    hist2d4->Fill(reader->fms_pairPhi[fms_i], reader->rp_trackPhi[westTrk_i]);
 	    ++eventCount[4];	    
