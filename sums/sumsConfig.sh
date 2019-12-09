@@ -21,6 +21,8 @@ export PROD='P15ik'
 export TRIG='production_pp200trans_2015||production_fms_pp200trans_2015'
 #--------------------------------------------------------------------------
 
+export MAXFILES=all
+#export MAXFILES=1
 
 #--------------------------------------------------------------------------
 export BASEOUTDIR=${STARHOME}/jobResults            # .root files directory. Relative to current directory
@@ -32,4 +34,5 @@ export SETUPFILE=${STARHOME}/setup.csh
 export LIBBRIGHT=${STARHOME}/libBrStar/lib/libBrStar.so
 export LIBANA=${STARHOME}/analysis/lib/libStAnalysis.so
 export LIBMACROS=${STARHOME}/runMacros/lib/libRunMacros.so
+export LIBDIFFANA=${STARHOME}/diffAnalysis/lib/libDiffAnalysis.so
 #---------------------------------------------------------------------------

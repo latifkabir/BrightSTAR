@@ -27,10 +27,10 @@
 		<File>file:&LIBBRIGHT;</File>
 		<File>file:&LIBANA;</File>
 		<File>file:&LIBMACROS;</File>
+		<File>file:&LIBDIFFANA;</File>
 	</Package>
 	</SandBox>
 
-	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="all" />
-	<!-- <input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="1" /> -->
+	<input URL="catalog:star.bnl.gov?runnumber=&RUN;,filename&FILEN;,filetype=&FILET;,production=&PROD;,storage!~HPSS,trgsetupname=&TRIG;" nFiles="&MAXFILES;" />
 	<output fromScratch="*.root" toURL="file:&OUTDIR;/" />
 </job>

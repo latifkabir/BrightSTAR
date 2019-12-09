@@ -68,10 +68,7 @@ void AnEEmcRpChain()
 	    pi0Z->Fill(pion->Z);
 	    pi0D->Fill(pion->D);
 	    pi0Pos->Fill(pion->position.X(), pion->position.Y());
-	}
-
-
-	
+	}	
     }
 
     file->Write();

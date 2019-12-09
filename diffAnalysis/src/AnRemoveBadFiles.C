@@ -11,10 +11,10 @@
 
 using namespace std;
 
-void RemoveBadFiles()
+void AnRemoveBadFiles()
 {
-    string basePath = "/star/u/kabir/GIT/BrightSTAR/jobResults/R15EEmcRpTree/";
-    string filePrefix = "AnRunEEmcRpTreeMakerPart1";
+    string basePath = "/star/u/kabir/GIT/BrightSTAR/jobResults/FmsRpResubmit/";
+    string filePrefix = "RunFmsRpTreeMaker";
     ifstream inFile("/star/u/kabir/GIT/BrightSTAR/resources/temp/temp.list");
     ofstream zFile("Run15ZombieFileList.txt");    
     if(!inFile || !zFile)
@@ -39,7 +39,7 @@ void RemoveBadFiles()
 	runStr = Form("%d", run);
 	// cout << runStr <<endl;
 	fileName = basePath + runStr + "/" + filePrefix + "_" + runStr  + "_" + TStRunList::GetFileNoFromFileName(dataFileName) + ".root";
-	secFileName = basePath + runStr + "/RpTree_" + filePrefix + "_" + runStr  + "_" + TStRunList::GetFileNoFromFileName(dataFileName) + ".root";
+	//secFileName = basePath + runStr + "/RpTree_" + filePrefix + "_" + runStr  + "_" + TStRunList::GetFileNoFromFileName(dataFileName) + ".root";
 	
 	// cout << "Output data file name:"<< fileName <<endl;
 	
@@ -56,8 +56,8 @@ void RemoveBadFiles()
 		// cout << command <<endl;
 		cout << "!!!Removing the file !!! " <<endl;
 		gROOT->ProcessLine(command.c_str());
-		command = ".! rm " + secFileName;
-		gROOT->ProcessLine(command.c_str());
+		// command = ".! rm " + secFileName;
+		// gROOT->ProcessLine(command.c_str());
 		// cout << command <<endl;
 		++numBadFiles;
 	    }

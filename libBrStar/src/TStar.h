@@ -17,7 +17,13 @@ class TStar: public TObject
 public:
     TStar();
     ~TStar();
-    static TStConfig *Config;
+
+    static TStConfig *gConfig;    
+    static TStConfig *Config;           //For backward compatibility
+
+    static Int_t gFirstRun;   //This will make library loading slow (to read large json file)
+    static Int_t gLastRun;
+    
     static Int_t GetCounter();
     static void SetCounter(Int_t cout);
     static void PrintCounter();

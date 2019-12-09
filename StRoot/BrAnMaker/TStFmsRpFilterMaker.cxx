@@ -53,7 +53,7 @@ Int_t TStFmsRpFilterMaker::Make()
 	    mRpsMuColl = mMuDst->RpsCollection();
 	    if(!mRpsMuColl)
 	    {
-		cout<<"No RP data for this event"<<endl;
+		LOG_INFO << "No RP data for this event" << endm;
 		return kStSkip;
 	    }    
 	    if(mRpsMuColl->numberOfTracks() < 1)

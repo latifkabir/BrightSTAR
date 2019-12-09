@@ -11,5 +11,7 @@
 #pragma link C++ class TAnEEmcRpTreeReader;                      // EEMC + Rp Tree Reader
 #pragma link C++ function AnEEmcRpCorr;                          // EEMC + Rp Correlation with only 1 good RP track per event allowed
 #pragma link C++ function AnEEmcRpCorrMergedFull;                // EEMC + Rp Correlation with only 1 good RP track per event allowed, uses fully merged single root file.
+#pragma link C++ function AnResubmitJobs;                        // Resubmit failed jobs
+
 
 #endif

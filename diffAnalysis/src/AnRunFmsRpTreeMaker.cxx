@@ -26,7 +26,23 @@ void AnRunFmsRpTreeMaker(TString fileList, TString outFile)
     
     vector<Int_t> trigs(9);
     //------- For FMS stream ----------------
-    Int_t runNumber = TStRunList::GetRunFromFileName((string)fileList);
+    string fileName;
+    if(fileList.Contains(".list"))
+    {
+	ifstream inFile(fileList);
+	if(!inFile)
+	{
+	    cout << "Unable to read run number from file list" <<endl;
+	    return;
+	}
+	getline(inFile, fileName);
+	inFile.close();
+	cout << "\n------->Warning: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
+    }
+    else
+	fileName = fileList;
+    
+    Int_t runNumber = TStRunList::GetRunFromFileName(fileName);
     if(runNumber < 1)
     {
 	cout << "Unable to get run number" <<endl;
@@ -42,8 +58,8 @@ void AnRunFmsRpTreeMaker(TString fileList, TString outFile)
     trigs[7] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2");
     trigs[8] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3");
 
-    gMessMgr->SetLimit("I", 0);   //Disable StInfo messages including Skipped event message
-    gMessMgr->SetLimit("Q", 0);   //Disable StQAInfo messages (includes event processing status)
+    // gMessMgr->SetLimit("I", 0);   //Disable StInfo messages including Skipped event message
+    // gMessMgr->SetLimit("Q", 0);   //Disable StQAInfo messages (includes event processing status)
     
     StChain *chain = new StChain;
     StMuDstMaker *muDstMaker = new StMuDstMaker(0, 0, "", fileList, "", 1000);

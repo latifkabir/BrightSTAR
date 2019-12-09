@@ -21,7 +21,7 @@
 #include<sstream>
 #include<string>
 #include "TString.h"
-
+#include "TStRunList.h"
 
 
 using namespace std;
@@ -39,6 +39,12 @@ TStar::~TStar()
 }
 
 TStConfig* TStar::Config = new TStConfig();
+TStConfig* TStar::gConfig = Config;
+
+//TStRunList uses TStar::Config, so that should be initialized first. 
+//This will make library loading slow (to read large json file)
+Int_t TStar::gFirstRun = TStRunList::GetFirstRun();  
+Int_t TStar::gLastRun = TStRunList::GetLastRun();
 
 void TStar::Exit()
 {
