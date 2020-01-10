@@ -273,20 +273,20 @@ Int_t TStFmsTreeMaker::Make()
     if (!muDST) { LOG_ERROR <<"TStFmsTreeMaker::Make - !MuDst" <<endl; return kStErr; }
     else
     {
-	//Skip events in abort gap
-        mXing = muDST->event()->triggerData()->bunchId7Bit();
-	if ((mXing>=30 && mXing<40) || (mXing>=110 && mXing<120)) return kStSkip;
+	// //Skip events in abort gap
+        // mXing = muDST->event()->triggerData()->bunchId7Bit();
+	// if ((mXing>=30 && mXing<40) || (mXing>=110 && mXing<120)) return kStSkip;
 
-	//Check FMS trigger, skip invalid cases
-        mTrig = CheckFmsTrig(muDST->event()->triggerIdCollection().nominal());
-        if (mTrig==0) { cout <<"No FMS trigger fired!" <<endl; return kStSkip; }
-	for (int i=0; i<nTrigFms; i++)
-	{
-	    bool mTrigFire = false;
-	    if (mTrig & (1<<i)) mTrigFire = true;
-	    if (i==11 && mTrigFire==true) return kStSkip; //Empty trigger
-	    if (i==12 && mTrigFire==true) return kStSkip; //LED
-	}
+	// //Check FMS trigger, skip invalid cases
+        // mTrig = CheckFmsTrig(muDST->event()->triggerIdCollection().nominal());
+        // if (mTrig==0) { cout <<"No FMS trigger fired!" <<endl; return kStSkip; }
+	// for (int i=0; i<nTrigFms; i++)
+	// {
+	//     bool mTrigFire = false;
+	//     if (mTrig & (1<<i)) mTrigFire = true;
+	//     if (i==11 && mTrigFire==true) return kStSkip; //Empty trigger
+	//     if (i==12 && mTrigFire==true) return kStSkip; //LED
+	// }
     }
 
     StEvent* event = (StEvent*)GetInputDS("StEvent");

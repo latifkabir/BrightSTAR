@@ -8,12 +8,12 @@
 # output is tee'd to $outputfile.*
 
 ##----------------------- pp 2015 trans physics stream-------------------------------------------
-outputfile_=Run15PhysRunList.json
-tempoutput_=temp.dat
-production_=P16id
-trgsetupname_=production_pp200trans_2015
-storage_=local
-filename_=st_physics
+# outputfile_=Run15PhysRunList.json
+# tempoutput_=temp.dat
+# production_=P16id
+# trgsetupname_=production_pp200trans_2015
+# storage_=local
+# filename_=st_physics
 ##------------------------------------------------------------------
 
 ##------------------------- pp 2015 trans fms stream -----------------------------------------
@@ -24,6 +24,16 @@ filename_=st_physics
 # storage_=local
 # filename_=st_fms
 ##------------------------------------------------------------------
+
+##----------------------- pp 2015 trans RP stream-------------------------------------------
+outputfile_=Run15RpRunList.json
+tempoutput_=temp.dat
+production_=P15ik
+trgsetupname_=production_pp200trans_2015
+storage_=local
+filename_=st_rp
+##------------------------------------------------------------------
+
 
 # querey the fileCatalog
 #   vars for awk:      $1   $2      $3   $4   $5   $6       $7   $8     $9

@@ -13,5 +13,6 @@
 #pragma link C++ function AnEEmcRpCorrMergedFull;                // EEMC + Rp Correlation with only 1 good RP track per event allowed, uses fully merged single root file.
 #pragma link C++ function AnResubmitJobs;                        // Resubmit failed jobs
 
+#pragma link C++ function AnRunAnTreeMaker;                      // Run AnTree Maker
 
 #endif

@@ -124,6 +124,7 @@
     //gSystem->Load("BrPicoMaker");  //Need to load dependencies  
     gSystem->Load("BrFemtoMaker");    
     gSystem->Load("StFmsJetAnalysisMaker");    
+    gSystem->Load("BrContainers");    
     gSystem->Load("BrAnMaker");    
     
     gSystem->Load("libRunMacros.so");
