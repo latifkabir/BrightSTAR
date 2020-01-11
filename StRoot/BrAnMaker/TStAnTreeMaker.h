@@ -4,7 +4,6 @@
 // Created: Wed Nov 13 17:28:55 2019 (-0500)
 // URL: jlab.org/~latif
 
-
 #ifndef TSTANTREEMAKER_H
 #define TSTANTREEMAKER_H
 
@@ -44,50 +43,21 @@ private:
     StFmsDbMaker *mFmsDbMk;
     StSpinDbMaker *mSpinDbMaker;
     
-    StFmsCollection *mFmsColl;    
-    StFmsPointPair *mPair;
     TH1D *mHist1d;
     TH2D *mHist2d;
-    vector<StFmsPointPair*> mPointPairs;
-
-    StMuRpsCollection *mRpsMuColl;
-    StMuRpsTrackPoint  *mRpsTrkPoint;
-    StMuRpsTrack *mRpsTrk;
-    Double_t mBeamMom;
     
     TFile *mFile;
     TTree *mTree;
     Bool_t mSaveFile;
-    static const Int_t kMaxPairs = 1000;
-    static const Int_t kMaxRpTracks = 1000;
-    static const Int_t kMaxTriggers = 200;
 
+    //Event
     Int_t  mBunchid7bit;
     Int_t  mSpin4bit;
     vector <Int_t> mTrigIDs;
     vector <Int_t>::iterator mIt;
-
     StMuTriggerIdCollection *mTrigMuColl;
-    //Event Buffer
-    Int_t mRunNumber;
-    Int_t mEventId;
-    Short_t mBspin;
-    Short_t mYspin;
     Int_t mTrigFlag;
-    Int_t mNtrig;
-
     
-    Int_t mBbcADCSum[2];
-    Int_t mBbcADCSumLarge[2];
-    Int_t mBbcEarliestTDC[2];
-    Int_t mBbcEarliestTDCLarge[2];
-
-    Int_t mZdcADCSum[2];
-    Int_t mVpdADCSum[2];
-    Int_t mTofMultiplicity;
-
-    //Event
-    TClonesArray *mEventArray;
     TStEventData *mEventData;
     
     //TPC Track
@@ -95,18 +65,25 @@ private:
     TClonesArray  *mTrackArray;
     TStTrackData *mTrackData;
     
-    //FMS Buffer
+    //FMS
     //Not sure if saving points or pointPair (and in Lorentz Vector or separate quantity) would be the best option (to be revisited later)
+    StFmsCollection *mFmsColl;    
+    StFmsPointPair *mPair;
+    vector<StFmsPointPair*> mPointPairs;
+    
     Int_t mFmsNpairs;
     TClonesArray  *mFmsArray;
-    TStFmsPointPairData * mFmsPointPairData;
+    TStFmsPointPairData *mFmsPointPairData;
     
-    //RP Buffer
+    //RP
+    StMuRpsCollection *mRpsMuColl;
+    StMuRpsTrack *mRpsTrk;
+    Double_t mBeamMom;
+    
     Int_t mRpNtracks;
     TClonesArray  *mRpsArray;
     TStRpsTrackData *mRpsTrackData;
-
-    
+            
 protected:
     void SetBranches();
     void Reset();

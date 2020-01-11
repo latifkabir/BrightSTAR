@@ -29,7 +29,7 @@ TStAnTreeMaker::TStAnTreeMaker(const char *name):StMaker(name)
     TStFmsPointPairData::Class()->IgnoreTObjectStreamer();
     
     //Event Buffer
-    mEventArray = new TClonesArray("TStEventData"); 
+    mEventData =  new TStEventData();	
 
     //Track Buffer
     mTrackArray = new TClonesArray("TStTrackData");
@@ -45,7 +45,7 @@ TStAnTreeMaker::TStAnTreeMaker(const char *name):StMaker(name)
 TStAnTreeMaker::~TStAnTreeMaker()
 {
     //Track buffer
-    delete mEventArray;
+    delete mEventData;
     
     //Track buffer
     delete mTrackArray;
@@ -98,7 +98,7 @@ Int_t TStAnTreeMaker::InitRun(int runnumber)
 void TStAnTreeMaker::SetBranches()
 {
     //Event branches    
-    mTree->Branch("event", &mEventArray, 256000, 99);
+    mTree->Branch("event", mEventData, 256000, 99);
 
     //TPC Track branch
     mTree->Branch("track", &mTrackArray, 256000, 99);
@@ -114,7 +114,7 @@ void TStAnTreeMaker::SetBranches()
 //_____________________________________________________________________________
 void TStAnTreeMaker::Reset()
 {
-    mEventArray->Clear();
+    mEventData->Reset();
     mTrackArray->Clear();
     mFmsArray->Clear();
     mRpsArray->Clear();
@@ -182,44 +182,49 @@ Bool_t TStAnTreeMaker::AcceptEvent()
 }
 //_____________________________________________________________________________
 Int_t TStAnTreeMaker::MakeEvent()
-{
-    mEventData =  new((*mEventArray)[i])TStEventData();	
-    
+{    
     //Run no. and event no.     
-    mRunNumber = mMuEvent->runNumber();
-    mEventId = mMuEvent->eventId();
+    mEventData->mRunNumber = mMuEvent->runNumber();
+    mEventData->mEventId = mMuEvent->eventId();
 
     //Trigger ids
     mTrigMuColl = &mMuEvent->triggerIdCollection();
     if(mTrigMuColl)
     {
 	const StTriggerId trgIDs = mTrigMuColl->nominal();
-	mNtrig = trgIDs.triggerIds().size();
-	for(Int_t i = 0; i < mNtrig; i++)
-	    mTriggers[i] = trgIDs.triggerIds().at(i);
+	mEventData->mNtrig = trgIDs.triggerIds().size();
+
+	if(mEventData->mNtrig > mEventData->mMaxTrigs)
+	{
+	    std::cout << "TStAnTreeMaker::MakeEvent - The trigger buffer is out of limit. You must adjust it." << std::endl;
+	    return kStErr;
+	}
+	
+	for(Int_t i = 0; i < mEventData->mNtrig; i++)
+	    mEventData->mTriggers[i] = trgIDs.triggerIds().at(i);
     }
     // BBC, ZDC, VPD branches <------- To be verified/revisited
     for(Int_t ew = 0; ew < 2; ew++)
     {
 	// BBC
-	mBbcADCSum[ew] = mMuEvent->triggerData()->bbcADCSum((StBeamDirection)ew);
-	mBbcADCSumLarge[ew] = mMuEvent->triggerData()->bbcADCSumLargeTile((StBeamDirection)ew);
-	mBbcEarliestTDC[ew] = mMuEvent->triggerData()->bbcEarliestTDC((StBeamDirection)ew);
-	mBbcEarliestTDCLarge[ew] = mMuEvent->triggerData()->bbcEarliestTDCLarge((StBeamDirection)ew);
+	mEventData->mBbcADCSum[ew] = mMuEvent->triggerData()->bbcADCSum((StBeamDirection)ew);
+	mEventData->mBbcADCSumLarge[ew] = mMuEvent->triggerData()->bbcADCSumLargeTile((StBeamDirection)ew);
+	mEventData->mBbcEarliestTDC[ew] = mMuEvent->triggerData()->bbcEarliestTDC((StBeamDirection)ew);
+	mEventData->mBbcEarliestTDCLarge[ew] = mMuEvent->triggerData()->bbcEarliestTDCLarge((StBeamDirection)ew);
 	// ZDC
-	mZdcADCSum[ew] = 0;
+	mEventData->mZdcADCSum[ew] = 0;
 	for(Int_t pmt = 1; pmt <= 3; pmt++)
 	{
-	    mZdcADCSum[ew] += mMuEvent->triggerData()->zdcADC((StBeamDirection)ew,pmt); // is this correct?
+	    mEventData->mZdcADCSum[ew] += mMuEvent->triggerData()->zdcADC((StBeamDirection)ew,pmt); // is this correct?
 	}
 	// VPD
-	mVpdADCSum[ew] = 0;
+	mEventData->mVpdADCSum[ew] = 0;
 	for(Int_t pmt = 1; pmt <= 16; pmt++)
 	{
-	    mVpdADCSum[ew] += mMuEvent->triggerData()->vpdADC((StBeamDirection)ew,pmt); // is this correct?
+	    mEventData->mVpdADCSum[ew] += mMuEvent->triggerData()->vpdADC((StBeamDirection)ew,pmt); // is this correct?
 	}
     } 
-    mTofMultiplicity = mMuEvent->triggerData()->tofMultiplicity();
+    mEventData->mTofMultiplicity = mMuEvent->triggerData()->tofMultiplicity();
 
 
     // StRunInfo* runInfo = &(mMuEvent->runInfo());
@@ -236,31 +241,31 @@ Int_t TStAnTreeMaker::MakeEvent()
     {
     case 5:
     {
-	mBspin = -1;
-	mYspin = -1;
+	mEventData->mBspin = -1;
+	mEventData->mYspin = -1;
 	break;
     }
     case 6:
     {
-	mBspin = -1;
-	mYspin = +1;	
+	mEventData->mBspin = -1;
+	mEventData->mYspin = +1;	
 	break;
     }
     case 9:
     {
-	mBspin = +1;
-	mYspin = -1;	
+	mEventData->mBspin = +1;
+	mEventData->mYspin = -1;	
 	break;
     }
     case 10:
     {
-	mBspin = +1;
-	mYspin = +1;
+	mEventData->mBspin = +1;
+	mEventData->mYspin = +1;
 	break;
     }
     default: //Undefined
-	mBspin = 0;
-	mYspin = 0;      
+	mEventData->mBspin = 0;
+	mEventData->mYspin = 0;      
     }
         
     return kStOk;    
@@ -292,7 +297,7 @@ Int_t TStAnTreeMaker::MakeFms()
 	mFmsPointPairData->mPt = mPair->pT();
 	mFmsPointPairData->mEta = mPair->eta();
 	mFmsPointPairData->mPhi = mPair->phi();
-	mFmsPointPairData->Zgg = mPair->zgg();
+	mFmsPointPairData->mZgg = mPair->zgg();
 	mFmsPointPairData->mDgg = mPair->dgg();
 	mFmsPointPairData->mX = mPair->x();
 	mFmsPointPairData->mY = mPair->y();	
@@ -313,23 +318,24 @@ Int_t TStAnTreeMaker::MakeRps()
     mRpNtracks = mRpsMuColl->numberOfTracks();    
     for(Int_t i = 0; i < mRpNtracks; ++i)
     {	
-	mRpsTrackData =  new((*mTrackArray)[i])TStRpsTrackData();	
+	mRpsTrackData =  new((*mRpsArray)[i])TStRpsTrackData();	
+	mRpsTrk = mRpsMuColl->track(i);
 	
-	mRpsTrackData->mType = (mRpsMuColl->track(i)->type() == StMuRpsTrack::rpsGlobal) ? 1 : 0;
-	mRpsTrackData->mNplanes = mRpsMuColl->track(i)->planesUsed();
-	mRpsTrackData->mBranch = mRpsMuColl->track(i)->branch();	
-	mRpsTrackData->mTheta = 1000.0*mRpsMuColl->track(i)->theta();	
-	mRpsTrackData->mTheta_x = 1000.0*mRpsMuColl->track(i)->theta(0);	
-	mRpsTrackData->mTheta_y = 1000.0*mRpsMuColl->track(i)->theta(1);	
-	mRpsTrackData->mEta = mRpsMuColl->track(i)->eta();
-	mRpsTrackData->mPhi = mRpsMuColl->track(i)->phi();
-	mRpsTrackData->mPt = mRpsMuColl->track(i)->pt();		
-	mRpsTrackData->mP = mRpsMuColl->track(i)->p();		
-	mRpsTrackData->mPx = mRpsMuColl->track(i)->pVec().x();		
-	mRpsTrackData->mPy = mRpsMuColl->track(i)->pVec().y();		
-	mRpsTrackData->mPz = mRpsMuColl->track(i)->pVec().z();		
-	mRpsTrackData->mXi = mRpsMuColl->track(i)->xi(mBeamMom); // Beam momentum is approximate		
-	mRpsTrackData->mMt = -1.0*mRpsMuColl->track(i)->t(mBeamMom);	
+	mRpsTrackData->mType = (mRpsTrk->type() == StMuRpsTrack::rpsGlobal) ? 1 : 0;
+	mRpsTrackData->mNplanes = mRpsTrk->planesUsed();
+	mRpsTrackData->mBranch = mRpsTrk->branch();	
+	mRpsTrackData->mTheta = 1000.0*mRpsTrk->theta();	
+	mRpsTrackData->mTheta_x = 1000.0*mRpsTrk->theta(0);	
+	mRpsTrackData->mTheta_y = 1000.0*mRpsTrk->theta(1);	
+	mRpsTrackData->mEta = mRpsTrk->eta();
+	mRpsTrackData->mPhi = mRpsTrk->phi();
+	mRpsTrackData->mPt = mRpsTrk->pt();		
+	mRpsTrackData->mP = mRpsTrk->p();		
+	mRpsTrackData->mPx = mRpsTrk->pVec().x();		
+	mRpsTrackData->mPy = mRpsTrk->pVec().y();		
+	mRpsTrackData->mPz = mRpsTrk->pVec().z();		
+	mRpsTrackData->mXi = mRpsTrk->xi(mBeamMom); // Beam momentum is approximate		
+	mRpsTrackData->mMt = -1.0*mRpsTrk->t(mBeamMom);	
     }
 
     return kStOk;    
@@ -338,7 +344,6 @@ Int_t TStAnTreeMaker::MakeRps()
 //_____________________________________________________________________________
 Int_t TStAnTreeMaker::MakeTrack()
 {
-
     if(!mMuDst)
     {
 	LOG_ERROR << "TStAnTreeMaker::MakeTrack - No MuDst found" <<endm;
@@ -347,7 +352,6 @@ Int_t TStAnTreeMaker::MakeTrack()
 
     for(Int_t i = 0; i < mMuDst->numberOfPrimaryTracks(); ++i)
     {
-
 	mTrack = mMuDst->primaryTracks(i);
 	mTrackData =  new((*mTrackArray)[i])TStTrackData();
 	

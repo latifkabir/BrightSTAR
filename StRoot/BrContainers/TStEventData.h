@@ -14,13 +14,14 @@
 
 class TStEventData : public TObject
 {
-    static const Int_t mMaxTrigs = 30;	//
+
 public:
     Int_t mRunNumber;			//
     Int_t mEventId;			//
     Short_t mBspin;			//
     Short_t mYspin;			//
     Int_t mTrigFlag;			//
+    static const Int_t mMaxTrigs = 30;	//
     Int_t mNtrig;			//
     Int_t mTriggers[mMaxTrigs];		//
     

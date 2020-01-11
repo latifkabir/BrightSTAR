@@ -82,8 +82,8 @@ void AnRunAnTreeMaker(TString fileList, TString outFile)
     cout << "----------->Total Events to be processed: "<< nEvents <<" <----------------"<<endl;
     
     chain->Init();    
-    //chain->EventLoop(nEvents);  // Run specified number of events
-    chain->EventLoop(1000);  // Run specified number of events
+    chain->EventLoop(nEvents);  // Run specified number of events
+    //chain->EventLoop(1000);  // Run specified number of events
     chain->Finish();
 
     f->Write();
