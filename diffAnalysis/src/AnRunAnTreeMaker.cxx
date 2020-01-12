@@ -7,7 +7,7 @@
 #include "StRootInclude.h"
 #include "RootInclude.h"
 #include "BrightStInclude.h"
-#include "BrAnMaker/TStFmsRpFilterMaker.h"
+#include "BrAnMaker/TStRpFilterMaker.h"
 #include "BrAnMaker/TStAnTreeMaker.h"
 
 #include <vector>
@@ -16,9 +16,9 @@ using namespace std;
 
 void AnRunAnTreeMaker(TString fileList, TString outFile)
 {
-    TFile *f = new TFile(outFile, "RECREATE");
+    // TFile *f = new TFile(outFile, "RECREATE");
     TH1D* hEvtCount = new TH1D("hEvtCount", "Event counts", 20, 0, 20);
-    TTree *tree = new TTree("T", "RP + FMS Tree");
+    // TTree *tree = new TTree("T", "An TREE");
     
     vector<Int_t> trigs(9);
  
@@ -41,7 +41,7 @@ void AnRunAnTreeMaker(TString fileList, TString outFile)
     muDstMaker->SetStatus("*Track*", 1);
 
     //-------------- Filter/Skip Events if no RP or FMS BS/JP Trigger----------
-    // TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("TStFmsRpFilterMaker");
+    // TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker");
     // for(Int_t i = 0; i < trigs.size(); ++i)
     // 	filterMaker->addTrigger(trigs[i]);
     // filterMaker->SetHist1d(hEvtCount);
@@ -54,7 +54,8 @@ void AnRunAnTreeMaker(TString fileList, TString outFile)
     StFmsFpsMaker * fpsMk = new StFmsFpsMaker();
     
     TStAnTreeMaker *AnTreeMk = new TStAnTreeMaker("TStAnTreeMaker");
-    AnTreeMk->SetTree(tree);
+    //AnTreeMk->SetTree(tree);
+    AnTreeMk->SetOutFileName(outFile);
 
     // mudst reading
     // if 0, get info from StTriggerData from StTriggerDataMaker/StEvent/MuDst
@@ -86,8 +87,8 @@ void AnRunAnTreeMaker(TString fileList, TString outFile)
     //chain->EventLoop(1000);  // Run specified number of events
     chain->Finish();
 
-    f->Write();
-    f->Close();
+    // f->Write();
+    // f->Close();
     cout << "Status:SUCCESS!!" <<endl;
 
     delete chain;

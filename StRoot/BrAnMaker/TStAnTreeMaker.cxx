@@ -27,12 +27,22 @@ TStAnTreeMaker::TStAnTreeMaker(const char *name):StMaker(name)
     TStTrackData::Class()->IgnoreTObjectStreamer();
     TStRpsTrackData::Class()->IgnoreTObjectStreamer();
     TStFmsPointPairData::Class()->IgnoreTObjectStreamer();
+    TStChargedPidData::Class()->IgnoreTObjectStreamer();
     
     //Event Buffer
     mEventData =  new TStEventData();	
 
     //Track Buffer
     mTrackArray = new TClonesArray("TStTrackData");
+
+    //Charged PID
+    mPidTagger = new TStPidTagger();
+    mElArray = new TClonesArray("TStChargedPidData");
+    mPiArray = new TClonesArray("TStChargedPidData");
+    mKaArray = new TClonesArray("TStChargedPidData");
+    mPrArray = new TClonesArray("TStChargedPidData");
+    mMuArray = new TClonesArray("TStChargedPidData");
+    mUkArray = new TClonesArray("TStChargedPidData");
     
     //FMS Buffer
     mFmsArray = new TClonesArray("TStFmsPointPairData");
@@ -49,6 +59,14 @@ TStAnTreeMaker::~TStAnTreeMaker()
     
     //Track buffer
     delete mTrackArray;
+
+    //Charged PID
+    delete mElArray;
+    delete mPiArray;
+    delete mPrArray;
+    delete mKaArray;
+    delete mMuArray;
+    delete mUkArray;
     
     //FMS buffer
     delete mFmsArray;
@@ -74,13 +92,15 @@ Int_t TStAnTreeMaker::Init()
 
     if(!mTree)
     {
-	mFile = new TFile("AnTree.root", "RECREATE");
+	mFile = new TFile(mOutName, "RECREATE");
 	mTree = new TTree("T", "An Tree");
 	mSaveFile = kTRUE;
     }
     else
 	mSaveFile = kFALSE;
     SetBranches();
+    InitHist();
+    mEmcRadius = (Double_t)StEmcGeom::instance("bemc")->Radius();
     
     return kStOK;
 }
@@ -101,8 +121,16 @@ void TStAnTreeMaker::SetBranches()
     mTree->Branch("event", mEventData, 256000, 99);
 
     //TPC Track branch
-    mTree->Branch("track", &mTrackArray, 256000, 99);
-        
+    //mTree->Branch("track", &mTrackArray, 256000, 99);
+
+    //Charged PID branches
+    mTree->Branch("e", &mElArray, 256000, 99);
+    mTree->Branch("pi", &mPiArray, 256000, 99);
+    mTree->Branch("pr", &mPrArray, 256000, 99);
+    mTree->Branch("ka", &mKaArray, 256000, 99);
+    mTree->Branch("mu", &mMuArray, 256000, 99);
+    mTree->Branch("uk", &mUkArray, 256000, 99);
+    
     //FMS branches
     mTree->Branch("fmsPointPair", &mFmsArray, 256000, 99);
 
@@ -111,13 +139,47 @@ void TStAnTreeMaker::SetBranches()
 
     cout << "Done setting branches..." <<endl;
 }
+
+//_____________________________________________________________________________
+void TStAnTreeMaker::InitHist()
+{
+    mDedxVsQp = new TH2D("hDedxVsQp", "dE/dx vs qx|p| (No cut); qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
+    mM2VsQp = new TH2D("hM2VsQp", "m^{2} vs qx|p| (No cut); qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 2.0);
+    mDedxVsQp_e = new TH2D("hDedxVsQp_e", "dE/dx vs qx|p| for electron; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
+    mM2VsQp_e = new TH2D("hM2VsQp_e", "m^{2} vs qx|p| for electron; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.05, 0.05);
+    mDedxVsQp_pi = new TH2D("hDedxVsQp_pi", "dE/dx vs qx|p| for Pion; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
+    mM2VsQp_pi = new TH2D("hM2VsQp_pi", "m^{2} vs qx|p| for Pion; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.1, 0.3);
+    mDedxVsQp_pr = new TH2D("hDedxVsQp_pr", "dE/dx vs qx|p| for Proton; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
+    mM2VsQp_pr = new TH2D("hM2VsQp_pr", "m^{2} vs qx|p| for Proton; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, 0.0, 2.0);
+    mDedxVsQp_ka = new TH2D("hDedxVsQp_ka", "dE/dx vs qx|p| for Kaon; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
+    mM2VsQp_ka = new TH2D("hM2VsQp_ka", "m^{2} vs qx|p| for Kaon; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, 0.0, 0.5);
+    mDedxVsQp_mu = new TH2D("hDedxVsQp_mu", "dE/dx vs qx|p| for Muon; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
+    mM2VsQp_mu = new TH2D("hM2VsQp_mu", "m^{2} vs qx|p| for Muon; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 0.4);   
+}
+
 //_____________________________________________________________________________
 void TStAnTreeMaker::Reset()
 {
     mEventData->Reset();
+    
     mTrackArray->Clear();
+
+    mElArray->Clear();
+    mPiArray->Clear();
+    mPrArray->Clear();
+    mMuArray->Clear();
+    mKaArray->Clear();
+    mUkArray->Clear();
+    mNpi = 0;
+    mNe = 0;
+    mNpr = 0;
+    mNmu = 0;
+    mNka = 0;
+    mNuk = 0;
+    
     mFmsArray->Clear();
-    mRpsArray->Clear();
+    
+    mRpsArray->Clear();    
 }
     
 //_____________________________________________________________________________
@@ -136,6 +198,8 @@ Int_t TStAnTreeMaker::Make()
     // Event filtering has been moved to TStFmsRpFilterMaker class.
     // if(!AcceptEvent())
     // 	return kStSkip;
+
+    //------ Reset Buffer --------
     Reset();
     
     Int_t status = kStOK;
@@ -146,8 +210,8 @@ Int_t TStAnTreeMaker::Make()
     if(status != kStOK)
 	return status;
     status = MakeRps();
-
-    status = MakeTrack();
+    //status = MakeTrack();
+    status = MakeChargedPid();
     
     mTree->Fill();
 
@@ -226,7 +290,20 @@ Int_t TStAnTreeMaker::MakeEvent()
     } 
     mEventData->mTofMultiplicity = mMuEvent->triggerData()->tofMultiplicity();
 
+    // if(mMuDst->primaryVertex())
+    // {
+    // 	mEventData->mVx = mMuDst->primaryVertex()->position().x();
+    // 	mEventData->mVy = mMuDst->primaryVertex()->position().y();
+    // 	mEventData->mVz = mMuDst->primaryVertex()->position().z();
 
+    // 	cout << "----->Vertex:"<< mMuDst->primaryVertex()->position().z() <<"\t"<< mEventData->mVz<<endl;
+
+    // }
+
+    mEventData->mVx = mMuDst->event()->primaryVertexPosition().x();
+    mEventData->mVy = mMuDst->event()->primaryVertexPosition().y();
+    mEventData->mVz = mMuDst->event()->primaryVertexPosition().z();
+    
     // StRunInfo* runInfo = &(mMuEvent->runInfo());
     // mFill = runInfo->beamFillNumber(blue);
     // mBbcCo = runInfo->bbcCoincidenceRate();
@@ -267,7 +344,7 @@ Int_t TStAnTreeMaker::MakeEvent()
 	mEventData->mBspin = 0;
 	mEventData->mYspin = 0;      
     }
-        
+  
     return kStOk;    
 }
 //_____________________________________________________________________________
@@ -288,7 +365,6 @@ Int_t TStAnTreeMaker::MakeFms()
 
     for (Int_t i = 0; i < mFmsNpairs; ++i)
     {
-
 	mFmsPointPairData =  new((*mFmsArray)[i])TStFmsPointPairData();	
 	mPair = mPointPairs[i];
 
@@ -363,6 +439,184 @@ Int_t TStAnTreeMaker::MakeTrack()
 
     return kStOK;
 }
+//_____________________________________________________________________________
+void TStAnTreeMaker::ProjectTrack()
+{
+    Bool_t hasProj = kFALSE;
+    
+    hasProj = mEmcPosition.trackOnEmc(&mPosition_proj, &mMomentum_proj, mTrack, mField, mEmcRadius);    
+    if (!hasProj)
+	hasProj = mEmcPosition.trackOnEEmc(&mPosition_proj, &mMomentum_proj, mTrack, mField, mEEmcZSMD);
+
+    if(hasProj)
+    {
+	mProjX = mPosition_proj.x();	
+	mProjY = mPosition_proj.y();	
+	mProjZ = mPosition_proj.z();	
+    }
+    else
+    {
+	mProjX = -999;
+	mProjY = -999;
+	mProjZ = -999;
+    }
+}
+//_____________________________________________________________________________
+Int_t TStAnTreeMaker::MakeChargedPid()
+{
+    mField = StMuDst::event()->magneticField() / 10.0;
+    Int_t pid = -1;
+    
+    for(Int_t i = 0; i < mMuDst->numberOfPrimaryTracks(); ++i)
+    {
+	mTrack = mMuDst->primaryTracks(i);
+	mPidTagger->SetTrack(mTrack);
+	ProjectTrack();
+	if(mFillHist)
+	    FillHist(0); //Histogram before PID cut
+	
+	//---------The particle tagging order is very important and to be finalized later ----------------
+	//---- Pion -----
+	pid = mPidTagger->TagPion();
+	if(pid == mPidTagger->kPionId)
+	{
+	    mChargedPidData =  new((*mPiArray)[mNpi])TStChargedPidData();
+	    mChargedPidData->mQ = mTrack->charge();
+	    mChargedPidData->mPt = mTrack->pt();
+	    mChargedPidData->mEta = mTrack->eta();
+	    mChargedPidData->mPhi = mTrack->phi();
+	    mChargedPidData->mX = mProjX;
+	    mChargedPidData->mY = mProjY;
+	    mChargedPidData->mZ = mProjZ;
+
+	    if(mFillHist)
+		FillHist(mPidTagger->kPionId);	    
+	    ++mNpi;
+	    continue;
+	}
+	//----- Proton --------
+	pid = mPidTagger->TagProton();
+	if(pid == mPidTagger->kProtonId)
+	{
+	    mChargedPidData =  new((*mPrArray)[mNpr])TStChargedPidData();
+	    mChargedPidData->mQ = mTrack->charge();
+	    mChargedPidData->mPt = mTrack->pt();
+	    mChargedPidData->mEta = mTrack->eta();
+	    mChargedPidData->mPhi = mTrack->phi();
+	    mChargedPidData->mX = mProjX;
+	    mChargedPidData->mY = mProjY;
+	    mChargedPidData->mZ = mProjZ;
+	    
+	    if(mFillHist)
+		FillHist(mPidTagger->kProtonId);	    
+	    ++mNpr;
+	    continue;
+	}
+	//----- Kaon --------
+	pid = mPidTagger->TagKaon();
+	if(pid == mPidTagger->kKaonId)
+	{
+	    mChargedPidData =  new((*mKaArray)[mNka])TStChargedPidData();
+	    mChargedPidData->mQ = mTrack->charge();
+	    mChargedPidData->mPt = mTrack->pt();
+	    mChargedPidData->mEta = mTrack->eta();
+	    mChargedPidData->mPhi = mTrack->phi();
+	    mChargedPidData->mX = mProjX;
+	    mChargedPidData->mY = mProjY;
+	    mChargedPidData->mZ = mProjZ;
+
+	    if(mFillHist)
+		FillHist(mPidTagger->kKaonId);
+	    ++mNka;
+	    continue;
+	}
+	//--- Electron ----
+	pid = mPidTagger->TagElectron();
+	if(pid == mPidTagger->kElectronId)
+	{
+	    mChargedPidData =  new((*mElArray)[mNe])TStChargedPidData();
+	    mChargedPidData->mQ = mTrack->charge();
+	    mChargedPidData->mPt = mTrack->pt();
+	    mChargedPidData->mEta = mTrack->eta();
+	    mChargedPidData->mPhi = mTrack->phi();
+	    mChargedPidData->mX = mProjX;
+	    mChargedPidData->mY = mProjY;
+	    mChargedPidData->mZ = mProjZ;
+
+	    if(mFillHist)
+		FillHist(mPidTagger->kElectronId);	    
+	    ++mNe;
+	    continue;
+	}
+	//----- Muon --------
+	pid = mPidTagger->TagMuon();
+	if(pid == mPidTagger->kMuonId)
+	{
+	    mChargedPidData =  new((*mMuArray)[mNmu])TStChargedPidData();
+	    mChargedPidData->mQ = mTrack->charge();
+	    mChargedPidData->mPt = mTrack->pt();
+	    mChargedPidData->mEta = mTrack->eta();
+	    mChargedPidData->mPhi = mTrack->phi();
+	    mChargedPidData->mX = mProjX;
+	    mChargedPidData->mY = mProjY;
+	    mChargedPidData->mZ = mProjZ;
+
+	    if(mFillHist)
+		FillHist(mPidTagger->kMuonId);
+	    ++mNmu;
+	    continue;
+	}
+	//-------- Unknown PID ----------
+	mChargedPidData =  new((*mUkArray)[mNuk])TStChargedPidData();
+	mChargedPidData->mQ = mTrack->charge();
+	mChargedPidData->mPt = mTrack->pt();
+	mChargedPidData->mEta = mTrack->eta();
+	mChargedPidData->mPhi = mTrack->phi();
+	mChargedPidData->mX = mProjX;
+	mChargedPidData->mY = mProjY;
+	mChargedPidData->mZ = mProjZ;
+	++mNuk;
+    }
+    return kStOK;
+}
+
+//_____________________________________________________________________________
+void TStAnTreeMaker::FillHist(Int_t particleId)
+{
+    switch(particleId)
+    {
+        case 0:	      
+	    mBeta = mTrack->btofPidTraits().beta();
+	    mM2 = mTrack->p().mag2()*(1 - pow(mBeta, 2)) / pow(mBeta, 2);
+	    mDedxVsQp->Fill(mTrack->p().mag()*mTrack->charge(), mTrack->dEdx()*1.0e6);
+	    mM2VsQp->Fill(mTrack->p().mag()*mTrack->charge(), mM2);
+	    // cout <<mBeta<<"\t"<<mM2<<"\t"<<mTrack->p().mag()<<"\t"<<mTrack->nSigmaPion()<<endl;
+	    break;
+        case 11:
+	    mDedxVsQp_e->Fill(mTrack->p().mag()*mTrack->charge(), mTrack->dEdx()*1.0e6);
+	    mM2VsQp_e->Fill(mTrack->p().mag()*mTrack->charge(), mPidTagger->GetM2()); 
+	    break;
+        case 211:
+	    mDedxVsQp_pi->Fill(mTrack->p().mag()*mTrack->charge(), mTrack->dEdx()*1.0e6);
+	    mM2VsQp_pi->Fill(mTrack->p().mag()*mTrack->charge(), mPidTagger->GetM2()); 
+	    break;
+        case 2212:
+	    mDedxVsQp_pr->Fill(mTrack->p().mag()*mTrack->charge(), mTrack->dEdx()*1.0e6);
+	    mM2VsQp_pr->Fill(mTrack->p().mag()*mTrack->charge(), mPidTagger->GetM2()); 
+	    break;
+        case 321:
+	    mDedxVsQp_ka->Fill(mTrack->p().mag()*mTrack->charge(), mTrack->dEdx()*1.0e6);
+	    mM2VsQp_ka->Fill(mTrack->p().mag()*mTrack->charge(), mPidTagger->GetM2()); 
+	    break;
+        case 13:
+	    mDedxVsQp_mu->Fill(mTrack->p().mag()*mTrack->charge(), mTrack->dEdx()*1.0e6);
+	    mM2VsQp_mu->Fill(mTrack->p().mag()*mTrack->charge(), mPidTagger->GetM2mu()); 
+	    break;		
+        // defaut:
+	//     break;
+    }
+}
+
 
 //_____________________________________________________________________________
 Int_t TStAnTreeMaker::Finish()

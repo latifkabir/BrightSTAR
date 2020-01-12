@@ -15,6 +15,11 @@
 #include "StMuDSTMaker/COMMON/StMuRpsTrackPoint.h"
 #include "StMuDSTMaker/COMMON/StMuTriggerIdCollection.h"
 #include "StMuDSTMaker/COMMON/StMuTrack.h"
+#include "StMuDSTMaker/COMMON/StMuPrimaryVertex.h"
+#include "StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StJetMaker/mudst/StMuEmcPosition.h"
+#include "StEmcUtil/geometry/StEmcGeom.h"
+
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TTree.h"
@@ -22,8 +27,11 @@
 
 #include "BrContainers/TStEventData.h"
 #include "BrContainers/TStTrackData.h"
+#include "BrContainers/TStChargedPidData.h"
+#include "BrPidMaker/TStPidTagger.h"
 #include "BrContainers/TStFmsPointPairData.h"
 #include "BrContainers/TStRpsTrackData.h"
+
 
 class StEvent;
 class StMuDst;
@@ -38,7 +46,7 @@ private:
     StMuDst *mMuDst;  
     StEvent *mEvent;
     StMuEvent *mMuEvent;
-    TString mName;
+    TString mOutName = "AnTree.root";
     
     StFmsDbMaker *mFmsDbMk;
     StSpinDbMaker *mSpinDbMaker;
@@ -47,10 +55,10 @@ private:
     TH2D *mHist2d;
     
     TFile *mFile;
-    TTree *mTree;
+    TTree *mTree = 0;
     Bool_t mSaveFile;
 
-    //Event
+    //--- Event ---
     Int_t  mBunchid7bit;
     Int_t  mSpin4bit;
     vector <Int_t> mTrigIDs;
@@ -60,12 +68,56 @@ private:
     
     TStEventData *mEventData;
     
-    //TPC Track
+    //--- TPC Track ----
     StMuTrack *mTrack;
     TClonesArray  *mTrackArray;
     TStTrackData *mTrackData;
+
+    //--- Charged PID ---
+    TStChargedPidData *mChargedPidData;
+    TStPidTagger  *mPidTagger;
+    Int_t mNe;  // Number of electrons
+    Int_t mNpi; // Number of pions
+    Int_t mNmu; // Number of muons
+    Int_t mNka; // Number of kanons
+    Int_t mNpr; // Number of proton
+    Int_t mNuk; // Number of unknown PID
     
-    //FMS
+    TClonesArray  *mElArray;
+    TClonesArray  *mPiArray;
+    TClonesArray  *mPrArray;
+    TClonesArray  *mKaArray;
+    TClonesArray  *mMuArray;
+    TClonesArray  *mUkArray; //Unknown group
+
+    Double_t mMom;
+    Double_t mM2;
+    Double_t mBeta;   
+    Bool_t mFillHist = kTRUE; //kFALSE;
+    StThreeVectorD mMomentum_proj;
+    StThreeVectorD mPosition_proj;
+    StMuEmcPosition mEmcPosition;
+    Double_t mField;
+    Double_t mEmcRadius; 
+    Double_t mEEmcZSMD = kEEmcZSMD;
+    Double_t mProjX;
+    Double_t mProjY;
+    Double_t mProjZ;
+    
+    TH2D *mDedxVsQp;
+    TH2D *mM2VsQp;
+    TH2D *mDedxVsQp_e;
+    TH2D *mM2VsQp_e;
+    TH2D *mDedxVsQp_pi;
+    TH2D *mM2VsQp_pi;
+    TH2D *mDedxVsQp_pr;
+    TH2D *mM2VsQp_pr;
+    TH2D *mDedxVsQp_ka;
+    TH2D *mM2VsQp_ka;
+    TH2D *mDedxVsQp_mu;
+    TH2D *mM2VsQp_mu;
+    
+    //--- FMS ---
     //Not sure if saving points or pointPair (and in Lorentz Vector or separate quantity) would be the best option (to be revisited later)
     StFmsCollection *mFmsColl;    
     StFmsPointPair *mPair;
@@ -75,7 +127,7 @@ private:
     TClonesArray  *mFmsArray;
     TStFmsPointPairData *mFmsPointPairData;
     
-    //RP
+    //--- RP ---
     StMuRpsCollection *mRpsMuColl;
     StMuRpsTrack *mRpsTrk;
     Double_t mBeamMom;
@@ -86,6 +138,7 @@ private:
             
 protected:
     void SetBranches();
+    void InitHist();
     void Reset();
     Bool_t AcceptEvent();
 public: 
@@ -97,14 +150,18 @@ public:
     Int_t MakeRps();
     Int_t MakeEvent();
     Int_t MakeTrack();
+    Int_t MakeChargedPid();
+    void ProjectTrack();
+    void FillHist(Int_t particleId);
     virtual Int_t Finish();
     virtual Int_t InitRun  (int runumber); 
-    virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
+    virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun
     void Set1dHist(TH1D *h1d){ mHist1d = h1d;}
     void Set2dHist(TH2D *h2d){ mHist2d = h2d;}
     void SetTrigIDs(vector<Int_t> trigIDs){ mTrigIDs = trigIDs;}
     void SetTree(TTree *tree){mTree = tree; mSaveFile = kFALSE;}
     void SetBeamMomentum(Double_t beamMom){ mBeamMom = beamMom;}
+    void SetOutFileName(TString out_name){mOutName = out_name;}
     ClassDef(TStAnTreeMaker,1) 
 };
 

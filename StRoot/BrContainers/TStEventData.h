@@ -33,6 +33,9 @@ public:
     Int_t mZdcADCSum[2];		// 
     Int_t mVpdADCSum[2];		//
     Int_t mTofMultiplicity;		//
+    Double_t mVx;                       //
+    Double_t mVy;                       //
+    Double_t mVz;                       //
     
     TStEventData()
     {
@@ -69,6 +72,10 @@ public:
 	mVpdADCSum[0] = 0;
 	mVpdADCSum[1] = 0;
 	mTofMultiplicity = -1;
+
+	mVx = -999.0;
+	mVy = -999.0;
+	mVz = -999.0;
     }
     
     // Int_t GetYear() const { return (mRunId / 1000000) - 1 + 2000; }
@@ -80,7 +87,7 @@ public:
     // 	this->mPrimaryVertex_mX3 = z;
     // }
 
-    ClassDef( TStEventData, 1 )
+    ClassDef( TStEventData, 2 )
 };
 
 
