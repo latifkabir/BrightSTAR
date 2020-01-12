@@ -1,7 +1,7 @@
 //Based on StTriggerFilterMaker
 
-#ifndef TST_FMSRP_FILTER_MAKER_HH
-#define TST_FMSRP_FILTER_MAKER_HH
+#ifndef TST_RP_FILTER_MAKER_HH
+#define TST_RP_FILTER_MAKER_HH
 
 
 #ifndef StMaker_H
@@ -16,14 +16,14 @@ using std::vector;
 class StMuDst;
 
 
-class TStFmsRpFilterMaker : public StMaker
+class TStRpFilterMaker : public StMaker
 {
     StMuDst *mMuDst;
     StMuRpsCollection *mRpsMuColl;
     TH1D* hEvtCount;
 public:
-    TStFmsRpFilterMaker(const char *name = "TStFmsRpFilterMaker");
-    virtual ~TStFmsRpFilterMaker();
+    TStRpFilterMaker(const char *name = "TStRpFilterMaker");
+    virtual ~TStRpFilterMaker();
     
     //virtual void Clear(const char *option="");
     virtual Int_t Init();
@@ -39,7 +39,7 @@ public:
     const vector<unsigned int> getVetoTriggers() const {return mGoodTriggers;}
 
     virtual const char* GetCVS() const
-    {static const char cvs[]="Tag $Name:  $ $Id: TStFmsRpFilterMaker.h,v 1.4 2015/09/09 20:29:39 akio Exp $ built " __DATE__ " " __TIME__; return cvs;}
+    {static const char cvs[]="Tag $Name:  $ $Id: TStRpFilterMaker.h,v 1.4 2015/09/09 20:29:39 akio Exp $ built " __DATE__ " " __TIME__; return cvs;}
 
     void SetHist1d(TH1D* hist1d){ hEvtCount = hist1d;}
 private:
@@ -47,7 +47,7 @@ private:
     vector<unsigned int> mVetoTriggers; //!
     int mPrint; //!
 
-    ClassDef(TStFmsRpFilterMaker,1)
+    ClassDef(TStRpFilterMaker,1)
 };
 
 #endif

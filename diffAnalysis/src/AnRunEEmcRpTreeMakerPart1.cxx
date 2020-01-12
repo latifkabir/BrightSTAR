@@ -18,7 +18,7 @@
 #include "StRootInclude.h"
 #include "BrAnMaker/TStEEmcRpTreeMaker.h"
 #include "BrightStInclude.h"
-#include "BrAnMaker/TStFmsRpFilterMaker.h"
+#include "BrAnMaker/TStRpFilterMaker.h"
 #include "BrAnMaker/TStFmsRpTreeMaker.h"
 #include "TChain.h"
 //
@@ -78,7 +78,7 @@ void AnRunEEmcRpTreeMakerPart1(const Char_t *inputFileName,
     cout << "-------------> Total events to be processed:" << neventsIn <<" <---------------------"<<endl;
 
     //0. <-------------- Filter/Skip Events if no RP or FMS BS/JP Trigger----------
-    TStFmsRpFilterMaker* filterMaker = new TStFmsRpFilterMaker("TStFmsRpFilterMaker");
+    TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker");
     for(Int_t i = 0; i < trigs.size(); ++i)
     	filterMaker->addTrigger(trigs[i]);
     //filterMaker->SetHist1d(hEvtCount);

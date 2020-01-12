@@ -17,9 +17,9 @@
 class TStTrackData : public TObject
 {
 public:
-    Float_t 	mPt;			// primary track px
-    Float_t 	mEta;			// primary track py
-    Float_t 	mPhi;			// primary track pz
+    Float_t 	mPt;			// primary track pt
+    Float_t 	mEta;			// primary track Eta
+    Float_t 	mPhi;			// primary track phi
     UShort_t 	mId;			// track Id
     Float_t 	mDedx;			// dEdx
     Int_t 	mQ;			// q

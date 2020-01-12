@@ -1,21 +1,21 @@
 
 //Based on StTriggerFilterMaker
 
-#include "TStFmsRpFilterMaker.h"
+#include "TStRpFilterMaker.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 
-ClassImp(TStFmsRpFilterMaker)
+ClassImp(TStRpFilterMaker)
 
-TStFmsRpFilterMaker::TStFmsRpFilterMaker(const char *name) : StMaker(name), mPrint(0) { }
+TStRpFilterMaker::TStRpFilterMaker(const char *name) : StMaker(name), mPrint(0) { }
 
-TStFmsRpFilterMaker::~TStFmsRpFilterMaker()
+TStRpFilterMaker::~TStRpFilterMaker()
 {
     mGoodTriggers.clear();
     mVetoTriggers.clear();
 }
 
-Int_t TStFmsRpFilterMaker::Init()
+Int_t TStRpFilterMaker::Init()
 {
     // this allows us to skip an event for other Makers
     SetAttr(".Privilege",1);
@@ -24,7 +24,7 @@ Int_t TStFmsRpFilterMaker::Init()
     return kStOk;
 }
 
-Int_t TStFmsRpFilterMaker::Make()
+Int_t TStRpFilterMaker::Make()
 {
     mMuDst = (StMuDst*)GetInputDS("MuDst");
     hEvtCount->Fill(1);
