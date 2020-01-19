@@ -5,7 +5,7 @@
 // URL: jlab.org/~latif
 {
     cout << "\n\t\t=======================================================" <<endl;
-    cout << "\t\t|  Welcome to Bright STAR Analysis Framework at RHIC  |"<<endl;
+    cout << "\t\t|  Welcome to Bright-STAR Analysis Framework at RHIC  |"<<endl;
     cout << "\t\t|   Type: 'help()' for a list of available options    |" <<endl;
     cout << "\t\t|   Report issues to: kabir@bnl.gov                   |" <<endl;
     cout << "\t\t=======================================================" <<endl;

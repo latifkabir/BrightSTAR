@@ -6,7 +6,7 @@
 
 
 //Workflow:
-//Make sure config file is set to physics for RunLis DD, trigger and stream-path
+//Make sure config file is set to physics for RunList DD, trigger and stream-path
 //Check that the run increment is right (use 10 for physics stream) in the cron job
 
 //Once jobs are completed, use AnRemoveBadFiles.C to remove Zombie files.

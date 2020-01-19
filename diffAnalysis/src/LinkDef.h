@@ -14,5 +14,6 @@
 #pragma link C++ function AnResubmitJobs;                        // Resubmit failed jobs
 
 #pragma link C++ function AnRunAnTreeMaker;                      // Run AnTree Maker
+#pragma link C++ function AnDstQA;                               // DST QA Plots
 
 #endif

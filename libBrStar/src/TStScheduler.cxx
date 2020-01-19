@@ -313,9 +313,93 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
 }
 
 //___________________________________________________________________________________________
-void TStScheduler::SubmitJob(TString functionList)
+void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
 {
-    //Read functions from a text file separated by space for each job
+    TString namePrefix = jobName;   
+    TString starHome = TStar::Config->GetStarHome();
+    TString outFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)".out";
+    TString errorFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)".err";
+    TString logFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)".log";
+    TString outDir = starHome + "/jobOutput/";
+    TString jobDir = starHome + (TString) "/jobs/" + jobName;
+    TString createJobDir = (TString)".! mkdir -p " + jobDir;
+    gROOT->ProcessLine(createJobDir);    
+    //================================== Create Job Macro =============================
+    ofstream macro_out(jobDir + (TString)"/jobMacro.C");
+    if(!macro_out)
+    {
+	cout << "Unable to create job macro" <<endl;
+	return;
+    }
+    macro_out<<"void jobMacro()"<<endl;
+    macro_out<<"{"<<endl;
+    macro_out<<"\t"<<"gROOT->Macro(\""<<starHome<<"/rootlogon.C\");"<<endl;
+    macro_out<<"\t"<<functionWithArg<<";"<<endl;
+    macro_out<<"}"<<endl;
+    macro_out.close();
+    //============================Create Condor execution shell script ========================
+    ofstream shell_out(jobDir + (TString)"/condor.sh");
+    if(!shell_out)
+    {
+	cout << "Unable to create shell script" <<endl;
+	return;
+    }
+    shell_out<<"#!/bin/bash"<<endl;
+    shell_out<<"stardev"<<endl;
+    shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
+    shell_out<<"root4star -l -q -b  "<< jobDir <<"/jobMacro.C"<<endl;
+    shell_out.close();
+    
+    cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;
+    TString condor_config = starHome + (TString)"/condor/condor.config";
+    if(gSystem->AccessPathName(condor_config))
+    {
+	cout << "Condor job config NOT found at: "<<condor_config<<endl;
+	return;
+    }
+    
+    ifstream condorConfig_in(condor_config);
+    ofstream condorConfig_out(jobDir + (TString)("/condor.job"));
+    if(!condorConfig_out)
+    {
+	cout<<"Unable to create condor job description file" << endl;
+	return;
+    }
+    string str;
+    while(getline(condorConfig_in, str))
+    {
+	condorConfig_out << str <<endl;
+    }
+    condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
+    condorConfig_in.close();
+
+    //======================= Get File Path and wtite to condor file descriptor ===================================
+    cout << "====================== Reading fileList and writing to Condor Job Description File ... ... ================" <<endl;
+    string arguments;
+    TString resultDir;
+    resultDir = TStar::Config->GetJobResultsPath() + "condor" + (TString)"/";
+    gROOT->ProcessLine((TString)".! mkdir -p " + resultDir);
+    condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
+    arguments = "Arguments       =  \t";
+    condorConfig_out << arguments << endl;
+    condorConfig_out <<"Output          = "<<outFile<<endl;
+    condorConfig_out <<"Error           = "<<errorFile<<endl;
+    condorConfig_out <<"Log             = "<<logFile<<endl;    
+    condorConfig_out << "Queue\n" << endl;
+	    
+    condorConfig_out.close();
+
+    //======================== Submit the job using condor=======================
+    TString subScript = jobDir + (TString)"/condor.job";
+    if(gSystem->AccessPathName(subScript))
+    {
+    	cout << "Submission sh script NOT found at: "<<subScript<<endl;
+    	return;
+    }
+    TString command = (TString)".! condor_submit" + (TString)"\t" + subScript;
+    gROOT->ProcessLine(command);
+
+    cout << "Submission attempt completed." <<endl;
     
 }
 

@@ -13,10 +13,10 @@ using namespace std;
 
 void AnRemoveBadFiles()
 {
-    string basePath = "/star/u/kabir/GIT/BrightSTAR/jobResults/FmsRpResubmit/";
-    string filePrefix = "RunFmsRpTreeMaker";
+    string basePath = "/star/u/kabir/GIT/BrightSTAR/jobResults/R15RpStream/";
+    string filePrefix = "AnRunAnTreeMaker";
     ifstream inFile("/star/u/kabir/GIT/BrightSTAR/resources/temp/temp.list");
-    ofstream zFile("Run15ZombieFileList.txt");    
+    ofstream zFile("Run15RpStreamZombieFileList.txt");    
     if(!inFile || !zFile)
     {
 	cout << "Unable to read input file or write outout file" <<endl;
@@ -67,8 +67,11 @@ void AnRemoveBadFiles()
 	++fileCount;
 	if(fileCount%100==0)
 	    cout << "Files processed:" << fileCount <<endl;
+	
+	// if(fileCount > 5) //Test on small number of files first
+	//     break;
     }
     
     cout << "Total files:" << fileCount <<endl;
-    cout << "Unablailable files:"<< numBadFiles <<endl;
+    cout << "Unablailable/Bad/Zombie files:"<< numBadFiles <<endl;
 }

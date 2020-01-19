@@ -67,5 +67,7 @@
 #include <TQObject.h>
 #include <TEntryList.h>
 #include <TLorentzVector.h>
+#include <TClonesArray.h>
+#include <TCutG.h>
 
 #endif
