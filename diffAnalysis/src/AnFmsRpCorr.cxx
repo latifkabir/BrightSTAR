@@ -60,6 +60,7 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 
     TH1D *hist6 = new TH1D("sumE_west_before", "West Sum E Before BBC and TOF Cut; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     TH1D *hist7 = new TH1D("sumE_west_singPion", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist18 = new TH1D("sumE_west_pion_cut", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     
     TH1D *hist8West = new TH1D("sumE_west", "E_{p + #pi^{0}}^{West}; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     TH1D *hist8East = new TH1D("sumE_east", "E_{p + #pi^{0}}^{East}; E_{p + #pi^{0}}^{East} [GeV]", 100, 60, 200);
@@ -246,6 +247,8 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	
 	    hist13->Fill(event->mTofMultiplicity);
 	    hist6->Fill(sumE_w);
+
+	    /*
 	    //------------- BBC and TOF Cut -----------------	    
 	    if(!(event->mTofMultiplicity > 0))
 		continue;
@@ -265,7 +268,7 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 		continue;
 
 	    ++eventCount[3];			// Post BBC-TOF cut counter	    
-
+	    */
 	    //-------------------------- FMS-RP Correlation -------------------------------
 	    if(nPions == 1)	    //Extreme Cut:Single pion in FMS
 		hist7->Fill(sumE_w);
@@ -273,6 +276,8 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	    hist8West->Fill(sumE_w);
 	    hist2d1->Fill(pion->mE,  rpsTrack->mP);
 
+	    if(pion->mM > 0.0 && pion->mM < 0.20)
+		hist18->Fill(sumE_w);
 	    //----------------------------- Diffractive p + p -----> pi^0 + p + X event cut ------------------------
 	    if((sumE_w > 80 && sumE_w < 107)    // <------- Energy Conservation cut (WIDER RANGE USED!!)
 	       && (pion->mM > 0.0 && pion->mM < 0.25)) // <----- Pion mass range (WIDER RANGE USED!!)
