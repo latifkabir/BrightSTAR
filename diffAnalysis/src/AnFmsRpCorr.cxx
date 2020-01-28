@@ -48,14 +48,14 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
     TFile *outFile = new TFile(outName, "RECREATE");
     TH1D *hist1West = new TH1D("trkPwest", "West RP trk P; RP track P [GeV/c]", 200, 60, 150);
     TH1D *hist2West = new TH1D("trkPtWest", "West RP trk Pt; RP track P_{T} [GeV/c]", 200, 0, 2);
-    TH1D *hist3West = new TH1D("trkEtaWest", "West RP trk Eta; RP Track #Eta", 200, -10, 10);
-    TH1D *hist4West = new TH1D("trkPhiWest", "West RP trk Phi; RP track #phi [mrad]", 200, -3, 3);
+    TH1D *hist3West = new TH1D("trkEtaWest", "West RP trk Eta; RP Track #eta", 200, -10, 10);
+    TH1D *hist4West = new TH1D("trkPhiWest", "West RP trk Phi; RP track #phi [rad]", 200, -3, 3);
     TH1D *hist5West = new TH1D("trkXiWest", "West RP trk Xi; RP track #xi", 200, -100, 20);
 
     TH1D *hist1East = new TH1D("trkPeast", "East RP trk P; RP track P [GeV/c]", 200, 60, 150);
     TH1D *hist2East = new TH1D("trkPtEast", "East RP trk Pt; RP track P_{T} [GeV/c]", 200, 0, 2);
     TH1D *hist3East = new TH1D("trkEtaEast", "East RP trk Eta; RP Track #eta", 200, -10, 10);
-    TH1D *hist4East = new TH1D("trkPhiEast", "East RP trk Phi; RP track #phi [mrad]", 200, -3, 3);
+    TH1D *hist4East = new TH1D("trkPhiEast", "East RP trk Phi; RP track #phi [rad]", 200, -3, 3);
     TH1D *hist5East = new TH1D("trkXiEast", "East RP trk Xi; RP track #xi", 200, -100, 20);
 
     TH1D *hist6 = new TH1D("sumE_west_before", "West Sum E Before BBC and TOF Cut; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
@@ -82,7 +82,6 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
     TH2D *hist2d3 = new TH2D("E_sum_vs_BBC_small", "E_{sum} vs BBC ADC Sum (Small); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Small)", 100, 50, 200, 300, 0, 4000);
     TH2D *hist2d4 = new TH2D("p_phi_vs_pion_phi", "#phi_{p} vs #phi_{#pi^{0}}; #phi_{#pi^{0}} [rad]; #phi_{p} [rad]", 100, -3.15, 3.15, 100, -3.15, 3.15);
     TH2D *hist2d5 = new TH2D("pionXY", "#pi^{0} position; X [cm]; Y[cm]", 100, -100, 100, 100, -100, 100);
-    TH2D *hist2d6 = new TH2D("pionXY_max", "#pi^{0} position with highest energy pair; X [cm]; Y[cm]", 100, -100, 100, 100, -100, 100);
 
     TH1D *hEvtCount_all = new TH1D("hEvtCount_all", "Event Count", 20, 0, 20);
       
@@ -107,6 +106,10 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
     Int_t fms_i = -1;
     Double_t sumE_w = 0.0;
     Int_t eventCount[5] = {0};
+    Int_t trig_SD = 480701;
+    Int_t trig_SDT = 480703;
+    vector <Int_t> trigList;
+    Int_t trigEvt = 0;
     
     //------------ Loop over runs --------------------------
     for (Int_t run_i = 0; run_i < maxRuns; ++run_i)
@@ -141,10 +144,18 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 
 	    tree->GetEntry(evt);
 	    ++eventCount[0]; //Event Counter
-	    
+
+	    trigList.clear();
 	    for(Int_t t = 0; t < event->mNtrig; ++t)
+	    {
 		hist16->Fill(event->mTriggers[t]);
-	    
+		trigList.push_back(event->mTriggers[t]);
+	    }
+	    //-------Trigger Selection ------------
+	    if(std::find(trigList.begin(), trigList.end(), trig_SD) == trigList.end() && std::find(trigList.begin(), trigList.end(), trig_SDT) == trigList.end())
+	    	continue;
+
+	    ++trigEvt;
 	    //----- RP Tracks ----------
 	    eastTrk_i = -1;
 	    nTrkEast = 0;
@@ -224,10 +235,11 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 		hist8East->Fill(rpsTrack->mP + pion->mE);
 	    }
 	    
-	    //if(!(nTrkWest == 1 && nTrkEast == 0)) //Full RP Cuts with One track in west and no track in the east
+	    if(!(nTrkWest == 1 && nTrkEast == 0))   //Full RP Cuts with One track in west and no track in the east
+	    //if(!(nTrkWest == 0 && nTrkEast == 1)) //Full RP Cuts with One track in west and no track in the east
 	    //if(!(nTrkWest == 1 && nTrkEast == 1)) //<------------ Allowing BOTH protons
-	    if(!(nTrkWest == 1)) //<------------ Allowing west and no restriction on east
-		continue;
+	    //if(!(nTrkWest == 1))                  //<------------ Allowing west and no restriction on east
+	    	continue;
 
 	    ++eventCount[1]; //Post RP cut counter	
 	
@@ -236,19 +248,17 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	
 	    ++eventCount[2]; //Post FMS cut counter
 
-	    
+	    pion = (TStFmsPointPairData*)fmsArr->At(fms_i);
+	    rpsTrack = (TStRpsTrackData*)rpsArr->At(westTrk_i);	
+    
 	    hist11->Fill(pion->mM);
 	    hist12->Fill(pion->mE);
 	    hist2d5->Fill(pion->mX, pion->mY);
-
-	    pion = (TStFmsPointPairData*)fmsArr->At(fms_i);
-	    rpsTrack = (TStRpsTrackData*)rpsArr->At(westTrk_i);   
 	    sumE_w = rpsTrack->mP + pion->mE;
 	
 	    hist13->Fill(event->mTofMultiplicity);
 	    hist6->Fill(sumE_w);
-
-	    /*
+	    
 	    //------------- BBC and TOF Cut -----------------	    
 	    if(!(event->mTofMultiplicity > 0))
 		continue;
@@ -268,9 +278,9 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 		continue;
 
 	    ++eventCount[3];			// Post BBC-TOF cut counter	    
-	    */
+	    
 	    //-------------------------- FMS-RP Correlation -------------------------------
-	    if(nPions == 1)	    //Extreme Cut:Single pion in FMS
+	    if(nPions == 1)	                //Extreme Cut:Single pion in FMS
 		hist7->Fill(sumE_w);
 	
 	    hist8West->Fill(sumE_w);
@@ -279,8 +289,8 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	    if(pion->mM > 0.0 && pion->mM < 0.20)
 		hist18->Fill(sumE_w);
 	    //----------------------------- Diffractive p + p -----> pi^0 + p + X event cut ------------------------
-	    if((sumE_w > 80 && sumE_w < 107)    // <------- Energy Conservation cut (WIDER RANGE USED!!)
-	       && (pion->mM > 0.0 && pion->mM < 0.25)) // <----- Pion mass range (WIDER RANGE USED!!)
+	    if((sumE_w > 80 && sumE_w < 107)            // <------- Energy Conservation cut (WIDER RANGE USED!!)
+	       && (pion->mM > 0.0 && pion->mM < 0.25))  // <----- Pion mass range (WIDER RANGE USED!!)
 	    {
 		hist2d4->Fill(pion->mPhi, rpsTrack->mPhi);
 		for(Int_t t = 0; t < event->mNtrig; ++t)
@@ -296,7 +306,8 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	delete file;
     }
 
-    hEvtCount_all->SetBinContent(4, eventCount[0]);
+    hEvtCount_all->SetBinContent(2, eventCount[0]);
+    hEvtCount_all->SetBinContent(4, trigEvt);
     hEvtCount_all->SetBinContent(6, eventCount[1]);
     hEvtCount_all->SetBinContent(8, eventCount[2]);
     hEvtCount_all->SetBinContent(10, eventCount[3]);
