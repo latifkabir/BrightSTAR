@@ -7,8 +7,8 @@
 void GenericJobSubmission()
 {
     //------- Only Change Here ------------
-    TString jobName = "AnFmsRpCorr";
-    TString funcName = "AnFmsRpCorr";
+    TString funcName = "AnFmsRpPionSource";
+    TString jobName = funcName;
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
