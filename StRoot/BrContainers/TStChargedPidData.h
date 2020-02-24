@@ -24,6 +24,22 @@ public:
     Double_t mX;	// Position of projection on detector EMC, EEMC, FMS: x
     Double_t mY;	// Position of projection on detector EMC, EEMC, FMS: y
     Double_t mZ;	// Position of projection on detector EMC, EEMC, FMS: z
+
+    Int_t GetQ(){return mQ;}
+    Double_t GetPt(){return mPt;}
+    Double_t GetEta(){return mEta;}
+    Double_t GetPhi(){return mPhi;}
+    Double_t GetX(){return mX;}
+    Double_t GetY(){return mY;}
+    Double_t GetZ(){return mZ;}
+
+    void SetQ(Int_t q){ mQ = q;}
+    void SetPt(Double_t pt){ mPt = pt;}
+    void SetEta(Double_t eta){ mEta = eta;}
+    void SetPhi(Double_t phi){ mPhi = phi;}
+    void SetX(Double_t x){ mX = x;}
+    void SetY(Double_t y){ mY = y;}
+    void SetZ(Double_t z){ mZ = z;}
     
     TStChargedPidData()
     {

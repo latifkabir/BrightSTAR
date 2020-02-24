@@ -32,6 +32,39 @@ public:
     Double_t mXi;      //
     Double_t mMt;      // -t of the RP track
 
+    Int_t GetType(){return mType;}
+    Int_t GetNplanes(){return mNplanes;}
+    Int_t GetBranch(){return mBranch;}
+    Double_t GetTheta(){return mTheta;}
+    Double_t GetThetaX(){return mTheta_x;}
+    Double_t GetThetaY(){return mTheta_y;}
+    Double_t GetEta(){return mEta;}
+    Double_t GetPhi(){return mPhi;}
+    Double_t GetP(){return mP;}
+    Double_t GetPx(){return mPx;}
+    Double_t GetPy(){return mPy;}
+    Double_t GetPz(){return mPz;}
+    Double_t GetPt(){return mPt;}
+    Double_t GetXi(){return mXi;}
+    Double_t GetMt(){return mMt;}
+
+    void SetType(Int_t type){ mType = type;}
+    void SetNplanes(Int_t nplanes){ mNplanes = nplanes;}
+    void SetBranch(Int_t branch){ mBranch = branch;}
+    void SetTheta(Double_t theta){ mTheta = theta;}
+    void SetThetaX(Double_t theta_x){ mTheta_x = theta_x;}
+    void SetThetaY(Double_t theta_y){ mTheta_y = theta_y;}
+    void SetEta(Double_t eta){ mEta = eta;}
+    void SetPhi(Double_t phi){ mPhi = phi;}
+    void SetP(Double_t p){ mP = p;}
+    void SetPx(Double_t px){ mPx = px;}
+    void SetPy(Double_t py){ mPy = py;}
+    void SetPz(Double_t pz){ mPz = pz;}
+    void SetPt(Double_t pt){ mPt = pt;}
+    void SetXi(Double_t xi){ mXi = xi;}
+    void SetMt(Double_t mt){ mMt = mt;}
+
+    
     TStRpsTrackData()
     {
 	Reset();

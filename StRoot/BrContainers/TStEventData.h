@@ -36,6 +36,47 @@ public:
     Double_t mVx;                       //
     Double_t mVy;                       //
     Double_t mVz;                       //
+
+    //---------
+    Int_t GetRunNumber(){return mRunNumber;}							//
+    Int_t GetEventId(){return mEventId;}							//
+    Short_t GetBlueSpin(){return mBspin;}							//
+    Short_t GetYellowSPin(){return mYspin;}							//
+    Int_t GetTrigFlag(){return mTrigFlag;}							//
+    Int_t GetNtrigs(){return mNtrig;}								//
+    Int_t GetTrigger(Int_t index){if(index < mNtrig) return mTriggers[index]; return -1;}	//    
+    Int_t GetBbcSumSmall(Int_t ew){if(ew < 2) return mBbcADCSum[ew]; return -1;}		//
+    Int_t GetBbcSumLarge(Int_t ew){if(ew < 2) return mBbcADCSumLarge[ew]; return -1;}		//
+    Int_t GetEarliestTdcSmall(Int_t ew){if(ew < 2) return mBbcEarliestTDC[ew]; return -1;}	//
+    Int_t GetEarliestTdcLarge(Int_t ew){if(ew < 2) return mBbcEarliestTDCLarge[ew]; return -1;}	//
+
+    Int_t GetZdcSum(Int_t ew){if(ew < 2) return mZdcADCSum[ew]; return -1;}			// 
+    Int_t GetVpdSum(Int_t ew){if(ew < 2) return mVpdADCSum[ew]; return -1;}			//
+    Int_t GetTofMultiplicity(){return mTofMultiplicity;}					//
+    Double_t GetVx(){return mVx;}								//
+    Double_t GetVy(){return mVy;}								//
+    Double_t GetVz(){return mVz;}								//
+
+    //-----------
+    void SetRunNumber( Int_t run){mRunNumber = run;}						//
+    void SetEventId(Int_t id){mEventId = id;}							//
+    void SetBlueSpin(Short_t spin){mBspin = spin;}						//
+    void SetYellowSPin(Short_t spin){mYspin = spin;}						//
+    void SetTrigFlag(Int_t flag){mTrigFlag = flag;}						//
+    void SetNtrigs(Int_t ntrig){mNtrig = ntrig;}						//
+    void SetTrigger(Int_t index, Int_t trig){if(index < mMaxTrigs) mTriggers[index] = trig;}	//    
+    void SetBbcSumSmall(Int_t ew, Int_t sum){if(ew < 2) mBbcADCSum[ew] = sum;}			//
+    void SetBbcSumLarge(Int_t ew, Int_t sum){if(ew < 2) mBbcADCSumLarge[ew] = sum;}		//
+    void SetEarliestTdcSmall(Int_t ew, Int_t tdc){if(ew < 2) mBbcEarliestTDC[ew] = tdc;}	//
+    void SetEarliestTdcLarge(Int_t ew, Int_t tdc){if(ew < 2) mBbcEarliestTDCLarge[ew] = tdc;}	//
+
+    void SetZdcSum(Int_t ew, Int_t sum){if(ew < 2) mZdcADCSum[ew] = sum;}			// 
+    void SetVpdSum(Int_t ew, Int_t sum){if(ew < 2) mVpdADCSum[ew] = sum;}			//
+    void SetTofMultiplicity(Int_t mult){mTofMultiplicity = mult;}				//
+    void SetVx(Double_t vx){mVx = vx;}							//
+    void SetVy(Double_t vy){mVy = vy;}							//
+    void SetVz(Double_t vz){mVz = vz;}							//
+
     
     TStEventData()
     {

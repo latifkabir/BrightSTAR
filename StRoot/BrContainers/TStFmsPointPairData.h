@@ -25,6 +25,26 @@ public:
     Float_t mDgg;	//
     Float_t mX;		//
     Float_t mY;		//
+
+    Float_t GetE(){return mE;}
+    Float_t GetM(){return mM;}
+    Float_t GetPt(){return mPt;}
+    Float_t GetEta(){return mEta;}
+    Float_t GetPhi(){return mPhi;}
+    Float_t GetZgg(){return mZgg;}
+    Float_t GetDgg(){return mDgg;}
+    Float_t GetX(){return mX;}
+    Float_t GetY(){return mY;}
+
+    void SetE(Float_t e){ mE = e;}
+    void SetM(Float_t m){ mM = m;}
+    void SetPt(Float_t pt){ mPt = pt;}
+    void SetEta(Float_t eta){ mEta = eta;}
+    void SetPhi(Float_t phi){ mPhi = phi;}
+    void SetZgg(Float_t zgg){ mZgg = zgg;}
+    void SetDgg(Float_t dgg){ mDgg = dgg;}
+    void SetX(Float_t x){ mX = x;}
+    void SetY(Float_t y){ mY = y;}
     
     TStFmsPointPairData()
     {

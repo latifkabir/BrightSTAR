@@ -176,7 +176,7 @@ Int_t TStEEmcRpTreeMaker::Make()
 	cout << "TStEEmcRpTreemaker::Make !StEEmcTreeMaker_t" <<endl;
 	return kStErr;
     }
-    //Synchronize RP tree with EEMC part1 tree. Only works if filtering is done on RP track first.
+    //Synchronize RP tree with EEMC part1 tree. This will keep event only if EEMC tree has an entry for this event.
     if(mEEmcTreeMaker->getNumPart1EventsWritten() != (mEvtCount + 1))
     	return kStSkip;
     

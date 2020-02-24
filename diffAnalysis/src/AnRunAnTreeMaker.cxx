@@ -7,8 +7,8 @@
 #include "StRootInclude.h"
 #include "RootInclude.h"
 #include "BrightStInclude.h"
-#include "BrAnMaker/TStRpFilterMaker.h"
-#include "BrAnMaker/TStAnTreeMaker.h"
+#include "BrNanoDstMaker/TStRpFilterMaker.h"
+#include "BrNanoDstMaker/TStNanoDstMaker.h"
 
 #include <vector>
 #include <iostream>
@@ -53,7 +53,7 @@ void AnRunAnTreeMaker(TString fileList, TString outFile)
     // FPS
     StFmsFpsMaker * fpsMk = new StFmsFpsMaker();
     
-    TStAnTreeMaker *AnTreeMk = new TStAnTreeMaker("TStAnTreeMaker");
+    TStNanoDstMaker *AnTreeMk = new TStNanoDstMaker("TStNanoDstMaker");
     //AnTreeMk->SetTree(tree);
     AnTreeMk->SetOutFileName(outFile);
 

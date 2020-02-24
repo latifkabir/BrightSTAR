@@ -1,10 +1,10 @@
-// Filename: TStAnTreeMaker.cxx
+// Filename: TStNanoDstMaker.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon Aug 19 17:37:54 2019 (-0400)
 // URL: jlab.org/~latif
 
-#include "TStAnTreeMaker.h"
+#include "TStNanoDstMaker.h"
 #include "StEvent/StFmsPointPair.h"
 #include "StEvent/StFmsCollection.h"
 #include "StEvent/StEvent.h"
@@ -14,10 +14,10 @@
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StSpinPool/StSpinDbMaker/StSpinDbMaker.h"
 
-ClassImp(TStAnTreeMaker)
+ClassImp(TStNanoDstMaker)
 
 //_____________________________________________________________________________ 
-TStAnTreeMaker::TStAnTreeMaker(const char *name):StMaker(name)
+TStNanoDstMaker::TStNanoDstMaker(const char *name):StMaker(name)
 {
     mBeamMom = 100.0; //Overwrite from runMacro
 
@@ -52,7 +52,7 @@ TStAnTreeMaker::TStAnTreeMaker(const char *name):StMaker(name)
 }
 
 //_____________________________________________________________________________ 
-TStAnTreeMaker::~TStAnTreeMaker()
+TStNanoDstMaker::~TStNanoDstMaker()
 {
     //Track buffer
     delete mEventData;
@@ -77,7 +77,7 @@ TStAnTreeMaker::~TStAnTreeMaker()
 
 
 //_____________________________________________________________________________ 
-Int_t TStAnTreeMaker::Init()
+Int_t TStNanoDstMaker::Init()
 {
     cout << "-------->Triggers Included:" <<endl;
     for(mIt = mTrigIDs.begin(); mIt != mTrigIDs.end(); ++mIt)
@@ -86,7 +86,7 @@ Int_t TStAnTreeMaker::Init()
     mFmsDbMk = static_cast<StFmsDbMaker*>(GetMaker("fmsDb"));
     if (!mFmsDbMk)
     {
-	LOG_ERROR <<"TStAnTreeMaker::InitRun - !StFmsDbMaker" <<endl;
+	LOG_ERROR <<"TStNanoDstMaker::InitRun - !StFmsDbMaker" <<endl;
 	return kStFatal;
     }
 
@@ -106,7 +106,7 @@ Int_t TStAnTreeMaker::Init()
 }
 
 //_____________________________________________________________________________ 
-Int_t TStAnTreeMaker::InitRun(int runnumber)
+Int_t TStNanoDstMaker::InitRun(int runnumber)
 {
     mSpinDbMaker = static_cast<StSpinDbMaker*>(GetMaker("spinDb"));
     mSpinDbMaker->print();
@@ -115,7 +115,7 @@ Int_t TStAnTreeMaker::InitRun(int runnumber)
 }
 
 //_____________________________________________________________________________ 
-void TStAnTreeMaker::SetBranches()
+void TStNanoDstMaker::SetBranches()
 {
     //Event branches    
     mTree->Branch("event", mEventData, 256000, 99);
@@ -141,7 +141,7 @@ void TStAnTreeMaker::SetBranches()
 }
 
 //_____________________________________________________________________________
-void TStAnTreeMaker::InitHist()
+void TStNanoDstMaker::InitHist()
 {
     mDedxVsQp = new TH2D("hDedxVsQp", "dE/dx vs qx|p| (No cut); qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
     mM2VsQp = new TH2D("hM2VsQp", "m^{2} vs qx|p| (No cut); qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 2.0);
@@ -158,7 +158,7 @@ void TStAnTreeMaker::InitHist()
 }
 
 //_____________________________________________________________________________
-void TStAnTreeMaker::Reset()
+void TStNanoDstMaker::Reset()
 {
     mEventData->Reset();
     
@@ -183,14 +183,14 @@ void TStAnTreeMaker::Reset()
 }
     
 //_____________________________________________________________________________
-Int_t TStAnTreeMaker::Make()
+Int_t TStNanoDstMaker::Make()
 {
     mMuDst = (StMuDst*)GetInputDS("MuDst");
     mEvent = (StEvent*)GetInputDS("StEvent");
 
     if (!mMuDst || !mEvent)
     {
-	cout <<"TStAnTreeMaker::Make - !MuDst or !StEvent" <<endl;
+	cout <<"TStNanoDstMaker::Make - !MuDst or !StEvent" <<endl;
 	return kStErr;
     }
     mMuEvent = mMuDst->event();
@@ -218,7 +218,7 @@ Int_t TStAnTreeMaker::Make()
     return status;    
 }
 //_____________________________________________________________________________
-Bool_t TStAnTreeMaker::AcceptEvent()
+Bool_t TStNanoDstMaker::AcceptEvent()
 {
     //Trigger flag
     mTrigFlag = 0;
@@ -245,7 +245,7 @@ Bool_t TStAnTreeMaker::AcceptEvent()
     return kTRUE;
 }
 //_____________________________________________________________________________
-Int_t TStAnTreeMaker::MakeEvent()
+Int_t TStNanoDstMaker::MakeEvent()
 {    
     //Run no. and event no.     
     mEventData->mRunNumber = mMuEvent->runNumber();
@@ -260,7 +260,7 @@ Int_t TStAnTreeMaker::MakeEvent()
 
 	if(mEventData->mNtrig > mEventData->mMaxTrigs)
 	{
-	    std::cout << "TStAnTreeMaker::MakeEvent - The trigger buffer is out of limit. You must adjust it." << std::endl;
+	    std::cout << "TStNanoDstMaker::MakeEvent - The trigger buffer is out of limit. You must adjust it." << std::endl;
 	    return kStErr;
 	}
 	
@@ -348,7 +348,7 @@ Int_t TStAnTreeMaker::MakeEvent()
     return kStOk;    
 }
 //_____________________________________________________________________________
-Int_t TStAnTreeMaker::MakeFms()
+Int_t TStNanoDstMaker::MakeFms()
 {
     //Must read from reconstructed StEvent (not StMuDst)
     mFmsColl = (StFmsCollection*)mEvent->fmsCollection();
@@ -382,7 +382,7 @@ Int_t TStAnTreeMaker::MakeFms()
     return kStOk;    
 }
 //_____________________________________________________________________________
-Int_t TStAnTreeMaker::MakeRps()
+Int_t TStNanoDstMaker::MakeRps()
 {
     mRpsMuColl = mMuDst->RpsCollection();
     if(!mRpsMuColl)
@@ -418,11 +418,11 @@ Int_t TStAnTreeMaker::MakeRps()
 }
 
 //_____________________________________________________________________________
-Int_t TStAnTreeMaker::MakeTrack()
+Int_t TStNanoDstMaker::MakeTrack()
 {
     if(!mMuDst)
     {
-	LOG_ERROR << "TStAnTreeMaker::MakeTrack - No MuDst found" <<endm;
+	LOG_ERROR << "TStNanoDstMaker::MakeTrack - No MuDst found" <<endm;
 	return kStFatal;
     }
 
@@ -440,7 +440,7 @@ Int_t TStAnTreeMaker::MakeTrack()
     return kStOK;
 }
 //_____________________________________________________________________________
-void TStAnTreeMaker::ProjectTrack()
+void TStNanoDstMaker::ProjectTrack()
 {
     Bool_t hasProj = kFALSE;
     
@@ -462,7 +462,7 @@ void TStAnTreeMaker::ProjectTrack()
     }
 }
 //_____________________________________________________________________________
-Int_t TStAnTreeMaker::MakeChargedPid()
+Int_t TStNanoDstMaker::MakeChargedPid()
 {
     mField = StMuDst::event()->magneticField() / 10.0;
     Int_t pid = -1;
@@ -581,7 +581,7 @@ Int_t TStAnTreeMaker::MakeChargedPid()
 }
 
 //_____________________________________________________________________________
-void TStAnTreeMaker::FillHist(Int_t particleId)
+void TStNanoDstMaker::FillHist(Int_t particleId)
 {
     switch(particleId)
     {
@@ -619,7 +619,7 @@ void TStAnTreeMaker::FillHist(Int_t particleId)
 
 
 //_____________________________________________________________________________
-Int_t TStAnTreeMaker::Finish()
+Int_t TStNanoDstMaker::Finish()
 {
     //Write histograms to root file etc.
     if(mSaveFile)

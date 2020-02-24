@@ -1,11 +1,11 @@
-// Filename: TStAnTreeMaker.h
+// Filename: TStNanoDstMaker.h
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Nov 13 17:28:55 2019 (-0500)
 // URL: jlab.org/~latif
 
-#ifndef TSTANTREEMAKER_H
-#define TSTANTREEMAKER_H
+#ifndef TSTNANODSTMAKER_H
+#define TSTNANODSTMAKER_H
 
 #include <vector>
 #include "StMaker.h"
@@ -40,7 +40,7 @@ class StFmsPointPair;
 class StFmsCollection;
 class StSpinDbMaker;
 
-class TStAnTreeMaker : public StMaker
+class TStNanoDstMaker : public StMaker
 {
 private:
     StMuDst *mMuDst;  
@@ -142,8 +142,8 @@ protected:
     void Reset();
     Bool_t AcceptEvent();
 public: 
-    TStAnTreeMaker(const char *name  = "TStAnTreeMaker");
-    virtual ~TStAnTreeMaker();
+    TStNanoDstMaker(const char *name  = "TStNanoDstMaker");
+    virtual ~TStNanoDstMaker();
     virtual Int_t Init();
     virtual Int_t Make();
     Int_t MakeFms();
@@ -162,7 +162,7 @@ public:
     void SetTree(TTree *tree){mTree = tree; mSaveFile = kFALSE;}
     void SetBeamMomentum(Double_t beamMom){ mBeamMom = beamMom;}
     void SetOutFileName(TString out_name){mOutName = out_name;}
-    ClassDef(TStAnTreeMaker,1) 
+    ClassDef(TStNanoDstMaker,1) 
 };
 
 #endif
