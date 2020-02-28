@@ -13,6 +13,8 @@
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StSpinPool/StSpinDbMaker/StSpinDbMaker.h"
+#include "StEvent/StEmcPoint.h"
+#include "StEvent/StEmcCollection.h"
 
 ClassImp(TStNanoDstMaker)
 
@@ -28,6 +30,7 @@ TStNanoDstMaker::TStNanoDstMaker(const char *name):StMaker(name)
     TStRpsTrackData::Class()->IgnoreTObjectStreamer();
     TStFmsPointPairData::Class()->IgnoreTObjectStreamer();
     TStChargedPidData::Class()->IgnoreTObjectStreamer();
+    TStEmcPointData::Class()->IgnoreTObjectStreamer();
     
     //Event Buffer
     mEventData =  new TStEventData();	
@@ -49,6 +52,16 @@ TStNanoDstMaker::TStNanoDstMaker(const char *name):StMaker(name)
 
     //RP Buffer
     mRpsArray = new TClonesArray("TStRpsTrackData");
+
+    //EMC Buffer
+    mEmcArray = new TClonesArray("TStEmcPointData");
+
+
+    mUseEvent = kTRUE;
+    mUseTpc = kTRUE;
+    mUseEmc = kTRUE;
+    mUseFms = kTRUE;
+    mUseRps = kTRUE;
 }
 
 //_____________________________________________________________________________ 
@@ -73,13 +86,17 @@ TStNanoDstMaker::~TStNanoDstMaker()
     
     //RP Buffer    
     delete mRpsArray;
+
+    //EMC Buffer    
+    delete mEmcArray;
 }
 
 
 //_____________________________________________________________________________ 
 Int_t TStNanoDstMaker::Init()
 {
-    cout << "-------->Triggers Included:" <<endl;
+    if(mTrigIDs.size() > 0)
+	cout << "-------->Triggers Included:" <<endl;
     for(mIt = mTrigIDs.begin(); mIt != mTrigIDs.end(); ++mIt)
 	cout <<"------->: "<<*mIt <<endl;
     
@@ -137,6 +154,10 @@ void TStNanoDstMaker::SetBranches()
     //RP branches
     mTree->Branch("rpTrack", &mRpsArray, 256000, 99);
 
+    //EMC branches
+    if(mUseEmc)
+	mTree->Branch("emcPoint", &mEmcArray, 256000, 99);
+    
     cout << "Done setting branches..." <<endl;
 }
 
@@ -180,6 +201,9 @@ void TStNanoDstMaker::Reset()
     mFmsArray->Clear();
     
     mRpsArray->Clear();    
+
+    if(mUseEmc)
+	mEmcArray->Clear();    
 }
     
 //_____________________________________________________________________________
@@ -212,6 +236,8 @@ Int_t TStNanoDstMaker::Make()
     status = MakeRps();
     //status = MakeTrack();
     status = MakeChargedPid();
+    if(mUseEmc)
+	status = MakeEmc();
     
     mTree->Fill();
 
@@ -368,15 +394,15 @@ Int_t TStNanoDstMaker::MakeFms()
 	mFmsPointPairData =  new((*mFmsArray)[i])TStFmsPointPairData();	
 	mPair = mPointPairs[i];
 
-	mFmsPointPairData->mE = mPair->energy();
-	mFmsPointPairData->mM = mPair->mass();	      
-	mFmsPointPairData->mPt = mPair->pT();
-	mFmsPointPairData->mEta = mPair->eta();
-	mFmsPointPairData->mPhi = mPair->phi();
-	mFmsPointPairData->mZgg = mPair->zgg();
-	mFmsPointPairData->mDgg = mPair->dgg();
-	mFmsPointPairData->mX = mPair->x();
-	mFmsPointPairData->mY = mPair->y();	
+	mFmsPointPairData->SetE(mPair->energy());
+	mFmsPointPairData->SetM(mPair->mass());	      
+	mFmsPointPairData->SetPt(mPair->pT());
+	mFmsPointPairData->SetEta(mPair->eta());
+	mFmsPointPairData->SetPhi(mPair->phi());
+	mFmsPointPairData->SetZgg(mPair->zgg());
+	mFmsPointPairData->SetDgg(mPair->dgg());
+	mFmsPointPairData->SetX(mPair->x());
+	mFmsPointPairData->SetY(mPair->y());	
     }
     
     return kStOk;    
@@ -391,27 +417,29 @@ Int_t TStNanoDstMaker::MakeRps()
 	return kStSkip;
     }
     
-    mRpNtracks = mRpsMuColl->numberOfTracks();    
+    mRpNtracks = mRpsMuColl->numberOfTracks();
+    Int_t trkType;
     for(Int_t i = 0; i < mRpNtracks; ++i)
     {	
 	mRpsTrackData =  new((*mRpsArray)[i])TStRpsTrackData();	
 	mRpsTrk = mRpsMuColl->track(i);
+	trkType = (mRpsTrk->type() == StMuRpsTrack::rpsGlobal) ? 1 : 0;
 	
-	mRpsTrackData->mType = (mRpsTrk->type() == StMuRpsTrack::rpsGlobal) ? 1 : 0;
-	mRpsTrackData->mNplanes = mRpsTrk->planesUsed();
-	mRpsTrackData->mBranch = mRpsTrk->branch();	
-	mRpsTrackData->mTheta = 1000.0*mRpsTrk->theta();	
-	mRpsTrackData->mTheta_x = 1000.0*mRpsTrk->theta(0);	
-	mRpsTrackData->mTheta_y = 1000.0*mRpsTrk->theta(1);	
-	mRpsTrackData->mEta = mRpsTrk->eta();
-	mRpsTrackData->mPhi = mRpsTrk->phi();
-	mRpsTrackData->mPt = mRpsTrk->pt();		
-	mRpsTrackData->mP = mRpsTrk->p();		
-	mRpsTrackData->mPx = mRpsTrk->pVec().x();		
-	mRpsTrackData->mPy = mRpsTrk->pVec().y();		
-	mRpsTrackData->mPz = mRpsTrk->pVec().z();		
-	mRpsTrackData->mXi = mRpsTrk->xi(mBeamMom); // Beam momentum is approximate		
-	mRpsTrackData->mMt = -1.0*mRpsTrk->t(mBeamMom);	
+	mRpsTrackData->SetType(trkType);
+	mRpsTrackData->SetNplanes(mRpsTrk->planesUsed());
+	mRpsTrackData->SetBranch(mRpsTrk->branch());	
+	mRpsTrackData->SetTheta(1000.0*mRpsTrk->theta());	
+	mRpsTrackData->SetThetaX(1000.0*mRpsTrk->theta(0));	
+	mRpsTrackData->SetThetaY(1000.0*mRpsTrk->theta(1));	
+	mRpsTrackData->SetEta(mRpsTrk->eta());
+	mRpsTrackData->SetPhi(mRpsTrk->phi());
+	mRpsTrackData->SetPt(mRpsTrk->pt());		
+	mRpsTrackData->SetP(mRpsTrk->p());		
+	mRpsTrackData->SetPx(mRpsTrk->pVec().x());		
+	mRpsTrackData->SetPy(mRpsTrk->pVec().y());		
+	mRpsTrackData->SetPz(mRpsTrk->pVec().z());		
+	mRpsTrackData->SetXi(mRpsTrk->xi(mBeamMom)); // Beam momentum is approximate		
+	mRpsTrackData->SetMt(-1.0*mRpsTrk->t(mBeamMom));	
     }
 
     return kStOk;    
@@ -431,10 +459,10 @@ Int_t TStNanoDstMaker::MakeTrack()
 	mTrack = mMuDst->primaryTracks(i);
 	mTrackData =  new((*mTrackArray)[i])TStTrackData();
 	
-	mTrackData->mQ = mTrack->charge();
-	mTrackData->mEta = mTrack->eta();
-	mTrackData->mPhi = mTrack->phi();
-	mTrackData->mPt = mTrack->pt();	      	
+	mTrackData->SetQ(mTrack->charge());
+	mTrackData->SetEta(mTrack->eta());
+	mTrackData->SetPhi(mTrack->phi());
+	mTrackData->SetPt(mTrack->pt());	      	
     }
 
     return kStOK;
@@ -481,13 +509,13 @@ Int_t TStNanoDstMaker::MakeChargedPid()
 	if(pid == mPidTagger->kPionId)
 	{
 	    mChargedPidData =  new((*mPiArray)[mNpi])TStChargedPidData();
-	    mChargedPidData->mQ = mTrack->charge();
-	    mChargedPidData->mPt = mTrack->pt();
-	    mChargedPidData->mEta = mTrack->eta();
-	    mChargedPidData->mPhi = mTrack->phi();
-	    mChargedPidData->mX = mProjX;
-	    mChargedPidData->mY = mProjY;
-	    mChargedPidData->mZ = mProjZ;
+	    mChargedPidData->SetQ(mTrack->charge());
+	    mChargedPidData->SetPt(mTrack->pt());
+	    mChargedPidData->SetEta(mTrack->eta());
+	    mChargedPidData->SetPhi(mTrack->phi());
+	    mChargedPidData->SetX(mProjX);
+	    mChargedPidData->SetY(mProjY);
+	    mChargedPidData->SetZ(mProjZ);
 
 	    if(mFillHist)
 		FillHist(mPidTagger->kPionId);	    
@@ -499,13 +527,13 @@ Int_t TStNanoDstMaker::MakeChargedPid()
 	if(pid == mPidTagger->kProtonId)
 	{
 	    mChargedPidData =  new((*mPrArray)[mNpr])TStChargedPidData();
-	    mChargedPidData->mQ = mTrack->charge();
-	    mChargedPidData->mPt = mTrack->pt();
-	    mChargedPidData->mEta = mTrack->eta();
-	    mChargedPidData->mPhi = mTrack->phi();
-	    mChargedPidData->mX = mProjX;
-	    mChargedPidData->mY = mProjY;
-	    mChargedPidData->mZ = mProjZ;
+	    mChargedPidData->SetQ(mTrack->charge());
+	    mChargedPidData->SetPt(mTrack->pt());
+	    mChargedPidData->SetEta(mTrack->eta());
+	    mChargedPidData->SetPhi(mTrack->phi());
+	    mChargedPidData->SetX(mProjX);
+	    mChargedPidData->SetY(mProjY);
+	    mChargedPidData->SetZ(mProjZ);
 	    
 	    if(mFillHist)
 		FillHist(mPidTagger->kProtonId);	    
@@ -517,13 +545,13 @@ Int_t TStNanoDstMaker::MakeChargedPid()
 	if(pid == mPidTagger->kKaonId)
 	{
 	    mChargedPidData =  new((*mKaArray)[mNka])TStChargedPidData();
-	    mChargedPidData->mQ = mTrack->charge();
-	    mChargedPidData->mPt = mTrack->pt();
-	    mChargedPidData->mEta = mTrack->eta();
-	    mChargedPidData->mPhi = mTrack->phi();
-	    mChargedPidData->mX = mProjX;
-	    mChargedPidData->mY = mProjY;
-	    mChargedPidData->mZ = mProjZ;
+	    mChargedPidData->SetQ(mTrack->charge());
+	    mChargedPidData->SetPt(mTrack->pt());
+	    mChargedPidData->SetEta(mTrack->eta());
+	    mChargedPidData->SetPhi(mTrack->phi());
+	    mChargedPidData->SetX(mProjX);
+	    mChargedPidData->SetY(mProjY);
+	    mChargedPidData->SetZ(mProjZ);
 
 	    if(mFillHist)
 		FillHist(mPidTagger->kKaonId);
@@ -535,13 +563,13 @@ Int_t TStNanoDstMaker::MakeChargedPid()
 	if(pid == mPidTagger->kElectronId)
 	{
 	    mChargedPidData =  new((*mElArray)[mNe])TStChargedPidData();
-	    mChargedPidData->mQ = mTrack->charge();
-	    mChargedPidData->mPt = mTrack->pt();
-	    mChargedPidData->mEta = mTrack->eta();
-	    mChargedPidData->mPhi = mTrack->phi();
-	    mChargedPidData->mX = mProjX;
-	    mChargedPidData->mY = mProjY;
-	    mChargedPidData->mZ = mProjZ;
+	    mChargedPidData->SetQ(mTrack->charge());
+	    mChargedPidData->SetPt(mTrack->pt());
+	    mChargedPidData->SetEta(mTrack->eta());
+	    mChargedPidData->SetPhi(mTrack->phi());
+	    mChargedPidData->SetX(mProjX);
+	    mChargedPidData->SetY(mProjY);
+	    mChargedPidData->SetZ(mProjZ);
 
 	    if(mFillHist)
 		FillHist(mPidTagger->kElectronId);	    
@@ -553,13 +581,13 @@ Int_t TStNanoDstMaker::MakeChargedPid()
 	if(pid == mPidTagger->kMuonId)
 	{
 	    mChargedPidData =  new((*mMuArray)[mNmu])TStChargedPidData();
-	    mChargedPidData->mQ = mTrack->charge();
-	    mChargedPidData->mPt = mTrack->pt();
-	    mChargedPidData->mEta = mTrack->eta();
-	    mChargedPidData->mPhi = mTrack->phi();
-	    mChargedPidData->mX = mProjX;
-	    mChargedPidData->mY = mProjY;
-	    mChargedPidData->mZ = mProjZ;
+	    mChargedPidData->SetQ(mTrack->charge());
+	    mChargedPidData->SetPt(mTrack->pt());
+	    mChargedPidData->SetEta(mTrack->eta());
+	    mChargedPidData->SetPhi(mTrack->phi());
+	    mChargedPidData->SetX(mProjX);
+	    mChargedPidData->SetY(mProjY);
+	    mChargedPidData->SetZ(mProjZ);
 
 	    if(mFillHist)
 		FillHist(mPidTagger->kMuonId);
@@ -568,13 +596,13 @@ Int_t TStNanoDstMaker::MakeChargedPid()
 	}
 	//-------- Unknown PID ----------
 	mChargedPidData =  new((*mUkArray)[mNuk])TStChargedPidData();
-	mChargedPidData->mQ = mTrack->charge();
-	mChargedPidData->mPt = mTrack->pt();
-	mChargedPidData->mEta = mTrack->eta();
-	mChargedPidData->mPhi = mTrack->phi();
-	mChargedPidData->mX = mProjX;
-	mChargedPidData->mY = mProjY;
-	mChargedPidData->mZ = mProjZ;
+	mChargedPidData->SetQ(mTrack->charge());
+	mChargedPidData->SetPt(mTrack->pt());
+	mChargedPidData->SetEta(mTrack->eta());
+	mChargedPidData->SetPhi(mTrack->phi());
+	mChargedPidData->SetX(mProjX);
+	mChargedPidData->SetY(mProjY);
+	mChargedPidData->SetZ(mProjZ);
 	++mNuk;
     }
     return kStOK;
@@ -615,6 +643,57 @@ void TStNanoDstMaker::FillHist(Int_t particleId)
         // defaut:
 	//     break;
     }
+}
+
+//_____________________________________________________________________________
+//_____________________________________________________________________________
+Int_t TStNanoDstMaker::MakeEmc()
+{
+    mMuDst = (StMuDst*)GetInputDS("MuDst");
+    if(!mMuDst)
+    {
+	cout << "TStEmcTreeMaker::Make- Unable to retrieve MuDst" <<endl;
+	return kStFatal;
+    }
+    // mTrkMatchingMkr = (TStEmcTrackMatchingMaker*)GetMaker("TStEmcTrackMatchingMaker");
+    // if(!mTrkMatchingMkr)
+    // {
+    // 	cout << "TStEmcTreeMaker::Make- Unable to retrieve EmcTrackMatchingMaker. Can Not proceed" <<endl;
+    // 	return kStFatal;
+    // }
+    
+    mVertex = mMuDst->primaryVertex(0)->position();
+
+    mEmcCollection = mMuDst->emcCollection();
+    if(!mEmcCollection)
+    {
+	cout<<"No EMC data for this event"<<endl;
+	return kStSkip;
+    }
+    StSPtrVecEmcPoint& mEmcPoints = mEmcCollection->barrelPoints();
+    mEmcNpoints = mEmcPoints.size();
+   
+    for(Int_t i = 0; i < mEmcNpoints; ++i)
+    {
+	mEmcPointData =  new((*mEmcArray)[i])TStEmcPointData();	
+	mEmcPoint = mEmcPoints[i];
+	mEmcPointPos = mEmcPoint->position();  
+	mEmcPointEng = mEmcPoint->energy();
+	mEmcMomVec = (mEmcPointPos - mVertex).unit();
+	mEmcMomVec *= mEmcPointEng;
+	
+	mEmcPointData->SetE(mEmcPointEng);
+	mEmcPointData->SetQuality(mEmcPoint->quality());
+	mEmcPointData->SetX(mEmcPointPos.x());
+	mEmcPointData->SetY(mEmcPointPos.y());
+	mEmcPointData->SetZ(mEmcPointPos.z());		
+	mEmcPointData->SetPx(mEmcMomVec.x()); 
+	mEmcPointData->SetPy(mEmcMomVec.y()); 
+	mEmcPointData->SetPz(mEmcMomVec.z()); 
+	mEmcPointData->SetNtracks(mEmcPoint->nTracks());		
+    }
+
+    return kStOK;
 }
 
 

@@ -31,6 +31,12 @@ class TStConfig : public TObject
     string fProdPath;
     string fTrigDefFile;
     string fStreamPrefix;
+
+    int fUseEvt;
+    int fUseTpc;
+    int fUseEmc;
+    int fUseFms;
+    int fUseRps;
     
     void CheckValidity();    
 public:
@@ -41,19 +47,24 @@ public:
     void Print();
 
     //----- Getter for each configuration field -------------
-    const string & GetStarHome();
-    const string & GetConfigPath();
-    const string & GetDataPath();
-    const string & GetResultsPath();
-    const string & GetFilePath();
-    const string & GetDSTpath();
-    const string & GetJobResultsPath();
-    const string & GetRunListDB();
-    const string & GetFileList();
-    const string & GetProdPath();
-    const string & GetTrigDefFile();
-    const string & GetStreamPrefix();
-    TString GetRootFileName();
+    const string & GetStarHome(){return fStarHome;}
+    const string & GetConfigPath(){return fConfigFile;}
+    const string & GetDataPath(){return fDataPath;}
+    const string & GetResultsPath(){return fResultsPath;}
+    const string & GetFilePath(){return fResultsPath;}
+    const string & GetDSTpath(){return fDSTpath;}
+    const string & GetJobResultsPath(){return fJobResultsPath;}
+    const string & GetRunListDB(){return fRunListDB;}
+    const string & GetFileList(){return fFileList;}
+    const string & GetProdPath(){return fProdPath;}
+    const string & GetTrigDefFile(){return fTrigDefFile;}
+    const string & GetStreamPrefix(){return fStreamPrefix;}
+
+    bool EnableEvt(){return fUseEvt == 1;}
+    bool EnableTpc(){return fUseTpc == 1;}
+    bool EnableEmc(){return fUseEmc == 1;}
+    bool EnableFms(){return fUseFms == 1;}
+    bool EnableRps(){return fUseRps == 1;}
     
     ClassDef(TStConfig,1)
 };

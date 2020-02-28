@@ -3,6 +3,9 @@ temp_*
 *.root
 *.pdf
 *.jpg
+*.png
+*.eps
+*.svg
 .sl*
 .sl73_gcc485/
 *.obj

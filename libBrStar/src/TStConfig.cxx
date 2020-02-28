@@ -5,7 +5,6 @@
 // URL: jlab.org/~latif
 
 #include "TStConfig.h"
-#include "TStar.h"
 #include "TApplication.h"
 using namespace std;
 
@@ -22,7 +21,7 @@ TStConfig::TStConfig()
 	fStarHome = getenv("STARHOME");
     //For some terminal, it does not get the environment correctly. For example from SUMS job
     //Let's hard code it for those cases.
-    if(fStarHome == "")
+    if(fStarHome == "" || fStarHome == "/")
 	fStarHome = "/star/u/kabir/GIT/BrightSTAR/";
     fConfigFile = fStarHome + (string)"/config/config.cfg";
     //Following are initial values and are overwritten later from the configuratuion file
@@ -117,6 +116,31 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fStreamPrefix = tokens;
 	    }
+	    else if(s == "ENABLE_EVT")
+	    {
+		tokens = strtok(NULL, " :,");
+		fUseEvt = atoi(tokens);
+	    }
+	    else if(s == "ENABLE_TPC")
+	    {
+		tokens = strtok(NULL, " :,");
+		fUseTpc = atoi(tokens);
+	    }
+	    else if(s == "ENABLE_EMC")
+	    {
+		tokens = strtok(NULL, " :,");
+		fUseEmc = atoi(tokens);
+	    }
+	    else if(s == "ENABLE_FMS")
+	    {
+		tokens = strtok(NULL, " :,");
+		fUseFms = atoi(tokens);
+	    }
+	    else if(s == "ENABLE_RPS")
+	    {
+		tokens = strtok(NULL, " :,");
+		fUseRps = atoi(tokens);
+	    }
 	    else
 	    {
 		tokens = strtok(NULL, " :,");
@@ -126,88 +150,26 @@ void TStConfig::LoadConfig()
     configFile.close();
 }
 
-const string& TStConfig::GetDataPath()
-{
-    return fDataPath;
-}
-
-const string& TStConfig::GetResultsPath()
-{
-    return fResultsPath;
-}
-
-const string& TStConfig::GetFilePath()
-{
-    return fResultsPath;
-}
-
-const string& TStConfig::GetDSTpath()
-{
-    return fDSTpath;
-}
-
-const string& TStConfig::GetJobResultsPath()
-{
-    return fJobResultsPath;
-}
-
-const string& TStConfig::GetStarHome()
-{
-    return fStarHome;
-}
-
-const string& TStConfig::GetConfigPath()
-{
-    return fConfigFile;
-}
-
-const string& TStConfig::GetRunListDB()
-{
-    return fRunListDB;
-}
-
-const string& TStConfig::GetFileList()
-{
-    return fFileList;
-}
-
-const string& TStConfig::GetProdPath()
-{
-    return fProdPath;
-}
-
-const string& TStConfig::GetTrigDefFile()
-{
-    return fTrigDefFile;
-}
-
-const string& TStConfig::GetStreamPrefix()
-{
-    return fStreamPrefix;
-}
-
-
-
-TString TStConfig::GetRootFileName()
-{
-    return (GetFilePath() + (TString)"root/" + (TString)std::to_string(TStar::GetCounter()) + (TString)".root");
-}
-
-
 void TStConfig::Print()
 {
     cout << "==============Star Configuration===================" <<endl;
-    cout << "Star Home: "<< GetStarHome() <<endl;
-    cout << "Config file: "<< GetConfigPath()<<endl;
-    cout << "Data-file path: "<< GetDataPath() <<endl;
-    cout << "Results path: "<< GetResultsPath() <<endl;
-    cout << "DST path: "<< GetDSTpath() <<endl;
-    cout << "Job results path: "<< GetJobResultsPath() <<endl;
-    cout << "File-list: "<< GetFileList() <<endl;
-    cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB() <<endl;
-    cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile() <<endl;
-    cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath() <<endl;
-    cout << "\033[1;31mStream prefix: \033[0m"<< GetStreamPrefix() <<endl;
+    cout << "Star Home: "<< GetStarHome()<<"\n"<<endl;
+    cout << "Config file: "<< GetConfigPath()<<"\n"<<endl;
+    cout << "Data-file path: "<< GetDataPath()<<"\n"<<endl;
+    cout << "Results path: "<< GetResultsPath()<<"\n"<<endl;
+    cout << "DST path: "<< GetDSTpath()<<"\n"<<endl;
+    cout << "Job results path: "<< GetJobResultsPath()<<"\n"<<endl;
+    cout << "File-list: "<< GetFileList()<<"\n"<<endl;
+    cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB()<<"\n"<<endl;
+    cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile()<<"\n"<<endl;
+    cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath()<<"\n"<<endl;
+    cout << "\033[1;31mStream prefix: \033[0m"<< GetStreamPrefix()<<"\n"<<endl;
+    cout << "--- Nano DST Branch Status: ----"<<endl;
+    cout << "Event:"<< EnableEvt()<<endl;
+    cout << "TPC:"<< EnableTpc()<<endl;
+    cout << "EMC:"<< EnableEmc()<<endl;
+    cout << "FMS:"<< EnableFms()<<endl;
+    cout << "RPS:"<< EnableRps()<<endl;
     cout << "==================================================" <<endl;    
 }
 

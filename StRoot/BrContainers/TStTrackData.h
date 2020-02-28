@@ -16,7 +16,7 @@
 
 class TStTrackData : public TObject
 {
-public:
+protected:
     Float_t 	mPt;			// primary track pt
     Float_t 	mEta;			// primary track Eta
     Float_t 	mPhi;			// primary track phi
@@ -39,6 +39,21 @@ public:
     Short_t 	mHelixIndex;		// index of associated Track Helix
     Short_t 	mMcIndex;		// index of associated Track Helix
 
+public:    
+    Float_t GetPt(){return mPt;}			// primary track pt
+    Float_t GetEta(){return mEta;}			// primary track Eta
+    Float_t GetPhi(){return mPhi;}			// primary track phi
+    UShort_t GetId(){return mId;}			// track Id
+    Float_t GetDedx(){return mDedx;}			// dEdx
+    Int_t GetQ(){return	mQ;}			        // q
+
+    void SetPt(Float_t pt){mPt = pt;}			// primary track pt
+    void SetEta(Float_t eta){mEta = eta;}		// primary track Eta
+    void SetPhi(Float_t phi){mPhi = phi;}		// primary track phi
+    void SetId(UShort_t id){mId = id;}			// track Id
+    void SetDedx(Float_t dedx){mDedx = dedx;}		// dEdx
+    void SetQ(Int_t q){mQ = q;}			        // q
+    
    
     TStTrackData()
     {

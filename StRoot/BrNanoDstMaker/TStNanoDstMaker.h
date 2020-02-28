@@ -9,6 +9,7 @@
 
 #include <vector>
 #include "StMaker.h"
+#include "StMuDSTMaker/COMMON/StMuDstMaker.h"
 #include "StFmsDbMaker/StFmsDbMaker.h"
 #include "StMuDSTMaker/COMMON/StMuRpsCollection.h"
 #include "StMuDSTMaker/COMMON/StMuRpsTrack.h"
@@ -19,6 +20,12 @@
 #include "StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
 #include "StJetMaker/mudst/StMuEmcPosition.h"
 #include "StEmcUtil/geometry/StEmcGeom.h"
+
+#include "StarClassLibrary/StLorentzVector.hh"
+#include "StarClassLibrary/StLorentzVectorF.hh"
+#include "BrEmcMaker/TStEmcTrackMatchingMaker.h"
+#include "BrEmcMaker/TStEmcPidTrait.h"
+
 
 #include "TH1D.h"
 #include "TH2D.h"
@@ -31,14 +38,19 @@
 #include "BrPidMaker/TStPidTagger.h"
 #include "BrContainers/TStFmsPointPairData.h"
 #include "BrContainers/TStRpsTrackData.h"
+#include "BrContainers/TStEmcPointData.h"
 
 
 class StEvent;
 class StMuDst;
+class StMuDstEvent;
 class StMuEvent;
 class StFmsPointPair;
 class StFmsCollection;
 class StSpinDbMaker;
+class StEmcCollection;
+class StEmcPoint;
+
 
 class TStNanoDstMaker : public StMaker
 {
@@ -58,6 +70,12 @@ private:
     TTree *mTree = 0;
     Bool_t mSaveFile;
 
+    Bool_t mUseEvent;
+    Bool_t mUseTpc;
+    Bool_t mUseEmc;
+    Bool_t mUseFms;
+    Bool_t mUseRps;
+    
     //--- Event ---
     Int_t  mBunchid7bit;
     Int_t  mSpin4bit;
@@ -135,7 +153,19 @@ private:
     Int_t mRpNtracks;
     TClonesArray  *mRpsArray;
     TStRpsTrackData *mRpsTrackData;
-            
+
+    //------- BEMC -------------
+    //TStEmcTrackMatchingMaker* mTrkMatchingMkr;
+    StEmcCollection *mEmcCollection;
+    StEmcPoint *mEmcPoint;
+    TClonesArray  *mEmcArray;
+    TStEmcPointData *mEmcPointData;
+    StThreeVectorF mEmcPointPos;
+    StThreeVectorF mEmcMomVec;
+    StThreeVectorF mVertex;
+    Float_t mEmcPointEng;
+    Int_t mEmcNpoints;
+    
 protected:
     void SetBranches();
     void InitHist();
@@ -146,6 +176,7 @@ public:
     virtual ~TStNanoDstMaker();
     virtual Int_t Init();
     virtual Int_t Make();
+    Int_t MakeEmc();
     Int_t MakeFms();
     Int_t MakeRps();
     Int_t MakeEvent();
@@ -162,6 +193,12 @@ public:
     void SetTree(TTree *tree){mTree = tree; mSaveFile = kFALSE;}
     void SetBeamMomentum(Double_t beamMom){ mBeamMom = beamMom;}
     void SetOutFileName(TString out_name){mOutName = out_name;}
+    void EnableEvent(Bool_t status){mUseEvent = status;}
+    void EnableTpc(Bool_t status){mUseTpc = status;}
+    void EnableEmc(Bool_t status){mUseEmc = status;}
+    void EnableFms(Bool_t status){mUseFms = status;}
+    void EnableRps(Bool_t status){mUseRps = status;}
+    
     ClassDef(TStNanoDstMaker,1) 
 };
 

@@ -56,7 +56,9 @@ Int_t TStEmcTrackMatchingMaker::Make()
 	cout << "TStEmcTrackMatchingMaker::Make - No StMuDst event!" <<endl;
 	return kStFatal;
     }
+    /* ~~~~ Disabled PID Traid Part ~~~~
     ResetPidTraits();    
+    */
     //StEvent *stEvent = mMuDst->createStEvent();
     //stEvent->statistics();
     //mEvent->statistics();
@@ -64,6 +66,7 @@ Int_t TStEmcTrackMatchingMaker::Make()
     //MatchToTracks(stEvent);
     //delete stEvent;  //Must delete to avoid nasty memory leak
     //stEvent = 0;
+    
     MatchToTracks();
     return kStOK;
 }
@@ -244,6 +247,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
                                         cl->addTrack(track);
 					nMatchedTracks = cl->nTracks();
 
+					/* ~~~~ Disabled PID Traid Part ~~~~
 					//--------- Save PID trait information ----------------------
 					if(i >= mMaxPoints || nMatchedTracks > mMaxPoints)
 					{
@@ -255,7 +259,7 @@ Int_t TStEmcTrackMatchingMaker::MatchToTracks()
 					mTraits->pt[i][nMatchedTracks - 1] = muTrack->pt();
 					mTraits->dca[i][nMatchedTracks - 1] = muTrack->dca().z();
 					mTraits->beta[i][nMatchedTracks - 1] = muTrack->btofPidTraits().beta(); 
-
+					*/
 					//--------------- Energy from each detector --------------
 					//Ideally we would also like to save energy from Tower, preshower, SMDs
 					//Currently Preshower energy is not set in the reconstruction which is the most relevent part here
