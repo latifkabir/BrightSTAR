@@ -17,7 +17,7 @@ ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
 CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker -L ${STARHOME}/libBrStar/lib -lBrStar
 MODULES = .part4/include .part8/include .part9/include 
-SRC_DIR   =   $(addprefix ${STAR}/,$(MODULES)) 
+SRC_DIR   =   $(addprefix ${STARDEV}/,$(MODULES)) 
 LIB_INCLUDE  = $(addprefix -I,$(SRC_DIR)) -I${STAR}/ -I${STAR}/StRoot/ -I${STARHOME}/libBrStar/src/ -I${STARHOME} -I${STARHOME}/include/ -I${STARHOME}/StRoot/ -I${STAR}/StRoot/StJetMaker/towers/ -I${STAR}/StRoot/StJetMaker/tracks/ -I${STAR}/StRoot/StJetMaker/mcparticles/
 
 all: libStAnalysis

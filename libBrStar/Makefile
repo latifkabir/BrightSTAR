@@ -17,7 +17,7 @@ ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
 CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker
 MODULES = .part4/include .part8/include .part9/include 
-SRC_DIR   = $(addprefix ${STAR}/,$(MODULES))
+SRC_DIR   = $(addprefix ${STARDEV}/,$(MODULES))
 LIB_INCLUDE  = $(addprefix -I,$(SRC_DIR)) -I${STAR}/StRoot/ -I${STAR}/ -I${STARHOME}/include/ -I${STARHOME}/StRoot/
 
 all: libBrStar

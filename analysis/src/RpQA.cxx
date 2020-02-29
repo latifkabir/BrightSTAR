@@ -20,7 +20,7 @@ void RpQA(Int_t runNo, Int_t maxFiles)
     const Int_t nPlots = 13;
     TH1F *h1[nPlots];
 
-    TString fileName = TStar::Config->GetRootFileName();
+    TString fileName = "RpQA.root";
     TFile *file = new TFile(fileName, "recreate", "RP Track variable distributions from run" + (TString) runNo);
     h1[0] = new TH1F("h1nPlanes", "number of planes; number of planes", 100, 0.0, 0.0);
     h1[1] = new TH1F("h1nRP", "number of RP; number of RP", 100, 0.0, 0.0);

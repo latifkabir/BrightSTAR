@@ -12,3 +12,4 @@ export STARHOME
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$STARHOME:$STARHOME/libBrStar/lib:$STARHOME/analysis/lib:$STARHOME/runMacros/lib:$STARHOME/diffAnalysis/lib:$STARHOME/.sl73_gcc485/lib
 export PATH=$PATH:$STARHOME:$STARHOME/bin
+export STARDEV=/afs/rhic.bnl.gov/star/packages/DEV/
