@@ -34,6 +34,9 @@
 //Jet
 #pragma link C++ function RunJetFinder;                          // Run Jet tree maker. 
 
+//Nano Dst
+#pragma link C++ function RunNanoDstMaker;                         // Run Nano DST maker. 
+
 #endif
 
 

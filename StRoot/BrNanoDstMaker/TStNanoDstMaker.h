@@ -83,6 +83,7 @@ private:
     vector <Int_t>::iterator mIt;
     StMuTriggerIdCollection *mTrigMuColl;
     Int_t mTrigFlag;
+    Int_t mAdcSum[2];
     
     TStEventData *mEventData;
     

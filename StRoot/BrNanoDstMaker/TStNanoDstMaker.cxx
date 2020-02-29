@@ -57,11 +57,11 @@ TStNanoDstMaker::TStNanoDstMaker(const char *name):StMaker(name)
     mEmcArray = new TClonesArray("TStEmcPointData");
 
 
-    mUseEvent = kTRUE;
-    mUseTpc = kTRUE;
-    mUseEmc = kTRUE;
-    mUseFms = kTRUE;
-    mUseRps = kTRUE;
+    mUseEvent = kFALSE;
+    mUseTpc = kFALSE;
+    mUseEmc = kFALSE;
+    mUseFms = kFALSE;
+    mUseRps = kFALSE;
 }
 
 //_____________________________________________________________________________ 
@@ -225,23 +225,22 @@ Int_t TStNanoDstMaker::Make()
 
     //------ Reset Buffer --------
     Reset();
-    
-    Int_t status = kStOK;
-    status = MakeEvent();
-    if(status != kStOK)
-	return status;
-    status = MakeFms();
-    if(status != kStOK)
-	return status;
-    status = MakeRps();
-    //status = MakeTrack();
-    status = MakeChargedPid();
+
+    if(mUseEvent)
+	MakeEvent();
+    if(mUseFms)
+	MakeFms();
+    if(mUseRps)
+	MakeRps();
+    if(mUseTpc)
+        //MakeTrack();
+	MakeChargedPid();
     if(mUseEmc)
-	status = MakeEmc();
+	MakeEmc();
     
     mTree->Fill();
 
-    return status;    
+    return kStOk;    
 }
 //_____________________________________________________________________________
 Bool_t TStNanoDstMaker::AcceptEvent()
@@ -274,48 +273,51 @@ Bool_t TStNanoDstMaker::AcceptEvent()
 Int_t TStNanoDstMaker::MakeEvent()
 {    
     //Run no. and event no.     
-    mEventData->mRunNumber = mMuEvent->runNumber();
-    mEventData->mEventId = mMuEvent->eventId();
+    mEventData->SetRunNumber(mMuEvent->runNumber());
+    mEventData->SetEventId(mMuEvent->eventId());
 
     //Trigger ids
     mTrigMuColl = &mMuEvent->triggerIdCollection();
     if(mTrigMuColl)
     {
 	const StTriggerId trgIDs = mTrigMuColl->nominal();
-	mEventData->mNtrig = trgIDs.triggerIds().size();
+	mEventData->SetNtrigs(trgIDs.triggerIds().size());
 
-	if(mEventData->mNtrig > mEventData->mMaxTrigs)
+	if(mEventData->GetNtrigs() > mEventData->mMaxTrigs)
 	{
 	    std::cout << "TStNanoDstMaker::MakeEvent - The trigger buffer is out of limit. You must adjust it." << std::endl;
 	    return kStErr;
 	}
 	
-	for(Int_t i = 0; i < mEventData->mNtrig; i++)
-	    mEventData->mTriggers[i] = trgIDs.triggerIds().at(i);
+	for(Int_t i = 0; i < mEventData->GetNtrigs(); i++)
+	    mEventData->SetTrigger(i, trgIDs.triggerIds().at(i));
     }
     // BBC, ZDC, VPD branches <------- To be verified/revisited
     for(Int_t ew = 0; ew < 2; ew++)
     {
 	// BBC
-	mEventData->mBbcADCSum[ew] = mMuEvent->triggerData()->bbcADCSum((StBeamDirection)ew);
-	mEventData->mBbcADCSumLarge[ew] = mMuEvent->triggerData()->bbcADCSumLargeTile((StBeamDirection)ew);
-	mEventData->mBbcEarliestTDC[ew] = mMuEvent->triggerData()->bbcEarliestTDC((StBeamDirection)ew);
-	mEventData->mBbcEarliestTDCLarge[ew] = mMuEvent->triggerData()->bbcEarliestTDCLarge((StBeamDirection)ew);
+	mEventData->SetBbcSumSmall(ew, mMuEvent->triggerData()->bbcADCSum((StBeamDirection)ew));
+	mEventData->SetBbcSumLarge(ew, mMuEvent->triggerData()->bbcADCSumLargeTile((StBeamDirection)ew));
+	mEventData->SetEarliestTdcSmall(ew, mMuEvent->triggerData()->bbcEarliestTDC((StBeamDirection)ew));
+	mEventData->SetEarliestTdcLarge(ew, mMuEvent->triggerData()->bbcEarliestTDCLarge((StBeamDirection)ew));
 	// ZDC
-	mEventData->mZdcADCSum[ew] = 0;
+	mAdcSum[ew] = 0;
 	for(Int_t pmt = 1; pmt <= 3; pmt++)
 	{
-	    mEventData->mZdcADCSum[ew] += mMuEvent->triggerData()->zdcADC((StBeamDirection)ew,pmt); // is this correct?
+	   mAdcSum[ew] += mMuEvent->triggerData()->zdcADC((StBeamDirection)ew,pmt); // is this correct?
 	}
+	mEventData->SetZdcSum(ew, mAdcSum[ew]);
 	// VPD
-	mEventData->mVpdADCSum[ew] = 0;
+	mAdcSum[ew] = 0;
 	for(Int_t pmt = 1; pmt <= 16; pmt++)
 	{
-	    mEventData->mVpdADCSum[ew] += mMuEvent->triggerData()->vpdADC((StBeamDirection)ew,pmt); // is this correct?
+	   mAdcSum[ew] += mMuEvent->triggerData()->vpdADC((StBeamDirection)ew,pmt); // is this correct?
 	}
+	mEventData->SetVpdSum(ew, mAdcSum[ew]);
     } 
-    mEventData->mTofMultiplicity = mMuEvent->triggerData()->tofMultiplicity();
+    mEventData->SetTofMultiplicity(mMuEvent->triggerData()->tofMultiplicity());
 
+    // This approach leads to craches for some events
     // if(mMuDst->primaryVertex())
     // {
     // 	mEventData->mVx = mMuDst->primaryVertex()->position().x();
@@ -326,9 +328,9 @@ Int_t TStNanoDstMaker::MakeEvent()
 
     // }
 
-    mEventData->mVx = mMuDst->event()->primaryVertexPosition().x();
-    mEventData->mVy = mMuDst->event()->primaryVertexPosition().y();
-    mEventData->mVz = mMuDst->event()->primaryVertexPosition().z();
+    mEventData->SetVx(mMuDst->event()->primaryVertexPosition().x());
+    mEventData->SetVy(mMuDst->event()->primaryVertexPosition().y());
+    mEventData->SetVz(mMuDst->event()->primaryVertexPosition().z());
     
     // StRunInfo* runInfo = &(mMuEvent->runInfo());
     // mFill = runInfo->beamFillNumber(blue);
@@ -344,31 +346,31 @@ Int_t TStNanoDstMaker::MakeEvent()
     {
     case 5:
     {
-	mEventData->mBspin = -1;
-	mEventData->mYspin = -1;
+	mEventData->SetBlueSpin(-1);
+	mEventData->SetYellowSPin(-1);
 	break;
     }
     case 6:
     {
-	mEventData->mBspin = -1;
-	mEventData->mYspin = +1;	
+	mEventData->SetBlueSpin(-1);
+	mEventData->SetYellowSPin(+1);	
 	break;
     }
     case 9:
     {
-	mEventData->mBspin = +1;
-	mEventData->mYspin = -1;	
+	mEventData->SetBlueSpin(+1);
+	mEventData->SetYellowSPin(-1);	
 	break;
     }
     case 10:
     {
-	mEventData->mBspin = +1;
-	mEventData->mYspin = +1;
+	mEventData->SetBlueSpin(+1);
+	mEventData->SetYellowSPin(+1);
 	break;
     }
     default: //Undefined
-	mEventData->mBspin = 0;
-	mEventData->mYspin = 0;      
+	mEventData->SetBlueSpin(0);
+	mEventData->SetYellowSPin(0);      
     }
   
     return kStOk;    
@@ -649,12 +651,6 @@ void TStNanoDstMaker::FillHist(Int_t particleId)
 //_____________________________________________________________________________
 Int_t TStNanoDstMaker::MakeEmc()
 {
-    mMuDst = (StMuDst*)GetInputDS("MuDst");
-    if(!mMuDst)
-    {
-	cout << "TStEmcTreeMaker::Make- Unable to retrieve MuDst" <<endl;
-	return kStFatal;
-    }
     // mTrkMatchingMkr = (TStEmcTrackMatchingMaker*)GetMaker("TStEmcTrackMatchingMaker");
     // if(!mTrkMatchingMkr)
     // {
@@ -662,7 +658,7 @@ Int_t TStNanoDstMaker::MakeEmc()
     // 	return kStFatal;
     // }
     
-    mVertex = mMuDst->primaryVertex(0)->position();
+    mVertex = mMuDst->event()->primaryVertexPosition();//mMuDst->primaryVertex(0)->position();
 
     mEmcCollection = mMuDst->emcCollection();
     if(!mEmcCollection)
