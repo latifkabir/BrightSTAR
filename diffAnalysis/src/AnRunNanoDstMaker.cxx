@@ -1,4 +1,4 @@
-// Filename: RunNanoDstMaker.cxx
+// Filename: AnRunNanoDstMaker.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Nov 13 17:25:43 2019 (-0500)
@@ -14,16 +14,49 @@
 #include <iostream>
 using namespace std;
 
-void RunNanoDstMaker(TString fileList, TString outFile)
+void AnRunNanoDstMaker(TString fileList, TString outFile)
 {
     // TFile *f = new TFile(outFile, "RECREATE");
     TH1D* hEvtCount = new TH1D("hEvtCount", "Event counts", 20, 0, 20);
     // TTree *tree = new TTree("T", "An TREE");
     
     vector<Int_t> trigs(9);
- 
-    // gMessMgr->SetLimit("I", 0);   //Disable StInfo messages including Skipped event message
-    // gMessMgr->SetLimit("Q", 0);   //Disable StQAInfo messages (includes event processing status)
+    //------- For FMS stream ----------------
+    string fileName;
+    if(fileList.Contains(".list"))
+    {
+	ifstream inFile(fileList);
+	if(!inFile)
+	{
+	    cout << "Unable to read run number from file list" <<endl;
+	    return;
+	}
+	getline(inFile, fileName);
+	inFile.close();
+	cout << "\n------->Warning: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
+    }
+    else
+	fileName = fileList;
+    
+    Int_t runNumber = TStRunList::GetRunFromFileName(fileName);
+    if(runNumber < 1)
+    {
+	cout << "Unable to get run number" <<endl;
+	return;
+    }
+    trigs[0] = TStTrigDef::GetTrigId(runNumber, "FMS-JP0");
+    trigs[1] = TStTrigDef::GetTrigId(runNumber,"FMS-JP1");
+    trigs[2] = TStTrigDef::GetTrigId(runNumber,"FMS-JP2");
+    trigs[3] = TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1");
+    trigs[4] = TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2");
+    trigs[5] = TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3");
+    trigs[6] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1");
+    trigs[7] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2");
+    trigs[8] = TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3");
+
+    
+    gMessMgr->SetLimit("I", 0);   //Disable StInfo messages including Skipped event message
+    gMessMgr->SetLimit("Q", 0);   //Disable StQAInfo messages (includes event processing status)
     
     StChain *chain = new StChain;
     StMuDstMaker *muDstMaker = new StMuDstMaker(0, 0, "", fileList, "", 1000);
@@ -40,11 +73,10 @@ void RunNanoDstMaker(TString fileList, TString outFile)
     
     //======================================================== Trigger Filter ==============================================
     //-------------- Filter/Skip Events if no RP or FMS BS/JP Trigger----------
-    // TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker");
-    // for(Int_t i = 0; i < trigs.size(); ++i)
-    // 	filterMaker->addTrigger(trigs[i]);
-    // filterMaker->SetHist1d(hEvtCount);
-    //----------------
+    TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker");
+    for(Int_t i = 0; i < trigs.size(); ++i)
+    	filterMaker->addTrigger(trigs[i]);
+    filterMaker->SetHist1d(hEvtCount);
 
     //======================================================== EMC ==============================================
     // Maker to apply calibration
@@ -58,8 +90,7 @@ void RunNanoDstMaker(TString fileList, TString outFile)
     epc->setFillHisto(kTRUE);
 
     TStEmcTrackMatchingMaker *trackMatchingMkr = new TStEmcTrackMatchingMaker();
-    
-    
+        
     //======================================================== FMS ==============================================
     //Enable new FMS calibration
     fmsDb->SetAttr("fmsGainCorr","fmsGainCorr-BNL-C");
@@ -103,8 +134,9 @@ void RunNanoDstMaker(TString fileList, TString outFile)
     nanoDstMaker->EnableFms(true);
     nanoDstMaker->EnableRps(true);
     nanoDstMaker->EnableTpc(true);
-    
-    
+    nanoDstMaker->SetTrigIDs(trigs);
+    nanoDstMaker->SetBeamMomentum(100.0);
+        
     Int_t nEvents = muDstMaker->chain()->GetEntries();
     cout << "----------->Total Events to be processed: "<< nEvents <<" <----------------"<<endl;
     

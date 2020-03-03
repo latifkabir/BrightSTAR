@@ -16,5 +16,6 @@
 #pragma link C++ function AnRunAnTreeMaker;                      // Run AnTree Maker
 #pragma link C++ function AnDstQA;                               // DST QA Plots
 #pragma link C++ function AnFmsRpPionSource;                     // For Rp-stream, plot pions based on category/source
+#pragma link C++ function AnRunNanoDstMaker;                     // Nano DST maker for AN Analysis
 
 #endif

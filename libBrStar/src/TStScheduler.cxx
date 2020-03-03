@@ -30,7 +30,9 @@ ClassImp(TStScheduler)
 
 TStScheduler::TStScheduler()
 {
-
+    // mJobThreshold = 100;
+    // mSleepTime = 30; //In minutes
+    // mRunIncrement = 20;
 }
 
 TStScheduler::~TStScheduler()
@@ -38,6 +40,9 @@ TStScheduler::~TStScheduler()
     
 }
 
+Int_t TStScheduler::mJobThreshold = 100;
+Int_t TStScheduler::mSleepTime = 30; //In minutes
+Int_t TStScheduler::mRunIncrement = 20;
 
 //___________________________________________________________________________________________
 void TStScheduler::JobStatus(Int_t level)
@@ -434,10 +439,10 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
     Int_t index_e = 0;
     Int_t startRun = firstRun;
     Int_t endRun;
-    Int_t runIncrement = 20; //10;
+    Int_t runIncrement = mRunIncrement;
     Int_t activeJobs = 9999;
-    Int_t jobThreshold = 100;
-    Int_t sleepTime = 30*60;
+    Int_t jobThreshold = mJobThreshold;
+    Int_t sleepTime = mSleepTime*60;
     Int_t iteration = 0;
 
     TString command_sh = TStar::Config->GetStarHome() + (TString)"/bin/activeJobs.sh"; 

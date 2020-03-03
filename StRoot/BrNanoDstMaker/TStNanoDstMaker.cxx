@@ -316,7 +316,13 @@ Int_t TStNanoDstMaker::MakeEvent()
 	mEventData->SetVpdSum(ew, mAdcSum[ew]);
     } 
     mEventData->SetTofMultiplicity(mMuEvent->triggerData()->tofMultiplicity());
-
+    mEventData->SetNprimaryTracks(mMuDst->numberOfPrimaryTracks());
+    mEventData->SetNvertices(mMuDst->primaryVertices()->GetEntries());
+    if(mMuDst->primaryVertex())
+	mEventData->SetRanking(mMuDst->primaryVertex()->ranking());
+    else
+	mEventData->SetRanking(-1.0);
+    
     // This approach leads to craches for some events
     // if(mMuDst->primaryVertex())
     // {
@@ -658,7 +664,7 @@ Int_t TStNanoDstMaker::MakeEmc()
     // 	return kStFatal;
     // }
     
-    mVertex = mMuDst->event()->primaryVertexPosition();//mMuDst->primaryVertex(0)->position();
+    mVertex = mMuDst->event()->primaryVertexPosition();
 
     mEmcCollection = mMuDst->emcCollection();
     if(!mEmcCollection)
