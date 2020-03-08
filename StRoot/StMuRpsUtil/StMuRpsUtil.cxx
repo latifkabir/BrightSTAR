@@ -280,13 +280,13 @@ void StMuRpsUtil::updateRunNumber(int runNum){
 
 
 void StMuRpsUtil::loadAlignment(){
-    mAlignmentPtr = new pp2ppGeom("StRoot/StMuRpsUtil/Alignment/pp2ppRPpositions","StRoot/StMuRpsUtil/Alignment/pp2ppOffsets.bin.v1.1.x"); //Changed the location <-- Latif
+    mAlignmentPtr = new pp2ppGeom(getenv("STARHOME") + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppRPpositions",getenv("STARHOME") + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppOffsets.bin.v1.1.x"); //Changed the location <-- Latif
 }
 
 
 void StMuRpsUtil::loadHotStripList(){
   std::ifstream fp;
-  std::string filePath("StRoot/StMuRpsUtil/HotStrips/hotStrips.list");
+  std::string filePath(getenv("STARHOME") + (string)"/StRoot/StMuRpsUtil/HotStrips/hotStrips.list");
   fp.open(filePath.c_str());
 
   if(!fp.good()){

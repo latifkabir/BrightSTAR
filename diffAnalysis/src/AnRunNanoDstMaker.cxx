@@ -60,5 +60,6 @@ void AnRunNanoDstMaker(TString fileList, TString outFile)
     evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "EHT0")); // Generally 480301;
 
     RunNanoDstMaker(fileList, outFile, false, evtTrigs);
+    // RunNanoDstMaker(fileList, outFile, true, evtTrigs, NULL, 500); //test
     
 }
