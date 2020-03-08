@@ -69,5 +69,6 @@
 #include <TLorentzVector.h>
 #include <TClonesArray.h>
 #include <TCutG.h>
+#include <TVector3.h>
 
 #endif

@@ -1,13 +1,14 @@
-// Filename: GenericJobSubmission.C
+// Filename: EventCounts.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
-// Created: Wed Jan 15 18:47:02 2020 (-0500)
+// Created: Thu Mar  5 14:16:16 2020 (-0500)
 // URL: jlab.org/~latif
 
-void GenericJobSubmission()
+
+void EventCounts()
 {
-    //------- Only Change Here ------------
-    TString funcName = "AnFmsRpPionSource";
+        //------- Change Here Function Name ------------
+    TString funcName = "AnFmsRpCorr";
     TString jobName = funcName;
     //--------------------------------------
     
@@ -17,7 +18,12 @@ void GenericJobSubmission()
     Int_t run = 0;
     Int_t nRunsDone = 0;
     TString fileName;
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/R15RpStream/AnRunAnTreeMaker_";
+    Int_t runCount = 0;
+    TGraph *gr = new TGraph();
+    
+    //------- Change Here the path and file prefix ---------------
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/R15FmsTrigNanoDst/AnRunNanoDstMaker_";
+    //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
 
@@ -35,24 +41,19 @@ void GenericJobSubmission()
 	    continue;
 	}
 	cout << "Processing run number: "<< run <<endl;
-	cout << "Percent completed: "<< (Int_t)(nRunsDone*100.0 / maxRuns) << "%"<<endl;
+	TFile *file = new TFile(fileName);
+	TTree *t = (TTree*) file->Get("T");
+	if(!t)
+	{
+	    cout << "No TTree in the file" <<endl;
+	    continue;
+	}
+	cout << "Number of Entries:"<< t->GetEntries() <<endl;
 
-	TString argList;
-	TString currentJobName;
-	
-	currentJobName = jobName + "_";
-	currentJobName += run_i;
-
-	argList = "(";
-	argList += run;
-	argList += ",";
-	argList +=run;
-	argList += ",\"" + currentJobName + ".root\")";
-
-	cout << (funcName + argList)<<endl;
-
-	TStScheduler::SubmitGenericJob(funcName + argList, currentJobName);
-	//break;
+	gr->SetPoint(runCount, runCount+100, t->GetEntries());
+	++runCount;
+	file->Close();
     }
 
+    gr->Draw();
 }

@@ -6,6 +6,7 @@
 //RP
 #pragma link C++ function RpReadDemo;                     // Read RP data
 #pragma link C++ function RpQA;                           // Various RP distributions
+#pragma link C++ function RpQAafterBurner;                // Various RP distributions with afterburner enabled
 
 //EEMC
 #pragma link C++ function EEmcReadDemo;                   // Read EEMC data
@@ -35,6 +36,9 @@
 #pragma link C++ function PidLambda;                      // Lambda invariant mass of pr,pi- combination from charged particle pid tree 
 #pragma link C++ function PidPiPpiM;                      // pi+,pi- invariant mass from charged particle pid tree
 #pragma link C++ function PidKmPiP;                       // K-,pi+ invariant mass from charged particle pid tree
+
+//TOF
+#pragma link C++ function TofData;                        // Access BTOF data 
 
 //Jets
 #pragma link C++ function JetQA;                          // Jet Data Quality Check

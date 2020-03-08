@@ -1,5 +1,5 @@
 // Filename: AnFmsRpCorr.C
-// Description: 
+// Description: Fms-Rp correlations for unpolarized proton break up
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Thu Nov 21 13:00:15 2019 (-0500)
 // URL: jlab.org/~latif
@@ -9,33 +9,12 @@
 #include "BrContainers/TStFmsPointPairData.h"
 #include "BrContainers/TStEventData.h"
 #include "BrContainers/TStRpsTrackData.h"
+#include "BrContainers/TStEmcPointData.h"
 
 using namespace std;
 
-
-void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFilePrefix)
-{
-    //--------------------------------- Naive way (Geometric cut) to get rid of hot channels -----------------
-   TCutG *cutg1 = new TCutG("CUTG1",6);
-   cutg1->SetPoint(0,-17.0798,36.0455);
-   cutg1->SetPoint(1,16.0218,36.6951);
-   cutg1->SetPoint(2,16.3241,8.43687);
-   cutg1->SetPoint(3,-5.44135,8.43687);
-   cutg1->SetPoint(4,-17.3821,36.6951);
-   cutg1->SetPoint(5,-17.0798,36.0455);
-
-
-   TCutG *cutg2 = new TCutG("CUTG2",8);
-   cutg2->SetPoint(0,-65.1451,62.3549);
-   cutg2->SetPoint(1,-39.7521,37.3447);
-   cutg2->SetPoint(2,-46.1004,29.2245);
-   cutg2->SetPoint(3,-68.7727,56.8331);
-   cutg2->SetPoint(4,-64.5405,61.7052);
-   cutg2->SetPoint(5,-64.8428,61.7052);
-   cutg2->SetPoint(6,-64.8428,61.7052);
-   cutg2->SetPoint(7,-65.1451,62.3549);
-   //-------------------------------------
-    
+void AnFmsRpCorrUppb(Int_t firstRun, Int_t lastRun, TString outName, TString inFilePrefix)
+{    
     TStRunList *list = new TStRunList();
     TEntryList *runList = list->GetRunList(firstRun, lastRun);
     Int_t maxRuns = runList->GetN();
@@ -76,6 +55,9 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
     TH1D* hist15 = new TH1D("bbcSumS_west", "West Small BBC ADC Sum", 250, 0, 45000);
     TH1D* hist16 = new TH1D("trigger", "Trigger Distribution", 1000, 480000, 481000);
     TH1D* hist17 = new TH1D("evt_trigger", "Event Trigger Distribution", 1000, 480000, 481000);
+    TH1D* hist19 = new TH1D("emc_nPoints", "EMC photon multiplicity", 100, 0, 10);
+    TH1D* hist20 = new TH1D("emc_pointE", "EMC photon energy", 100, 0, 5);
+    TH1D* hist21 = new TH1D("emc_eta", "EMC photon eta", 40, -1.0, 1.0);
 
     TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p}^{west} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p}^{west} [GeV]", 100, 10, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
@@ -90,12 +72,17 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
     Int_t nEntries = 0;
     TClonesArray *fmsArr = new TClonesArray("TStFmsPointPairData");
     TClonesArray *rpsArr = new TClonesArray("TStRpsTrackData");
+    TClonesArray *emcArr = new TClonesArray("TStEmcPointData");
     TStEventData *event = new TStEventData();
     TStFmsPointPairData *pion;
     TStRpsTrackData *rpsTrack;
+    TStEmcPointData *emcPhoton;
     Int_t nPions = 0;
     Int_t nRpsTracks = 0;
-        
+    Int_t nEmcPhotons = 0;
+    Double_t emcPhotonEng = 0.0;
+    TVector3 emcVec;
+    
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
 
     //-----
@@ -135,6 +122,8 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	tree->SetBranchAddress("event", &event);
 	tree->SetBranchAddress("fmsPointPair", &fmsArr);
 	tree->SetBranchAddress("rpTrack", &rpsArr);
+	tree->SetBranchAddress("emcPoint", &emcArr);
+
 	//----------- Loop over Events ---------------------
 	for(Int_t evt = 0; evt < nEntries; ++evt)
 	{
@@ -146,14 +135,14 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	    ++eventCount[0]; //Event Counter
 
 	    trigList.clear();
-	    for(Int_t t = 0; t < event->mNtrig; ++t)
+	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
 	    {
-		hist16->Fill(event->mTriggers[t]);
-		trigList.push_back(event->mTriggers[t]);
+		hist16->Fill(event->GetTrigger(t));
+		trigList.push_back(event->GetTrigger(t));
 	    }
 	    //-------Trigger Selection ------------
-	    if(std::find(trigList.begin(), trigList.end(), trig_SD) == trigList.end() && std::find(trigList.begin(), trigList.end(), trig_SDT) == trigList.end())
-	    	continue;
+	    // if(std::find(trigList.begin(), trigList.end(), trig_SD) == trigList.end() && std::find(trigList.begin(), trigList.end(), trig_SDT) == trigList.end())
+	    // 	continue;
 
 	    ++trigEvt;
 	    //----- RP Tracks ----------
@@ -168,40 +157,40 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 		rpsTrack = (TStRpsTrackData*)rpsArr->At(trk);
 
 		//-------- RP Cuts ----------
-		if (rpsTrack->mType != 1)
+		if (rpsTrack->GetType() != 1)
 		    continue;
-		if(!(rpsTrack->mTheta_x > -1.5 && rpsTrack->mTheta_x < 5.0)) 
+		if(!(rpsTrack->GetThetaX() > -1.5 && rpsTrack->GetThetaX() < 5.0)) 
 		    continue;
-		if(!(fabs(rpsTrack->mTheta_y) > 1.0 &&  fabs(rpsTrack->mTheta_y) < 5.5))
+		if(!(fabs(rpsTrack->GetThetaY()) > 1.0 &&  fabs(rpsTrack->GetThetaY()) < 5.5))
 		    continue;
-		if(rpsTrack->mNplanes < 7)
+		if(rpsTrack->GetNplanes() < 7)
 		    continue;
 		
-		hist9->Fill(rpsTrack->mP);
-		hist10->Fill(rpsTrack->mPt);
+		hist9->Fill(rpsTrack->GetP());
+		hist10->Fill(rpsTrack->GetPt());
 		
-		if(rpsTrack->mBranch == 0 || rpsTrack->mBranch == 1) //East RP :: O East Up RP, 1: East Down RP
+		if(rpsTrack->GetBranch() == 0 || rpsTrack->GetBranch() == 1) //East RP :: O East Up RP, 1: East Down RP
 		{
 		    ++nTrkEast;
 		    eastTrk_i = trk;
 		    
-		    hist1East->Fill(rpsTrack->mP);		
-		    hist2East->Fill(rpsTrack->mPt);
-		    hist3East->Fill(rpsTrack->mEta);
-		    hist4East->Fill(rpsTrack->mPhi);
-		    hist5East->Fill(rpsTrack->mXi);		
+		    hist1East->Fill(rpsTrack->GetP());		
+		    hist2East->Fill(rpsTrack->GetPt());
+		    hist3East->Fill(rpsTrack->GetEta());
+		    hist4East->Fill(rpsTrack->GetPhi());
+		    hist5East->Fill(rpsTrack->GetXi());		
 		}
 
-		if(rpsTrack->mBranch == 2 || rpsTrack->mBranch == 3) //West RP :: 2: West Up RP, 3: West Down RP
+		if(rpsTrack->GetBranch() == 2 || rpsTrack->GetBranch() == 3) //West RP :: 2: West Up RP, 3: West Down RP
 		{
 		    ++nTrkWest;
 		    westTrk_i = trk;
 		    
-		    hist1West->Fill(rpsTrack->mP);		
-		    hist2West->Fill(rpsTrack->mPt);
-		    hist3West->Fill(rpsTrack->mEta);
-		    hist4West->Fill(rpsTrack->mPhi);
-		    hist5West->Fill(rpsTrack->mXi);
+		    hist1West->Fill(rpsTrack->GetP());		
+		    hist2West->Fill(rpsTrack->GetPt());
+		    hist3West->Fill(rpsTrack->GetEta());
+		    hist4West->Fill(rpsTrack->GetPhi());
+		    hist5West->Fill(rpsTrack->GetXi());
 		}		
 	    }
 	    //---------- FMS Pion candidates ---------------
@@ -212,13 +201,10 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 		pion = (TStFmsPointPairData*)fmsArr->At(pi);
 
 		//--------------- FMS Cut ----------------
-		if(pion->mZgg > 0.8)
+		if(pion->GetZgg() > 0.8)
 		    continue;
 	    
-		if(pion->mE < 12 || pion->mE > 70)
-		    continue;
-
-		if(cutg1->IsInside(pion->mX, pion->mY) || cutg2->IsInside(pion->mX, pion->mY))
+		if(pion->GetE() < 12 || pion->GetE() > 70)
 		    continue;
 
 		if(fms_i == -1) //consider only highest energy pair of photons, note: the Pions are already sorted based on energy
@@ -228,17 +214,14 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 		}		
 	    }
 
-	    if(nTrkEast == 1 && fms_i > -1 && event->mBbcADCSum[0] < 60 && event->mBbcADCSumLarge[0] < 110)  //Sanity Check
+	    if(nTrkEast == 1 && fms_i > -1 && event->GetBbcSumSmall(0) < 60 && event->GetBbcSumLarge(0) < 110)  //Sanity Check
 	    {
 		pion = (TStFmsPointPairData*)fmsArr->At(fms_i);
 		rpsTrack = (TStRpsTrackData*)rpsArr->At(eastTrk_i);
-		hist8East->Fill(rpsTrack->mP + pion->mE);
+		hist8East->Fill(rpsTrack->GetP() + pion->GetE());
 	    }
 	    
 	    if(!(nTrkWest == 1 && nTrkEast == 0))   //Full RP Cuts with One track in west and no track in the east
-	    //if(!(nTrkWest == 0 && nTrkEast == 1)) //Full RP Cuts with One track in west and no track in the east
-	    //if(!(nTrkWest == 1 && nTrkEast == 1)) //<------------ Allowing BOTH protons
-	    //if(!(nTrkWest == 1))                  //<------------ Allowing west and no restriction on east
 	    	continue;
 
 	    ++eventCount[1]; //Post RP cut counter	
@@ -251,50 +234,66 @@ void AnFmsRpCorr(Int_t firstRun, Int_t lastRun, TString outName, TString inFileP
 	    pion = (TStFmsPointPairData*)fmsArr->At(fms_i);
 	    rpsTrack = (TStRpsTrackData*)rpsArr->At(westTrk_i);	
     
-	    hist11->Fill(pion->mM);
-	    hist12->Fill(pion->mE);
-	    hist2d5->Fill(pion->mX, pion->mY);
-	    sumE_w = rpsTrack->mP + pion->mE;
+	    hist11->Fill(pion->GetM());
+	    hist12->Fill(pion->GetE());
+	    hist2d5->Fill(pion->GetX(), pion->GetY());
+	    sumE_w = rpsTrack->GetP() + pion->GetE();
 	
-	    hist13->Fill(event->mTofMultiplicity);
+	    hist13->Fill(event->GetTofMultiplicity());
 	    hist6->Fill(sumE_w);
 	    
 	    //------------- BBC and TOF Cut -----------------	    
-	    if(!(event->mTofMultiplicity > 0))
+	    if(!(event->GetTofMultiplicity() > 0))
 		continue;
 
-	    if(!(event->mBbcADCSum[0] > 0))	//bbc 0 is east and 1 is west 
+	    if(!(event->GetBbcSumSmall(0) > 0))	//bbc 0 is east and 1 is west 
 		continue;
 
-	    hist14->Fill(event->mBbcADCSumLarge[1]);
-	    hist15->Fill(event->mBbcADCSum[1]);
-	    hist2d2->Fill(sumE_w, event->mBbcADCSumLarge[1]);
-	    hist2d3->Fill(sumE_w, event->mBbcADCSum[1]);
+	    hist14->Fill(event->GetBbcSumLarge(1));
+	    hist15->Fill(event->GetBbcSumSmall(1));
+	    hist2d2->Fill(sumE_w, event->GetBbcSumLarge(1));
+	    hist2d3->Fill(sumE_w, event->GetBbcSumSmall(1));
 	    
-	    if(event->mBbcADCSum[1] > 60)	//bbc 0 is east and 1 is west 
+	    if(event->GetBbcSumSmall(1) > 60)	//bbc 0 is east and 1 is west 
 		continue;
 	    
-	    if(event->mBbcADCSumLarge[1] > 110) //bbc 0 is east and 1 is west 
+	    if(event->GetBbcSumLarge(1) > 110) //bbc 0 is east and 1 is west 
 		continue;
 
 	    ++eventCount[3];			// Post BBC-TOF cut counter	    
+
+	    //----------- Mid Rapidity Cut for Rapidity Gap --------------------
+	    emcPhotonEng = 0.0;
+	    nEmcPhotons = emcArr->GetEntriesFast();
+	    hist19->Fill(nEmcPhotons);
+	    for(Int_t e = 0; e < nEmcPhotons; ++e)
+	    {
+		emcPhoton = (TStEmcPointData*)emcArr->At(e);
+		hist20->Fill(emcPhoton->GetE());
+		emcVec.SetXYZ(emcPhoton->GetX(), emcPhoton->GetY(), emcPhoton->GetZ());
+		hist21->Fill(emcVec.Eta());
+		if(emcPhoton->GetE() > emcPhotonEng)
+		    emcPhotonEng = emcPhoton->GetE();      // Find maximum emc photon energy
+	    }
+	    // if(emcPhotonEng > 0.2)
+	    // 	continue;
 	    
 	    //-------------------------- FMS-RP Correlation -------------------------------
 	    if(nPions == 1)	                //Extreme Cut:Single pion in FMS
 		hist7->Fill(sumE_w);
 	
 	    hist8West->Fill(sumE_w);
-	    hist2d1->Fill(pion->mE,  rpsTrack->mP);
+	    hist2d1->Fill(pion->GetE(),  rpsTrack->GetP());
 
-	    if(pion->mM > 0.0 && pion->mM < 0.20)
+	    if(pion->GetM() > 0.0 && pion->GetM() < 0.20)
 		hist18->Fill(sumE_w);
 	    //----------------------------- Diffractive p + p -----> pi^0 + p + X event cut ------------------------
 	    if((sumE_w > 80 && sumE_w < 107)            // <------- Energy Conservation cut (WIDER RANGE USED!!)
-	       && (pion->mM > 0.0 && pion->mM < 0.25))  // <----- Pion mass range (WIDER RANGE USED!!)
+	       && (pion->GetM() > 0.0 && pion->GetM() < 0.25))  // <----- Pion mass range (WIDER RANGE USED!!)
 	    {
-		hist2d4->Fill(pion->mPhi, rpsTrack->mPhi);
+		hist2d4->Fill(pion->GetPhi(), rpsTrack->GetPhi());
 		for(Int_t t = 0; t < event->mNtrig; ++t)
-		    hist17->Fill(event->mTriggers[t]);
+		    hist17->Fill(event->GetTrigger(t));
 		
 		++eventCount[4];	    
 	    }	    

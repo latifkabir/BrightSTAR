@@ -4,7 +4,8 @@
 #pragma link C++ function AnRunFmsRpTreeMaker;                   // Run Fms + Rp Tree Maker
 #pragma link C++ class TAnFmsRpTreeReader;                       // Fms + Rp Tree Reader
 #pragma link C++ function AnFmsRpQA;                             // Fms + Rp Correlation and event selection QA with multiple tracks allowed
-#pragma link C++ function AnFmsRpCorr;                           // Fms + Rp Correlation with only 1 good RP track per event allowed
+#pragma link C++ function AnFmsRpCorrUppb;                       // Fms + Rp Correlation with only 1 good RP track per event allowed (Unpolarized proton breaks)
+#pragma link C++ function AnFmsRpCorrPpb;                        // Fms + Rp Correlation with only 1 good RP track per event allowed (Polarized proton breaks)
 #pragma link C++ function AnFmsRpCorrMergedFull;                 // Fms + Rp Correlation with only 1 good RP track per event allowed, uses fully merged single root file.
 
 #pragma link C++ function AnRunEEmcRpTreeMakerPart1;             // Rp + EEMC Part1 Tree Maker

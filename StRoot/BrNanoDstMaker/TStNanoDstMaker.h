@@ -18,6 +18,7 @@
 #include "StMuDSTMaker/COMMON/StMuTrack.h"
 #include "StMuDSTMaker/COMMON/StMuPrimaryVertex.h"
 #include "StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
+#include "StEEmcPool/StEEmcTreeMaker/StEEmcTreeMaker.h"
 #include "StJetMaker/mudst/StMuEmcPosition.h"
 #include "StEmcUtil/geometry/StEmcGeom.h"
 
@@ -26,6 +27,9 @@
 #include "BrEmcMaker/TStEmcTrackMatchingMaker.h"
 #include "BrEmcMaker/TStEmcPidTrait.h"
 
+//--- For RP afterburner ---
+#include "StMuRpsUtil/StMuRpsUtil.h"
+#include "StMuRpsUtil/StMuRpsCollection2.h"
 
 #include "TH1D.h"
 #include "TH2D.h"
@@ -42,6 +46,7 @@
 
 
 class StEvent;
+class StMuDstMaker;
 class StMuDst;
 class StMuDstEvent;
 class StMuEvent;
@@ -55,6 +60,7 @@ class StEmcPoint;
 class TStNanoDstMaker : public StMaker
 {
 private:
+    StMuDstMaker *mMuDstMaker;
     StMuDst *mMuDst;  
     StEvent *mEvent;
     StMuEvent *mMuEvent;
@@ -69,12 +75,17 @@ private:
     TFile *mFile;
     TTree *mTree = 0;
     Bool_t mSaveFile;
-
+    Int_t mEventCount;
+    
     Bool_t mUseEvent;
     Bool_t mUseTpc;
     Bool_t mUseEmc;
     Bool_t mUseFms;
     Bool_t mUseRps;
+    Bool_t mUseEEmc;
+
+    Bool_t mSyncOnEEmc;
+    Bool_t mUseRpsAfterburner;
     
     //--- Event ---
     Int_t  mBunchid7bit;
@@ -147,7 +158,9 @@ private:
     TStFmsPointPairData *mFmsPointPairData;
     
     //--- RP ---
-    StMuRpsCollection *mRpsMuColl;
+    // StMuRpsCollection *mRpsMuColl;
+    StMuRpsCollection2 *mRpsMuColl; //Use after burner
+    StMuRpsUtil* mAfterburner;
     StMuRpsTrack *mRpsTrk;
     Double_t mBeamMom;
     
@@ -166,6 +179,9 @@ private:
     StThreeVectorF mVertex;
     Float_t mEmcPointEng;
     Int_t mEmcNpoints;
+    //--------- EEMC -------------
+    StEEmcTreeMaker_t *mEEmcTreeMaker;
+    Int_t mHasEEmcEvent;
     
 protected:
     void SetBranches();
@@ -199,10 +215,15 @@ public:
     void EnableEmc(Bool_t status){mUseEmc = status;}
     void EnableFms(Bool_t status){mUseFms = status;}
     void EnableRps(Bool_t status){mUseRps = status;}
+    void EnableEEmc(Bool_t status){mUseEEmc = status;}
+    void SyncOnEEmc(Bool_t status){mSyncOnEEmc = status;}
+    void UseRpsAfterburner(Bool_t status){mUseRpsAfterburner = status;}
+    void SetMuDstMaker(StMuDstMaker *maker){mMuDstMaker = maker;}
     
     ClassDef(TStNanoDstMaker,1) 
 };
 
 #endif
+
 
 

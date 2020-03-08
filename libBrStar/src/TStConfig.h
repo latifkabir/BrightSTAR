@@ -37,6 +37,7 @@ class TStConfig : public TObject
     int fUseEmc;
     int fUseFms;
     int fUseRps;
+    int fUseEEmc;
     
     void CheckValidity();    
 public:
@@ -60,11 +61,12 @@ public:
     const string & GetTrigDefFile(){return fTrigDefFile;}
     const string & GetStreamPrefix(){return fStreamPrefix;}
 
-    bool EnableEvt(){return fUseEvt == 1;}
+    bool EnableEvent(){return fUseEvt == 1;}
     bool EnableTpc(){return fUseTpc == 1;}
     bool EnableEmc(){return fUseEmc == 1;}
     bool EnableFms(){return fUseFms == 1;}
     bool EnableRps(){return fUseRps == 1;}
+    bool EnableEEmc(){return fUseEEmc == 1;}
     
     ClassDef(TStConfig,1)
 };

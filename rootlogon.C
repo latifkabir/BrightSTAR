@@ -95,6 +95,9 @@
     gSystem->Load("StEmcTriggerMaker");
     gSystem->Load("StEpcMaker");
 
+    //------------- BTOF ---------------
+    gSystem->Load("StBTofUtil");
+    
     //--------- Jet Maker -------------
     gSystem->Load("StTriggerUtilities");
     gSystem->Load("StMCAsymMaker");
@@ -112,6 +115,10 @@
     gSystem->Load("StUeEvent");
     gSystem->Load("StJetMaker");
     gSystem->Load("StTriggerFilterMaker");
+
+    //------------- RP ------------------
+    gSystem->Load("StMuRpsUtil.so"); //RP Afterburner
+    
     cout<<"\t\t done loading StRoot libraries ...."<<endl;
     
     //------ Bright Star Maker -------------

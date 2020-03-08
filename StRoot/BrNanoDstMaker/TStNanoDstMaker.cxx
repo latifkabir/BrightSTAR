@@ -22,7 +22,10 @@ ClassImp(TStNanoDstMaker)
 TStNanoDstMaker::TStNanoDstMaker(const char *name):StMaker(name)
 {
     mBeamMom = 100.0; //Overwrite from runMacro
-
+    mEventCount = 0;
+    mSyncOnEEmc = kFALSE;
+    mUseRpsAfterburner = kFALSE;
+    
     // Turn Off TObject streamer to save space on the file.
     // see: https://root.cern.ch/doc/master/classTClass.html#a606b0442d6fec4b1cd52f43bca73aa51
     TStEventData::Class()->IgnoreTObjectStreamer();
@@ -52,16 +55,16 @@ TStNanoDstMaker::TStNanoDstMaker(const char *name):StMaker(name)
 
     //RP Buffer
     mRpsArray = new TClonesArray("TStRpsTrackData");
-
+    
     //EMC Buffer
     mEmcArray = new TClonesArray("TStEmcPointData");
-
 
     mUseEvent = kFALSE;
     mUseTpc = kFALSE;
     mUseEmc = kFALSE;
     mUseFms = kFALSE;
     mUseRps = kFALSE;
+    mUseEEmc = kFALSE;
 }
 
 //_____________________________________________________________________________ 
@@ -118,6 +121,14 @@ Int_t TStNanoDstMaker::Init()
     SetBranches();
     InitHist();
     mEmcRadius = (Double_t)StEmcGeom::instance("bemc")->Radius();
+
+    //mMuDstMaker = (StMuDstMaker*)GetInputDS("MuDst");
+    if(!mMuDstMaker)
+    {
+	cout << "TStNanoDstMaker::Init - Unable to to retrieve MuDstMaker pointer" <<endl;
+	return kStErr;
+    }
+    mAfterburner = new StMuRpsUtil(mMuDstMaker); // RP afterburner
     
     return kStOK;
 }
@@ -134,29 +145,38 @@ Int_t TStNanoDstMaker::InitRun(int runnumber)
 //_____________________________________________________________________________ 
 void TStNanoDstMaker::SetBranches()
 {
-    //Event branches    
-    mTree->Branch("event", mEventData, 256000, 99);
+    //Event branches
+    if(mUseEvent)
+	mTree->Branch("event", mEventData, 256000, 99);
 
     //TPC Track branch
     //mTree->Branch("track", &mTrackArray, 256000, 99);
 
     //Charged PID branches
-    mTree->Branch("e", &mElArray, 256000, 99);
-    mTree->Branch("pi", &mPiArray, 256000, 99);
-    mTree->Branch("pr", &mPrArray, 256000, 99);
-    mTree->Branch("ka", &mKaArray, 256000, 99);
-    mTree->Branch("mu", &mMuArray, 256000, 99);
-    mTree->Branch("uk", &mUkArray, 256000, 99);
-    
+    if(mUseTpc)
+    {
+	mTree->Branch("e", &mElArray, 256000, 99);
+	mTree->Branch("pi", &mPiArray, 256000, 99);
+	mTree->Branch("pr", &mPrArray, 256000, 99);
+	mTree->Branch("ka", &mKaArray, 256000, 99);
+	mTree->Branch("mu", &mMuArray, 256000, 99);
+	mTree->Branch("uk", &mUkArray, 256000, 99);
+    }
     //FMS branches
-    mTree->Branch("fmsPointPair", &mFmsArray, 256000, 99);
+    if(mUseFms)
+	mTree->Branch("fmsPointPair", &mFmsArray, 256000, 99);
 
     //RP branches
-    mTree->Branch("rpTrack", &mRpsArray, 256000, 99);
+    if(mUseRps)
+	mTree->Branch("rpTrack", &mRpsArray, 256000, 99);
 
     //EMC branches
     if(mUseEmc)
 	mTree->Branch("emcPoint", &mEmcArray, 256000, 99);
+
+    //EEMC Flag
+    if(mUseEEmc)
+	mTree->Branch("eemcStatus", &mHasEEmcEvent, "eemcStatus/I");
     
     cout << "Done setting branches..." <<endl;
 }
@@ -202,8 +222,7 @@ void TStNanoDstMaker::Reset()
     
     mRpsArray->Clear();    
 
-    if(mUseEmc)
-	mEmcArray->Clear();    
+    mEmcArray->Clear();    
 }
     
 //_____________________________________________________________________________
@@ -226,6 +245,28 @@ Int_t TStNanoDstMaker::Make()
     //------ Reset Buffer --------
     Reset();
 
+    //------- EEmc tree is separate.  But it can be synchronized here. If synced, it keeps event only if there is a vlaid. If not synced, it has a flag indicating if corresponding EEMC event is available. Trees will have different number of entries in the later case and you need to use the flag to synchronize. 
+    //EEMC event
+    if(mUseEEmc)
+    {
+	mEEmcTreeMaker = (StEEmcTreeMaker_t*)GetMaker("EEmcTreeMaker");
+	if(!mEEmcTreeMaker)
+	{
+	    cout << "TStNanoDstMaker::Make !StEEmcTreeMaker_t" <<endl;
+	    return kStErr;
+	}
+	//Synchronize RP tree with EEMC part1 tree. This will keep event only if EEMC tree has an entry for this event.
+	if(mSyncOnEEmc)
+	{
+	    if(mEEmcTreeMaker->getNumPart1EventsWritten() != (mEventCount + 1))
+		return kStSkip;
+	}
+	if(mEEmcTreeMaker->getNumPart1EventsWritten() != (mEventCount + 1))
+	    mHasEEmcEvent = 1;
+	else
+	    mHasEEmcEvent = 0;
+    }
+    
     if(mUseEvent)
 	MakeEvent();
     if(mUseFms)
@@ -239,12 +280,14 @@ Int_t TStNanoDstMaker::Make()
 	MakeEmc();
     
     mTree->Fill();
-
+    ++mEventCount;
+    
     return kStOk;    
 }
 //_____________________________________________________________________________
 Bool_t TStNanoDstMaker::AcceptEvent()
 {
+    /*
     //Trigger flag
     mTrigFlag = 0;
     for(mIt = mTrigIDs.begin(); mIt != mTrigIDs.end(); ++mIt)
@@ -266,7 +309,7 @@ Bool_t TStNanoDstMaker::AcceptEvent()
 
     //Skip LED trigger events here
     //Skip abort gap events here
-    
+    */
     return kTRUE;
 }
 //_____________________________________________________________________________
@@ -304,14 +347,14 @@ Int_t TStNanoDstMaker::MakeEvent()
 	mAdcSum[ew] = 0;
 	for(Int_t pmt = 1; pmt <= 3; pmt++)
 	{
-	   mAdcSum[ew] += mMuEvent->triggerData()->zdcADC((StBeamDirection)ew,pmt); // is this correct?
+	   mAdcSum[ew] += mMuEvent->triggerData()->zdcADC((StBeamDirection)ew,pmt); 
 	}
 	mEventData->SetZdcSum(ew, mAdcSum[ew]);
 	// VPD
 	mAdcSum[ew] = 0;
 	for(Int_t pmt = 1; pmt <= 16; pmt++)
 	{
-	   mAdcSum[ew] += mMuEvent->triggerData()->vpdADC((StBeamDirection)ew,pmt); // is this correct?
+	   mAdcSum[ew] += mMuEvent->triggerData()->vpdADC((StBeamDirection)ew,pmt); // replace by vpdADCSum if same
 	}
 	mEventData->SetVpdSum(ew, mAdcSum[ew]);
     } 
@@ -418,7 +461,15 @@ Int_t TStNanoDstMaker::MakeFms()
 //_____________________________________________________________________________
 Int_t TStNanoDstMaker::MakeRps()
 {
-    mRpsMuColl = mMuDst->RpsCollection();
+    //------ Using afterburner ----
+    // if(mUseRpsAfterburner)
+    // {    
+	mAfterburner->updateVertex(0.000415, 0.000455, 0.0); // specific to run 15 pp200 trans !!! To be set with set method
+	mRpsMuColl = mAfterburner->process(); // executes afterburner
+    // }
+    //------
+    
+    //mRpsMuColl = mMuDst->RpsCollection();  //No afterburner
     if(!mRpsMuColl)
     {
 	cout<<"No RP data for this event"<<endl;

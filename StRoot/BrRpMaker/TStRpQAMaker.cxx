@@ -24,6 +24,9 @@ TStRpQAMaker::TStRpQAMaker(StMuDstMaker *maker) : StMaker("TStRpQAMaker")
     mNEventsPassed = mNEventsFailed = 0;
     mFileName = "";
     mMuDstMaker  = maker;
+
+    mAfterburner = new StMuRpsUtil(maker); // RP afterburner
+    
 }
 
 //__________________________________________________________________//
@@ -64,8 +67,13 @@ Int_t TStRpQAMaker::Make()
 	return kStOk;
     }
 
-    mRpsMuColl = mMuDst->RpsCollection();
+    // mRpsMuColl = mMuDst->RpsCollection();  //No afterburner
 
+    //------ Using afterburner ----
+    mAfterburner->updateVertex(0.000415, 0.000455, 0.0); // specific to run 15 pp200 trans !!!
+    mRpsMuColl = mAfterburner->process(); // executes afterburner 
+    //------
+    
     if(!mRpsMuColl)
     {
 	cout<<"No RP data for this event"<<endl;
@@ -90,6 +98,10 @@ Int_t TStRpQAMaker::Make()
 	    mHist1[12]->Fill(mRpsMuColl->track(i)->phi());		
 	}
     }
+
+    //afterburner
+    mAfterburner->clear();
+    
     ++mNEventsPassed;
     return kStOK;
 }

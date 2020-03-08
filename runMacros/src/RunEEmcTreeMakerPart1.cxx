@@ -24,9 +24,7 @@ void RunEEmcTreeMakerPart1(const Char_t *inputFileName,
 			    const Char_t *outputFileName,
 			    Int_t displayFreq,
 			    Bool_t isMC)
-{
-    cout << "\033[1;31m=============== This script requires a custom StMuDstMaker library.====================================\033[0m"<<endl;
-    
+{    
     //
     // some variables that others tend to make global
     //
@@ -54,10 +52,6 @@ void RunEEmcTreeMakerPart1(const Char_t *inputFileName,
     //
     Int_t nfiles = 10000;
     muDstMaker = new StMuDstMaker( 0, 0, "", inputFileName, "MuDst", nfiles );
-    muDstMaker->SetStatus("*",0);
-    muDstMaker->SetStatus("*Event*",1);
-    muDstMaker->SetStatus("PrimaryVertices",1);
-    muDstMaker->SetStatus("EmcAll",1);
 
     //1.<--------------
     // just to make sure StEvent is found for the trig simu
@@ -236,7 +230,6 @@ void RunEEmcTreeMakerPart1(const Char_t *inputFileName,
     //
     // analysisChain->Delete();
     
-    cout << "\033[1;31m=============== This script requires a custom StMuDstMaker library.====================================\033[0m"<<endl;
     
     return;
 };

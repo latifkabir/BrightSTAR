@@ -18,7 +18,8 @@ then
   exit
 fi  
 
-a=1
+a=4
+let maxIndex=$maxIndex+1
 
 while [ $a -lt $maxIndex ]
 do

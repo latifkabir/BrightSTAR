@@ -63,6 +63,6 @@ RunPicoDstMaker : Make PicoDST files from MuDst files
 RunEmcCalibTreeMaker : EMC Calibration Tree Maker
 RunPicoMiniTreeMaker : Mini Tree Maker from PicoDst
 RunFemtoDstMaker     : Make Femto DST from MuDst
-RunFmsOFileMaker     : PSU FMS + RP Tree maker 
+RunFmsOFileMaker     : PSU FMS + RP Tree maker (moved to diffAnalysis)
 
 */

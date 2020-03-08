@@ -3,6 +3,7 @@
 if [ $# -ne 3 ]
 then
     echo "Syntax: ./$0 <runList>  <FolderName> <FilePrefix> <optional: use root-6 version = r6>"
+    echo "You can use unaliased \"ls -1\" to create runList"
     exit
 fi
 

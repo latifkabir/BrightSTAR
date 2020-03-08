@@ -27,5 +27,5 @@ void RunRpQAMaker(TString inFile, TString outFile)
     chain->EventLoop(1,nEvents);
     chain->Finish();
 
-    delete chain;
+    //delete chain;
 }

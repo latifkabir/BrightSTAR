@@ -141,6 +141,11 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fUseRps = atoi(tokens);
 	    }
+	    else if(s == "ENABLE_EEMC")
+	    {
+		tokens = strtok(NULL, " :,");
+		fUseEEmc = atoi(tokens);
+	    }
 	    else
 	    {
 		tokens = strtok(NULL, " :,");
@@ -165,11 +170,12 @@ void TStConfig::Print()
     cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath()<<"\n"<<endl;
     cout << "\033[1;31mStream prefix: \033[0m"<< GetStreamPrefix()<<"\n"<<endl;
     cout << "--- Nano DST Branch Status: ----"<<endl;
-    cout << "Event:"<< EnableEvt()<<endl;
+    cout << "Event:"<< EnableEvent()<<endl;
     cout << "TPC:"<< EnableTpc()<<endl;
     cout << "EMC:"<< EnableEmc()<<endl;
     cout << "FMS:"<< EnableFms()<<endl;
     cout << "RPS:"<< EnableRps()<<endl;
+    cout << "EEMC:"<< EnableEEmc()<<endl;
     cout << "==================================================" <<endl;    
 }
 

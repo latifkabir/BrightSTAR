@@ -1,15 +1,26 @@
-// Filename: RpQA.cxx
+// Filename: RpQAafterBurner.cxx
 // Description: Look at various RP variable distributions.
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon May 20 15:04:13 2019 (-0400)
 // URL: jlab.org/~latif
+
+/*
+
+Afterburner works only if inplemented in the maker class. Check Maker class implementation example.
+
+*/
+
 
 #include "RootInclude.h"
 #include "TStRunList.h"
 #include "TStar.h"
 #include "StRootInclude.h"
 
-void RpQA(Int_t runNo, Int_t maxFiles)
+// RP afterburner
+#include "StMuRpsUtil/StMuRpsUtil.h"
+#include "StMuRpsUtil/StMuRpsCollection2.h"
+
+void RpQAafterBurner(Int_t runNo, Int_t maxFiles)
 {
     TStopwatch st;
     st.Start();
@@ -20,7 +31,7 @@ void RpQA(Int_t runNo, Int_t maxFiles)
     const Int_t nPlots = 13;
     TH1F *h1[nPlots];
 
-    TString fileName = "RpQA.root";
+    TString fileName = "RpQAafterBurner.root";
     TFile *file = new TFile(fileName, "recreate", "RP Track variable distributions from run" + (TString) runNo);
     h1[0] = new TH1F("h1nPlanes", "number of planes; number of planes", 100, 0.0, 0.0);
     h1[1] = new TH1F("h1nRP", "number of RP; number of RP", 100, 0.0, 0.0);
@@ -43,7 +54,11 @@ void RpQA(Int_t runNo, Int_t maxFiles)
     muDstMaker->SetStatus("pp2pp*",1);
     
     StMuDst *mDst = muDstMaker->muDst();   // Get StMuDst
-    StMuRpsCollection *rpsMuColl;
+    //-----
+    StMuRpsUtil* mAfterburner = new StMuRpsUtil(muDstMaker); // RP afterburner
+    //-----
+    //StMuRpsCollection *rpsMuColl; //no afterburner
+    StMuRpsCollection2 *rpsMuColl;   //2 for afterburner
     StMuRpsTrackPoint  *rpsTrkPoint;
     StMuRpsTrack *rpsTrk;
     
@@ -53,13 +68,18 @@ void RpQA(Int_t runNo, Int_t maxFiles)
     
     int nEvents = ch->GetEntries();
     cout << "Total events to be processed: "<< nEvents <<endl;
-
     for (int iev = 0; iev < nEvents; iev++)
     {
 	chain->Clear();
-	int iret = chain->Make(iev);	
-	rpsMuColl = mDst->RpsCollection();
+	int iret = chain->Make(iev);
 
+	//rpsMuColl = mDst->RpsCollection(); // Without afterburner
+	
+	//------ Using afterburner ----
+	mAfterburner->updateVertex(0.000415, 0.000455, 0.0); // specific to run 15 pp200 trans !!!
+	rpsMuColl = mAfterburner->process(); // executes afterburner 
+	//------
+		
 	if(!rpsMuColl)
 	{
 	    cout<<"No RP data for this event"<<endl;
@@ -84,7 +104,9 @@ void RpQA(Int_t runNo, Int_t maxFiles)
 		h1[12]->Fill(rpsMuColl->track(i)->phi());		
 	    }
 	}
-	if(!(iev%100))
+	//--- afterburner -----
+	mAfterburner->clear(); // Critical!!!
+	if(!(iev%1000))
 	    cout<<"Events processed:" << iev <<endl;
     }
     chain->Finish();

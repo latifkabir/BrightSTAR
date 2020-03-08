@@ -13,6 +13,11 @@
 #include "StMuDSTMaker/COMMON/StMuRpsTrack.h"
 #include "StMuDSTMaker/COMMON/StMuRpsTrackPoint.h"
 
+//--- For RP afterburner ---
+#include "StMuRpsUtil/StMuRpsUtil.h"
+#include "StMuRpsUtil/StMuRpsCollection2.h"
+
+
 class TFile;
 class StMuDstMaker;
 class StMuDst;
@@ -41,7 +46,9 @@ private:
     StMuDstMaker* mMuDstMaker;
     StMuDst* mMuDst;
     StMuEvent *mMuEvent;
-    StMuRpsCollection *mRpsMuColl;
+    // StMuRpsCollection *mRpsMuColl; //No afterburner
+    StMuRpsCollection2 *mRpsMuColl; //Use after burner
+    StMuRpsUtil* mAfterburner;
     
     Int_t mNEventsPassed;  
     Int_t mNEventsFailed;  	
