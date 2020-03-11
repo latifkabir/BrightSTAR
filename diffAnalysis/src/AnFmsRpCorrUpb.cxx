@@ -1,4 +1,4 @@
-// Filename: AnFmsRpCorr.C
+// Filename: AnFmsRpCorrUpb.C
 // Description: Fms-Rp correlations for unpolarized proton break up
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Thu Nov 21 13:00:15 2019 (-0500)
@@ -13,7 +13,7 @@
 
 using namespace std;
 
-void AnFmsRpCorrUppb(Int_t firstRun, Int_t lastRun, TString outName, TString inFilePrefix)
+void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFilePrefix)
 {    
     TStRunList *list = new TStRunList();
     TEntryList *runList = list->GetRunList(firstRun, lastRun);
