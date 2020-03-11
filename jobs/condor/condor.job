@@ -11,9 +11,9 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 +Job_Type       = "cas"
 Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
 Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/
-Arguments       = "AnDstQA	AnDstQA(gFirstRun, gFirstRun)_0_.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnDstQA(gFirstRun, gFirstRun)_0_.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnDstQA(gFirstRun, gFirstRun)_0_.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnDstQA(gFirstRun, gFirstRun)_0_.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_1000002.MuDst.root	AnRunNanoDstMaker_16093018_1000002.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093018_1000002.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093018_1000002.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093018_1000002.log
 Queue
 

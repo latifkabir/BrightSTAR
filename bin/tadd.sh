@@ -63,7 +63,7 @@ then
 	if ! [ "${RunNumber}" == "" ]
 	then
 	    echo "Deleting the directory ... ...: ${InputDir}/${RunNumber}"
-	    rm -r ${InputDir}/${RunNumber}
+	    # rm -r ${InputDir}/${RunNumber}
 	fi
     done < $RunList
 fi
