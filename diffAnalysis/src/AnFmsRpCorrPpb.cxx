@@ -37,11 +37,11 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH1D *hist4East = new TH1D("trkPhiEast", "East RP trk Phi; RP track #phi [rad]", 200, -3, 3);
     TH1D *hist5East = new TH1D("trkXiEast", "East RP trk Xi; RP track #xi", 200, -100, 20);
 
-    TH1D *hist6 = new TH1D("sumE_west_before", "West Sum E Before BBC and TOF Cut; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
-    TH1D *hist7 = new TH1D("sumE_west_singPion", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
-    TH1D *hist18 = new TH1D("sumE_west_pion_cut", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist6 = new TH1D("sumEest_before", "West Sum E Before BBC and TOF Cut; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist7 = new TH1D("sumEest_singPion", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist18 = new TH1D("sumEest_pion_cut", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     
-    TH1D *hist8West = new TH1D("sumE_west", "E_{p + #pi^{0}}^{West}; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist8West = new TH1D("sumEest", "E_{p + #pi^{0}}^{West}; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     TH1D *hist8East = new TH1D("sumE_east", "E_{p + #pi^{0}}^{East}; E_{p + #pi^{0}}^{East} [GeV]", 100, 60, 200);
     
     TH1D *hist9 = new TH1D("trkP", " RP trk P; RP track P [GeV/c]", 200, 60, 150);
@@ -58,9 +58,12 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH1D* hist19 = new TH1D("emc_nPoints", "EMC photon multiplicity", 100, 0, 10);
     TH1D* hist20 = new TH1D("emc_pointE", "EMC photon energy", 100, 0, 5);
     TH1D* hist21 = new TH1D("emc_eta", "EMC photon eta", 40, -1.0, 1.0);
-    TH1D *hist22 = new TH1D("pi0M1", "Diphoton mass; M_{#gamma#gamma} [GeV/c^{2}]", 200, 0, 1.0);
-    TH1D *hist23 = new TH1D("pi0M2", "Diphoton mass; M_{#gamma#gamma} [GeV/c^{2}]", 200, 0, 1.0);
-    
+
+    TH1D *hist22 = new TH1D("pi0M_single_pion", "Diphoton mass; M_{#gamma#gamma} [GeV/c^{2}]", 200, 0, 1.0);
+    TH1D *hist23 = new TH1D("pi0M_final", "Diphoton mass; M_{#gamma#gamma} [GeV/c^{2}]", 200, 0, 1.0);
+    TH1D *hist24 = new TH1D("pi0E_final", "Diphoton Energy; E_{#gamma#gamma} [GeV]", 200, 10, 100);
+    TH1D *hist25 = new TH1D("trkPeast_final", "East RP trk P; RP track P [GeV/c]", 200, 60, 150);
+
     TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p}^{west} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p}^{west} [GeV]", 100, 10, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
     TH2D *hist2d3 = new TH2D("E_sum_vs_BBC_small", "E_{sum} vs BBC ADC Sum (Small); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Small)", 100, 50, 200, 300, 0, 4000);
@@ -93,7 +96,7 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     Int_t nTrkEast = 0;
     Int_t nTrkWest = 0;
     Int_t fms_i = -1;
-    Double_t sumE_w = 0.0;
+    Double_t sumE = 0.0;
     Int_t eventCount[5] = {0};
     Int_t trig_SD = 480701;
     Int_t trig_SDT = 480703;
@@ -216,13 +219,7 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 		}		
 	    }
 
-	    // if(nTrkEast == 1 && fms_i > -1 && event->GetBbcSumSmall(0) < 60 && event->GetBbcSumLarge(0) < 110)  //Sanity Check
-	    // {
-	    // 	pion = (TStFmsPointPairData*)fmsArr->At(fms_i);
-	    // 	rpsTrack = (TStRpsTrackData*)rpsArr->At(eastTrk_i);
-	    // 	hist8East->Fill(rpsTrack->GetP() + pion->GetE());
-	    // }
-	    
+       	    
 	    if(!(nTrkWest == 0 && nTrkEast == 1))   //Full RP Cuts with One track in east and no track in the west
 	    	continue;
 
@@ -239,10 +236,10 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    hist11->Fill(pion->GetM());
 	    hist12->Fill(pion->GetE());
 	    hist2d5->Fill(pion->GetX(), pion->GetY());
-	    sumE_w = rpsTrack->GetP() + pion->GetE();
+	    sumE = rpsTrack->GetP() + pion->GetE();
 	
 	    hist13->Fill(event->GetTofMultiplicity());
-	    hist6->Fill(sumE_w);
+	    hist6->Fill(sumE);
 	    
 	    //------------- BBC and TOF Cut -----------------
 	    // Do not use this cut. As identified pion gurantees that proton broke-up.
@@ -254,9 +251,10 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 
 	    hist14->Fill(event->GetBbcSumLarge(0));
 	    hist15->Fill(event->GetBbcSumSmall(0));
-	    hist2d2->Fill(sumE_w, event->GetBbcSumLarge(0));
-	    hist2d3->Fill(sumE_w, event->GetBbcSumSmall(0));
-	    
+	    hist2d2->Fill(sumE, event->GetBbcSumLarge(0));
+	    hist2d3->Fill(sumE, event->GetBbcSumSmall(0));
+
+            //--- These two cuts to be optimized for polarized proton breakup case -------
 	    if(event->GetBbcSumSmall(0) > 60)	//bbc 0 is east and 1 is west 
 		continue;
 	    
@@ -281,26 +279,24 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    // if(emcPhotonEng > 0.2)
 	    // 	continue;
 	    
-	    //-------------------------- FMS-RP Correlation -------------------------------
-	    if(nPions == 1)	                //Extreme Cut:Single pion in FMS
-		hist22->Fill(pion->GetM());
-	
-	    hist8West->Fill(sumE_w);
+	    //-------------------------- FMS-RP Correlation (Not relevent for this polarized proton break up case)-------------------------------	
+	    hist8West->Fill(sumE);
 	    hist2d1->Fill(pion->GetE(),  rpsTrack->GetP());
-	    hist23->Fill(pion->GetM());
-	    
+	    hist2d4->Fill(pion->GetPhi(), rpsTrack->GetPhi());
+
 	    if(pion->GetM() > 0.0 && pion->GetM() < 0.20)
-		hist18->Fill(sumE_w);
-	    //----------------------------- Diffractive p + p -----> pi^0 + p + X event cut ------------------------
-	    if((sumE_w > 80 && sumE_w < 107)            // <------- Energy Conservation cut (WIDER RANGE USED!!)
-	       && (pion->GetM() > 0.0 && pion->GetM() < 0.25))  // <----- Pion mass range (WIDER RANGE USED!!)
-	    {
-		hist2d4->Fill(pion->GetPhi(), rpsTrack->GetPhi());
-		for(Int_t t = 0; t < event->mNtrig; ++t)
-		    hist17->Fill(event->GetTrigger(t));
+		hist18->Fill(sumE);
+	    //----------------------------- Diffractive p + p -----> pi^0 + p + X event ------------------------
+	    if(nPions == 1)	                //Extreme Cut: Single pion in FMS
+		hist22->Fill(pion->GetM());
+	    hist23->Fill(pion->GetM());
+	    hist24->Fill(pion->GetE());
+	    hist25->Fill(rpsTrack->GetP());
+
+	    for(Int_t t = 0; t < event->mNtrig; ++t)
+	        hist17->Fill(event->GetTrigger(t));
 		
-		++eventCount[4];	    
-	    }	    
+	    ++eventCount[4];	    
 	}		
 	//-----------
 	
