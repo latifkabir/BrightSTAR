@@ -55,16 +55,26 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH1D* hist15 = new TH1D("bbcSumS_west", "West Small BBC ADC Sum", 250, 0, 45000);
     TH1D* hist16 = new TH1D("trigger", "Trigger Distribution", 1000, 480000, 481000);
     TH1D* hist17 = new TH1D("evt_trigger", "Event Trigger Distribution", 1000, 480000, 481000);
-    TH1D* hist19 = new TH1D("emc_nPoints", "EMC photon multiplicity", 100, 0, 10);
-    TH1D* hist20 = new TH1D("emc_pointE", "EMC photon energy", 100, 0, 5);
-    TH1D* hist21 = new TH1D("emc_eta", "EMC photon eta", 40, -1.0, 1.0);
+    TH1D* hist19 = new TH1D("emc_nPoints", "BEMC point multiplicity", 100, 0, 10);
+    TH1D* hist20 = new TH1D("emc_pointE", "BEMC point energy; BEMC point energy [GeV]", 100, 0, 5);
+    TH1D* hist21 = new TH1D("emc_eta", "BEMC point eta", 40, -1.0, 1.0);
 
+    TH1D *hist_emc0 = new TH1D("sumE_west_emc0", "E_{p + #pi^{0}}^{West} [No activity in all bins]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist_emc1 = new TH1D("sumE_west_emc1", "E_{p + #pi^{0}}^{West} [No activity in bin 1]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist_emc2 = new TH1D("sumE_west_emc2", "E_{p + #pi^{0}}^{West} [No activity in bin 2 & 3]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist_emc3 = new TH1D("sumE_west_emc3", "E_{p + #pi^{0}}^{West} [No activity in bin 4]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist_emc4 = new TH1D("sumE_west_emc4", "E_{p + #pi^{0}}^{West} [No activity in bin 1 & 4]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+    TH1D *hist_emc5 = new TH1D("sumE_west_emc5", "E_{p + #pi^{0}}^{West} [No activity in bin 3 & 4]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
+
+    
     TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p}^{west} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p}^{west} [GeV]", 100, 10, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
     TH2D *hist2d3 = new TH2D("E_sum_vs_BBC_small", "E_{sum} vs BBC ADC Sum (Small); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Small)", 100, 50, 200, 300, 0, 4000);
     TH2D *hist2d4 = new TH2D("p_phi_vs_pion_phi", "#phi_{p} vs #phi_{#pi^{0}}; #phi_{#pi^{0}} [rad]; #phi_{p} [rad]", 100, -3.15, 3.15, 100, -3.15, 3.15);
     TH2D *hist2d5 = new TH2D("pionXY", "#pi^{0} position; X [cm]; Y[cm]", 100, -100, 100, 100, -100, 100);
 
+    TH1D *histEtaBin = new TH1D("histEtaBin", "BEMC Eta Bins", 4, -1.0, 1.0);
+    
     TH1D *hEvtCount_all = new TH1D("hEvtCount_all", "Event Count", 20, 0, 20);
       
     //Input data     
@@ -243,8 +253,8 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    hist6->Fill(sumE_w);
 	    
 	    //------------- BBC and TOF Cut -----------------	    
-	    if(!(event->GetTofMultiplicity() > 0))
-		continue;
+	    if(!(event->GetTofMultiplicity() > 0)) 
+	    	continue;
 
 	    if(!(event->GetBbcSumSmall(0) > 0))	//bbc 0 is east and 1 is west 
 		continue;
@@ -264,6 +274,7 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 
 	    //----------- Mid Rapidity Cut for Rapidity Gap --------------------
 	    emcPhotonEng = 0.0;
+	    histEtaBin->Reset();
 	    nEmcPhotons = emcArr->GetEntriesFast();
 	    hist19->Fill(nEmcPhotons);
 	    for(Int_t e = 0; e < nEmcPhotons; ++e)
@@ -272,11 +283,23 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 		hist20->Fill(emcPhoton->GetE());
 		emcVec.SetXYZ(emcPhoton->GetX(), emcPhoton->GetY(), emcPhoton->GetZ());
 		hist21->Fill(emcVec.Eta());
+		histEtaBin->Fill(emcVec.Eta());
 		if(emcPhoton->GetE() > emcPhotonEng)
 		    emcPhotonEng = emcPhoton->GetE();      // Find maximum emc photon energy
 	    }
-	    // if(emcPhotonEng > 0.2)
-	    // 	continue;
+
+	    if(histEtaBin->GetEntries() == 0)
+		hist_emc0->Fill(sumE_w);
+	    if(histEtaBin->GetBinContent(1) == 0)
+		hist_emc1->Fill(sumE_w);
+	    if(histEtaBin->GetBinContent(2) == 0 && histEtaBin->GetBinContent(3) == 0)
+		hist_emc2->Fill(sumE_w);
+	    if(histEtaBin->GetBinContent(4) == 0)
+		hist_emc3->Fill(sumE_w);
+	    if(histEtaBin->GetBinContent(1) == 0 && histEtaBin->GetBinContent(4) == 0)
+		hist_emc4->Fill(sumE_w);
+	    if(histEtaBin->GetBinContent(3) == 0 && histEtaBin->GetBinContent(4) == 0)
+		hist_emc5->Fill(sumE_w);
 	    
 	    //-------------------------- FMS-RP Correlation -------------------------------
 	    if(nPions == 1)	                //Extreme Cut:Single pion in FMS

@@ -10,10 +10,118 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
 Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093018/st_fms_16093018_raw_1000002.MuDst.root	AnRunNanoDstMaker_16093018_1000002.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093018_1000002.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093018_1000002.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093018_1000002.log
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092035
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_0000006.MuDst.root	AnRunNanoDstMaker_16092035_0000006.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000006.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000006.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000006.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1000002.MuDst.root	AnRunNanoDstMaker_16092035_1000002.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000002.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000002.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000002.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1000016.MuDst.root	AnRunNanoDstMaker_16092035_1000016.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000016.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000016.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000016.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1000036.MuDst.root	AnRunNanoDstMaker_16092035_1000036.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000036.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000036.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000036.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1500002.MuDst.root	AnRunNanoDstMaker_16092035_1500002.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1500002.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1500002.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1500002.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2000001.MuDst.root	AnRunNanoDstMaker_16092035_2000001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000001.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2000016.MuDst.root	AnRunNanoDstMaker_16092035_2000016.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000016.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000016.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000016.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2500001.MuDst.root	AnRunNanoDstMaker_16092035_2500001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500001.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2500013.MuDst.root	AnRunNanoDstMaker_16092035_2500013.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500013.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500013.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500013.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_3000001.MuDst.root	AnRunNanoDstMaker_16092035_3000001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_3000001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_3000001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_3000001.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4000001.MuDst.root	AnRunNanoDstMaker_16092035_4000001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000001.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4000018.MuDst.root	AnRunNanoDstMaker_16092035_4000018.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000018.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000018.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000018.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4500001.MuDst.root	AnRunNanoDstMaker_16092035_4500001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500001.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4500019.MuDst.root	AnRunNanoDstMaker_16092035_4500019.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500019.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500019.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500019.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5000002.MuDst.root	AnRunNanoDstMaker_16092035_5000002.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000002.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000002.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000002.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5000040.MuDst.root	AnRunNanoDstMaker_16092035_5000040.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000040.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000040.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000040.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5500001.MuDst.root	AnRunNanoDstMaker_16092035_5500001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500001.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5500017.MuDst.root	AnRunNanoDstMaker_16092035_5500017.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500017.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500017.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500017.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_adc_16092035_raw_0000001.MuDst.root	AnRunNanoDstMaker_16092035_0000001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000001.log
 Queue
 

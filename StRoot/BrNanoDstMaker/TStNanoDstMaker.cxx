@@ -501,6 +501,9 @@ Int_t TStNanoDstMaker::MakeRps()
 	mRpsTrackData->SetMt(-1.0*mRpsTrk->t(mBeamMom));	
     }
 
+    //afterburner
+    mAfterburner->clear(); //Critical!!!
+    
     return kStOk;    
 }
 

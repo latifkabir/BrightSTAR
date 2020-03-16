@@ -56,6 +56,11 @@ void AnEEmcRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName)
     TH1D *hist8 = new TH1D("sumE_east", "E_{p + #pi^{0}}^{East}; E_{p + #pi^{0}}^{East} [GeV]", 100, 45, 180);
     TH1D *hist9 = new TH1D("sumE_west", "E_{p + #pi^{0}}^{West}; E_{p + #pi^{0}}^{West} [GeV]", 100, 45, 180);
     TH1D *hist10 = new TH1D("sumE_west_singPion", "West Sum E (Single pion in FMS); E_{p + #pi^{0}}^{West} [GeV]", 100, 45, 180);
+
+    TH1D* hist19 = new TH1D("emc_nPoints", "EMC photon multiplicity", 100, 0, 10);
+    TH1D* hist20 = new TH1D("emc_pointE", "EMC photon energy", 100, 0, 5);
+    TH1D* hist21 = new TH1D("emc_eta", "EMC photon eta", 40, -1.0, 1.0);
+    
     
     TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p} [GeV]", 100, 0, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{West} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
@@ -94,6 +99,10 @@ void AnEEmcRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName)
     Double_t maxEng = 0;
     Double_t pionM = 0;
     Int_t nPions = 0;
+    Int_t nEmcPhotons = 0;
+    Double_t emcPhotonEng = 0.0;
+    TVector3 emcVec;
+    
     Int_t eventCount[5] = {0}; //Event count after each cut 
     
     //------------ Loop over runs --------------------------
@@ -254,11 +263,11 @@ void AnEEmcRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName)
 		continue;
 	    ++eventCount[2]; //Post EEMC cut counter
 
-	    hist0->Fill(pion->M);
-	    hist0_->Fill(pion->E);
-
 	    pion = (EEmc2ParticleCandidate_t*) pionArr->At(eemc_i);
 	    rpsTrack = (TStRpsTrackData*)rpsArr->At(westTrk_i);
+
+	    hist0->Fill(pion->M);
+	    hist0_->Fill(pion->E);
 	    
 	    sumE_w = rpsTrack->GetP() + pion->E;
 	    //------------- BBC and TOF Cut -----------------	    
@@ -278,6 +287,23 @@ void AnEEmcRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName)
 		continue;
 
 	    ++eventCount[3];    // Post BBC-TOF cut counter
+
+	    //----------- Mid Rapidity Cut for Rapidity Gap --------------------
+	    emcPhotonEng = 0.0;
+	    nEmcPhotons = emcArr->GetEntriesFast();
+	    hist19->Fill(nEmcPhotons);
+	    for(Int_t e = 0; e < nEmcPhotons; ++e)
+	    {
+		emcPhoton = (TStEmcPointData*)emcArr->At(e);
+		hist20->Fill(emcPhoton->GetE());
+		emcVec.SetXYZ(emcPhoton->GetX(), emcPhoton->GetY(), emcPhoton->GetZ());
+		hist21->Fill(emcVec.Eta());
+		if(emcPhoton->GetE() > emcPhotonEng)
+		    emcPhotonEng = emcPhoton->GetE();      // Find maximum emc photon energy
+	    }
+	    // if(emcPhotonEng > 0.2)
+	    // 	continue;
+	    
 	    //-------------------------- FMS-RP Correlation -------------------------------
 	    hist9->Fill(sumE_w);
 	    hist2d1->Fill(pion->E, rpsTrack->GetP());
