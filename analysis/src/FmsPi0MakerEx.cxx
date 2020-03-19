@@ -83,7 +83,7 @@ public:
 
 	    pairE = pair->energy();
 	    pairM = pair->mass();	      
-
+	    //cout<<"id1: "<< pair->point(0)->fpsPid()<<endl;
 	    hist1d->Fill(pairM);
 	    hist2d->Fill(pair->x(), pair->y());
 	}
@@ -112,6 +112,9 @@ void FmsPi0MakerEx()
     StEventMaker* eventMk = new StEventMaker();
     StFmsHitMaker*   fmsHitMk   = new StFmsHitMaker();
     StFmsPointMaker* fmsPointMk = new StFmsPointMaker();
+    // FPS
+    StFmsFpsMaker * fpsMk = new StFmsFpsMaker();
+    fpsMk->setReadMuDST(1);      // (1) // (reverse 0<->1 convention as FmsHitMaker and FmsPointMaker)
     
     FmsPi0Maker *pi0Mkr = new FmsPi0Maker("Pi0Maker");
     pi0Mkr->Set1dHist(massDist);

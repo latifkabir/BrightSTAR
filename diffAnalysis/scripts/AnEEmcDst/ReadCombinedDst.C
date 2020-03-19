@@ -13,8 +13,7 @@ using namespace std;
 
 /*
 Must load all necessary library / dictionaries
-
- */
+*/
 
 void ReadCombinedDst()
 {
@@ -34,7 +33,7 @@ void ReadCombinedDst()
     for(int i = 0; i < 10; ++i)
     {
 	T->GetEntry(i);
-	// event->GetEntry(i);  //This call in not necessary, since event is a friend of T. Calling does not hurt as well.
+	// event->GetEntry(i);  //This call in not necessary, since event is a friend of T. Calling it does not hurt as well.
 	cout<<"From Dst evtId: "<< evtId->mEventId <<" From event evtNum: "<<evtHddr->GetEventNumber()<<endl;	    
     }   
 }

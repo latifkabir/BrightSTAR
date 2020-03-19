@@ -192,7 +192,7 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     if(maxEvents != -1)
 	chain->EventLoop(maxEvents);  // Run specified number of events
     else
-	chain->EventLoop(nEvents);  // Run specified number of events
+	chain->EventLoop(nEvents);  // Run all events
     chain->Finish();
 
     cout << "Status:SUCCESS!!" <<endl;

@@ -454,6 +454,12 @@ Int_t TStNanoDstMaker::MakeFms()
 	mFmsPointPairData->SetDgg(mPair->dgg());
 	mFmsPointPairData->SetX(mPair->x());
 	mFmsPointPairData->SetY(mPair->y());	
+	mFmsPointPairData->SetX1(mPair->point(0)->XYZ().x());	
+	mFmsPointPairData->SetX2(mPair->point(1)->XYZ().x());
+	mFmsPointPairData->SetY1(mPair->point(0)->XYZ().y());	
+	mFmsPointPairData->SetY2(mPair->point(1)->XYZ().y());	
+	mFmsPointPairData->SetFpsPid1(mPair->point(0)->fpsPid());	
+	mFmsPointPairData->SetFpsPid2(mPair->point(1)->fpsPid());	
     }
     
     return kStOk;    

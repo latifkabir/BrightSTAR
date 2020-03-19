@@ -16,7 +16,11 @@
 using namespace std;
 
 void AnRunNanoDstMaker(TString fileList, TString outFile)
-{    
+{
+    //------ Print Current Config ----------------
+    cout << "Current Configuration:"<<endl;
+    TStar::gConfig->Print();
+    
     vector<Int_t> *evtTrigs = new vector<Int_t>();
     vector<Int_t> *vetoTrigs = new vector<Int_t>();
     string fileName;
