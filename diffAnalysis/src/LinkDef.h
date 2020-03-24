@@ -13,7 +13,6 @@
 #pragma link C++ function AnEEmcRpCorr;                          // EEMC + Rp Correlation with only 1 good RP track per event allowed
 #pragma link C++ function AnEEmcRpCorrUpb;                       // EEMC + Rp Correlation with only 1 good RP track per event allowed, unpolarized proton breaks
 #pragma link C++ function AnEEmcRpCorrMergedFullPpb;             // EEMC + Rp Correlation with only 1 good RP track per event allowed, uses fully merged single root file.
-#pragma link C++ function AnResubmitJobs;                        // Resubmit failed jobs
 
 #pragma link C++ function AnRunAnTreeMaker;                      // Run AnTree Maker
 #pragma link C++ function AnDstQA;                               // DST QA Plots

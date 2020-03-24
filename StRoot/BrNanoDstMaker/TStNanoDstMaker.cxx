@@ -184,6 +184,10 @@ void TStNanoDstMaker::SetBranches()
 //_____________________________________________________________________________
 void TStNanoDstMaker::InitHist()
 {
+    //FMS
+    mFmsPointXY = new TH2D("FmsPointXY", "FMS point Y vs X",  50, -100, 100, 50, -100, 100);
+    
+    //TPC
     mDedxVsQp = new TH2D("hDedxVsQp", "dE/dx vs qx|p| (No cut); qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
     mM2VsQp = new TH2D("hM2VsQp", "m^{2} vs qx|p| (No cut); qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 2.0);
     mDedxVsQp_e = new TH2D("hDedxVsQp_e", "dE/dx vs qx|p| for electron; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
@@ -195,7 +199,8 @@ void TStNanoDstMaker::InitHist()
     mDedxVsQp_ka = new TH2D("hDedxVsQp_ka", "dE/dx vs qx|p| for Kaon; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
     mM2VsQp_ka = new TH2D("hM2VsQp_ka", "m^{2} vs qx|p| for Kaon; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, 0.0, 0.5);
     mDedxVsQp_mu = new TH2D("hDedxVsQp_mu", "dE/dx vs qx|p| for Muon; qx|p| [GeV/c]; dE/dx [keV/cm]", 100, -3.0, 3.0, 100, 0, 10);
-    mM2VsQp_mu = new TH2D("hM2VsQp_mu", "m^{2} vs qx|p| for Muon; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 0.4);   
+    mM2VsQp_mu = new TH2D("hM2VsQp_mu", "m^{2} vs qx|p| for Muon; qx|p| [GeV/c]; m^{2} [(GeV/c^{2})^{2}]", 100, -3.0, 3.0, 100, -0.4, 0.4);
+    
 }
 
 //_____________________________________________________________________________
@@ -436,8 +441,8 @@ Int_t TStNanoDstMaker::MakeFms()
 	return kStSkip;
     }
 
-    // mPointPairs = mFmsColl->pointPairs();
-    mPointPairs = mFmsColl->pointPairsEnergySorted();
+    // mPointPairs = mFmsColl->pointPairs();    //Not sorted
+    mPointPairs = mFmsColl->pointPairsEnergySorted(); //sorted
     mFmsNpairs = mFmsColl->numberOfPointPairs();
 
     for (Int_t i = 0; i < mFmsNpairs; ++i)
@@ -461,7 +466,11 @@ Int_t TStNanoDstMaker::MakeFms()
 	mFmsPointPairData->SetFpsPid1(mPair->point(0)->fpsPid());	
 	mFmsPointPairData->SetFpsPid2(mPair->point(1)->fpsPid());	
     }
-    
+
+    StSPtrVecFmsPoint & mPoints = mFmsColl->points();
+    for (Int_t i = 0; i < mFmsColl->numberOfPoints(); ++i)
+	mFmsPointXY->Fill(mPoints[i]->XYZ().x(), mPoints[i]->XYZ().y());
+	    
     return kStOk;    
 }
 //_____________________________________________________________________________

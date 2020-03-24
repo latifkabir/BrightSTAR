@@ -51,6 +51,7 @@ class StMuDst;
 class StMuDstEvent;
 class StMuEvent;
 class StFmsPointPair;
+class StFmsPoint;
 class StFmsCollection;
 class StSpinDbMaker;
 class StEmcCollection;
@@ -156,6 +157,8 @@ private:
     Int_t mFmsNpairs;
     TClonesArray  *mFmsArray;
     TStFmsPointPairData *mFmsPointPairData;
+    TH2D *mFmsPointXY;
+
     
     //--- RP ---
     // StMuRpsCollection *mRpsMuColl;
