@@ -6,10 +6,6 @@
 
 void FinerPion()
 {
-   //For pid def see: https://www.star.bnl.gov/webdata/dox/html/StFmsPoint_8h_source.html
-    //T->Draw("fmsPointPair.mM>>hist(200, 0, 1.0)", "fmsPointPair.mE > 0 && fmsPointPair.mZgg < 0.8 && Iteration$==0 && (fmsPointPair.mFpsPid1 > 9 && fmsPointPair.mFpsPid1 < 17) && (fmsPointPair.mFpsPid2 > 9 && fmsPointPair.mFpsPid2 < 17)");
-    //T->Draw("sqrt(fmsPointPair.mY1*fmsPointPair.mY1 + fmsPointPair.mX1*fmsPointPair.mX1)");
-
 
     TStRunList *list = new TStRunList();
     TEntryList *runList = list->GetRunList();
@@ -38,8 +34,8 @@ void FinerPion()
 	
 	TFile *file = new TFile(fileName);
 	h2temp = (TH2D*)file->Get("FmsPointXY");
-	h2Merged->Add(h2temp);
-
+	if(h2temp)
+	    h2Merged->Add(h2temp);
        
 	++nRunsDone;
 	file->Close();
@@ -56,4 +52,36 @@ void FinerPion()
     TFile * mergedFile = new TFile("FmsPointXYmerged.root", "recreate");
     h2Merged->Write();
     
+}
+
+void MaskHotCh()
+{
+    TFile *f = new TFile("FmsPointXYmerged.root");
+    TH2D *hist = (TH2D*)f->Get("FmsPointXY_Merged");
+
+    //hist->Draw("colz");
+
+
+    for(Int_t i = 1; i <= hist->GetNbinsX(); ++i)
+    {
+	for (Int_t j = 1; j <= hist->GetNbinsY(); ++j)
+	{
+	    //cout<<"Bin "<<i<<","<<j<<" : "<<hist->GetBinContent(i, j) <<endl;
+
+	    if(hist->GetBinContent(i, j) > 1.5e6)
+		hist->SetBinContent(i, j, 0);
+	}
+    }
+    
+    cout << "Minimum: "<< hist->GetBinContent(hist->GetMinimumBin())<<endl;
+    cout << "Maximum: "<< hist->GetBinContent(hist->GetMaximumBin())<<endl;
+
+
+    cout<<"Bin content from position:" << hist->GetBinContent(hist->FindBin(-40, -65)) <<endl;
+    
+    TCanvas *c1 = new TCanvas();
+    hist->Draw("colz");
+
+    TCanvas *c2 = new TCanvas();
+    hist->Draw("lego");
 }

@@ -22,7 +22,18 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     Int_t nRunsDone = 0;
     TString fileName;
     TString filePrefix = inFilePrefix;
-
+    //----- Mask Hot Channels (naive approach) --------
+    TFile *fHotCh = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/R15FmsTrigNanoDst/FmsPointXYmerged.root");
+    TH2D *histHot = (TH2D*)fHotCh->Get("FmsPointXY_Merged");
+    for(Int_t i = 1; i <= histHot->GetNbinsX(); ++i)
+    {
+    	for (Int_t j = 1; j <= histHot->GetNbinsY(); ++j)
+    	{
+    	    if(histHot->GetBinContent(i, j) > 2.5e6)
+    		histHot->SetBinContent(i, j, 0);
+    	}
+    }
+    
     //Histograms
     TFile *outFile = new TFile(outName, "RECREATE");
     TH1D *hist1West = new TH1D("trkPwest", "West RP trk P; RP track P [GeV/c]", 200, 60, 150);
@@ -73,6 +84,10 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH2D *hist2d4 = new TH2D("p_phi_vs_pion_phi", "#phi_{p} vs #phi_{#pi^{0}}; #phi_{#pi^{0}} [rad]; #phi_{p} [rad]", 100, -3.15, 3.15, 100, -3.15, 3.15);
     TH2D *hist2d5 = new TH2D("pionXY", "#pi^{0} position; X [cm]; Y[cm]", 100, -100, 100, 100, -100, 100);
 
+    TH2D *hist2d6 = new TH2D("E_sum_vs_VPD_west", "E_{sum} vs VPD ADC Sum (west); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
+    TH2D *hist2d7 = new TH2D("E_sum_vs_ZDC_west", "E_{sum} vs ZDC ADC Sum (west); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Small)", 100, 50, 200, 300, 0, 4000);
+
+    
     TH1D *histEtaBin = new TH1D("histEtaBin", "BEMC Eta Bins", 4, -1.0, 1.0);
     
     TH1D *hEvtCount_all = new TH1D("hEvtCount_all", "Event Count", 20, 0, 20);
@@ -217,6 +232,26 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 		if(pion->GetE() < 12 || pion->GetE() > 70)
 		    continue;
 
+		//--------- Mask Hot Channel (Naive approach)------------
+		if(histHot->GetBinContent(histHot->FindBin(pion->GetX1(), pion->GetY1())) == 0)
+		    continue;
+		if(histHot->GetBinContent(histHot->FindBin(pion->GetX2(), pion->GetY2())) == 0)
+		    continue;
+
+		// ------ Exclude Small Cells --------
+		// if(fabs(pion->GetX1()) < 48 || fabs(pion->GetY1()) < 48 )
+		//    continue;
+
+		//    if(fabs(pion->GetX2()) < 48 || fabs(pion->GetY2()) < 48)
+		//    continue;
+
+		//-------- FPS Pid Cut ------------
+		if(!(pion->GetFpsPid1() > 9 && pion->GetFpsPid1() < 17))
+		    continue;
+
+		if(!(pion->GetFpsPid2() > 9 && pion->GetFpsPid2() < 17))
+		    continue;
+		
 		if(fms_i == -1) //consider only highest energy pair of photons, note: the Pions are already sorted based on energy
 		{
 		    fms_i = pi;
@@ -236,14 +271,12 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 
 	    ++eventCount[1]; //Post RP cut counter	
 	
-	    if(fms_i < 0)    //Full FMS Cuts
+	    if(fms_i < 0)    //Initial FMS Cuts
 		continue;
 	
-	    ++eventCount[2]; //Post FMS cut counter
-
 	    pion = (TStFmsPointPairData*)fmsArr->At(fms_i);
 	    rpsTrack = (TStRpsTrackData*)rpsArr->At(westTrk_i);	
-    
+	    	    
 	    hist11->Fill(pion->GetM());
 	    hist12->Fill(pion->GetE());
 	    hist2d5->Fill(pion->GetX(), pion->GetY());
@@ -251,7 +284,11 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	
 	    hist13->Fill(event->GetTofMultiplicity());
 	    hist6->Fill(sumE_w);
+
+	    if(!(pion->GetM() > 0.07 && pion->GetM() < 0.20)) //Pion mass cut. Full Pion cut
+		continue;
 	    
+	    ++eventCount[2]; //Post FMS cut counter
 	    //------------- BBC and TOF Cut -----------------	    
 	    if(!(event->GetTofMultiplicity() > 0)) 
 	    	continue;
@@ -263,6 +300,9 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    hist15->Fill(event->GetBbcSumSmall(1));
 	    hist2d2->Fill(sumE_w, event->GetBbcSumLarge(1));
 	    hist2d3->Fill(sumE_w, event->GetBbcSumSmall(1));
+
+	    hist2d6->Fill(sumE_w, event->GetVpdSum(1));
+	    hist2d7->Fill(sumE_w, event->GetZdcSum(1));
 	    
 	    if(event->GetBbcSumSmall(1) > 60)	//bbc 0 is east and 1 is west 
 		continue;
@@ -272,6 +312,10 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 
 	    ++eventCount[3];			// Post BBC-TOF cut counter	    
 
+	    // ---- VPD and ZDC Cut -----------
+	    if(!(event->GetVpdSum(1) < 150 && event->GetZdcSum(1) < 15))
+		continue;
+	    
 	    //----------- Mid Rapidity Cut for Rapidity Gap --------------------
 	    emcPhotonEng = 0.0;
 	    histEtaBin->Reset();

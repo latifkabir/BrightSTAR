@@ -26,11 +26,9 @@ Instruction()
     echo "          cancel-job         : Cancel all jobs submitted"
     echo "          file-list          : Print file list"
     echo "          hpss-get           : Restore file from HPSS (tape)"
-    echo "          job-status         : Check farm job status"    
-    echo "          job-report         : Check farm job status report"
+    echo "          job | status       : Check farm job status from current node"    
+    echo "          jobs               : Check farm job status report from all nodes"
     echo "          submit             : Submit job using SLUMS"
-    echo "          status             : Check farm job status"
-
 
     echo "          ------------------------------------------------------------------------------------------------"
     echo "                    "    
@@ -91,13 +89,13 @@ case $OPTION in
                  hpss_user.pl -h for details
 "
 	;;
-    job-status | status)
+    job-status | status | job)
 	# echo "I=idle, R= running, C=complete, H=held"
 	# condor_q
 	echo "Name                                        Machine                  RunningJobs   IdleJobs   HeldJobs"
 	condor_status -submitters | grep $USER 
 	;;
-    job-report)
+    jobs)
 	condor_q -global | grep $USER
 	;;
     submit)
