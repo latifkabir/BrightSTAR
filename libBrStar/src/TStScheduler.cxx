@@ -53,7 +53,7 @@ void TStScheduler::JobStatus(Int_t level)
     }
     TString command;
     if(level > 0)
-	command = (TString)".! " + star_sh + (TString)"\t" + "job-report";
+	command = (TString)".! " + star_sh + (TString)"\t" + "jobs";
     else
 	command = (TString)".! " + star_sh + (TString)"\t" + "status"; 
     gROOT->ProcessLine(command);

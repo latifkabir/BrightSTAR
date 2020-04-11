@@ -39,9 +39,9 @@ void TStRunList::PrintRunList()
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
     std::cout<<"\tRun Number\t\tFile Name\t\tnumber of events"<< std::endl;
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
-    for(int i = 0; i < j.size(); ++i)
+    for(int k = 0; k < j.size(); ++k)
     {
-	std::cout <<""<<j[i]["run"]<<"\t"<<j[i]["data"]["file"]<<"\t"<<j[i]["data"]["events"]<< std::endl;
+	std::cout <<""<<j[k]["run"]<<"\t"<<j[k]["data"]["file"]<<"\t"<<j[k]["data"]["events"]<< std::endl;
 	std::cout <<"---------------------------------------------------------------------"<< std::endl;
     }
     i.close();
@@ -58,11 +58,11 @@ void TStRunList::PrintRunList(Int_t firstRun, Int_t lastRun)
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
     std::cout<<"\tRun Number\t\tFile Name\t\tnumber of events"<< std::endl;
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
-    for(int i = 0; i < j.size(); ++i)
+    for(int k = 0; k < j.size(); ++k)
     {
-	if(j[i]["run"] >= firstRun && j[i]["run"] <= lastRun)
+	if(j[k]["run"] >= firstRun && j[k]["run"] <= lastRun)
 	{
-	    std::cout <<""<<j[i]["run"]<<"\t"<<j[i]["data"]["file"]<<"\t"<<j[i]["data"]["events"]<< std::endl;
+	    std::cout <<""<<j[k]["run"]<<"\t"<<j[k]["data"]["file"]<<"\t"<<j[k]["data"]["events"]<< std::endl;
 	    std::cout <<"---------------------------------------------------------------------"<< std::endl;
 	    ++nFiles;
 	}
@@ -81,11 +81,11 @@ void TStRunList::PrintRunList(Int_t minEvents)
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
     std::cout<<"\tRun Number\t\tFile Name\t\tNumber of Events"<< std::endl;
     std::cout <<"---------------------------------------------------------------------\n"<< std::endl;
-    for(int i = 0; i < j.size(); ++i)
+    for(int k = 0; k < j.size(); ++k)
     {
-	if(j[i]["data"]["events"] >= minEvents)
+	if(j[k]["data"]["events"] >= minEvents)
 	{
-	    std::cout <<""<<j[i]["run"]<<"\t"<<j[i]["data"]["file"]<<"\t"<<j[i]["data"]["events"]<< std::endl;
+	    std::cout <<""<<j[k]["run"]<<"\t"<<j[k]["data"]["file"]<<"\t"<<j[k]["data"]["events"]<< std::endl;
 	    std::cout <<"---------------------------------------------------------------------"<< std::endl;
 	}
     }
@@ -356,8 +356,6 @@ Int_t TStRunList::MakeFileListWithEvents(Int_t minEvents)
 
 Int_t TStRunList::GetRunFromFileName(string fileName)
 {
-    //cout << "-------> Run number extraction from file-name is tuned for FMS-stream or physics-stream
-    // only as specified in the configuration file <----" <<endl;
     TString fName = fileName;
     fName.ReplaceAll("adc_", "");
     string mFileName = (string)fName;
@@ -379,8 +377,6 @@ Int_t TStRunList::GetRunFromFileName(string fileName)
 
 string TStRunList::GetFileNoFromFileName(string fileName)
 {
-    //cout << "-------> Run number extraction from file-name is tuned for FMS-stream only <----" <<endl;
-
     const string startDelim = "_raw_"; //Read this from configuration file
     const string stopDelim = ".MuDst.root";
     unsigned firstDelimPos;
@@ -396,3 +392,4 @@ string TStRunList::GetFileNoFromFileName(string fileName)
 
     return runNumberStr;
 }
+

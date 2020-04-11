@@ -322,6 +322,7 @@ Int_t TStNanoDstMaker::MakeEvent()
 {    
     //Run no. and event no.     
     mEventData->SetRunNumber(mMuEvent->runNumber());
+    mEventData->SetFillNumber(mMuEvent->runInfo().beamFillNumber(StBeamDirection::east)); //Check which index is blue and which is yellow
     mEventData->SetEventId(mMuEvent->eventId());
 
     //Trigger ids

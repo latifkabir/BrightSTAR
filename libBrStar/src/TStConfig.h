@@ -31,6 +31,7 @@ class TStConfig : public TObject
     string fProdPath;
     string fTrigDefFile;
     string fStreamPrefix;
+    string fFillNoDB;
 
     int fUseEvt;
     int fUseTpc;
@@ -60,6 +61,7 @@ public:
     const string & GetProdPath(){return fProdPath;}
     const string & GetTrigDefFile(){return fTrigDefFile;}
     const string & GetStreamPrefix(){return fStreamPrefix;}
+    const string & GetFillNoDB(){return fFillNoDB;}
 
     bool EnableEvent(){return fUseEvt == 1;}
     bool EnableTpc(){return fUseTpc == 1;}

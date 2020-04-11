@@ -116,6 +116,11 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fStreamPrefix = tokens;
 	    }
+	    else if(s == "FILL_NO_DB")
+	    {
+		tokens = strtok(NULL, " :,");
+		fFillNoDB = tokens;
+	    }
 	    else if(s == "ENABLE_EVT")
 	    {
 		tokens = strtok(NULL, " :,");
@@ -166,6 +171,7 @@ void TStConfig::Print()
     cout << "Job results path: "<< GetJobResultsPath()<<"\n"<<endl;
     cout << "File-list: "<< GetFileList()<<"\n"<<endl;
     cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB()<<"\n"<<endl;
+    cout << "\033[1;31mFill Number DB file: \033[0m"<< GetFillNoDB()<<"\n"<<endl;
     cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile()<<"\n"<<endl;
     cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath()<<"\n"<<endl;
     cout << "\033[1;31mStream prefix: \033[0m"<< GetStreamPrefix()<<"\n"<<endl;
