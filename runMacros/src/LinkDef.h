@@ -22,7 +22,8 @@
 #pragma link C++ function RunEEmcTreeMakerPart2and3;             // EEMC reconstruction using TSIU algorithm. This is step no. 2 and 3 out of 3 of the process. This is the algorithm followed for the analysis.
 
 //FMS
-#pragma link C++ function RunFmsQAMaker;                         // FMS QA Maker 
+#pragma link C++ function RunFmsQAMaker;                         // FMS QA Maker from StMuEvent (from MuDst file)
+#pragma link C++ function RunFmsHotChQaMaker;                    // FMS QA Maker from StEvent (on the fly reconstruction)
 #pragma link C++ function RunFmsTreeMaker;                       // FMS reconstruction 
 
 //Emc
@@ -35,7 +36,7 @@
 #pragma link C++ function RunJetFinder;                          // Run Jet tree maker. 
 
 //Nano Dst
-#pragma link C++ function RunNanoDstMaker;                         // Run Nano DST maker. 
+#pragma link C++ function RunNanoDstMaker;                       // Run Nano DST maker. 
 
 #endif
 

@@ -33,12 +33,12 @@ void RunFemtoDstMaker( const Char_t * fileList = "./filelist.lis" ){
 
 	// create the StMuDstMaker
 	StMuDstMaker *muDstMaker = new StMuDstMaker(  	0,
-													0,
-													"",
-													fileList,
-													"MuDst.root",
-													nfiles
-												);
+							0,
+							"",
+							fileList,
+							"MuDst.root",
+							nfiles
+	    );
 
 	StVpdCalibMaker *vpdMaker = new StVpdCalibMaker();
 	StBTofCalibMaker *calibMaker = new StBTofCalibMaker(  );

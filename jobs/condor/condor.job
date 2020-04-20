@@ -10,118 +10,1504 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
 Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16092035
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_0000006.MuDst.root	AnRunNanoDstMaker_16092035_0000006.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000006.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000006.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000006.log
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16072057
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_0000002.MuDst.root	RunFmsHotChQaMaker_16072057_0000002.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_0000002.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_0000002.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_0000002.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1000002.MuDst.root	AnRunNanoDstMaker_16092035_1000002.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000002.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000002.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000002.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000003.MuDst.root	RunFmsHotChQaMaker_16072057_1000003.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000003.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000003.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000003.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1000016.MuDst.root	AnRunNanoDstMaker_16092035_1000016.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000016.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000016.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000016.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000010.MuDst.root	RunFmsHotChQaMaker_16072057_1000010.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000010.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000010.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000010.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1000036.MuDst.root	AnRunNanoDstMaker_16092035_1000036.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000036.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000036.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1000036.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000012.MuDst.root	RunFmsHotChQaMaker_16072057_1000012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000012.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_1500002.MuDst.root	AnRunNanoDstMaker_16092035_1500002.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1500002.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1500002.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_1500002.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000013.MuDst.root	RunFmsHotChQaMaker_16072057_1000013.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000013.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000013.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000013.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2000001.MuDst.root	AnRunNanoDstMaker_16092035_2000001.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000001.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000001.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000001.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000014.MuDst.root	RunFmsHotChQaMaker_16072057_1000014.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000014.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000014.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000014.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2000016.MuDst.root	AnRunNanoDstMaker_16092035_2000016.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000016.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000016.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2000016.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000017.MuDst.root	RunFmsHotChQaMaker_16072057_1000017.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000017.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000017.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000017.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2500001.MuDst.root	AnRunNanoDstMaker_16092035_2500001.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500001.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500001.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500001.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000018.MuDst.root	RunFmsHotChQaMaker_16072057_1000018.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000018.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000018.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000018.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_2500013.MuDst.root	AnRunNanoDstMaker_16092035_2500013.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500013.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500013.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_2500013.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000019.MuDst.root	RunFmsHotChQaMaker_16072057_1000019.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000019.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000019.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000019.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_3000001.MuDst.root	AnRunNanoDstMaker_16092035_3000001.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_3000001.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_3000001.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_3000001.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000021.MuDst.root	RunFmsHotChQaMaker_16072057_1000021.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000021.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000021.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000021.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4000001.MuDst.root	AnRunNanoDstMaker_16092035_4000001.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000001.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000001.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000001.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000024.MuDst.root	RunFmsHotChQaMaker_16072057_1000024.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000024.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000024.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000024.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4000018.MuDst.root	AnRunNanoDstMaker_16092035_4000018.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000018.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000018.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4000018.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000025.MuDst.root	RunFmsHotChQaMaker_16072057_1000025.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000025.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000025.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000025.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4500001.MuDst.root	AnRunNanoDstMaker_16092035_4500001.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500001.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500001.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500001.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000027.MuDst.root	RunFmsHotChQaMaker_16072057_1000027.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000027.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000027.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000027.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_4500019.MuDst.root	AnRunNanoDstMaker_16092035_4500019.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500019.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500019.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_4500019.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000029.MuDst.root	RunFmsHotChQaMaker_16072057_1000029.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000029.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000029.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000029.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5000002.MuDst.root	AnRunNanoDstMaker_16092035_5000002.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000002.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000002.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000002.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000030.MuDst.root	RunFmsHotChQaMaker_16072057_1000030.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000030.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000030.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000030.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5000040.MuDst.root	AnRunNanoDstMaker_16092035_5000040.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000040.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000040.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5000040.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000032.MuDst.root	RunFmsHotChQaMaker_16072057_1000032.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000032.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000032.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000032.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5500001.MuDst.root	AnRunNanoDstMaker_16092035_5500001.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500001.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500001.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500001.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000033.MuDst.root	RunFmsHotChQaMaker_16072057_1000033.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000033.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000033.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000033.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_16092035_raw_5500017.MuDst.root	AnRunNanoDstMaker_16092035_5500017.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500017.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500017.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_5500017.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000037.MuDst.root	RunFmsHotChQaMaker_16072057_1000037.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000037.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000037.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000037.log
 Queue
 
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/092/16092035/st_fms_adc_16092035_raw_0000001.MuDst.root	AnRunNanoDstMaker_16092035_0000001.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000001.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000001.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16092035_0000001.log
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000038.MuDst.root	RunFmsHotChQaMaker_16072057_1000038.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000038.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000038.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000038.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000039.MuDst.root	RunFmsHotChQaMaker_16072057_1000039.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000039.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000039.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000039.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000040.MuDst.root	RunFmsHotChQaMaker_16072057_1000040.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000040.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000040.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000040.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000041.MuDst.root	RunFmsHotChQaMaker_16072057_1000041.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000041.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000041.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000041.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000042.MuDst.root	RunFmsHotChQaMaker_16072057_1000042.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000042.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000042.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000042.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000045.MuDst.root	RunFmsHotChQaMaker_16072057_1000045.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000045.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000045.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000045.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000048.MuDst.root	RunFmsHotChQaMaker_16072057_1000048.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000048.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000048.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000048.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000049.MuDst.root	RunFmsHotChQaMaker_16072057_1000049.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000049.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000049.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000049.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000050.MuDst.root	RunFmsHotChQaMaker_16072057_1000050.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000050.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000050.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000050.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000053.MuDst.root	RunFmsHotChQaMaker_16072057_1000053.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000053.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000053.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000053.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000054.MuDst.root	RunFmsHotChQaMaker_16072057_1000054.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000054.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000054.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000054.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000056.MuDst.root	RunFmsHotChQaMaker_16072057_1000056.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000056.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000056.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000056.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000058.MuDst.root	RunFmsHotChQaMaker_16072057_1000058.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000058.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000058.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000058.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000059.MuDst.root	RunFmsHotChQaMaker_16072057_1000059.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000059.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000059.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000059.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1000061.MuDst.root	RunFmsHotChQaMaker_16072057_1000061.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000061.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000061.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000061.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500003.MuDst.root	RunFmsHotChQaMaker_16072057_1500003.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500003.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500003.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500003.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500009.MuDst.root	RunFmsHotChQaMaker_16072057_1500009.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500009.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500009.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500009.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500012.MuDst.root	RunFmsHotChQaMaker_16072057_1500012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500012.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500013.MuDst.root	RunFmsHotChQaMaker_16072057_1500013.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500013.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500013.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500013.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500015.MuDst.root	RunFmsHotChQaMaker_16072057_1500015.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500015.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500015.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500015.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500017.MuDst.root	RunFmsHotChQaMaker_16072057_1500017.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500017.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500017.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500017.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500018.MuDst.root	RunFmsHotChQaMaker_16072057_1500018.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500018.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500018.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500018.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500020.MuDst.root	RunFmsHotChQaMaker_16072057_1500020.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500020.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500020.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500020.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500022.MuDst.root	RunFmsHotChQaMaker_16072057_1500022.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500022.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500022.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500022.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500024.MuDst.root	RunFmsHotChQaMaker_16072057_1500024.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500024.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500024.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500024.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500026.MuDst.root	RunFmsHotChQaMaker_16072057_1500026.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500026.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500026.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500026.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500027.MuDst.root	RunFmsHotChQaMaker_16072057_1500027.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500027.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500027.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500027.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500028.MuDst.root	RunFmsHotChQaMaker_16072057_1500028.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500028.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500028.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500028.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500030.MuDst.root	RunFmsHotChQaMaker_16072057_1500030.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500030.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500030.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500030.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500031.MuDst.root	RunFmsHotChQaMaker_16072057_1500031.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500031.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500031.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500031.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500034.MuDst.root	RunFmsHotChQaMaker_16072057_1500034.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500034.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500034.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500034.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500035.MuDst.root	RunFmsHotChQaMaker_16072057_1500035.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500035.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500035.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500035.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500037.MuDst.root	RunFmsHotChQaMaker_16072057_1500037.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500037.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500037.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500037.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500038.MuDst.root	RunFmsHotChQaMaker_16072057_1500038.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500038.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500038.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500038.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500040.MuDst.root	RunFmsHotChQaMaker_16072057_1500040.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500040.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500040.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500040.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500041.MuDst.root	RunFmsHotChQaMaker_16072057_1500041.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500041.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500041.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500041.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_1500043.MuDst.root	RunFmsHotChQaMaker_16072057_1500043.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500043.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500043.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1500043.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000003.MuDst.root	RunFmsHotChQaMaker_16072057_2000003.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000003.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000003.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000003.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000009.MuDst.root	RunFmsHotChQaMaker_16072057_2000009.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000009.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000009.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000009.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000012.MuDst.root	RunFmsHotChQaMaker_16072057_2000012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000012.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000013.MuDst.root	RunFmsHotChQaMaker_16072057_2000013.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000013.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000013.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000013.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000015.MuDst.root	RunFmsHotChQaMaker_16072057_2000015.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000015.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000015.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000015.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000018.MuDst.root	RunFmsHotChQaMaker_16072057_2000018.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000018.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000018.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000018.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000019.MuDst.root	RunFmsHotChQaMaker_16072057_2000019.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000019.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000019.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000019.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000020.MuDst.root	RunFmsHotChQaMaker_16072057_2000020.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000020.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000020.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000020.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000022.MuDst.root	RunFmsHotChQaMaker_16072057_2000022.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000022.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000022.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000022.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000023.MuDst.root	RunFmsHotChQaMaker_16072057_2000023.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000023.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000023.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000023.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000026.MuDst.root	RunFmsHotChQaMaker_16072057_2000026.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000026.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000026.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000026.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000027.MuDst.root	RunFmsHotChQaMaker_16072057_2000027.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000027.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000027.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000027.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000028.MuDst.root	RunFmsHotChQaMaker_16072057_2000028.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000028.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000028.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000028.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000030.MuDst.root	RunFmsHotChQaMaker_16072057_2000030.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000030.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000030.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000030.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000031.MuDst.root	RunFmsHotChQaMaker_16072057_2000031.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000031.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000031.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000031.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000034.MuDst.root	RunFmsHotChQaMaker_16072057_2000034.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000034.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000034.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000034.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000035.MuDst.root	RunFmsHotChQaMaker_16072057_2000035.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000035.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000035.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000035.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000036.MuDst.root	RunFmsHotChQaMaker_16072057_2000036.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000036.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000036.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000036.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000038.MuDst.root	RunFmsHotChQaMaker_16072057_2000038.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000038.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000038.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000038.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000039.MuDst.root	RunFmsHotChQaMaker_16072057_2000039.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000039.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000039.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000039.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000041.MuDst.root	RunFmsHotChQaMaker_16072057_2000041.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000041.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000041.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000041.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000043.MuDst.root	RunFmsHotChQaMaker_16072057_2000043.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000043.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000043.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000043.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000045.MuDst.root	RunFmsHotChQaMaker_16072057_2000045.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000045.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000045.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000045.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000046.MuDst.root	RunFmsHotChQaMaker_16072057_2000046.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000046.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000046.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000046.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000047.MuDst.root	RunFmsHotChQaMaker_16072057_2000047.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000047.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000047.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000047.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000049.MuDst.root	RunFmsHotChQaMaker_16072057_2000049.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000049.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000049.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000049.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000052.MuDst.root	RunFmsHotChQaMaker_16072057_2000052.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000052.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000052.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000052.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000053.MuDst.root	RunFmsHotChQaMaker_16072057_2000053.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000053.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000053.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000053.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000054.MuDst.root	RunFmsHotChQaMaker_16072057_2000054.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000054.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000054.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000054.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000057.MuDst.root	RunFmsHotChQaMaker_16072057_2000057.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000057.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000057.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000057.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000058.MuDst.root	RunFmsHotChQaMaker_16072057_2000058.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000058.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000058.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000058.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2000059.MuDst.root	RunFmsHotChQaMaker_16072057_2000059.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000059.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000059.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2000059.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500002.MuDst.root	RunFmsHotChQaMaker_16072057_2500002.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500002.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500002.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500002.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500008.MuDst.root	RunFmsHotChQaMaker_16072057_2500008.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500008.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500008.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500008.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500011.MuDst.root	RunFmsHotChQaMaker_16072057_2500011.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500011.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500011.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500011.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500012.MuDst.root	RunFmsHotChQaMaker_16072057_2500012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500012.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500013.MuDst.root	RunFmsHotChQaMaker_16072057_2500013.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500013.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500013.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500013.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500016.MuDst.root	RunFmsHotChQaMaker_16072057_2500016.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500016.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500016.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500016.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500017.MuDst.root	RunFmsHotChQaMaker_16072057_2500017.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500017.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500017.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500017.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500018.MuDst.root	RunFmsHotChQaMaker_16072057_2500018.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500018.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500018.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500018.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500021.MuDst.root	RunFmsHotChQaMaker_16072057_2500021.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500021.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500021.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500021.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500024.MuDst.root	RunFmsHotChQaMaker_16072057_2500024.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500024.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500024.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500024.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500025.MuDst.root	RunFmsHotChQaMaker_16072057_2500025.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500025.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500025.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500025.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500027.MuDst.root	RunFmsHotChQaMaker_16072057_2500027.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500027.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500027.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500027.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500029.MuDst.root	RunFmsHotChQaMaker_16072057_2500029.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500029.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500029.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500029.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500030.MuDst.root	RunFmsHotChQaMaker_16072057_2500030.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500030.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500030.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500030.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500031.MuDst.root	RunFmsHotChQaMaker_16072057_2500031.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500031.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500031.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500031.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500034.MuDst.root	RunFmsHotChQaMaker_16072057_2500034.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500034.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500034.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500034.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500035.MuDst.root	RunFmsHotChQaMaker_16072057_2500035.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500035.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500035.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500035.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500036.MuDst.root	RunFmsHotChQaMaker_16072057_2500036.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500036.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500036.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500036.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500039.MuDst.root	RunFmsHotChQaMaker_16072057_2500039.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500039.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500039.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500039.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500040.MuDst.root	RunFmsHotChQaMaker_16072057_2500040.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500040.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500040.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500040.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500041.MuDst.root	RunFmsHotChQaMaker_16072057_2500041.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500041.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500041.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500041.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500042.MuDst.root	RunFmsHotChQaMaker_16072057_2500042.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500042.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500042.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500042.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500044.MuDst.root	RunFmsHotChQaMaker_16072057_2500044.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500044.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500044.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500044.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500046.MuDst.root	RunFmsHotChQaMaker_16072057_2500046.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500046.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500046.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500046.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500048.MuDst.root	RunFmsHotChQaMaker_16072057_2500048.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500048.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500048.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500048.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500051.MuDst.root	RunFmsHotChQaMaker_16072057_2500051.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500051.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500051.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500051.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500053.MuDst.root	RunFmsHotChQaMaker_16072057_2500053.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500053.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500053.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500053.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500054.MuDst.root	RunFmsHotChQaMaker_16072057_2500054.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500054.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500054.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500054.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500057.MuDst.root	RunFmsHotChQaMaker_16072057_2500057.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500057.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500057.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500057.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500058.MuDst.root	RunFmsHotChQaMaker_16072057_2500058.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500058.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500058.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500058.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500059.MuDst.root	RunFmsHotChQaMaker_16072057_2500059.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500059.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500059.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500059.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_2500060.MuDst.root	RunFmsHotChQaMaker_16072057_2500060.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500060.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500060.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_2500060.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000003.MuDst.root	RunFmsHotChQaMaker_16072057_4000003.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000003.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000003.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000003.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000008.MuDst.root	RunFmsHotChQaMaker_16072057_4000008.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000008.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000008.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000008.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000011.MuDst.root	RunFmsHotChQaMaker_16072057_4000011.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000011.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000011.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000011.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000012.MuDst.root	RunFmsHotChQaMaker_16072057_4000012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000012.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000014.MuDst.root	RunFmsHotChQaMaker_16072057_4000014.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000014.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000014.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000014.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000016.MuDst.root	RunFmsHotChQaMaker_16072057_4000016.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000016.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000016.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000016.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000017.MuDst.root	RunFmsHotChQaMaker_16072057_4000017.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000017.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000017.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000017.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000019.MuDst.root	RunFmsHotChQaMaker_16072057_4000019.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000019.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000019.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000019.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000021.MuDst.root	RunFmsHotChQaMaker_16072057_4000021.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000021.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000021.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000021.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000023.MuDst.root	RunFmsHotChQaMaker_16072057_4000023.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000023.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000023.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000023.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000025.MuDst.root	RunFmsHotChQaMaker_16072057_4000025.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000025.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000025.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000025.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000026.MuDst.root	RunFmsHotChQaMaker_16072057_4000026.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000026.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000026.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000026.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000027.MuDst.root	RunFmsHotChQaMaker_16072057_4000027.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000027.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000027.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000027.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000029.MuDst.root	RunFmsHotChQaMaker_16072057_4000029.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000029.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000029.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000029.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000030.MuDst.root	RunFmsHotChQaMaker_16072057_4000030.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000030.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000030.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000030.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000032.MuDst.root	RunFmsHotChQaMaker_16072057_4000032.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000032.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000032.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000032.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000033.MuDst.root	RunFmsHotChQaMaker_16072057_4000033.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000033.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000033.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000033.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000036.MuDst.root	RunFmsHotChQaMaker_16072057_4000036.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000036.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000036.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000036.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000037.MuDst.root	RunFmsHotChQaMaker_16072057_4000037.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000037.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000037.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000037.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000039.MuDst.root	RunFmsHotChQaMaker_16072057_4000039.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000039.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000039.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000039.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000040.MuDst.root	RunFmsHotChQaMaker_16072057_4000040.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000040.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000040.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000040.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000041.MuDst.root	RunFmsHotChQaMaker_16072057_4000041.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000041.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000041.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000041.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000043.MuDst.root	RunFmsHotChQaMaker_16072057_4000043.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000043.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000043.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000043.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000046.MuDst.root	RunFmsHotChQaMaker_16072057_4000046.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000046.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000046.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000046.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000048.MuDst.root	RunFmsHotChQaMaker_16072057_4000048.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000048.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000048.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000048.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000050.MuDst.root	RunFmsHotChQaMaker_16072057_4000050.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000050.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000050.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000050.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000051.MuDst.root	RunFmsHotChQaMaker_16072057_4000051.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000051.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000051.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000051.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000053.MuDst.root	RunFmsHotChQaMaker_16072057_4000053.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000053.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000053.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000053.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000054.MuDst.root	RunFmsHotChQaMaker_16072057_4000054.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000054.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000054.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000054.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000057.MuDst.root	RunFmsHotChQaMaker_16072057_4000057.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000057.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000057.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000057.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000058.MuDst.root	RunFmsHotChQaMaker_16072057_4000058.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000058.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000058.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000058.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4000059.MuDst.root	RunFmsHotChQaMaker_16072057_4000059.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000059.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000059.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4000059.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500001.MuDst.root	RunFmsHotChQaMaker_16072057_4500001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500001.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500006.MuDst.root	RunFmsHotChQaMaker_16072057_4500006.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500006.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500006.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500006.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500011.MuDst.root	RunFmsHotChQaMaker_16072057_4500011.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500011.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500011.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500011.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500012.MuDst.root	RunFmsHotChQaMaker_16072057_4500012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500012.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500013.MuDst.root	RunFmsHotChQaMaker_16072057_4500013.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500013.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500013.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500013.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500016.MuDst.root	RunFmsHotChQaMaker_16072057_4500016.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500016.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500016.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500016.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500017.MuDst.root	RunFmsHotChQaMaker_16072057_4500017.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500017.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500017.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500017.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500020.MuDst.root	RunFmsHotChQaMaker_16072057_4500020.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500020.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500020.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500020.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500021.MuDst.root	RunFmsHotChQaMaker_16072057_4500021.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500021.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500021.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500021.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500023.MuDst.root	RunFmsHotChQaMaker_16072057_4500023.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500023.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500023.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500023.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500025.MuDst.root	RunFmsHotChQaMaker_16072057_4500025.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500025.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500025.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500025.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500026.MuDst.root	RunFmsHotChQaMaker_16072057_4500026.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500026.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500026.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500026.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500027.MuDst.root	RunFmsHotChQaMaker_16072057_4500027.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500027.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500027.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500027.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500029.MuDst.root	RunFmsHotChQaMaker_16072057_4500029.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500029.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500029.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500029.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500031.MuDst.root	RunFmsHotChQaMaker_16072057_4500031.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500031.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500031.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500031.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500032.MuDst.root	RunFmsHotChQaMaker_16072057_4500032.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500032.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500032.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500032.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500034.MuDst.root	RunFmsHotChQaMaker_16072057_4500034.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500034.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500034.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500034.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500037.MuDst.root	RunFmsHotChQaMaker_16072057_4500037.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500037.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500037.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500037.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500038.MuDst.root	RunFmsHotChQaMaker_16072057_4500038.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500038.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500038.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500038.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500039.MuDst.root	RunFmsHotChQaMaker_16072057_4500039.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500039.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500039.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500039.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500041.MuDst.root	RunFmsHotChQaMaker_16072057_4500041.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500041.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500041.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500041.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500042.MuDst.root	RunFmsHotChQaMaker_16072057_4500042.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500042.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500042.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500042.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500045.MuDst.root	RunFmsHotChQaMaker_16072057_4500045.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500045.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500045.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500045.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500046.MuDst.root	RunFmsHotChQaMaker_16072057_4500046.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500046.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500046.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500046.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500047.MuDst.root	RunFmsHotChQaMaker_16072057_4500047.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500047.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500047.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500047.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500050.MuDst.root	RunFmsHotChQaMaker_16072057_4500050.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500050.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500050.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500050.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500052.MuDst.root	RunFmsHotChQaMaker_16072057_4500052.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500052.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500052.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500052.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500053.MuDst.root	RunFmsHotChQaMaker_16072057_4500053.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500053.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500053.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500053.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500055.MuDst.root	RunFmsHotChQaMaker_16072057_4500055.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500055.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500055.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500055.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500057.MuDst.root	RunFmsHotChQaMaker_16072057_4500057.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500057.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500057.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500057.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500058.MuDst.root	RunFmsHotChQaMaker_16072057_4500058.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500058.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500058.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500058.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_4500059.MuDst.root	RunFmsHotChQaMaker_16072057_4500059.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500059.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500059.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_4500059.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000005.MuDst.root	RunFmsHotChQaMaker_16072057_5000005.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000005.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000005.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000005.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000009.MuDst.root	RunFmsHotChQaMaker_16072057_5000009.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000009.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000009.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000009.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000011.MuDst.root	RunFmsHotChQaMaker_16072057_5000011.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000011.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000011.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000011.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000012.MuDst.root	RunFmsHotChQaMaker_16072057_5000012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000012.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000014.MuDst.root	RunFmsHotChQaMaker_16072057_5000014.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000014.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000014.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000014.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000015.MuDst.root	RunFmsHotChQaMaker_16072057_5000015.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000015.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000015.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000015.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000016.MuDst.root	RunFmsHotChQaMaker_16072057_5000016.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000016.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000016.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000016.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000018.MuDst.root	RunFmsHotChQaMaker_16072057_5000018.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000018.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000018.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000018.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000020.MuDst.root	RunFmsHotChQaMaker_16072057_5000020.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000020.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000020.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000020.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000022.MuDst.root	RunFmsHotChQaMaker_16072057_5000022.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000022.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000022.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000022.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000024.MuDst.root	RunFmsHotChQaMaker_16072057_5000024.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000024.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000024.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000024.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000025.MuDst.root	RunFmsHotChQaMaker_16072057_5000025.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000025.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000025.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000025.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000026.MuDst.root	RunFmsHotChQaMaker_16072057_5000026.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000026.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000026.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000026.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000028.MuDst.root	RunFmsHotChQaMaker_16072057_5000028.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000028.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000028.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000028.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000029.MuDst.root	RunFmsHotChQaMaker_16072057_5000029.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000029.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000029.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000029.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000031.MuDst.root	RunFmsHotChQaMaker_16072057_5000031.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000031.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000031.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000031.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000034.MuDst.root	RunFmsHotChQaMaker_16072057_5000034.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000034.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000034.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000034.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000036.MuDst.root	RunFmsHotChQaMaker_16072057_5000036.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000036.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000036.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000036.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000037.MuDst.root	RunFmsHotChQaMaker_16072057_5000037.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000037.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000037.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000037.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000039.MuDst.root	RunFmsHotChQaMaker_16072057_5000039.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000039.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000039.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000039.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000040.MuDst.root	RunFmsHotChQaMaker_16072057_5000040.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000040.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000040.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000040.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000041.MuDst.root	RunFmsHotChQaMaker_16072057_5000041.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000041.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000041.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000041.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000043.MuDst.root	RunFmsHotChQaMaker_16072057_5000043.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000043.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000043.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000043.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000045.MuDst.root	RunFmsHotChQaMaker_16072057_5000045.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000045.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000045.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000045.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000046.MuDst.root	RunFmsHotChQaMaker_16072057_5000046.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000046.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000046.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000046.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000047.MuDst.root	RunFmsHotChQaMaker_16072057_5000047.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000047.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000047.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000047.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000053.MuDst.root	RunFmsHotChQaMaker_16072057_5000053.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000053.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000053.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000053.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000054.MuDst.root	RunFmsHotChQaMaker_16072057_5000054.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000054.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000054.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000054.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000056.MuDst.root	RunFmsHotChQaMaker_16072057_5000056.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000056.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000056.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000056.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000058.MuDst.root	RunFmsHotChQaMaker_16072057_5000058.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000058.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000058.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000058.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5000059.MuDst.root	RunFmsHotChQaMaker_16072057_5000059.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000059.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000059.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5000059.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500003.MuDst.root	RunFmsHotChQaMaker_16072057_5500003.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500003.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500003.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500003.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500010.MuDst.root	RunFmsHotChQaMaker_16072057_5500010.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500010.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500010.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500010.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500011.MuDst.root	RunFmsHotChQaMaker_16072057_5500011.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500011.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500011.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500011.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500012.MuDst.root	RunFmsHotChQaMaker_16072057_5500012.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500012.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500012.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500012.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500014.MuDst.root	RunFmsHotChQaMaker_16072057_5500014.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500014.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500014.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500014.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500015.MuDst.root	RunFmsHotChQaMaker_16072057_5500015.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500015.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500015.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500015.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500017.MuDst.root	RunFmsHotChQaMaker_16072057_5500017.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500017.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500017.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500017.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500018.MuDst.root	RunFmsHotChQaMaker_16072057_5500018.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500018.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500018.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500018.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500021.MuDst.root	RunFmsHotChQaMaker_16072057_5500021.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500021.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500021.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500021.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500022.MuDst.root	RunFmsHotChQaMaker_16072057_5500022.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500022.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500022.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500022.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500025.MuDst.root	RunFmsHotChQaMaker_16072057_5500025.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500025.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500025.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500025.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500026.MuDst.root	RunFmsHotChQaMaker_16072057_5500026.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500026.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500026.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500026.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500027.MuDst.root	RunFmsHotChQaMaker_16072057_5500027.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500027.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500027.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500027.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500028.MuDst.root	RunFmsHotChQaMaker_16072057_5500028.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500028.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500028.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500028.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500032.MuDst.root	RunFmsHotChQaMaker_16072057_5500032.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500032.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500032.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500032.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500033.MuDst.root	RunFmsHotChQaMaker_16072057_5500033.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500033.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500033.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500033.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500037.MuDst.root	RunFmsHotChQaMaker_16072057_5500037.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500037.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500037.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500037.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500038.MuDst.root	RunFmsHotChQaMaker_16072057_5500038.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500038.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500038.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500038.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500039.MuDst.root	RunFmsHotChQaMaker_16072057_5500039.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500039.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500039.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500039.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500040.MuDst.root	RunFmsHotChQaMaker_16072057_5500040.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500040.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500040.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500040.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500042.MuDst.root	RunFmsHotChQaMaker_16072057_5500042.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500042.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500042.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500042.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500044.MuDst.root	RunFmsHotChQaMaker_16072057_5500044.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500044.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500044.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500044.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500046.MuDst.root	RunFmsHotChQaMaker_16072057_5500046.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500046.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500046.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500046.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500048.MuDst.root	RunFmsHotChQaMaker_16072057_5500048.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500048.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500048.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500048.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500050.MuDst.root	RunFmsHotChQaMaker_16072057_5500050.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500050.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500050.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500050.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500051.MuDst.root	RunFmsHotChQaMaker_16072057_5500051.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500051.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500051.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500051.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500052.MuDst.root	RunFmsHotChQaMaker_16072057_5500052.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500052.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500052.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500052.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500054.MuDst.root	RunFmsHotChQaMaker_16072057_5500054.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500054.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500054.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500054.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500056.MuDst.root	RunFmsHotChQaMaker_16072057_5500056.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500056.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500056.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500056.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500059.MuDst.root	RunFmsHotChQaMaker_16072057_5500059.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500059.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500059.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500059.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_16072057_raw_5500060.MuDst.root	RunFmsHotChQaMaker_16072057_5500060.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500060.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500060.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_5500060.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_adc_16072057_raw_0000003.MuDst.root	RunFmsHotChQaMaker_16072057_0000003.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_0000003.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_0000003.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_0000003.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_adc_16072057_raw_1000006.MuDst.root	RunFmsHotChQaMaker_16072057_1000006.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000006.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000006.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000006.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_adc_16072057_raw_1000023.MuDst.root	RunFmsHotChQaMaker_16072057_1000023.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000023.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000023.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000023.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_adc_16072057_raw_1000036.MuDst.root	RunFmsHotChQaMaker_16072057_1000036.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000036.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000036.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000036.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/072/16072057/st_physics_adc_16072057_raw_1000051.MuDst.root	RunFmsHotChQaMaker_16072057_1000051.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000051.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000051.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16072057_1000051.log
 Queue
 

@@ -15,7 +15,7 @@ void FmsCellStatus(TString inFile)
     //--------------------------------------------
     //Need for DB access
     StChain *chain = new StChain;
-    StMuDstMaker *mMaker = new StMuDstMaker(0, 0, "", "resources/temp/FmsFileList.list", "", 1000); 
+    StMuDstMaker *mMaker = new StMuDstMaker(0, 0, "", "resources/temp/temp.list", "", 1000); 
     mMaker->SetStatus("*",0);
     mMaker->SetStatus("Fms*",1);
     //connect to STAR FMS database

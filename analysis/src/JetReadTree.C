@@ -19,6 +19,8 @@ void JetReadTree(
     // gSystem->Load("StJetEvent");
     // gSystem->Load("StJetSkimEvent");
 
+    TFile *outFile = new TFile(outfile, "recreate");
+    
     // Open jet & skim files
     TChain* jetChain = new TChain("jet");
     TChain* skimChain = new TChain("jetSkimTree");
@@ -38,17 +40,17 @@ void JetReadTree(
     skimChain->ls();
     // Set jet buffer
     StJetEvent* jetEvent = 0;
-    jetChain->SetBranchAddress("AntiKtR060NHits12",&jetEvent);
+    jetChain->SetBranchAddress("AntiKtR070NHits12",&jetEvent);
 
     // Set skim buffer
     StJetSkimEvent* skimEvent = 0;
     skimChain->SetBranchAddress("skimEventBranch",&skimEvent);
 
-
-    TH1D *h1nJets = new TH1D ("h1nJets", "Number of Jets", 10, -1, 9);
-    TH1D *h1JetEta = new TH1D ("h1JetEta", "Jet Eta", 100, -1.5, 5.0);
-    TH1D *h1JetPhi = new TH1D ("h1JetPhi", "Jet Phi", 100, -3.1, 3.1);
-
+    TH1D *h1nJets = new TH1D ("h1nJets", "Number of Jets; No. of Jets", 10, -1, 9);
+    TH1D *h1JetEta = new TH1D ("h1JetEta", "Jet Eta; Jet #eta", 100, -1.5, 5.0);
+    TH1D *h1JetPhi = new TH1D ("h1JetPhi", "Jet Phi; Jet #phi [rad]", 100, -3.1, 3.1);
+    TH1D *h1JetE = new TH1D ("h1JetE", "Jet E; Jet E [GeV]", 100, 0.0, 50.0);
+    TH1D *h1JetPt = new TH1D ("h1JetPt", "Jet Pt; Jet Pt [GeV/c]", 100, 0.0, 50.0);
     
     //----- Event loop ----------
     //Loads entries from Jet Tree and Skim Tree simultaneously
@@ -64,12 +66,14 @@ void JetReadTree(
 
 	if (iEntry % 1000 == 0) cout << iEntry << endl;
 
-	if(jetEvent->numberOfJets() == 0)
-	    continue;
+	// if(jetEvent->numberOfJets() == 0)
+	//     continue;
 
 	StJetVertex* vertex = jetEvent->vertex();
 	if (!vertex) continue;
-	if(vertex->ranking() < 0) continue;
+	
+	// if(vertex->ranking() < 0) continue; //Not applicable for EM jet
+	
 	// if(fabs(vertex->position().z()) > 80.0) continue;
 	
 	h1nJets->Fill(jetEvent->numberOfJets());
@@ -77,15 +81,11 @@ void JetReadTree(
 	{
 	    h1JetEta->Fill(jetEvent->jet(i)->eta());
 	    h1JetPhi->Fill(jetEvent->jet(i)->phi());
+	    h1JetPt->Fill(jetEvent->jet(i)->pt());
+	    h1JetE->Fill(jetEvent->jet(i)->E());
 	}
-
 	
     } // End event loop
 
-    TCanvas *c1 = new TCanvas();
-    h1nJets->Draw();
-    TCanvas *c2 = new TCanvas();
-    h1JetEta->Draw();
-    TCanvas *c3 = new TCanvas();
-    h1JetPhi->Draw();
+    outFile->Write();
 }
