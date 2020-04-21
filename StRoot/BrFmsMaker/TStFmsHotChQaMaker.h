@@ -27,6 +27,7 @@ private:
     StFmsCollection *mFmsColl;
     StFmsHit *mHit;
     TH1D *mEngDist[4][571];
+    TH1D *mCounter;
     const Int_t oMaxCh = 571; 
     const Int_t iMaxCh = 288;
     Int_t mDetId;

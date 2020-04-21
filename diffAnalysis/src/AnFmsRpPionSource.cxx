@@ -153,10 +153,10 @@ void AnFmsRpPionSource(Int_t firstRun, Int_t lastRun, TString outName, TString i
 	    ++eventCount[0]; //Event Counter
 
 	    trigList.clear();
-	    for(Int_t t = 0; t < event->mNtrig; ++t)
+	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
 	    {
-		hist16->Fill(event->mTriggers[t]);
-		trigList.push_back(event->mTriggers[t]);
+		hist16->Fill(event->GetTrigger(t));
+		trigList.push_back(event->GetTrigger(t));
 	    }
 
 	    //----- RP Tracks ----------
@@ -171,40 +171,40 @@ void AnFmsRpPionSource(Int_t firstRun, Int_t lastRun, TString outName, TString i
 		rpsTrack = (TStRpsTrackData*)rpsArr->At(trk);
 
 		//-------- RP Cuts ----------
-		if (rpsTrack->mType != 1)
+		if (rpsTrack->GetType() != 1)
 		    continue;
-		if(!(rpsTrack->mTheta_x > -1.5 && rpsTrack->mTheta_x < 5.0)) 
+		if(!(rpsTrack->GetThetaX() > -1.5 && rpsTrack->GetThetaX() < 5.0)) 
 		    continue;
-		if(!(fabs(rpsTrack->mTheta_y) > 1.0 &&  fabs(rpsTrack->mTheta_y) < 5.5))
+		if(!(fabs(rpsTrack->GetThetaY()) > 1.0 &&  fabs(rpsTrack->GetThetaY()) < 5.5))
 		    continue;
-		if(rpsTrack->mNplanes < 7)
+		if(rpsTrack->GetNplanes() < 7)
 		    continue;
 		
-		hist9->Fill(rpsTrack->mP);
-		hist10->Fill(rpsTrack->mPt);
+		hist9->Fill(rpsTrack->GetP());
+		hist10->Fill(rpsTrack->GetPt());
 		
-		if(rpsTrack->mBranch == 0 || rpsTrack->mBranch == 1) //East RP :: O East Up RP, 1: East Down RP
+		if(rpsTrack->GetBranch() == 0 || rpsTrack->GetBranch() == 1) //East RP :: O East Up RP, 1: East Down RP
 		{
 		    ++nTrkEast;
 		    eastTrk_i = trk;
 		    
-		    hist1East->Fill(rpsTrack->mP);		
-		    hist2East->Fill(rpsTrack->mPt);
-		    hist3East->Fill(rpsTrack->mEta);
-		    hist4East->Fill(rpsTrack->mPhi);
-		    hist5East->Fill(rpsTrack->mXi);		
+		    hist1East->Fill(rpsTrack->GetP());		
+		    hist2East->Fill(rpsTrack->GetPt());
+		    hist3East->Fill(rpsTrack->GetEta());
+		    hist4East->Fill(rpsTrack->GetPhi());
+		    hist5East->Fill(rpsTrack->GetXi());		
 		}
 
-		if(rpsTrack->mBranch == 2 || rpsTrack->mBranch == 3) //West RP :: 2: West Up RP, 3: West Down RP
+		if(rpsTrack->GetBranch() == 2 || rpsTrack->GetBranch() == 3) //West RP :: 2: West Up RP, 3: West Down RP
 		{
 		    ++nTrkWest;
 		    westTrk_i = trk;
 		    
-		    hist1West->Fill(rpsTrack->mP);		
-		    hist2West->Fill(rpsTrack->mPt);
-		    hist3West->Fill(rpsTrack->mEta);
-		    hist4West->Fill(rpsTrack->mPhi);
-		    hist5West->Fill(rpsTrack->mXi);
+		    hist1West->Fill(rpsTrack->GetP());		
+		    hist2West->Fill(rpsTrack->GetPt());
+		    hist3West->Fill(rpsTrack->GetEta());
+		    hist4West->Fill(rpsTrack->GetPhi());
+		    hist5West->Fill(rpsTrack->GetXi());
 		}		
 	    }
 	    if(nRpsTracks > 0)
@@ -222,13 +222,13 @@ void AnFmsRpPionSource(Int_t firstRun, Int_t lastRun, TString outName, TString i
 		pion = (TStFmsPointPairData*)fmsArr->At(pi);
 
 		//--------------- FMS Cut ----------------
-		if(pion->mZgg > 0.8)
+		if(pion->GetZgg() > 0.8)
 		    continue;
 	    
-		if(pion->mE < 12 || pion->mE > 70)
+		if(pion->GetE() < 12 || pion->GetE() > 70)
 		    continue;
 
-		if(cutg1->IsInside(pion->mX, pion->mY) || cutg2->IsInside(pion->mX, pion->mY))
+		if(cutg1->IsInside(pion->GetX(), pion->GetY()) || cutg2->IsInside(pion->GetX(), pion->GetY()))
 		    continue;
 
 		if(fms_i == -1) //consider only highest energy pair of photons, note: the Pions are already sorted based on energy
@@ -246,50 +246,50 @@ void AnFmsRpPionSource(Int_t firstRun, Int_t lastRun, TString outName, TString i
 	    
 	    pion = (TStFmsPointPairData*)fmsArr->At(fms_i);
 
-	    hist11->Fill(pion->mM);
-	    hist12->Fill(pion->mE);
-	    hist2d5->Fill(pion->mX, pion->mY);
+	    hist11->Fill(pion->GetM());
+	    hist12->Fill(pion->GetE());
+	    hist2d5->Fill(pion->GetX(), pion->GetY());
 	
 	    //-------- based on RP track topology ----------
 	    if(nTrkWest == 1 && nTrkEast == 0)
-		hist11w->Fill(pion->mM);		
+		hist11w->Fill(pion->GetM());		
 	    if(nTrkWest == 0 && nTrkEast == 1)
-		hist11e->Fill(pion->mM);
+		hist11e->Fill(pion->GetM());
 	    if(nTrkWest == 1 && nTrkEast == 1)
-		hist11ew->Fill(pion->mM);
+		hist11ew->Fill(pion->GetM());
 	    if(nTrkWest == 0 && nTrkEast == 0)
-		hist110->Fill(pion->mM);
+		hist110->Fill(pion->GetM());
     
 	    //------ based on trigger topology -----------
 	    if(std::find(trigList.begin(), trigList.end(), trig_SD) != trigList.end() || std::find(trigList.begin(), trigList.end(), trig_SDT) != trigList.end())	   
-		hist11_sd->Fill(pion->mM);
+		hist11_sd->Fill(pion->GetM());
 	    if(std::find(trigList.begin(), trigList.end(), trig_CPT2) != trigList.end() || std::find(trigList.begin(), trigList.end(), trig_CP) != trigList.end())
-		hist11_cp->Fill(pion->mM);
+		hist11_cp->Fill(pion->GetM());
 	    if(std::find(trigList.begin(), trigList.end(), trig_ET) != trigList.end())
-		hist11_et->Fill(pion->mM);
+		hist11_et->Fill(pion->GetM());
 	    
 	    //------- based on trigger and RP track topology ------------
 	    if(std::find(trigList.begin(), trigList.end(), trig_SD) != trigList.end() || std::find(trigList.begin(), trigList.end(), trig_SDT) != trigList.end())
 	    {		
 		if(nTrkWest == 1 && nTrkEast == 0)
-		    hist11w_sd->Fill(pion->mM);		
+		    hist11w_sd->Fill(pion->GetM());		
 		if(nTrkWest == 0 && nTrkEast == 1)
-		    hist11e_sd->Fill(pion->mM);
+		    hist11e_sd->Fill(pion->GetM());
 		if(nTrkWest == 1 && nTrkEast == 1)
-		    hist11ew_sd->Fill(pion->mM);
+		    hist11ew_sd->Fill(pion->GetM());
 		if(nTrkWest == 0 && nTrkEast == 0)
-		    hist110_sd->Fill(pion->mM);
+		    hist110_sd->Fill(pion->GetM());
 	    }
 	    else
 	    {
-		hist11_r->Fill(pion->mM);
+		hist11_r->Fill(pion->GetM());
 		
 		if(nTrkWest == 1 && nTrkEast == 0)
-		    hist11w_r->Fill(pion->mM);		
+		    hist11w_r->Fill(pion->GetM());		
 		if(nTrkWest == 0 && nTrkEast == 1)
-		    hist11e_r->Fill(pion->mM);
+		    hist11e_r->Fill(pion->GetM());
 		if(nTrkWest == 1 && nTrkEast == 1)
-		    hist11ew_r->Fill(pion->mM);
+		    hist11ew_r->Fill(pion->GetM());
 	    }
 	}		
 	//-----------

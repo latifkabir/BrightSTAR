@@ -52,8 +52,10 @@ Int_t TStFmsHotChQaMaker::Init()
 	    mEngDist[i][l] = new TH1D(title, title, 500, 0.0, 50); 
 	}   
     }
- 
-   return kStOK;
+    mCounter = new TH1D("counter", "run and event counter", 5, 0, 5);
+    mCounter->Fill(2);
+    
+    return kStOK;
 }
 
 
@@ -83,6 +85,7 @@ Int_t TStFmsHotChQaMaker::Make()
 	if(mDetId >= 8 && mDetId <= 11)     // Exclude detector IDs corresponding to FPOST, FPS, FPD etc.
 	    mEngDist[mDetId - 8][mChannel - 1]->Fill(mHit->energy()); 
     }
+    mCounter->Fill(4);
     
     return kStOK; 
 }
@@ -109,6 +112,7 @@ Int_t TStFmsHotChQaMaker::Finish()
 		mEngDist[i][l]->Write();
 	}	
     }
+    mCounter->Write();
     mFile->Close();
     return kStOK;
 }

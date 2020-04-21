@@ -119,12 +119,12 @@ void AnDstQA(Int_t firstRun, Int_t lastRun, TString outName, TString inFilePrefi
 	    tree->GetEntry(evt);
 
 	    //----- Event Info ---------
-	    hist13->Fill(event->mTofMultiplicity);
-	    hist14->Fill(event->mBbcADCSumLarge[1]); //West Large BBC
-	    hist15->Fill(event->mBbcADCSum[1]);      //West small BBC
+	    hist13->Fill(event->GetTofMultiplicity());
+	    hist14->Fill(event->GetBbcSumLarge(1)); //West Large BBC
+	    hist15->Fill(event->GetBbcSumSmall(1));      //West small BBC
 
-	    for(Int_t t = 0; t < event->mNtrig; ++t)
-		hist16->Fill(event->mTriggers[t]);
+	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
+		hist16->Fill(event->GetTrigger(t));
 	    
 	    //----- RP Tracks ----------
 	    nRpsTracks = rpsArr->GetEntriesFast();	    
@@ -132,25 +132,25 @@ void AnDstQA(Int_t firstRun, Int_t lastRun, TString outName, TString inFilePrefi
 	    {
 		rpsTrack = (TStRpsTrackData*)rpsArr->At(trk);
 
-		hist9->Fill(rpsTrack->mP);
-		hist10->Fill(rpsTrack->mPt);
+		hist9->Fill(rpsTrack->GetP());
+		hist10->Fill(rpsTrack->GetPt());
 		
-		if(rpsTrack->mBranch == 0 || rpsTrack->mBranch == 1) //East RP :: O East Up RP, 1: East Down RP
+		if(rpsTrack->GetBranch() == 0 || rpsTrack->GetBranch() == 1) //East RP :: O East Up RP, 1: East Down RP
 		{		
-		    hist1East->Fill(rpsTrack->mP);		
-		    hist2East->Fill(rpsTrack->mPt);
-		    hist3East->Fill(rpsTrack->mEta);
-		    hist4East->Fill(rpsTrack->mPhi);
-		    hist5East->Fill(rpsTrack->mXi);		
+		    hist1East->Fill(rpsTrack->GetP());		
+		    hist2East->Fill(rpsTrack->GetPt());
+		    hist3East->Fill(rpsTrack->GetEta());
+		    hist4East->Fill(rpsTrack->GetPhi());
+		    hist5East->Fill(rpsTrack->GetXi());		
 		}
 
-		if(rpsTrack->mBranch == 2 || rpsTrack->mBranch == 3) //West RP :: 2: West Up RP, 3: West Down RP
+		if(rpsTrack->GetBranch() == 2 || rpsTrack->GetBranch() == 3) //West RP :: 2: West Up RP, 3: West Down RP
 		{
-		    hist1West->Fill(rpsTrack->mP);		
-		    hist2West->Fill(rpsTrack->mPt);
-		    hist3West->Fill(rpsTrack->mEta);
-		    hist4West->Fill(rpsTrack->mPhi);
-		    hist5West->Fill(rpsTrack->mXi);
+		    hist1West->Fill(rpsTrack->GetP());		
+		    hist2West->Fill(rpsTrack->GetPt());
+		    hist3West->Fill(rpsTrack->GetEta());
+		    hist4West->Fill(rpsTrack->GetPhi());
+		    hist5West->Fill(rpsTrack->GetXi());
 		}
 		
 	    }
@@ -160,23 +160,23 @@ void AnDstQA(Int_t firstRun, Int_t lastRun, TString outName, TString inFilePrefi
 	    {
 		pion = (TStFmsPointPairData*)fmsArr->At(pi);
 
-		if(pion->mZgg > 0.8)
+		if(pion->GetZgg() > 0.8)
 		    continue;
 	    
-		if(pion->mE < 12 || pion->mE > 70)
+		if(pion->GetE() < 12 || pion->GetE() > 70)
 		    continue;
 
-		if(cutg1->IsInside(pion->mX, pion->mY) || cutg2->IsInside(pion->mX, pion->mY))
+		if(cutg1->IsInside(pion->GetX(), pion->GetY()) || cutg2->IsInside(pion->GetX(), pion->GetY()))
 		    continue;
 		    
-		hist11->Fill(pion->mM);
-		hist12->Fill(pion->mE);
-		hist2d5->Fill(pion->mX, pion->mY);
+		hist11->Fill(pion->GetM());
+		hist12->Fill(pion->GetE());
+		hist2d5->Fill(pion->GetX(), pion->GetY());
 
 		if(pi == 0)
 		{
-		    hist6->Fill(pion->mM);
-		    hist2d6->Fill(pion->mX, pion->mY);
+		    hist6->Fill(pion->GetM());
+		    hist2d6->Fill(pion->GetX(), pion->GetY());
 		}
 	    }
 	}		

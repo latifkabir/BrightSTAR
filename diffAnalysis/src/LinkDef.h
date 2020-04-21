@@ -1,10 +1,11 @@
 
 #ifdef __CINT__
 
+#pragma link C++ function AnAnalyzeHotChQa;                      // Fms Hot Channel QA
 #pragma link C++ function AnRunFmsRpTreeMaker;                   // Run Fms + Rp Tree Maker
 #pragma link C++ class TAnFmsRpTreeReader;                       // Fms + Rp Tree Reader
 #pragma link C++ function AnFmsRpQA;                             // Fms + Rp Correlation and event selection QA with multiple tracks allowed
-#pragma link C++ function AnFmsRpCorrUpb;                       // Fms + Rp Correlation with only 1 good RP track per event allowed (Unpolarized proton breaks)
+#pragma link C++ function AnFmsRpCorrUpb;                        // Fms + Rp Correlation with only 1 good RP track per event allowed (Unpolarized proton breaks)
 #pragma link C++ function AnFmsRpCorrPpb;                        // Fms + Rp Correlation with only 1 good RP track per event allowed (Polarized proton breaks)
 #pragma link C++ function AnFmsRpCorrMergedFull;                 // Fms + Rp Correlation with only 1 good RP track per event allowed, uses fully merged single root file.
 
