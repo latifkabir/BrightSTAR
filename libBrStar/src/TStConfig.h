@@ -32,6 +32,7 @@ class TStConfig : public TObject
     string fTrigDefFile;
     string fStreamPrefix;
     string fFillNoDB;
+    string fFmsHotChDB;
 
     int fUseEvt;
     int fUseTpc;
@@ -62,6 +63,7 @@ public:
     const string & GetTrigDefFile(){return fTrigDefFile;}
     const string & GetStreamPrefix(){return fStreamPrefix;}
     const string & GetFillNoDB(){return fFillNoDB;}
+    const string & GetFmsHotChDB(){return fFmsHotChDB;}
 
     bool EnableEvent(){return fUseEvt == 1;}
     bool EnableTpc(){return fUseTpc == 1;}

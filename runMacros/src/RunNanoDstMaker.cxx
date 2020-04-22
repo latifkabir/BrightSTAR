@@ -68,7 +68,18 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     {
 	//Enable new FMS calibration
 	fmsDb->SetAttr("fmsGainCorr","fmsGainCorr-BNL-C");
-       
+	Bool_t isHotCh[4][571] = {0};
+	TStFmsHotChDB *fmsHotChDb = new TStFmsHotChDB();
+	Int_t runNumber = TStRunList::GetRunFromFileName((string)fileList);
+	fmsHotChDb->GetHotChList(runNumber, isHotCh);
+	//----
+	for(int i = 0; i < 4; ++i)
+	{
+	    for(int j = 0; j < 571; ++j)
+		cout << "det "<< (i + 1)<< " ch "<< (j+1) << " :"<< isHotCh[i][j] <<endl;
+	}
+	//----
+	fmsDb->maskChannels(isHotCh);
 	StEventMaker* eventMk = new StEventMaker();
 	StFmsHitMaker*   fmsHitMk   = new StFmsHitMaker();
 	StFmsPointMaker* fmsPointMk = new StFmsPointMaker();

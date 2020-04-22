@@ -28,7 +28,7 @@ FMS Hot Channel Masking Work Flow
 #include <vector>
 using namespace std;
 
-void AnAnalyzeHotChQa(TString inHistFile)
+void AnAnalyzeHotChQa(Int_t fillNo)
 {
     //For hot channel 
     Int_t timesHigher = 3;
@@ -44,6 +44,8 @@ void AnAnalyzeHotChQa(TString inHistFile)
     St_db_Maker *stDb = new St_db_Maker("StarDb", "MySQL:StarDb");
     stDb->SetDateTime(20150601, 0); // An arbitrary time is set, since all we care about is the geometry.
     StFmsDbMaker *fmsDBMaker = new StFmsDbMaker("FmsDbMk");
+    Bool_t isHotCh[4][571] = {1};    
+    fmsDBMaker->maskChannels(isHotCh);
     fmsDBMaker->Init();
     chain->Init();
     chain->EventLoop(1);
@@ -51,15 +53,16 @@ void AnAnalyzeHotChQa(TString inHistFile)
     cout << "------->Max channel for det 8:"<< fmsDBMaker->maxChannel(8) <<endl;
     cout  <<"------->Max channel for det 11:"<< fmsDBMaker->maxChannel(11) <<endl;
     //--------------------------------------------------------------------------------
-    
+    TString inHistFile(Form("dst/R15FmsHotChQa/R15FmsHotChQa_Fill_%i.root", fillNo));
     TFile *file = new TFile(inHistFile);
     if(!file)
     {
-	cout << "Input Histpgram File NOT found" <<endl;
-	return;
+    	cout << "Input Histogram File NOT found" <<endl;
+    	return;
     }
     TCanvas *c1 = new TCanvas();
-    c1->Print("FmsHotChQaAnalysis.pdf(", "pdf");
+    
+    c1->Print(Form("FmsHotChQaAnalysis_%i.pdf(", fillNo), "pdf");
     
     TH1D *mEngDist[4][571];
 
@@ -104,9 +107,9 @@ void AnAnalyzeHotChQa(TString inHistFile)
     cout << "Average Entries: " << avgEntries <<endl;
 
     hist2d_before->Draw("colz");
-    c1->Print("FmsHotChQaAnalysis.pdf", "pdf");
+    c1->Print(Form("FmsHotChQaAnalysis_%i.pdf", fillNo), "pdf");
     hist2d_before->Draw("lego");
-    c1->Print("FmsHotChQaAnalysis.pdf", "pdf");
+    c1->Print(Form("FmsHotChQaAnalysis_%i.pdf", fillNo), "pdf");
 
     //--------------- Identifying hot channels based on the the number of entries in interval -----------
     struct DetChPair
@@ -117,6 +120,7 @@ void AnAnalyzeHotChQa(TString inHistFile)
     vector < DetChPair > hotChList;
     vector < DetChPair > badBsChList;
     TH2D *hist2d_after = new TH2D("hist2d_after", "Fms Cell Activity", 120,-100, 100, 120,-100, 100);
+    
     Int_t firstBin;
     Int_t lastBin;
     Int_t nEmptyBins;
@@ -130,10 +134,6 @@ void AnAnalyzeHotChQa(TString inHistFile)
 	    MaxCh = iMaxCh;
 	for (Int_t l = 0; l < MaxCh; l++) 
 	{
-	    TString title = "engDist_";
-	    title += (i + 8);        
-	    title += "_";        
-	    title += (l + 1);
 	    if(fmsDBMaker->getGain(i + 8, l + 1) == 0.0)  //Exclude unphysical cells
 		continue;
 
@@ -165,21 +165,66 @@ void AnAnalyzeHotChQa(TString inHistFile)
 	}   
     }
     hist2d_after->Draw("colz");
-    c1->Print("FmsHotChQaAnalysis.pdf", "pdf");
+    c1->Print(Form("FmsHotChQaAnalysis_%i.pdf", fillNo), "pdf");
     hist2d_after->Draw("lego");
-    c1->Print("FmsHotChQaAnalysis.pdf)", "pdf");
-    
-    vector <DetChPair>::iterator it;
-    cout << "Number Hot Channels:"<< hotChList.size() <<endl;
-    cout << "Hot Channels:" <<endl;
-    for(it = hotChList.begin(); it != hotChList.end(); ++ it)
-	cout << it->det << "\t"<< it->ch<<endl;
+    c1->Print(Form("FmsHotChQaAnalysis_%i.pdf)", fillNo), "pdf");
 
-    cout << "\n\n\nNumber Problematic Bit Shifted Channels:"<< badBsChList.size() <<endl;
-    cout << "Problematic Bit Shifted Channels:" <<endl;
-    for(it = badBsChList.begin(); it != badBsChList.end(); ++ it)
-	cout << it->det << "\t"<< it->ch<<endl;
+    //--------- Print det id and channel id on the 2d histogram -----------------------
+    TCanvas *c2 = new TCanvas();
+    TText *text = new TText();
+    text->SetTextSize(0.007);
+
+    hist2d_after->Draw("colz");
+    for(Int_t i = 0; i < 4; ++i)
+    {
+	Int_t MaxCh;
+	if(i == 0 || i == 1)
+	    MaxCh = oMaxCh;
+	else
+	    MaxCh = iMaxCh;
+	for (Int_t l = 0; l < MaxCh; l++) 
+	{
+	    if(fmsDBMaker->getGain(i + 8, l + 1) == 0.0)  //Exclude unphysical cells
+		continue;
+	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
+	    text->SetTextColor(kBlack);
+	    text->DrawText(fmsVec.x() - 1.0, fmsVec.y() - 2.5, Form("%i, %i", i + 8, l + 1));	    
+	}
+    }    
+    vector <DetChPair>::iterator it;
+    /*
+    TCanvas *c3 = new TCanvas();
+    c3->Print(Form("FmsHotCh_%i.pdf(", fillNo), "pdf");
+    for(it = hotChList.begin(); it != hotChList.end(); ++ it)
+    {
+	mEngDist[it->det - 8][it->ch - 1]->Draw();
+	c3->Print(Form("FmsHotCh_%i.pdf", fillNo), "pdf");
+    }
+    c3->Print(Form("FmsHotCh_%i.pdf)", fillNo), "pdf");
+
+    TCanvas *c4 = new TCanvas();
+    c4->Print(Form("FmsBitShiftCh_%i.pdf(", fillNo), "pdf");
+    for(it =  badBsChList.begin(); it !=  badBsChList.end(); ++ it)
+    {
+	mEngDist[it->det - 8][it->ch - 1]->Draw();
+	c4->Print(Form("FmsBitShiftCh_%i.pdf", fillNo), "pdf");
+    }
+    c4->Print(Form("FmsBitShiftCh_%i.pdf)", fillNo), "pdf");
+    */
+    cout << "Number Hot Channels:"<< hotChList.size() <<endl;
+    cout << "Hot Channels:\n" <<endl;
     
+    cout << "{\"fill\":"<< fillNo <<", \"detch\": ["<<endl;
+    for(it = hotChList.begin(); it != hotChList.end(); ++ it)
+	cout <<"{\"det\":"<<it->det << ", \"ch\":"<< it->ch<<"}, ";
+    cout << "]},\n" <<endl;
+
+    
+    cout << "\n\n\nNumber of Problematic Bit Shifted Channels:"<< badBsChList.size() <<endl;
+    cout << "Problematic Bit Shifted Channels:" <<endl;
+    for(it = badBsChList.begin(); it != badBsChList.end(); ++it)
+	cout << it->det << "\t"<< it->ch<<endl;    
+
 }
 
 void AnHotChQaSaveAsPdf(TString inHistFile)

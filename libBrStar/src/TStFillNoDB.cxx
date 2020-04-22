@@ -157,3 +157,23 @@ vector <int> TStFillNoDB::GetRunsWithFill(Int_t fillNo)
 	vec = it->second; //same as db[fillNo]
     return vec;
 }
+
+Int_t TStFillNoDB::GetFillNo(Int_t runNo)
+{
+    TStar::ExitIfInvalid((TString)TStar::Config->GetFillNoDB());
+    std::ifstream i(TStar::Config->GetFillNoDB());
+    json j;
+    i >> j;
+    
+    for(int k = 0; k < j.size(); ++k)
+    {
+    	for(int r = 0; r < j[k]["run"].size(); ++r)
+	{
+    	    if(j[k]["run"][r] == runNo)
+		return j[k]["fill"];
+	}
+    }
+
+    return -1;
+    i.close();    
+}

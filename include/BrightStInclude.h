@@ -11,6 +11,7 @@
 #include "TStRunList.h"
 #include "TStConfig.h"
 #include "TStTrigDef.h"
-
+#include "TStFillNoDB.h"
+#include "TStFmsHotChDB.h"
 
 #endif

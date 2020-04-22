@@ -22,7 +22,11 @@ TStConfig::TStConfig()
     //For some terminal, it does not get the environment correctly. For example from SUMS job
     //Let's hard code it for those cases.
     if(fStarHome == "" || fStarHome == "/")
+    {
 	fStarHome = "/star/u/kabir/GIT/BrightSTAR/";
+	// cout << "\nThe environment STARHOME does not return valid path" <<endl;
+    	// gApplication->Terminate();
+    }
     fConfigFile = fStarHome + (string)"/config/config.cfg";
     //Following are initial values and are overwritten later from the configuratuion file
     fDataPath = "data/";
@@ -121,6 +125,11 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fFillNoDB = tokens;
 	    }
+	    else if(s == "FMS_HOT_CH_DB")
+	    {
+		tokens = strtok(NULL, " :,");
+		fFmsHotChDB = tokens;
+	    }
 	    else if(s == "ENABLE_EVT")
 	    {
 		tokens = strtok(NULL, " :,");
@@ -162,7 +171,7 @@ void TStConfig::LoadConfig()
 
 void TStConfig::Print()
 {
-    cout << "==============Star Configuration===================" <<endl;
+    cout << "==============Bright-Star Configuration===================" <<endl;
     cout << "Star Home: "<< GetStarHome()<<"\n"<<endl;
     cout << "Config file: "<< GetConfigPath()<<"\n"<<endl;
     cout << "Data-file path: "<< GetDataPath()<<"\n"<<endl;
@@ -172,6 +181,7 @@ void TStConfig::Print()
     cout << "File-list: "<< GetFileList()<<"\n"<<endl;
     cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB()<<"\n"<<endl;
     cout << "\033[1;31mFill Number DB file: \033[0m"<< GetFillNoDB()<<"\n"<<endl;
+    cout << "\033[1;31mFms Hot Channel DB file: \033[0m"<< GetFmsHotChDB()<<"\n"<<endl;
     cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile()<<"\n"<<endl;
     cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath()<<"\n"<<endl;
     cout << "\033[1;31mStream prefix: \033[0m"<< GetStreamPrefix()<<"\n"<<endl;

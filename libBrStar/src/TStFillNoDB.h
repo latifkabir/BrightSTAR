@@ -24,6 +24,7 @@ public:
     void PrintFillNoDB();
     map <int, vector<int> > GetFillNoDB();
     vector <int> GetRunsWithFill(Int_t fillNo);
+    Int_t GetFillNo(Int_t runNo);
     
     ClassDef(TStFillNoDB,1)
 };
