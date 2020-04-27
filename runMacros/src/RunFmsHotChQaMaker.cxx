@@ -26,6 +26,20 @@ void RunFmsHotChQaMaker(TString inFile, TString outName, Int_t nEvents)
     muDstMaker->SetStatus("MuEvent*", 1);
     fmsDb->SetAttr("fmsGainCorr","fmsGainCorr-BNL-C");
     Int_t runNumber = TStRunList::GetRunFromFileName((string)inFile);
+    //---- Comment out for new fills --------
+    // Bool_t isHotCh[4][571] = {0};
+    // TStFmsHotChDB *fmsHotChDb = new TStFmsHotChDB();
+    // fmsHotChDb->GetHotChList(runNumber, isHotCh);
+    // cout << "The following FMS cells are masked:" <<endl;
+    // for(int i = 0; i < 4; ++i)
+    // {
+    // 	for(int j = 0; j < 571; ++j)
+    // 	    if(isHotCh[i][j])
+    // 		cout << "det "<< (i + 1)<< " ch "<< (j+1) << " hot/bad status:"<< isHotCh[i][j] <<endl;
+    // }
+    // fmsDb->maskChannels(isHotCh);
+    //---------
+    
     StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
     filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*VPDMB-30"));
     filterMaker->addVetoTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-LED"));

@@ -1,4 +1,4 @@
-// Filename: AnRunNanoDstMaker.cxx
+// Filename: CepNanoDstMaker.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Nov 13 17:25:43 2019 (-0500)
@@ -15,7 +15,7 @@
 #include <iostream>
 using namespace std;
 
-void AnRunNanoDstMaker(TString fileList, TString outFile)
+void CepNanoDstMaker(TString fileList, TString outFile)
 {
     //------ Print Current Config ----------------
     cout << "Current Configuration:"<<endl;
@@ -46,20 +46,11 @@ void AnRunNanoDstMaker(TString fileList, TString outFile)
 	return;
     }
 
-    //------- Fms-Rp Corr: FMS stream ----------------
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "FMS-JP0"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-JP1"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-JP2"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3"));
-
+    //------- CEP Analysis: RP stream ----------------
+    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "RP_CPT2"));
 
     //Veto
-    vetoTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-LED")); 
+    //vetoTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-LED")); 
     
     //---------- EEmc-Rp Corr: Physics stream --------------
     // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "EHT0")); // Generally 480301;
@@ -68,6 +59,5 @@ void AnRunNanoDstMaker(TString fileList, TString outFile)
     RunNanoDstMaker(fileList, outFile, false, evtTrigs, vetoTrigs);    
 
     // RunNanoDstMaker(fileList, outFile, true, evtTrigs, vetoTrigs, 500);  //test
-    // RunNanoDstMaker(fileList, outFile, true, evtTrigs, NULL, 500); //test
-    
+    // RunNanoDstMaker(fileList, outFile, true, evtTrigs, NULL, 500); //test    
 }

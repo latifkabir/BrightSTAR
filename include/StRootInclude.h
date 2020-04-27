@@ -117,6 +117,7 @@
 #include "StSpinPool/StJetEvent/StJetTrack.h"
 #include "StSpinPool/StJetEvent/StJetTower.h"
 #include "StSpinPool/StTriggerFilterMaker/StTriggerFilterMaker.h"
+#include "StSpinPool/StJetEvent/StJetParticle.h"
 #include "StJetMaker/StJetMaker2012.h"
 #include "StJetMaker/StAnaPars.h"
 #include "StJetMaker/towers/StjTowerEnergyCorrectionForTracksFraction.h"
@@ -139,6 +140,8 @@
 #include "StJetFinder/StFastJetPars.h"
 #include "StJetMaker/StJetSkimEventMaker.h"
 #include "StJetFinder/AbstractFourVec.h"
+
+
 
 
 #endif

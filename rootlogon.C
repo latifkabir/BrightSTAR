@@ -84,7 +84,7 @@
     
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
-    gSystem->Load("StFmsDbMaker");
+    assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StFmsDbMaker.so")); //Local copy of StFmsDbMaker
     gSystem->Load("StFmsHitMaker");
     gSystem->Load("StFmsPointMaker");
     gSystem->Load("StFmsFpsMaker");
@@ -136,18 +136,19 @@
     
     gSystem->Load("libRunMacros.so");
     gSystem->Load("libDiffAnalysis.so");
+    gSystem->Load("libCepAnalysis.so");
     
     //------- Bright STAR Library --------
     cout << "\t\t  Attempting to load libBrStar.so ... ";
     int status1 = gSystem->Load("libBrStar.so");
-    if(status1>-1)
+    if(status1 > -1)
 	cout << "attempt completed !!\n";
     else
 	cout << "attempt failed.\n";
 
     cout << "\t\t  Attempting to load libStAnalysis.so ...";
-    int status2=gSystem->Load("libStAnalysis.so");
-    if(status2>-1)
+    int status2 = gSystem->Load("libStAnalysis.so");
+    if(status2 > -1)
     	cout << "attempt completed !!\n\n";
     else
     	cout << "attempt failed.\n\n";

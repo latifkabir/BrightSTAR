@@ -13,7 +13,6 @@ Description of inherited modules
 - StFmsJetAnalysisMaker: Based on Zhanwen's FMS jet analysis maker.
 - StFmsOFileMaker: Chris Dilks' FMS+RP DST maker
 - StMuRpsUtil: After burner for RP. Not available in STAR-CVS. The alignment and hot-strips list are for run 15 only. The vertex is set event by event and the value is currently set for Run 15. While running using scheduler, make sure to send the afterburner alignment and hotstrip files. The `StMuRpUtil` requires path to the strip list etc. The path uses `getenv()` call for `$STARHOME`. This is not guaranteed to work always i.e. for all terimals or on the batch nodes. If it does not get the resources, it will return zero RP track. 
-Afterburner giving 10 times less tracks: Check run 16092035, 16093017 for example.
 
 
 

@@ -250,7 +250,7 @@ Int_t TStNanoDstMaker::Make()
     //------ Reset Buffer --------
     Reset();
 
-    //------- EEmc tree is separate.  But it can be synchronized here. If synced, it keeps event only if there is a vlaid. If not synced, it has a flag indicating if corresponding EEMC event is available. Trees will have different number of entries in the later case and you need to use the flag to synchronize. 
+    //------- EEmc tree is separate.  But it can be synchronized here. If synced, it keeps event only if there is a valid. If not synced, it has a flag indicating if corresponding EEMC event is available. Trees will have different number of entries in the later case and you need to use the flag to synchronize. 
     //EEMC event
     if(mUseEEmc)
     {
@@ -723,7 +723,7 @@ void TStNanoDstMaker::FillHist(Int_t particleId)
     }
 }
 
-//_____________________________________________________________________________
+
 //_____________________________________________________________________________
 Int_t TStNanoDstMaker::MakeEmc()
 {

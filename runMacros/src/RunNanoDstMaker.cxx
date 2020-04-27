@@ -32,7 +32,8 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     //======================================================== Trigger Filter ==============================================
     if(evtTrig || vetoTrig)
     {    
-	TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker"); // Filter/Skip Events if no RP or FMS BS/JP Trigger
+	//TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker"); // Filter/Skip Events if no RP or FMS BS/JP Trigger
+	StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
 	if(evtTrig)
 	{
 	    for(Int_t i = 0; i < evtTrig->size(); ++i)
@@ -43,7 +44,7 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
 	    for(Int_t i = 0; i < vetoTrig->size(); ++i)
 		filterMaker->addVetoTrigger(vetoTrig->at(i));
 	}
-	filterMaker->SetHist1d(hEvtCount);
+	//filterMaker->SetHist1d(hEvtCount);
     }
 
     Int_t nEvents = muDstMaker->chain()->GetEntries();
@@ -66,20 +67,21 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     //======================================================== FMS ==============================================
     if(TStar::gConfig->EnableFms())
     {
-	//Enable new FMS calibration
+	//Enable new FMS calibration and mask hot/bad channels
 	fmsDb->SetAttr("fmsGainCorr","fmsGainCorr-BNL-C");
 	Bool_t isHotCh[4][571] = {0};
 	TStFmsHotChDB *fmsHotChDb = new TStFmsHotChDB();
 	Int_t runNumber = TStRunList::GetRunFromFileName((string)fileList);
 	fmsHotChDb->GetHotChList(runNumber, isHotCh);
-	//----
+	cout << "The following FMS cells are masked:" <<endl;
 	for(int i = 0; i < 4; ++i)
 	{
 	    for(int j = 0; j < 571; ++j)
-		cout << "det "<< (i + 1)<< " ch "<< (j+1) << " :"<< isHotCh[i][j] <<endl;
+		if(isHotCh[i][j])
+		    cout << "det "<< (i + 1)<< " ch "<< (j+1) << " hot/bad status:"<< isHotCh[i][j] <<endl;
 	}
-	//----
 	fmsDb->maskChannels(isHotCh);
+	
 	StEventMaker* eventMk = new StEventMaker();
 	StFmsHitMaker*   fmsHitMk   = new StFmsHitMaker();
 	StFmsPointMaker* fmsPointMk = new StFmsPointMaker();
