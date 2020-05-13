@@ -92,7 +92,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    shell_out<<"stardev"<<endl;
+    //shell_out<<"stardev"<<endl;
     shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
     shell_out.close();
@@ -258,7 +258,7 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    shell_out<<"stardev"<<endl;
+    //shell_out<<"stardev"<<endl;
     shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
     shell_out.close();
@@ -348,7 +348,7 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    shell_out<<"stardev"<<endl;
+    //shell_out<<"stardev"<<endl;
     shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b  "<< jobDir <<"/jobMacro.C"<<endl;
     shell_out.close();
@@ -534,7 +534,7 @@ void TStScheduler::ResubmitJobs(TString functionName, Int_t firstRun,  Int_t las
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    shell_out<<"stardev"<<endl;
+    //shell_out<<"stardev"<<endl;
     shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
     shell_out.close();

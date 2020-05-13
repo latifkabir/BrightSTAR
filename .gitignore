@@ -34,3 +34,5 @@ schedTemplateExp.xml
 temp*.txt
 *_cxx.d
 jobs/
+StSpinPool/
+StJetMaker/

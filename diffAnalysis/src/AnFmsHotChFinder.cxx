@@ -35,6 +35,19 @@ FMS Hot Channel Masking Work Flow
 #include <vector>
 using namespace std;
 
+struct DetChPair
+{
+    Int_t det;
+    Int_t ch;
+    Int_t entries;
+};
+
+Bool_t AnComparisonFnc(DetChPair a, DetChPair b)
+{
+    return (a.entries > b.entries);    
+}
+
+/*
 void AnFmsHotChFinder(Int_t fillNo, Int_t iteration)
 {
     //For hot channel 
@@ -275,7 +288,352 @@ void AnFmsHotChFinder(Int_t fillNo, Int_t iteration)
     cout << "}\n" <<endl;
 
 }
+*/
 
+//---------------------------------------------------------------------------------------------------------
+void AnFmsHotChFinder(Int_t fillNo, Int_t iteration)
+{
+    //For hot channel 
+    Int_t timesHigher = 3;
+    Double_t energyTh = 0.5;
+    //For problematic bit shifted channels
+    Double_t firstBinE = 1.0; // 1 GeV
+    Double_t lastBinE = 5.0;  // 5 GeV
+    Int_t maxEmptyBins = 35;  //Maximum number of empty bins allowed
+    Double_t maxMean = 5.0;     
+    Double_t maxRms = 2.5;     
+    //----------- Need for DB access -----------------------------------------------
+    StChain *chain = new StChain;
+    //connect to STAR FMS database
+    St_db_Maker *stDb = new St_db_Maker("StarDb", "MySQL:StarDb");
+    stDb->SetDateTime(20160301, 0); // An arbitrary time is set, since all we care about is the geometry.
+    StFmsDbMaker *fmsDBMaker = new StFmsDbMaker("FmsDbMk");
+    fmsDBMaker->Init();
+    chain->Init();
+    chain->EventLoop(1);
+    //Check if database is working fine
+    cout << "------->Max channel for det 8:"<< fmsDBMaker->maxChannel(8) <<endl;
+    cout  <<"------->Max channel for det 11:"<< fmsDBMaker->maxChannel(11) <<endl;
+    //--------------------------------------------------------------------------------
+    TString inHistFile(Form("dst/R15FmsHotChQa/R15FmsHotChQa_Fill_%i.root", fillNo));
+    TFile *file = new TFile(inHistFile);
+    if(!file)
+    {
+    	cout << "Input Histogram File NOT found" <<endl;
+    	return;
+    }
+    TCanvas *c1 = new TCanvas();
+    
+    c1->Print(Form("FmsHotChFinder_%i.pdf(", fillNo), "pdf");
+    // struct DetChPair
+    // {
+    // 	Int_t det;
+    // 	Int_t ch;
+    // 	Int_t entries;
+    // } det_ch;
+    DetChPair det_ch;
+    const Int_t radialDiv = 15;
+    vector < DetChPair > chList[radialDiv];
+    Double_t averages[radialDiv] = {0};
+    Int_t numCells = 0;
+    
+    TH1D *mEngDist[4][571];
+    Bool_t isHotCh[4][571] = {0};
+    TStFmsHotChDB *fmsHotChDb = new TStFmsHotChDB();
+    TStFillNoDB *fillDb = new TStFillNoDB();    
+    Int_t runNumber = fillDb->GetRunsWithFill(fillNo)[0];
+    fmsHotChDb->GetHotChList(runNumber, isHotCh);
+    
+    Int_t nActiveCells = 0;
+    Int_t nEntries = 0;
+    Int_t accuEntries = 0;
+    Double_t avgEntries = 0;
+    const Int_t oMaxCh = 571; 
+    const Int_t iMaxCh = 288;
+    StThreeVectorF fmsVec;
+    Double_t radius;
+    Double_t width = (115.0 - 20.0) / radialDiv;
+    Int_t radialBin = -1;
+    
+    gStyle->SetOptStat(0);
+    TH2D *hist2d_before = new TH2D("hist2d_before", "FMS Cell Activity [Before Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
+    TH2D *hist2d_odd = new TH2D("hist2d_odd", "FMS Cell Activity [Before Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
+    TH2D *hist2d_even = new TH2D("hist2d_odd", "FMS Cell Activity [Before Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
+    
+    for(Int_t i = 0; i < 4; ++i)
+    {
+	Int_t MaxCh;
+	if(i == 0 || i == 1)
+	    MaxCh = oMaxCh;
+	else
+	    MaxCh = iMaxCh;
+	for (Int_t l = 0; l < MaxCh; l++) 
+	{
+	    TString title = "engDist_";
+	    title += (i + 8);        
+	    title += "_";        
+	    title += (l + 1);
+	    if(fmsDBMaker->getGain(i + 8, l + 1) == 0.0)  //Exclude unphysical cells
+		continue;
+	    
+	    mEngDist[i][l] = (TH1D*)file->Get(title);
+	    //nEntries = mEngDist[i][l]->GetEntries();
+	    nEntries = mEngDist[i][l]->Integral(mEngDist[i][l]->FindBin(energyTh), mEngDist[i][l]->GetNbinsX() + 1);
+	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
+	    radius = sqrt(fmsVec.x()*fmsVec.x() + fmsVec.y()*fmsVec.y());
+
+	    radialBin = -1;
+	    for(Int_t k = 0; k < radialDiv; k++)
+	    {
+
+		if(radius > (20 + k*width) && radius <= 20 + (k + 1)*width)
+		{
+		    radialBin = k;
+		    break;
+		}
+	    }
+
+	    if(radialBin == -1)
+	    {
+		cout << "Invalid radial bin number for det:" << (i+ 8) << "ch: "<< (l + 1) <<endl;
+		continue;
+	    }
+
+	    det_ch.det = i + 8;
+	    det_ch.ch = (l + 1);
+	    det_ch.entries = nEntries;
+	    
+	    if(iteration == 0)
+	    {
+		accuEntries += nEntries;
+		chList[radialBin].push_back(det_ch); 
+		hist2d_before->Fill(fmsVec.x(), fmsVec.y(), nEntries);
+		++nActiveCells;
+	    }
+	    else if(iteration > 0 && !isHotCh[i][l])
+	    {
+		accuEntries += nEntries;
+		chList[radialBin].push_back(det_ch); 
+		fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
+		hist2d_before->Fill(fmsVec.x(), fmsVec.y(), nEntries);
+		++nActiveCells;
+	    }
+	}   
+    }
+    avgEntries = (Double_t) (accuEntries / nActiveCells);
+
+    cout << "Number of active channels: "<< nActiveCells <<endl;
+    cout << "Average Entries: " << avgEntries <<endl;
+
+    hist2d_before->Draw("colz");
+    c1->Print(Form("FmsHotChFinder_%i.pdf", fillNo), "pdf");
+    hist2d_before->Draw("lego");
+    c1->Print(Form("FmsHotChFinder_%i.pdf", fillNo), "pdf");
+
+
+    for(Int_t i = 0; i < radialDiv; ++i)
+    {
+	cout << "Radial bin: "<< i << " number of cells: " << chList[i].size() <<endl;
+
+	std::sort(chList[i].begin(), chList[i].end(), AnComparisonFnc);
+
+	for(Int_t j = 0; j < chList[i].size(); ++j)
+	{
+	    cout << "Redial bin: " << i << " det-ch pair: "<< j <<" (" << chList[i][j].det << ", " << chList[i][j].ch << ") "<< " entries:" << chList[i][j].entries <<endl;
+
+	    fmsVec = fmsDBMaker->getStarXYZ(chList[i][j].det, chList[i][j].ch);
+	    if(i % 2 == 1)	     
+		hist2d_odd->Fill(fmsVec.x(), fmsVec.y(), chList[i][j].entries);
+	    else
+		hist2d_even->Fill(fmsVec.x(), fmsVec.y(), chList[i][j].entries);	    
+	}
+	cout << "------------------------------------------------------------------------------------------\n" <<endl;
+    }
+    hist2d_odd->Draw("colz");
+    c1->Print(Form("FmsHotChFinder_%i.pdf", fillNo), "pdf");
+    hist2d_even->Draw("colz");
+    c1->Print(Form("FmsHotChFinder_%i.pdf", fillNo), "pdf");
+
+    //------------- Calculate Average of each radial band --------------------------
+    for(Int_t i = 0; i < radialDiv; ++i)
+    {
+	cout << "Calculating Average Activity for Radial Bin: "<< i << " Number of Cells: " << chList[i].size() <<endl;
+	for(Int_t j = 5; j < chList[i].size() - 5 ; ++j)
+	    averages[i] += chList[i][j].entries;	    
+	averages[i] = averages[i] / (chList[i].size() - 10);
+	cout << "Average entries (calculated excluding too big/small):" << averages[i] <<endl;
+    }
+
+    //--------------- Identifying hot channels based on the number of entries in interval -----------
+    vector < DetChPair > hotChList;
+    vector < DetChPair > badBsChList;
+    vector <DetChPair>::iterator it;
+    
+    TH2D *hist2d_after = new TH2D("hist2d_after", "FMS Cell Activity [After Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
+    
+    for(Int_t i = 0; i < radialDiv; ++i)
+    {
+	for(Int_t j = 0; j < chList[i].size(); ++j)
+	{
+	    fmsVec = fmsDBMaker->getStarXYZ(chList[i][j].det, chList[i][j].ch);
+	    if(chList[i][j].entries > 1.5*averages[i])
+	    {
+		det_ch.det = chList[i][j].det;
+		det_ch.ch = chList[i][j].ch;
+		hotChList.push_back(det_ch);
+		hist2d_after->Fill(fmsVec.x(), fmsVec.y(), 0);
+	    }	
+	    else if(chList[i][j].entries < 0.3*averages[i])
+	    {
+		det_ch.det = chList[i][j].det;
+		det_ch.ch = chList[i][j].ch;
+		badBsChList.push_back(det_ch);
+		hist2d_after->Fill(fmsVec.x(), fmsVec.y(), 0);
+	    }
+	    else
+		hist2d_after->Fill(fmsVec.x(), fmsVec.y(), chList[i][j].entries);		
+	}
+    }
+  
+    /*    
+    Int_t firstBin;
+    Int_t lastBin;
+    Int_t nEmptyBins;
+    Double_t mean;
+    Double_t rms;
+    
+    for(Int_t i = 0; i < 4; ++i)
+    {
+	Int_t MaxCh;
+	if(i == 0 || i == 1)
+	    MaxCh = oMaxCh;
+	else
+	    MaxCh = iMaxCh;
+	for (Int_t l = 0; l < MaxCh; l++) 
+	{
+	    if(fmsDBMaker->getGain(i + 8, l + 1) == 0.0)  //Exclude unphysical cells
+		continue;
+
+	    det_ch.det = (i + 8);
+	    det_ch.ch = (l + 1);
+	    	       
+	    //nEntries = mEngDist[i][l]->GetEntries();
+	    nEntries = mEngDist[i][l]->Integral(mEngDist[i][l]->FindBin(energyTh), mEngDist[i][l]->GetNbinsX() + 1);
+	    mean = mEngDist[i][l]->GetMean();
+	    rms = mEngDist[i][l]->GetRMS();
+	    
+	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
+	    if(nEntries >= timesHigher*avgEntries)
+	    {
+		if(iteration == 0)	
+		    hotChList.push_back(det_ch);
+		else if (iteration > 0 && !isHotCh[i][l])
+		    hotChList.push_back(det_ch);
+		
+		hist2d_after->Fill(fmsVec.x(), fmsVec.y(), 0);
+	    }
+	    else
+		hist2d_after->Fill(fmsVec.x(), fmsVec.y(), nEntries);
+
+	    //-------------- Find problematic bit shifted channels --------------------------
+	    nEmptyBins = 0;
+	    firstBin = mEngDist[i][l]->FindBin(firstBinE); 
+	    lastBin = mEngDist[i][l]->FindBin(lastBinE);  
+	    for(Int_t b = firstBin; b <= lastBin; ++b)
+	    {
+		if(mEngDist[i][l]->GetBinContent(b) == 0)
+		   ++ nEmptyBins;
+	    }
+	    if((nEmptyBins >= maxEmptyBins && mean > 0)|| mean > maxMean || rms > maxRms)
+		badBsChList.push_back(det_ch);
+	}   
+    }
+
+    */
+    hist2d_after->Draw("colz");
+    c1->Print(Form("FmsHotChFinder_%i.pdf", fillNo), "pdf");
+    hist2d_after->Draw("lego");
+    c1->Print(Form("FmsHotChFinder_%i.pdf", fillNo), "pdf");
+
+    //--------- Print det id and channel id on the 2d histogram -----------------------
+    TCanvas *c2 = new TCanvas();
+    TText *text = new TText();
+    text->SetTextSize(0.007);
+    text->SetTextColor(kBlack);
+    
+    hist2d_after->Draw("colz");
+    for(Int_t i = 0; i < 4; ++i)
+    {
+	Int_t MaxCh;
+	if(i == 0 || i == 1)
+	    MaxCh = oMaxCh;
+	else
+	    MaxCh = iMaxCh;
+	for (Int_t l = 0; l < MaxCh; l++) 
+	{
+	    if(fmsDBMaker->getGain(i + 8, l + 1) == 0.0)  //Exclude unphysical cells
+		continue;
+	    fmsVec = fmsDBMaker->getStarXYZ(i + 8, l + 1);
+	    text->DrawText(fmsVec.x() - 1.0, fmsVec.y() - 2.5, Form("%i, %i", i + 8, l + 1));	    
+	}
+    }    
+
+    for(it = hotChList.begin(); it != hotChList.end(); ++ it)
+    {
+	fmsVec = fmsDBMaker->getStarXYZ(it->det, it->ch);
+	text->DrawText(fmsVec.x(), fmsVec.y(), "X");	    
+    }
+    for(it = badBsChList.begin(); it != badBsChList.end(); ++ it)
+    {
+	fmsVec = fmsDBMaker->getStarXYZ(it->det, it->ch);
+	text->DrawText(fmsVec.x(), fmsVec.y(), "X");	    
+    }
+    c2->Draw();
+    c2->Print(Form("FmsHotChFinder_%i.pdf)", fillNo), "pdf");
+    
+    gStyle->SetOptStat(1);
+    TCanvas *c3 = new TCanvas();
+    c3->SetLogy(1);
+    c3->Print(Form("FmsHotCh_%i.pdf(", fillNo), "pdf");
+    for(it = hotChList.begin(); it != hotChList.end(); ++ it)
+    {
+	mEngDist[it->det - 8][it->ch - 1]->Draw();
+	c3->Print(Form("FmsHotCh_%i.pdf", fillNo), "pdf");
+    }
+    c3->Print(Form("FmsHotCh_%i.pdf)", fillNo), "pdf");
+
+    TCanvas *c4 = new TCanvas();
+    c4->SetLogy(1);
+    c4->Print(Form("FmsBitShiftCh_%i.pdf(", fillNo), "pdf");
+    for(it =  badBsChList.begin(); it !=  badBsChList.end(); ++ it)
+    {
+	mEngDist[it->det - 8][it->ch - 1]->Draw();
+	c4->Print(Form("FmsBitShiftCh_%i.pdf", fillNo), "pdf");
+    }
+    c4->Print(Form("FmsBitShiftCh_%i.pdf)", fillNo), "pdf");
+    cout << "Number Hot Channels:"<< hotChList.size() <<endl;
+    cout << "Hot Channels:\n" <<endl;
+    //Hot channel list    
+    cout << "{\"fill\":"<< fillNo <<", \"hot\": ["<<endl;
+    for(it = hotChList.begin(); it != hotChList.end(); ++ it)
+	cout <<"{\"det\":"<<it->det << ", \"ch\":"<< it->ch<<"}, ";
+    cout << "],\n" <<endl;
+    //Other (e.g. bit shifted) problematic channels
+    cout << "\n\n\nNumber of Problematic Bit Shifted Channels:"<< badBsChList.size() <<endl;
+    cout << "Problematic Bit Shifted Channels:\n" <<endl;
+    cout <<"\"bad\": ["<<endl;
+    for(it = badBsChList.begin(); it != badBsChList.end(); ++it)
+	cout <<"{\"det\":"<<it->det << ", \"ch\":"<< it->ch<<"}, ";	    
+    cout << "]\n" <<endl;
+    cout << "}\n" <<endl;
+
+}
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------
 void AnFmsCellActivity(Int_t fillNo)
 {
     //For hot channel 
@@ -318,7 +676,7 @@ void AnFmsCellActivity(Int_t fillNo)
     const Int_t iMaxCh = 288;
     StThreeVectorF fmsVec;
     
-    TH2D *hist2d = new TH2D("hist2d", "Fms Cell Activity With Hot/Bad Channels Masked; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
+    TH2D *hist2d = new TH2D("hist2d", "FMS Cell Activity With Hot/Bad Channels Masked; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
     TH2D *hist2dep = new TH2D ("hist2dEtaPhis", "Cell Eta Phi [FMS];  #eta;  #phi", 100, 2.5, 4.5, 100, -3.2, 3.2);
     
     TText *text = new TText();

@@ -111,9 +111,12 @@
     gSystem->Load("StJetFinder");
     gSystem->Load("StJetSkimEvent");
     gSystem->Load("StJets");
-    gSystem->Load("StJetEvent");
-    gSystem->Load("StUeEvent");
-    gSystem->Load("StJetMaker");
+    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetEvent.so"); //Use local copy
+    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StUeEvent.so"); //Use local copy
+    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetMaker.so"); //Use local copy
+    //gSystem->Load("StJetEvent");
+    //gSystem->Load("StUeEvent");
+    //gSystem->Load("StJetMaker");
     gSystem->Load("StTriggerFilterMaker");
 
     //------------- RP ------------------
@@ -139,8 +142,10 @@
     gSystem->Load("libCepAnalysis.so");
     
     //------- Bright STAR Library --------
+    //Use $STARHOME/<lib module>/lib/ prefix to load local version
     cout << "\t\t  Attempting to load libBrStar.so ... ";
     int status1 = gSystem->Load("libBrStar.so");
+    int status3 = gSystem->Load("libEmJetAnalysis.so"); 
     if(status1 > -1)
 	cout << "attempt completed !!\n";
     else

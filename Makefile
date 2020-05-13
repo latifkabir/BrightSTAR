@@ -13,6 +13,7 @@ LIB_DIR = libBrStar
 ANA_DIR = analysis
 MACRO_DIR = runMacros
 DIFFANA_DIR = diffAnalysis
+EMJANA_DIR = diffAnalysis
 # makefile name
 MAKE_FILE = Makefile
 
@@ -35,6 +36,9 @@ diff: lib
 macro: cons
 	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE)
 
+emj: cons
+	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE)
+
 cons:
 	cons
 
@@ -54,6 +58,9 @@ cleandiff:
 
 cleanmacro:
 	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE) clean
+
+cleanemj:
+	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE) clean
 
 cleancons:
 	rm -r .sl73_gcc485/*
