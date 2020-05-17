@@ -344,7 +344,11 @@ void EjQaPlots(
 		h2JetEP->Fill(eta, phi);
 	    }
 	    if(eta > 1.0 && eta < 2.0)   // actual range 1.086 - 2.0
+	    {
+		jetX = (kEEmcZSMD - z_vtx) * tan(theta) * cos(phi);
+		jetY = (kEEmcZSMD - z_vtx) * tan(theta) * sin(phi);
 		h2Jetxy_eemc->Fill(jetX, jetY);
+	    }
 
 	    if(eta > 2.65 && eta < 3.9)
 		h1nPhotons->Fill(jetEvent->jet(i)->numberOfTowers());

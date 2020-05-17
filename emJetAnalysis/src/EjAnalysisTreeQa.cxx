@@ -44,6 +44,7 @@ void EjAnalysisTreeQa(TString inFileName, TString outName)
     Double_t jetX;
     Double_t jetY;
     Double_t vtxZ;
+    Double_t rt;
         
     ch->SetBranchAddress("eng", &eng);
     ch->SetBranchAddress("pt", &pt);
@@ -55,6 +56,7 @@ void EjAnalysisTreeQa(TString inFileName, TString outName)
     ch->SetBranchAddress("nPhotons", &nPhotons);
     ch->SetBranchAddress("spinB", &spinB);
     ch->SetBranchAddress("spinY", &spinY);
+    ch->SetBranchAddress("rt", &rt);
 
     TH1D *h1Eta = new TH1D ("h1Eta", "EM Jet Eta; Jet #eta", 100, -1.5, 5.0);
     TH1D *h1Phi = new TH1D ("h1Phi", "EM Jet Phi; Jet #phi [rad]", 100, -3.3, 3.3);
@@ -68,8 +70,10 @@ void EjAnalysisTreeQa(TString inFileName, TString outName)
     
     TH2D *h2EvsPt = new TH2D("h2EvsPt", "Eng vs Pt; Pt [GeV/C]; E [GeV]", 100, 0, 20, 100, 0, 100);
     TH2D *h2nPhVsEng = new TH2D("h2nPhVsEng", "Number of photons vs Eng; E [Gev]; No. of Photons", 100, 0, 100, 20, 0, 20);
-    TH2D *h2JetXY = new TH2D ("h2JetXY", "Jet Position [FMS]; Jet X [cm]; Jet Y [cm]", 100, -100, 100, 100, -100, 100);
-    TH2D *h2EtaPhi = new TH2D ("h2EtaPhi", "Jet Eta Phi [FMS]; Jet #eta; Jet #phi [rad]", 100, 2.5, 4.5, 100, -3.2, 3.2);
+    //TH2D *h2JetXY = new TH2D ("h2JetXY", "Jet Position [FMS]; Jet X [cm]; Jet Y [cm]", 100, -100, 100, 100, -100, 100);
+    TH2D *h2JetXY = new TH2D ("h2JetXY", "Jet Position [FMS]; Jet X [cm]; Jet Y [cm]", 100, -250, 250, 100, -250, 250);
+    //TH2D *h2EtaPhi = new TH2D ("h2EtaPhi", "Jet Eta Phi [FMS]; Jet #eta; Jet #phi [rad]", 100, 2.5, 4.5, 100, -3.5, 3.5);
+    TH2D *h2EtaPhi = new TH2D ("h2EtaPhi", "Jet Eta Phi [FMS]; Jet #eta; Jet #phi [rad]", 100, 0.8, 2.5, 100, -3.5, 3.5);
     
     Int_t nEntries = ch->GetEntries();
 
@@ -77,6 +81,9 @@ void EjAnalysisTreeQa(TString inFileName, TString outName)
     {
 	ch->GetEntry(i);
 
+	if(rt != 1)
+	    continue;
+	
 	h1Eta->Fill(eta);
 	h1Phi->Fill(phi);
 	h1E->Fill(eng);

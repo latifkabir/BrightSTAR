@@ -188,7 +188,7 @@ void EjBinnedJetTree(
 	switch(spin4Bit) 
 	{
 	case 5:
-	{
+	{  
 	    spinB = -1;
 	    spinY = -1;
 	    break;

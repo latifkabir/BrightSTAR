@@ -13,7 +13,7 @@ LIB_DIR = libBrStar
 ANA_DIR = analysis
 MACRO_DIR = runMacros
 DIFFANA_DIR = diffAnalysis
-EMJANA_DIR = diffAnalysis
+EMJANA_DIR = emJetAnalysis
 # makefile name
 MAKE_FILE = Makefile
 

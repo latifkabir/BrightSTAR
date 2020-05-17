@@ -45,6 +45,7 @@
 #include "StEEmcUtil/EEmcGeom/EEmcGeomSimple.h"
 #include "StEEmcUtil/StEEmcSmd/StEEmcSmdGeom.h"
 #include "StEmcUtil/database/StBemcTables.h"
+#include "StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
 
 //EEMC Reconstruction IU Algorithm
 #include "StEEmcPool/StEEmcA2EMaker/StEEmcA2EMaker.h"

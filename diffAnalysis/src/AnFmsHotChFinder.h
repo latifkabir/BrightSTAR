@@ -6,4 +6,4 @@
 
 void AnFmsHotChFinder(Int_t fillNo,  Int_t iteration = 0);
 void AnFmsCellActivity(Int_t fillNo);
-void AnHotChQaSaveAsPdf(TString inHistFile);
+void AnHotChQaSaveAsPdf(Int_t fillNo);
