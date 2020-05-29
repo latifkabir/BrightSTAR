@@ -9,7 +9,7 @@
 */
 
 //Use file name with wildcard to chain many files
-void EjAnalysisTree(
+void EjMakeAnalysisTree(
     TString det, Int_t nentries,
 	    TString jetfile,
 	    TString skimfile,
@@ -114,7 +114,7 @@ void EjAnalysisTree(
     tree->Branch("event", &eventId, "event/I");
     tree->Branch("spinB", &spinB, "spinB/I");
     tree->Branch("spinY", &spinY, "spinY/I");
-    tree->Branch("phiBin", &phiBin, "phiBin/I");
+    //tree->Branch("phiBin", &phiBin, "phiBin/I");
     tree->Branch("nPhotons", &nPhotons, "nPhotons/I");
 
     tree->Branch("phi", &phi, "phi/D");
@@ -326,19 +326,19 @@ void EjAnalysisTree(
 	    jetX = (zDist - vtxZ) * tan(theta) * cos(phi);
 	    jetY = (zDist - vtxZ) * tan(theta) * sin(phi);
 
-	    for(Int_t j = 0; j < nPhiBins; ++j)
-	    {
-		if(phi >= j*widthPhi && phi < (j+1)*widthPhi)
-		{
-		    phiBin = j + 1;
-		    break;
-		}
-		else if(-1.0*phi >= j*widthPhi && -1.0*phi < (j+1)*widthPhi)
-		{
-		    phiBin = nPhiBins + j + 1;
-		    break;
-		}
-	    }
+	    // for(Int_t j = 0; j < nPhiBins; ++j)
+	    // {
+	    // 	if(phi >= j*widthPhi && phi < (j+1)*widthPhi)
+	    // 	{
+	    // 	    phiBin = j + 1;
+	    // 	    break;
+	    // 	}
+	    // 	else if(-1.0*phi >= j*widthPhi && -1.0*phi < (j+1)*widthPhi)
+	    // 	{
+	    // 	    phiBin = nPhiBins + j + 1;
+	    // 	    break;
+	    // 	}
+	    // }
 
 	    if(rt == 1)
 		++nEmJets;

@@ -23,7 +23,10 @@ public:
 
     static Int_t gFirstRun;   //This will make library loading slow (to read large json file)
     static Int_t gLastRun;
-    
+
+    static Bool_t gDebug;
+    static Bool_t gInfo;
+        
     static void Exit();
     static void ExitIfInvalid(TString filePath);
     static Bool_t IsValid(TString filePath);

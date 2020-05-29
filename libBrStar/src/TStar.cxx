@@ -47,6 +47,9 @@ TStConfig* TStar::gConfig = Config;
 Int_t TStar::gFirstRun = TStRunList::GetFirstRun();  
 Int_t TStar::gLastRun = TStRunList::GetLastRun();
 
+Bool_t TStar::gDebug = kFALSE;
+Bool_t TStar::gInfo = kTRUE;
+
 void TStar::Exit()
 {
     gApplication->Terminate();
