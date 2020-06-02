@@ -38,6 +38,9 @@
 //Nano Dst
 #pragma link C++ function RunNanoDstMaker;                       // Run Nano DST maker. 
 
+//EM Jet 
+#pragma link C++ function RunEmJetTreeMaker;                     // Run EM Jet tree maker. 
+
 #endif
 
 

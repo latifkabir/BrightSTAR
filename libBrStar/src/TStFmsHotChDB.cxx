@@ -37,6 +37,13 @@ void TStFmsHotChDB::GetHotChList(Int_t runNo, Bool_t isHotCh[][571])
     TStFillNoDB db;
     Int_t fillNo = db.GetFillNo(runNo);
 
+    if(fillNo == -1)
+    {
+	cout << "-----------> Unable to get valid fill number <------------" <<endl;
+	cout << "Hot Channel List Will be Empty" <<endl;
+	return;
+    }
+    
     TStar::ExitIfInvalid((TString)TStar::Config->GetFmsHotChDB());
     std::ifstream i(TStar::Config->GetFmsHotChDB());
     json j;

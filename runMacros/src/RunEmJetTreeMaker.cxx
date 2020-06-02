@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void EjRunJetTreeMaker(TString inFile, TString outFile)
+void RunEmJetTreeMaker(TString inFile, TString outFile)
 {
     TStopwatch sw;
     sw.Start();
@@ -20,9 +20,12 @@ void EjRunJetTreeMaker(TString inFile, TString outFile)
     TString Skimfile = (TString)"skim_" + outFile;
 
     //-------------------------------------------
-    gMessMgr->SetLimit("I", 0);
-    gMessMgr->SetLimit("Q", 0);
-    gMessMgr->SetLimit("W", 0);
+    if(!TStar::gBrDebug)
+    {
+	gMessMgr->SetLimit("I", 0);
+	gMessMgr->SetLimit("Q", 0);
+	gMessMgr->SetLimit("W", 0);
+    }
     //-------------------------------------------
 
     StChain* chain = new StChain;

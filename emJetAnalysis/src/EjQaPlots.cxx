@@ -216,6 +216,8 @@ void EjQaPlots(
 	    vtxType = 4;
 	    h1Vtxz4->Fill(vtxZ);	    
 	}
+	h1Vtxz->Fill(vtxZ);
+	h1VtxType->Fill(vtxType);
 	
 	didFireJP0 = didFireJP1 = didFireJP2 = kFALSE;
 	didFireSB1 = didFireSB2 = didFireSB3 = kFALSE;

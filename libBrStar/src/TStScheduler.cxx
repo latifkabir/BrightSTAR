@@ -426,6 +426,16 @@ void TStScheduler::SubmitSumsJob(TString function, TString runList, TString outN
 
 void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_run)
 {
+    string response;
+    TStar::gConfig->Print();
+    cout << "\n\nEnter y to confirm the above configuration (n to cancel):" <<endl;
+    cin>>response;
+    if(response != "y")
+    {
+	cout << "Aborting job submission" <<endl;
+	return;
+    }
+    
     TStRunList *list = new TStRunList();
     TEntryList *runList = list->GetRunList(first_run, last_run);
     //runList->Print("all");
@@ -480,7 +490,7 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
 	    iteration = (index_e / runIncrement);
 	    TString jobName = functionName + to_string(iteration);
 	    cout << "Submitting jobs for run range: "<< startRun << " to "<< endRun <<endl;
-	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement);
+	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement) + (TString)" Active jobs: " + to_string(activeJobs);
 	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" kabir@rcf.rhic.bnl.gov";
 	    gROOT->ProcessLine(emailCommand);
 	                           	    

@@ -86,6 +86,15 @@ void EjMakeAnalysisTree(
 	etaMax = eemcEtaMax;
     }
 
+    TStJetCandidate::Class()->IgnoreTObjectStreamer();
+    TStJetSkimEvent::Class()->IgnoreTObjectStreamer();
+    TClonesArray *jetArr= new TClonesArray("TStJetCandidate");
+    TStJetSkimEvent *eventInfo;
+    TStJetCandidate *jetCandidate;
+    
+    tree->Branch("event", eventInfo, 256000, 99);
+    tree->Branch("jets", &jetArr, 256000, 99);
+    
     const Int_t kMaxPhotons = 100;
     Int_t runNumber;
     Int_t eventId;
@@ -109,7 +118,8 @@ void EjMakeAnalysisTree(
     TVector3 v3;
     Double_t theta;
     Int_t nEmJets;
-
+    
+    /*
     tree->Branch("run", &runNumber, "run/I");
     tree->Branch("event", &eventId, "event/I");
     tree->Branch("spinB", &spinB, "spinB/I");
@@ -126,6 +136,7 @@ void EjMakeAnalysisTree(
     tree->Branch("rt", &rt, "rt/D");
     tree->Branch("phEng", phEng, "phEng[nPhotons]/D");
     tree->Branch("trigFlag", trigFlag, "trigFlag[9]/I");  //index 0:JP0 1:JP1 2:JP2 3:sm-bs-1 4:sm-bs-2 5:sm-bs-3 6:lg-bs-1 7:lg-bs-2 8:lg-bs-3 
+    */
     
     skimChain->GetEvent(0);
     
@@ -186,23 +197,16 @@ void EjMakeAnalysisTree(
 	    continue;
 	
 	//------ Reset values --------
-	eta = -999.0;
-	phi = -999.0;
-	spinB = -9;
-	spinY = -9;
-	pt = -999;
-	eng = -999;
-	nPhotons = -1;
-	jetX = -999;
-	jetY = -999;
-	vtxZ = -999;
-	std::fill_n(trigFlag, 9, 0);
-	std::fill_n(phEng, kMaxPhotons, -1);
+	jetArr->Clear();
+	eventInfo->Reset();
 	
 	//vtxZ = vertex->position().z();
 
-	runNumber = jetEvent->runId();
-	eventId = jetEvent->eventId();
+	eventInfo->SetRunNumber(jetEvent->runId());
+	eventInfo->SetEventId(jetEvent->eventId());
+	eventInfo->SetVertexZ(vertex->position().z());
+
+	
 	spin4Bit = skimEvent->spin4usingBx48(); 
 	/*
 	  Spin info to be interpreted based on: https://drupal.star.bnl.gov/STAR/blog/oleg/spin-patterns-and-polarization-direction
@@ -244,60 +248,20 @@ void EjMakeAnalysisTree(
 	    spinY = 0;
 	}
 
+	eventInfo->SetSpinB(spinB);
+	eventInfo->SetSpinY(spinY);
+	
 	for(Int_t i = 0; i < kMaxTriggers; ++i)
 	{
 	    if(jetTrig[i])
 	    {
 		if(jetTrig[i]->didFire() && jetTrig[i]->shouldFire()) //<-------- Check what did/should fire actually is
-		    trigFlag[i] = 1;
+		    eventInfo->SetTrigFlag(i, 1);
 	    }
 	}
 
 	h1nJets->Fill(jetEvent->numberOfJets()); //This number would be greater than num of jets from the index = 0 vertex
 	nEmJets = 0;
-
-	//It seems most jet people loop over vertices. Find the justification.
-	//I was looping over number of jets initially
-	//Seems like directly looping over jets does not allow access to tower and particle information successfully. While if jet is accesses through vertex, the corresponding jet allows access to particle and tower information
-
-	/*
-	for(Int_t i = 0; i < jetEvent->numberOfJets(); ++i) 
-	{
-	    eta = jetEvent->jet(i)->eta();
-
-	    if(eta < etaMin  || eta > etaMax) //Consider FMS or EEMC EM Jets only 
-		continue;
-	    
-	    phi = jetEvent->jet(i)->phi();
-	    eng = jetEvent->jet(i)->E();
-	    pt = jetEvent->jet(i)->pt();
-	    vtxZ = jetEvent->jet(i)->vertex()->position().z();
-	    nPhotons = jetEvent->jet(i)->numberOfTowers();
-	    rt = jetEvent->jet(i)->rt();
-	    
-	    theta =  2 * atan( exp(-eta) );
-	    jetX = (zDist - vtxZ) * tan(theta) * cos(phi);
-	    jetY = (zDist - vtxZ) * tan(theta) * sin(phi);
-
-
-	    for(Int_t j = 0; j < jetEvent->jet(i)->numberOfTowers(); ++j)
-	    {
-		tower = jetEvent->jet(i)->tower(j);
-				
-		if(j >= kMaxPhotons)
-		    break;
-		phEng[j] = tower->energy(); //This will cause the crash ans tower will be null
-	    }
-
-
-	    if(rt == 1)
-		++nEmJets;
-	    
-	    tree->Fill();
-	}
-	h1nJets_eemc->Fill(nEmJets);
-
-	*/
 	
 	for(Int_t i = 0; i < vertex->numberOfJets(); ++i) 
 	{

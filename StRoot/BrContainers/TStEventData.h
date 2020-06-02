@@ -14,8 +14,7 @@
 
 class TStEventData : public TObject
 {
-
-public:
+protected:
     Int_t mRunNumber;			//
     Float_t mFillNumber;			// Yellow Fill Number 
     Int_t mEventId;			//
@@ -40,7 +39,8 @@ public:
     Double_t mVx;                       //
     Double_t mVy;                       //
     Double_t mVz;                       //
-
+    
+public:
     //---------
     Int_t GetRunNumber(){return mRunNumber;}							//
     Float_t GetFillNumber(){return mFillNumber;}							// Yellow Fill Number

@@ -1,4 +1,4 @@
-// Filename: EjRunJetTreeMaker.h
+// Filename: RunEmJetTreeMaker.h
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri Apr 10 22:08:43 2020 (-0400)
@@ -6,4 +6,4 @@
 
 #include "TString.h"
 
-void EjRunJetTreeMaker(TString inFile = "./inFiles_fms.list", TString outFile = "jets.root");
+void RunEmJetTreeMaker(TString inFile = "./inFiles_fms.list", TString outFile = "jets.root");

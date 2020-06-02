@@ -139,7 +139,7 @@
     
     gSystem->Load("libRunMacros.so");
     gSystem->Load("libDiffAnalysis.so");
-    gSystem->Load("libCepAnalysis.so");
+    //gSystem->Load("libCepAnalysis.so");
     
     //------- Bright STAR Library --------
     //Use $STARHOME/<lib module>/lib/ prefix to load local version

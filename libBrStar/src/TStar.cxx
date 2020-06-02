@@ -47,8 +47,8 @@ TStConfig* TStar::gConfig = Config;
 Int_t TStar::gFirstRun = TStRunList::GetFirstRun();  
 Int_t TStar::gLastRun = TStRunList::GetLastRun();
 
-Bool_t TStar::gDebug = kFALSE;
-Bool_t TStar::gInfo = kTRUE;
+Bool_t TStar::gBrDebug = kFALSE;
+Bool_t TStar::gBrInfo = kTRUE;
 
 void TStar::Exit()
 {
@@ -238,6 +238,33 @@ void TStar::help()
 	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
     }
     myFile4.close();
+
+    str =  TStar::Config->GetStarHome() + (string)"/emJetAnalysis/src/";
+    str = str + "LinkDef.h";
+    ifstream myFile5(str.c_str());
+    if(!myFile5)
+    {
+	cout << "Source file NOT found" <<endl;
+	return;
+    }
+    cout << "\t\t=================================================================================" <<endl;
+
+    cout << "\t\t|\t\t\t   Classes/Functions inside emJetAnalysis   \t\t|" <<endl;
+    cout << "\t\t=================================================================================" <<endl;
+  
+    while(getline(myFile5,str))
+    {
+	lineStr = str.c_str();
+	if(str[0]=='/' && str[1]=='/')
+	    continue;
+	if(str == "#endif")
+	    continue;
+	if(str == "#ifdef __CINT__")
+	    continue;
+	//cout << str <<endl;
+	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
+    }
+    myFile5.close();
     
     cout<< "-------------------------------------------------------------------------------------------" <<endl;  
     cout << "| Type 'help(\"function or class name\")' for details of any specific function or class     |"<<endl;

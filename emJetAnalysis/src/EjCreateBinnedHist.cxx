@@ -93,7 +93,14 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix)
 	}
 	TFile *tFile = new TFile(fileName);
 	TTree *tree = (TTree*)tFile->Get("T");
-        
+	if(!tree)
+	{
+	    cout << "No Tree found in"<< fileName <<" ... SKIPPED"<<endl;
+	    tFile->Close();
+	    delete tFile;	    
+	    continue;
+	}
+	
 	tree->SetBranchAddress("eng", &eng);
 	tree->SetBranchAddress("pt", &pt);
 	tree->SetBranchAddress("eta", &eta);
@@ -162,8 +169,6 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix)
 	    	phi_b = phi;
 	    	phi_y = -1.0*TMath::Pi() - phi;		
 	    }
-	    // phi_b = phi;
-	    // phi_y = phi;
 	    
 	    bHist[bSpin_i][eng_i][nPhotons_i]->Fill(phi_b, pt);
 	    yHist[ySpin_i][eng_i][nPhotons_i]->Fill(phi_y, pt);

@@ -15,7 +15,7 @@ fi
 RunList=$1
 FolderName=$2
 FilePrefix=$3
-InputDir=$STARHOME/jobResults/${FolderName}
+InputDir=$STARHOME/scratch/${FolderName}
 OutDir=$STARHOME/dst/${FolderName}
 TIME=`date "+%Y%m%d%I"`
 

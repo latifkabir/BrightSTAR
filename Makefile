@@ -36,7 +36,7 @@ diff: lib
 macro: cons
 	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE)
 
-emj: cons
+emj: #cons
 	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE)
 
 cons:
