@@ -359,7 +359,7 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	       && (pion->GetM() > 0.0 && pion->GetM() < 0.25))  // <----- Pion mass range (WIDER RANGE USED!!)
 	    {
 		hist2d4->Fill(pion->GetPhi(), rpsTrack->GetPhi());
-		for(Int_t t = 0; t < event->mNtrig; ++t)
+		for(Int_t t = 0; t < event->GetNtrigs(); ++t)
 		    hist17->Fill(event->GetTrigger(t));
 		
 		++eventCount[4];	    

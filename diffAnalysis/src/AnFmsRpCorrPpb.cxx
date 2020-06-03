@@ -293,7 +293,7 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    hist24->Fill(pion->GetE());
 	    hist25->Fill(rpsTrack->GetP());
 
-	    for(Int_t t = 0; t < event->mNtrig; ++t)
+	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
 	        hist17->Fill(event->GetTrigger(t));
 		
 	    ++eventCount[4];	    

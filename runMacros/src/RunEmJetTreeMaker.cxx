@@ -43,32 +43,32 @@ void RunEmJetTreeMaker(TString inFile, TString outFile)
     }
 
     //For EEMC EM Jet using physics stream
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "EHT0"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP1"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP2"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "EHT0*EJP1*L2Egamma"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*VPDMB-30"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "VPDMB-5-ssd"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT0*BBCMB"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*BBCMB"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT2*BBCMB"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*VPDMB-30-nobsmd"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP2*L2JetHigh"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "EHT0"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP1"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP2"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "EHT0*EJP1*L2Egamma"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*VPDMB-30"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "VPDMB-5-ssd"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT0*BBCMB"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*BBCMB"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT2*BBCMB"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*VPDMB-30-nobsmd"));
+    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP2*L2JetHigh"));
 
     //For FMS EM Jet using FMS stream
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "FMS-JP0"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-JP1"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-JP2"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-DiJP"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-DiBS"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "FMS-JP0"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-JP1"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-JP2"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-DiJP"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3"));
+    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-DiBS"));
     
-    // filterMaker->addVetoTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-LED"));
+    filterMaker->addVetoTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-LED"));
     
     St_db_Maker* starDb = new St_db_Maker("StarDb","MySQL:StarDb");
     starDb->SetAttr("blacklist", "ist");

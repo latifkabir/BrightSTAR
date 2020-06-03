@@ -66,11 +66,15 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
     Double_t bAnRawError[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
     Double_t bAn[kEnergyBins][kPhotonBins][nPtBins];
     Double_t bAnError[kEnergyBins][kPhotonBins][nPtBins];
+    memset(bAn, 0, sizeof(yAn));
+    memset(bAnError, 0, sizeof(yAn));
     
     Double_t yAnRaw[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
     Double_t yAnRawError[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
     Double_t yAn[kEnergyBins][kPhotonBins][nPtBins];
     Double_t yAnError[kEnergyBins][kPhotonBins][nPtBins];
+    memset(yAn, 0, sizeof(yAn));
+    memset(yAnError, 0, sizeof(yAn));
     
     Double_t bNu_l;
     Double_t bNu_r;
@@ -95,7 +99,6 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
 	    {
 		for(Int_t l = 0; l < nPtBins; ++l)
 		{
-
 		    if(i == 0 && j == 0 && l == 0)
 			phiValues[k] = bHist[0][i][j]->GetXaxis()->GetBinCenter(phiBins_right[k]);
 
@@ -162,6 +165,8 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
     TGraphErrors *yGr[kEnergyBins][kPhotonBins][nPtBins];
     TF1 *bFitFnc[kEnergyBins][kPhotonBins][nPtBins];
     TF1 *yFitFnc[kEnergyBins][kPhotonBins][nPtBins];
+    TGraphErrors *bGrPhy[kEnergyBins][kPhotonBins];
+    TGraphErrors *yGrPhy[kEnergyBins][kPhotonBins];
     Int_t nPointsB;
     Int_t nPointsY;
     
@@ -169,6 +174,13 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
     {
 	for(Int_t j = 0; j < kPhotonBins; ++j)
 	{
+	    bGr[i][j] = new TGraphErrors();
+	    yGr[i][j] = new TGraphErrors();
+	    bGr[i][j]->SetName(Form("bEbin%i_PhotonBin%i_PtBin%i", i, j, k));
+	    bGr[i][j]->SetTitle(Form("bEbin%i_PhotonBin%i_PtBin%i", i, j, k));
+	    yGr[i][j]->SetName(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
+	    yGr[i][j]->SetTitle(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
+	    
 	    for(Int_t k = 0; k < nPtBins; ++k)
 	    {
 		bGr[i][j][k] = new TGraphErrors();
@@ -203,12 +215,17 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
 		bGr[i][j][k]->Fit(Form("bFitFnc_%i_%i_%i", i, j, k));
 		yGr[i][j][k]->Fit(Form("yFitFnc_%i_%i_%i", i, j, k));
 
-		bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(0);
-		bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(0);
+		if(bGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
+		{
+		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(0);
+		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(0);
+		}
 
-		yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(0);
-		yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(0);
-		
+		if(bGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
+		{
+		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(0);
+		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(0);
+		}
 		bGr[i][j][k]->Write();
 		yGr[i][j][k]->Write();
 
@@ -218,8 +235,11 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
 	}
     }
 
+    //------------------ Plot physics AN --------------------
+
+    
     /*
-     Plot the fitted graphs as:
+     Plot the saved fitted graphs as:
      gStyle->SetOptFit(1)
      bEbin1_PhotonBin0_PtBin0->Draw("AP*")
     */
