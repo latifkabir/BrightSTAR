@@ -10,14 +10,14 @@
 #include "BrightStInclude.h"
 using namespace std;
 
-void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
+void EjCalculateAN(TString inFileName, TString outName)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
       Let's create TH2D histograms of array size [2(spin)][4(energy)][#photon(5)]. The 2D histogram to be filled with phi bins along x and pt bins along y.
       We need another similar array for yellow beam as well.
     */
-    TString inFile = (TString)"BinnedHist_" + to_string(fillNo) + (TString)".root";
+    TString inFile = inFileName;
     if(gSystem->AccessPathName(inFile))
     {
 	cout << "Input file not found: "<< inFile <<endl;
@@ -33,6 +33,7 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
     TH2D *yHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0}; //For info only
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
+
     //Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
     for(Int_t i = 0; i < kSpinBins; ++i)
@@ -66,15 +67,15 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
     Double_t bAnRawError[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
     Double_t bAn[kEnergyBins][kPhotonBins][nPtBins];
     Double_t bAnError[kEnergyBins][kPhotonBins][nPtBins];
-    memset(bAn, 0, sizeof(yAn));
-    memset(bAnError, 0, sizeof(yAn));
+    memset(bAn, 0, sizeof(bAn));
+    memset(bAnError, 0, sizeof(bAnError));
     
     Double_t yAnRaw[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
     Double_t yAnRawError[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
     Double_t yAn[kEnergyBins][kPhotonBins][nPtBins];
     Double_t yAnError[kEnergyBins][kPhotonBins][nPtBins];
     memset(yAn, 0, sizeof(yAn));
-    memset(yAnError, 0, sizeof(yAn));
+    memset(yAnError, 0, sizeof(yAnError));
     
     Double_t bNu_l;
     Double_t bNu_r;
@@ -160,7 +161,7 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
     }
 
     gROOT->SetBatch(kTRUE);
-    TFile *outFile = new TFile(Form("RawAN_%i.root", fillNo), "recreate");
+    TFile *outFile = new TFile(outName, "recreate");
     TGraphErrors *bGr[kEnergyBins][kPhotonBins][nPtBins];
     TGraphErrors *yGr[kEnergyBins][kPhotonBins][nPtBins];
     TF1 *bFitFnc[kEnergyBins][kPhotonBins][nPtBins];
@@ -169,27 +170,76 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
     TGraphErrors *yGrPhy[kEnergyBins][kPhotonBins];
     Int_t nPointsB;
     Int_t nPointsY;
+    Int_t nPointsPhyB;
+    Int_t nPointsPhyY;
     
     for(Int_t i = 0; i < kEnergyBins; ++i)
     {
 	for(Int_t j = 0; j < kPhotonBins; ++j)
 	{
-	    bGr[i][j] = new TGraphErrors();
-	    yGr[i][j] = new TGraphErrors();
-	    bGr[i][j]->SetName(Form("bEbin%i_PhotonBin%i_PtBin%i", i, j, k));
-	    bGr[i][j]->SetTitle(Form("bEbin%i_PhotonBin%i_PtBin%i", i, j, k));
-	    yGr[i][j]->SetName(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
-	    yGr[i][j]->SetTitle(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
+	    bGrPhy[i][j] = new TGraphErrors();
+	    yGrPhy[i][j] = new TGraphErrors();
+	    bGrPhy[i][j]->SetName(Form("bEbin%i_PhotonBin%i", i, j));
+	    bGrPhy[i][j]->SetTitle(Form("%.1f GeV < E < %.1f GeV, No. of Photons %i; P_{T} [GeV/c]; A_{N}", engBins[i], engBins[i + 1], j + 1));
+	    yGrPhy[i][j]->SetName(Form("yEbin%i_PhotonBin%i", i, j));
+	    yGrPhy[i][j]->SetTitle(Form(" %.1f GeV < E < %.1f GeV, No. of Photons %i; P_{T} [GeV/c]; A_{N}", engBins[i], engBins[i + 1], j + 1));
+	    bGrPhy[i][j]->SetMarkerColor(kBlue);
+	    bGrPhy[i][j]->SetLineColor(kBlue);
+	    bGrPhy[i][j]->SetMarkerStyle(kFullCircle);
+	    
+	    bGrPhy[i][j]->SetMaximum(0.1);
+	    bGrPhy[i][j]->SetMinimum(-0.1);
+
+	    yGrPhy[i][j]->SetMaximum(0.1);
+	    yGrPhy[i][j]->SetMinimum(-0.1);
+
+	    // if(i == 0)
+	    // {
+	    // 	bGrPhy[i][j]->SetMaximum(0.006);
+	    // 	bGrPhy[i][j]->SetMinimum(-0.006);
+	    // }
+	    // else
+	    // {
+	    // 	bGrPhy[i][j]->SetMaximum(0.05);
+	    // 	bGrPhy[i][j]->SetMinimum(-0.05);
+	    // }
+	    
+	    yGrPhy[i][j]->SetMarkerColor(kRed);
+	    yGrPhy[i][j]->SetLineColor(kRed);
+	    yGrPhy[i][j]->SetMarkerStyle(kFullCircle);
+	    
+	    // if(i == 0)
+	    // {
+	    // 	yGrPhy[i][j]->SetMaximum(0.006);
+	    // 	yGrPhy[i][j]->SetMinimum(-0.006);
+	    // }
+	    // else
+	    // {
+	    // 	yGrPhy[i][j]->SetMaximum(0.05);
+	    // 	yGrPhy[i][j]->SetMinimum(-0.05);
+	    // }
+	    
+	    nPointsPhyB = 0;
+	    nPointsPhyY = 0;
 	    
 	    for(Int_t k = 0; k < nPtBins; ++k)
 	    {
 		bGr[i][j][k] = new TGraphErrors();
 		yGr[i][j][k] = new TGraphErrors();
 		bGr[i][j][k]->SetName(Form("bEbin%i_PhotonBin%i_PtBin%i", i, j, k));
-		bGr[i][j][k]->SetTitle(Form("bEbin%i_PhotonBin%i_PtBin%i", i, j, k));
+		bGr[i][j][k]->SetTitle(Form("Blue Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; P_{T} [GeV/c]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
 		yGr[i][j][k]->SetName(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
-		yGr[i][j][k]->SetTitle(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
+		yGr[i][j][k]->SetTitle(Form("Yellow Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; P_{T} [GeV/c]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
+		// bGr[i][j][k]->SetMaximum(0.01);
+		// bGr[i][j][k]->SetMinimum(-0.01);
+		// yGr[i][j][k]->SetMaximum(0.01);
+		// yGr[i][j][k]->SetMinimum(-0.01);
 
+		bGr[i][j][k]->SetMaximum(0.1);
+		bGr[i][j][k]->SetMinimum(-0.1);
+		yGr[i][j][k]->SetMaximum(0.1);
+		yGr[i][j][k]->SetMinimum(-0.1);
+		
 		bFitFnc[i][j][k] = new TF1(Form("bFitFnc_%i_%i_%i", i, j, k), "[0]*cos(x) + [1]");
 		yFitFnc[i][j][k] = new TF1(Form("yFitFnc_%i_%i_%i", i, j, k), "[0]*cos(x) + [1]");
 
@@ -219,12 +269,20 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
 		{
 		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(0);
 		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(0);
+
+		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
+		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
+		    ++nPointsPhyB;		    
 		}
 
 		if(bGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
 		{
 		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(0);
 		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(0);
+
+		    yGrPhy[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
+		    yGrPhy[i][j]->SetPointError(nPointsPhyY, 0, yAnError[i][j][k]);
+		    ++nPointsPhyY;		    
 		}
 		bGr[i][j][k]->Write();
 		yGr[i][j][k]->Write();
@@ -232,11 +290,46 @@ void EjCalculateAN(Int_t fillNo, TString fileNamePrefix)
 		// bCanvas[i][j][k]->Write();
 		// yCanvas[i][j][k]->Write();		
 	    }
+	    bGrPhy[i][j]->Write();
+	    yGrPhy[i][j]->Write();
 	}
     }
 
-    //------------------ Plot physics AN --------------------
+    //------------------ Plot physics A_N --------------------
+    TCanvas *c1 = new TCanvas("EMjet_A_N", "EM Jet A_{N}");
+    Int_t canvasCount = 1;
 
+    //------------- For FMS --------------------
+    c1->Divide(kEnergyBins -1, kPhotonBins -1);
+    for(Int_t i = 0; i < kPhotonBins - 1; ++i)
+    {
+    	for(Int_t j = 1; j < kEnergyBins; ++j)
+    	{
+    	    c1->cd(canvasCount);
+    	    bGrPhy[j][i]->Draw("AP");
+    	    yGrPhy[j][i]->Draw("P");
+    	    TLine* L1Temp = new TLine(1.5, 0, 9.5, 0);
+    	    L1Temp->Draw("same");
+    	    ++canvasCount;
+    	}
+    }
+
+    //---------- For EEMC Jet -----------------------
+    // c1->Divide(5, 2);
+    // for(Int_t i = 0; i < 2; ++i)
+    // {
+    // 	for(Int_t j = 0; j < 5; ++j)
+    // 	{
+    // 	    c1->cd(canvasCount);
+    // 	    bGrPhy[i][j]->Draw("AP");
+    // 	    yGrPhy[i][j]->Draw("P");
+    // 	    TLine* L1Temp = new TLine(2.5, 0, 9.5, 0);
+    // 	    L1Temp->Draw("same");
+    // 	    ++canvasCount;
+    // 	}
+    // }
+    
+    c1->Write();
     
     /*
      Plot the saved fitted graphs as:

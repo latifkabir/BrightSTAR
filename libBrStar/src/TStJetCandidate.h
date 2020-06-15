@@ -12,11 +12,9 @@
 #include "TObject.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
-
-#include "StSpinPool/StJetEvent/StJetElement.h"
-#include "StSpinPool/StJetEvent/StJetParticle.h"
-#include "StSpinPool/StJetEvent/StJetTower.h"
-
+#include "TRefArray.h"
+#include "TObjArray.h"
+#include "TClonesArray.h"
 
 //--------------------------------------------------------
 class TStJetParticle : public TObject
@@ -52,7 +50,6 @@ public:
     Float_t GetE(){return mE;}
 
     TLorentzVector GetFourMomentum(){TLorentzVector lv; lv.SetPtEtaPhiE(mPt, mEta, mPhi, mE); return lv;}
-
 
     void SetId(Short_t id){mId = id;}
     void SetPdg(Int_t pdg){mPdg = pdg;}
@@ -116,7 +113,7 @@ protected:
 
 
 public:
-    Float_t GetEntry(){return mEnergy;}
+    Float_t GetEnergy(){return GetMomentum().Mag();}
     Float_t GetPt(){return mPt;}
     Float_t GetEta(){return mEta;}
     Float_t GetPhi(){return mPhi;}
@@ -180,8 +177,8 @@ protected:
     Double_t mY;		//
     Double_t mRt;		//   
     TRefArray mTowers;		//
-    TRefArray mParticles;	//
-    //TRefArray mTracks;	// Currently not saved
+    TRefArray mParticles;	// Used for embedding only
+    //TRefArray mTracks;	        //  Currently Not used
     
 public:       
     Int_t GetNphotons(){return mNphotons;}
@@ -207,14 +204,13 @@ public:
     TStJetParticle* AddParticle(TStJetParticle* particle) { mParticles.Add((TObject*)particle); return (TStJetParticle*)mParticles.Last(); }
 
     //Int_t NumberOfTracks() const { return mTracks.GetEntriesFast(); }
-    Int_t NumberOfTowers() const { return mTowers.GetEntriesFast(); }
-    Int_t NumberOfParticles() const { return mParticles.GetEntriesFast(); }
+    Int_t GetNumberOfTowers() const { return mTowers.GetEntriesFast(); }
+    Int_t GetNumberOfParticles() const { return mParticles.GetEntriesFast(); }
     
     //TStJetTrack* GetTrack(int i) const { return (TStJetTrack*)mTracks.At(i); }
     TStJetTower* GetTower(int i) const { return (TStJetTower*)mTowers.At(i); }
     TStJetParticle* GetParticle(int i) const { return (TStJetParticle*)mParticles.At(i); }
 
-    
     TStJetCandidate()
     {
 	Reset();
@@ -233,45 +229,13 @@ public:
 	mPt		= -1;		//
 	mX		= -999;		//
 	mY		= -999;		//
-	mRt		= -999;		//   
-    }
+	mRt		= -999;		//
 
-    //void CopyTrack(TStJetTrack* t, TStJetTrack* track);                 //Copy from t to track
-
-
-    void CopyTower(StJetTower*  t, TStJetTower* tower) //Copy from t to tower
-    {
-	tower->SetId(t->id());
-	tower->SetDetectorId(t->detectorId());
-	tower->SetStatus(t->status());
-	
-	tower->SetAdc(t->adc());
-	tower->SetPedestal(t->pedestal());
-	tower->SetRms(t->rms());
-	
-	tower->SetPt(t->pt());
-	tower->SetEta(t->eta());
-	tower->SetPhi(t->phi());	
-	tower->SetJt(t->jt());
-    }
-
-    void CopyParticle(StJetParticle* t, TStJetParticle* particle)
-    {
-	particle->SetId(t->id());
-	particle->SetPt(t->pt());
-	particle->SetEta(t->eta());
-	particle->SetPhi(t->phi());
-	particle->SetM(t->m());
-	particle->SetE(t->e());
-	particle->SetPdg(t->pdg());
-	particle->SetStatus(t->status());
-	particle->SetFirstMother(t->firstMother());
-	particle->SetLastMother(t->lastMother());
-	particle->SetFirstDaughter(t->firstDaughter());
-	particle->SetLastDaughter(t->lastDaughter());
+	mTowers.Clear();
+	mParticles.Clear();
     }
     
-    ClassDef(TStJetCandidate, 1)
+    ClassDef(TStJetCandidate, 3)
 };
 
 #endif

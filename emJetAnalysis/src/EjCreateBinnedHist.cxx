@@ -111,8 +111,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix)
 	tree->SetBranchAddress("nPhotons", &nPhotons);
 	tree->SetBranchAddress("spinB", &spinB);
 	tree->SetBranchAddress("spinY", &spinY);
-	//tree->SetBranchAddress("rt", &rt);
-	tree->SetBranchAddress("phiBin", &phiBin);
+	tree->SetBranchAddress("rt", &rt);
     
 	Int_t nEntries = tree->GetEntries();
 	cout << "Processing run number: "<< runNumber <<endl;

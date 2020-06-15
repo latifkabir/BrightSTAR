@@ -9,11 +9,11 @@
 void GenericJobSubmission(Int_t firstRun = -1, Int_t lastRun = -1)
 {
     //------- 1.Change Here Function Name ------------
-    TString funcName = "EjAnalysisTree";
+    TString funcName = "EjMakeAnalysisTree";
     //TString funcName = "AnFmsRpCorrPpb";
     //TString funcName = "AnEEmcRpCorrUpb";
     //TString jobName = funcName;
-    TString jobName = "EjAnaJetTreeEEmc";
+    TString jobName = "EjAnaJetTreeFms";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -24,7 +24,7 @@ void GenericJobSubmission(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
 
     //------- 2.Change Here the path and file prefix ---------------
-    TString filePrefix = "/star/u/kabir/GIT/emJetAna/dst/R15EmJetEEmc/";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/R15EmJetFms/";
     //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
@@ -47,16 +47,16 @@ void GenericJobSubmission(Int_t firstRun = -1, Int_t lastRun = -1)
 	TString argList;
 	TString currentJobName;
 
-	TString jetfile = filePrefix + "jets_EjRunJetTreeMaker_";
+	TString jetfile = filePrefix + "jets_RunEmJetTreeMaker_";
 	jetfile += run;
 	jetfile += ".root";
-	TString skimfile = filePrefix + "skim_EjRunJetTreeMaker_";
+	TString skimfile = filePrefix + "skim_RunEmJetTreeMaker_";
 	skimfile += run;
 	skimfile += ".root";
 
 	//------------------------ 3. Change Here ---------------
 	TString outName = jobName;
-	outName = "_";
+	outName += "_";
 	//TString outName = "EmJetAnaTree_Fms_";
 	outName += run;
 	outName += ".root";
@@ -66,7 +66,7 @@ void GenericJobSubmission(Int_t firstRun = -1, Int_t lastRun = -1)
 
 	//-------------- 4.Change Here to fit Function's argument ---------------
 	//Fms-Rp Corr
-	argList = "(\"eemc\",-1,\"";
+	argList = "(\"fms\",-1,\"";
 	argList += jetfile;
 	argList += "\",\"";
 	argList += skimfile;

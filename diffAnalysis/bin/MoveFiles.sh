@@ -25,11 +25,11 @@ while [ $a -lt $maxIndex ]
 do
     echo "Moving files from: $inDir$a/*"
     mv $inDir$a/* $outDir/.
-    if [ $? -eq 0 ]
-    then
-	rm -r $inDir$a
-    else
-	echo "Moving was unsuccessful."
-    fi
+    # if [ $? -eq 0 ]
+    # then
+    # 	rm -r $inDir$a
+    # else
+    # 	echo "Moving was unsuccessful."
+    # fi
     let a=$a+1
 done

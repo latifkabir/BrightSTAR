@@ -70,5 +70,6 @@
 #include <TClonesArray.h>
 #include <TCutG.h>
 #include <TVector3.h>
+#include <TRefArray.h>
 
 #endif

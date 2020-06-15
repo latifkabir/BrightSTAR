@@ -10,5 +10,3 @@ ClassImp(TStJetTower)
 ClassImp(TStJetParticle)
 ClassImp(TStJetCandidate)
 
-
-
