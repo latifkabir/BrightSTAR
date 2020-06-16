@@ -3,9 +3,9 @@
 #include "RootInclude.h"
 #include "cppInclude.h"
 #include "TStTrigDef.h"
-#include "TStJetSkimEvent.h"
-#include "TStJetCandidate.h"
-#include "TStJetEvent.h"
+#include "BrJetMaker/TStJetSkimEvent.h"
+#include "BrJetMaker/TStJetCandidate.h"
+#include "BrJetMaker/TStJetEvent.h"
 
 /*
  It is possible to integrate it as part of maker and create the tree from JetMaker buffer. See Zhanwen's FMS jet analysis maker as the example. This way you do not need to keep large jet trees.
@@ -95,6 +95,7 @@ void EjMakeAnalysisTree(
     
     StJetParticle *inParticle;
     StJetTower *inTower;
+    StJetVertex* inVertex;
 
     tree->Branch("jetEvents", &outJetEvent, 256000, 99);
     
@@ -151,21 +152,18 @@ void EjMakeAnalysisTree(
 	assert(inJetEvent->runId() == inSkimEvent->runId() && inJetEvent->eventId() == inSkimEvent->eventId());
 
 	if (iEntry % 1000 == 0) cout << iEntry << endl;
-
-	for(Int_t i = 0; i < kMaxTriggers; ++i)
-	    jetTrig[i] = inSkimEvent->trigger(trigIds[i]);
 		
 	if(inJetEvent->numberOfJets() == 0)
 	    continue;
 	
-	StJetVertex* vertex = inJetEvent->vertex(); //same as inJetEvent->vertex(0), i.e. highest ranked vertex only
-	if (!vertex)
+	inVertex = inJetEvent->vertex(); //same as inJetEvent->vertex(0), i.e. highest ranked vertex only
+	if (!inVertex)
 	    continue;
 	
-	// if(vertex->ranking() < 0) continue; //Not applicable for EM jet
+	// if(inVertex->ranking() < 0) continue; //Not applicable for EM jet
 
 	//--------- Event Selection --------
-	// if(fabs(vertex->position().z()) > 80.0) //Do it from next level of processing
+	// if(fabs(inVertex->position().z()) > 80.0) //Do it from next level of processing
 	//     continue;
 
 	if ((inSkimEvent->bx7() > 30 && inSkimEvent->bx7() < 40) || (inSkimEvent->bx7() > 110 && inSkimEvent->bx7() < 120))
@@ -173,8 +171,21 @@ void EjMakeAnalysisTree(
 
 	//------ Reset values --------
 	outJetEvent->Reset();
+
+	for(Int_t i = 0; i < kMaxTriggers; ++i)
+	    jetTrig[i] = inSkimEvent->trigger(trigIds[i]);
+
+	//------- Trigger Info -------
+	for(Int_t i = 0; i < kMaxTriggers; ++i)
+	{
+	    if(jetTrig[i])
+	    {
+		if(jetTrig[i]->didFire() && jetTrig[i]->shouldFire()) //<-------- Check what did/should fire actually is
+		    outSkimEvent->SetTrigFlag(i, 1);
+	    }
+	}
 	
-	vtxZ = vertex->position().z();
+	vtxZ = inVertex->position().z();
 
 	outSkimEvent->SetRunNumber(inJetEvent->runId());
 	outSkimEvent->SetEventId(inJetEvent->eventId());
@@ -224,28 +235,19 @@ void EjMakeAnalysisTree(
 
 	outSkimEvent->SetSpinB(spinB);
 	outSkimEvent->SetSpinY(spinY);
-	
-	for(Int_t i = 0; i < kMaxTriggers; ++i)
-	{
-	    if(jetTrig[i])
-	    {
-		if(jetTrig[i]->didFire() && jetTrig[i]->shouldFire()) //<-------- Check what did/should fire actually is
-		    outSkimEvent->SetTrigFlag(i, 1);
-	    }
-	}
-	
-	for(Int_t i = 0; i < vertex->numberOfJets(); ++i) 
+		
+	for(Int_t i = 0; i < inVertex->numberOfJets(); ++i) 
 	{	    
-	    eta = vertex->jet(i)->eta();
+	    eta = inVertex->jet(i)->eta();
 
 	    if(eta < etaMin  || eta > etaMax) //Consider FMS or EEMC EM Jets only 
 		continue;
 	    
-	    phi = vertex->jet(i)->phi();
-	    eng = vertex->jet(i)->E();
-	    pt = vertex->jet(i)->pt();
-	    nPhotons = vertex->jet(i)->numberOfTowers();
-	    rt = vertex->jet(i)->rt();
+	    phi = inVertex->jet(i)->phi();
+	    eng = inVertex->jet(i)->E();
+	    pt = inVertex->jet(i)->pt();
+	    nPhotons = inVertex->jet(i)->numberOfTowers();
+	    rt = inVertex->jet(i)->rt();
 	    
 	    theta =  2 * atan( exp(-eta) );
 	    jetX = (zDist - vtxZ) * tan(theta) * cos(phi);
@@ -262,18 +264,18 @@ void EjMakeAnalysisTree(
 	    outJet->SetRt(rt);
 
 	    //Add Tower info
-	    for(Int_t j = 0; j < vertex->jet(i)->numberOfTowers(); ++j)
+	    for(Int_t j = 0; j < inVertex->jet(i)->numberOfTowers(); ++j)
 	    {
-		inTower = vertex->jet(i)->tower(j);
+		inTower = inVertex->jet(i)->tower(j);
 		outTower = outJetEvent->NewTower();
 		outJetEvent->CopyTower(inTower, outTower);		    
 		outJet->AddTower(outTower);
 	    }
 
 	    //Add particle info
-	    for(Int_t j = 0; j < vertex->jet(i)->numberOfParticles(); ++j)
+	    for(Int_t j = 0; j < inVertex->jet(i)->numberOfParticles(); ++j)
 	    {
-		inParticle = vertex->jet(i)->particle(j);
+		inParticle = inVertex->jet(i)->particle(j);
 		outParticle = outJetEvent->NewParticle();
 		outJetEvent->CopyParticle(inParticle, outParticle);
 		outJet->AddParticle(outParticle);		

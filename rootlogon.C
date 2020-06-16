@@ -123,7 +123,8 @@
     gSystem->Load("StMuRpsUtil.so"); //RP Afterburner
     
     cout<<"\t\t done loading StRoot libraries ...."<<endl;
-    
+
+    cout << "\t\t  Attempting to load BrightSTAR libraries ... ";
     //------ Bright Star Maker -------------
     gSystem->Load("BrTemplateMaker");
     gSystem->Load("BrEEmcMaker");
@@ -136,27 +137,21 @@
     gSystem->Load("StFmsJetAnalysisMaker");    
     gSystem->Load("BrContainers");    
     gSystem->Load("BrNanoDstMaker");    
+    gSystem->Load("BrJetMaker");    
     
     gSystem->Load("libRunMacros.so");
     gSystem->Load("libDiffAnalysis.so");
-    gSystem->Load("libCepAnalysis.so");
+    //gSystem->Load("libCepAnalysis.so");
     
     //------- Bright STAR Library --------
     //Use $STARHOME/<lib module>/lib/ prefix to load local version
-    cout << "\t\t  Attempting to load libBrStar.so ... ";
-    int status1 = gSystem->Load("libBrStar.so");
-    int status3 = gSystem->Load("libEmJetAnalysis.so"); 
-    if(status1 > -1)
-	cout << "attempt completed !!\n";
-    else
-	cout << "attempt failed.\n";
 
-    cout << "\t\t  Attempting to load libStAnalysis.so ...";
-    int status2 = gSystem->Load("libStAnalysis.so");
-    if(status2 > -1)
-    	cout << "attempt completed !!\n\n";
-    else
-    	cout << "attempt failed.\n\n";
+    gSystem->Load("libBrStar.so");
+    gSystem->Load("libEmJetAnalysis.so");
+    gSystem->Load("libStAnalysis.so");
+     
+    cout << "attempt completed !!\n\n";
+
 
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square

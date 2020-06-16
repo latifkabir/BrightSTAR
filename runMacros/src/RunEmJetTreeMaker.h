@@ -6,4 +6,4 @@
 
 #include "TString.h"
 
-void RunEmJetTreeMaker(TString inFile = "./inFiles_fms.list", TString outFile = "jets.root");
+void RunEmJetTreeMaker(TString det = "fms", TString inFile = "./inFiles_fms.list", TString outFile = "jets.root");

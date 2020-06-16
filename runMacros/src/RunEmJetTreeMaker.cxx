@@ -5,15 +5,22 @@
 #include "StRootInclude.h"
 #include "StJetMaker/StJetMaker2015.h"
 #include "BrightStInclude.h"
+#include "BrJetMaker/TStNanoJetTreeMaker.h"
 
 using namespace std;
 
-void RunEmJetTreeMaker(TString inFile, TString outFile)
+void RunEmJetTreeMaker(TString det, TString inFile, TString outFile)
 {
     TStopwatch sw;
     sw.Start();
 
     TStar::gConfig->Print();
+
+    if(!(det == "fms" || det == "eemc"))
+    {
+	cout << "Invalid detector name" <<endl;
+	return;
+    }
     
     TString Jetfile = (TString)"jets_" + outFile;
     TString Uefile = (TString)"ueoc_" + outFile;
@@ -42,34 +49,29 @@ void RunEmJetTreeMaker(TString inFile, TString outFile)
     	return;
     }
 
-    //For EEMC EM Jet using physics stream
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "EHT0"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP1"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP2"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "EHT0*EJP1*L2Egamma"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*VPDMB-30"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "VPDMB-5-ssd"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT0*BBCMB"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*BBCMB"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT2*BBCMB"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "BHT1*VPDMB-30-nobsmd"));
-    // filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "JP2*L2JetHigh"));
+    const Int_t kMaxTriggers = 9;
+    Int_t trigIds[kMaxTriggers];
+    TString triggerNames_fms[kMaxTriggers] = {"FMS-JP0", "FMS-JP1", "FMS-JP2", "FMS-sm-bs1", "FMS-sm-bs2", "FMS-sm-bs3", "FMS-lg-bs1", "FMS-lg-bs2", "FMS-lg-bs3"};
+    TString triggerNames_eemc[kMaxTriggers] = {"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB"};
 
-    //For FMS EM Jet using FMS stream
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber, "FMS-JP0"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-JP1"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-JP2"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-DiJP"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3"));
-    filterMaker->addTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-DiBS"));
-    
-    filterMaker->addVetoTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-LED"));
-    
+    if(det == "fms")
+    {
+	for(Int_t i = 0; i < kMaxTriggers; ++i)
+	{
+	    trigIds[i] = TStTrigDef::GetTrigId(runNumber, triggerNames_fms[i]);
+	    filterMaker->addTrigger(trigIds[i]);
+	}
+	filterMaker->addVetoTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-LED"));
+    }
+    else if(det == "eemc")
+    {
+	for(Int_t i = 0; i < kMaxTriggers; ++i)
+	{
+	    trigIds[i] = TStTrigDef::GetTrigId(runNumber, triggerNames_eemc[i]);
+	    filterMaker->addTrigger(trigIds[i]);
+	}
+    }
+             
     St_db_Maker* starDb = new St_db_Maker("StarDb","MySQL:StarDb");
     starDb->SetAttr("blacklist", "ist");
     starDb->SetAttr("blacklist", "mtd");
@@ -106,7 +108,7 @@ void RunEmJetTreeMaker(TString inFile, TString outFile)
 
     StJetSkimEventMaker* skimEventMaker = new StJetSkimEventMaker("StJetSkimEventMaker", muDstMaker, Skimfile);
 
-    StJetMaker2015* jetmaker = new StJetMaker2015();
+    StJetMaker2015* jetmaker = new StJetMaker2015("StJetMaker2015");
     jetmaker->setJetFile(Jetfile);
     jetmaker->setJetFileUe(Uefile);
     jetmaker->ReadBbcSlewing("/star/u/kabir/GIT/BrightSTAR/database/bbc_slewing_run15_pp200.dat"); //CKim
@@ -155,8 +157,11 @@ void RunEmJetTreeMaker(TString inFile, TString outFile)
     StOffAxisConesPars *off070 = new StOffAxisConesPars(0.7);
     jetmaker->addUeBranch("OffAxisConesR070", off070);
 
+    TStNanoJetTreeMaker *nanoMaker = new TStNanoJetTreeMaker(jetmaker, skimEventMaker, "NanoJetTreeMaker");
+    nanoMaker->SetTrigIds(trigIds);
+    
     chain->Init();
-    chain->EventLoop();
+    chain->EventLoop(500);
     chain->Finish();
     delete chain;
 
