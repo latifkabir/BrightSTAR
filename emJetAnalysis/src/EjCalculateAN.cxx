@@ -55,12 +55,9 @@ void EjCalculateAN(TString inFileName, TString outName)
 
     //Note: left-right is with respect to the beam (here blue beam)
 
-    Int_t phiBins_right[] = {9, 10, 11, 12, 13, 14, 15, 16}; //<----------- Update here if nPhiBins changes
-    Int_t phiBins_left[] = {1, 2, 3, 4, 5, 6, 7, 8}; //<----------- Update here if nPhiBins changes
+    Int_t phiBins_left[] = {9, 10, 11, 12, 13, 14, 15, 16}; //<----------- Update here if nPhiBins changes
+    Int_t phiBins_right[] = {1, 2, 3, 4, 5, 6, 7, 8}; //<----------- Update here if nPhiBins changes
     
-    // Int_t phiBins_right[] = {13, 14, 15, 16, 1, 2, 3, 4}; //<----------- Update here if nPhiBins changes
-    // Int_t phiBins_left[] = {5, 6, 7, 8, 9, 10, 11, 12}; //<----------- Update here if nPhiBins changes
-
     Double_t phiValues[nHalfPhiBins];
     
     Double_t bAnRaw[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
@@ -101,25 +98,24 @@ void EjCalculateAN(TString inFileName, TString outName)
 		for(Int_t l = 0; l < nPtBins; ++l)
 		{
 		    if(i == 0 && j == 0 && l == 0)
-			phiValues[k] = bHist[0][i][j]->GetXaxis()->GetBinCenter(phiBins_right[k]);
+			phiValues[k] = bHist[0][i][j]->GetXaxis()->GetBinCenter(phiBins_left[k]);
 
-		    bNd_r = bHist[0][i][j]->GetBinContent((phiBins_right[k]), l + 1);
-		    bNu_r = bHist[1][i][j]->GetBinContent((phiBins_right[k]), l + 1);
-		    
 		    bNd_l = bHist[0][i][j]->GetBinContent(phiBins_left[k], l + 1);
 		    bNu_l = bHist[1][i][j]->GetBinContent(phiBins_left[k], l + 1);
 		    
-		    yNd_r = yHist[0][i][j]->GetBinContent((phiBins_right[k]), l + 1);
-		    yNu_r = yHist[1][i][j]->GetBinContent((phiBins_right[k]), l + 1);
-
+		    bNd_r = bHist[0][i][j]->GetBinContent((phiBins_right[k]), l + 1);
+		    bNu_r = bHist[1][i][j]->GetBinContent((phiBins_right[k]), l + 1);
+		    
 		    yNd_l = yHist[0][i][j]->GetBinContent(phiBins_left[k], l + 1);
 		    yNu_l = yHist[1][i][j]->GetBinContent(phiBins_left[k], l + 1);
-
+		    
+		    yNd_r = yHist[0][i][j]->GetBinContent((phiBins_right[k]), l + 1);
+		    yNu_r = yHist[1][i][j]->GetBinContent((phiBins_right[k]), l + 1);
       		    
 		    //You need to ensure that the Left-Right pairing is done exactly as in the formula
 		    //----- Blue beam measured asymmetry ------------
-		    numer = sqrt(bNu_r*bNd_l) - sqrt(bNd_r*bNu_l);
-		    denom = sqrt(bNu_r*bNd_l) + sqrt(bNd_r*bNu_l);
+		    numer = sqrt(bNu_l*bNd_r) - sqrt(bNd_l*bNu_r);
+		    denom = sqrt(bNu_l*bNd_r) + sqrt(bNd_l*bNu_r);
 
 		    numerErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
 		    denomErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
@@ -139,8 +135,8 @@ void EjCalculateAN(TString inFileName, TString outName)
 
 		    
 		    //----- Yellow beam measured asymmetry ------------
-		    numer = sqrt(yNu_r*yNd_l) - sqrt(yNd_r*yNu_l);
-		    denom = sqrt(yNu_r*yNd_l) + sqrt(yNd_r*yNu_l);
+		    numer = sqrt(yNu_l*yNd_r) - sqrt(yNd_l*yNu_r);
+		    denom = sqrt(yNu_l*yNd_r) + sqrt(yNd_l*yNu_r);
 
 		    numerErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
 		    denomErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
@@ -227,9 +223,9 @@ void EjCalculateAN(TString inFileName, TString outName)
 		bGr[i][j][k] = new TGraphErrors();
 		yGr[i][j][k] = new TGraphErrors();
 		bGr[i][j][k]->SetName(Form("bEbin%i_PhotonBin%i_PtBin%i", i, j, k));
-		bGr[i][j][k]->SetTitle(Form("Blue Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; P_{T} [GeV/c]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
+		bGr[i][j][k]->SetTitle(Form("Blue Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; #phi [rad]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
 		yGr[i][j][k]->SetName(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
-		yGr[i][j][k]->SetTitle(Form("Yellow Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; P_{T} [GeV/c]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
+		yGr[i][j][k]->SetTitle(Form("Yellow Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; #phi [rad]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
 		// bGr[i][j][k]->SetMaximum(0.01);
 		// bGr[i][j][k]->SetMinimum(-0.01);
 		// yGr[i][j][k]->SetMaximum(0.01);

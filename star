@@ -75,9 +75,9 @@ case $OPTION in
                 Syntax: get_file_list.pl -keys 'path,filename' -cond 'storage=XX,filetype=XX,filename~XX, production=XX,trgsetupname=XX' -limit NN -distinct -delim '/' \n
 	        Example-1: get_file_list.pl -keys 'path,filename' -cond 'storage=hpss,filetype=daq_reco_muDst,filename~st_physics,production=P11id,trgsetupname=AuAu19_production' -limit 10 -distinct -delim '/' \n
 	        Example-2: get_file_list.pl -keys path,filename -cond storage=local,trgsetupname=production_pp200trans_2015,filetype=daq_reco_mudst,filename~st_fms_16 -delim '/' \n
-	        Example-3: get_file_list.pl -keys 'fdid,storage,site,node,path,filename,events' -cond 'trgsetupname=AuAu19_production, filetype=daq_reco_MuDst, filename~st_physics, storage!=hpss, runnumber[]12112034-12112042' -limit 60 -delim '/' 
-                Run 17: get_file_list.pl -keys 'path,filename' -cond 'filetype=daq_reco_MuDst,trgsetupname=pp500_production_2017,filename~st_fms,storage!=hpss' -limit 10 -delim '/' "
-	        "PicoDst: get_file_list.pl -keys path,filename -cond production=P19ib,runnumber[]19130078-19131031,filetype=daq_reco_PicoDst,trgsetupname=27GeV_production_2018,tpx=1,sname2=st_physics,sanity=1,storage!=HPSS -limit 100"
+	        Example-3: get_file_list.pl -keys 'fdid,storage,site,node,path,filename,events' -cond 'trgsetupname=AuAu19_production, filetype=daq_reco_MuDst, filename~st_physics, storage!=hpss, runnumber[]12112034-12112042' -limit 60 -delim '/' \n
+                Run 17: get_file_list.pl -keys 'path,filename' -cond 'filetype=daq_reco_MuDst,trgsetupname=pp500_production_2017,filename~st_fms,storage!=hpss' -limit 10 -delim '/'  \n
+	        PicoDst: get_file_list.pl -keys path,filename -cond production=P19ib,runnumber[]19130078-19131031,filetype=daq_reco_PicoDst,trgsetupname=27GeV_production_2018,tpx=1,sname2=st_physics,sanity=1,storage!=HPSS -limit 100"
 	    ;;	
     hpss-get)
 	echo -e "
