@@ -17,8 +17,9 @@ class TStEventData : public TObject
     //protected:
 public:
     Int_t mRunNumber;			//
-    Float_t mFillNumber;			// Yellow Fill Number 
+    Float_t mFillNumber;		// Yellow Fill Number 
     Int_t mEventId;			//
+    Int_t mTime;                       //
     Short_t mBspin;			//
     Short_t mYspin;			//
     Int_t mTrigFlag;			//
@@ -46,6 +47,7 @@ public:
     Int_t GetRunNumber(){return mRunNumber;}							//
     Float_t GetFillNumber(){return mFillNumber;}							// Yellow Fill Number
     Int_t GetEventId(){return mEventId;}							//
+    Int_t GetTime(){return mTime;}
     Short_t GetBlueSpin(){return mBspin;}							//
     Short_t GetYellowSPin(){return mYspin;}							//
     Int_t GetTrigFlag(){return mTrigFlag;}							//
@@ -70,6 +72,7 @@ public:
     void SetRunNumber( Int_t run){mRunNumber = run;}						//
     void SetFillNumber( Float_t yellow_fill_number){mFillNumber = yellow_fill_number;}						//
     void SetEventId(Int_t id){mEventId = id;}							//
+    void SetTime(Int_t time){ mTime = time;}                                           //
     void SetBlueSpin(Short_t spin){mBspin = spin;}						//
     void SetYellowSPin(Short_t spin){mYspin = spin;}						//
     void SetTrigFlag(Int_t flag){mTrigFlag = flag;}						//

@@ -92,10 +92,10 @@ public:
 };			
 
 
-void FmsPi0MakerEx()
+void FmsPi0MakerEx(TString fileList)
 {
-    TStRunList::MakeFileList(16072057, 1);
-    TString fileList = TStar::Config->GetFileList();
+    // TStRunList::MakeFileList(16072057, 1);
+    // TString fileList = TStar::Config->GetFileList();
 
     TFile *f = new TFile("FmsPi0Reconst.root", "RECREATE");
     TH1D *massDist = new TH1D("massDist","#pi_{0} invariant mass [GeV]; M_{#pi_{0}} [GeV]",200,0.0,1.0);

@@ -8,10 +8,10 @@
 #include "StRootInclude.h"
 #include "BrightStInclude.h"
 
-void FmsPi0InvMass1()
+void FmsPi0InvMass1(TString fileList)
 {
-    TStRunList::MakeFileList(16072047, 3);
-    TString fileList = TStar::Config->GetFileList();
+    // TStRunList::MakeFileList(16072047, 3);
+    // TString fileList = TStar::Config->GetFileList();
     StChain *chain = new StChain;
     StMuDstMaker *muDstMaker = new StMuDstMaker(0, 0, "", fileList, "");
     muDstMaker->SetStatus("*",0);

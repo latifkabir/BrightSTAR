@@ -9,12 +9,15 @@
 
 using namespace std;
 
-void RunEmJetTreeMaker(TString det, TString inFile, TString outFile)
+void RunEmJetTreeMaker(TString det, TString inFile, TString outFile, Bool_t isMC)
 {
     TStopwatch sw;
     sw.Start();
 
     TStar::gConfig->Print();
+    //Bool_t isMC;
+    //isMC = kFALSE;
+    //isMC = kTRUE;
 
     if(!(det == "fms" || det == "eemc"))
     {
@@ -38,11 +41,12 @@ void RunEmJetTreeMaker(TString det, TString inFile, TString outFile)
     StChain* chain = new StChain;
     StMuDstMaker* muDstMaker = new StMuDstMaker(0, 0, "", inFile, "", 1000);
     StMuDbReader* muDstDb = StMuDbReader::instance();
-
-    StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
-    filterMaker->printTriggerId();
-
-    Int_t runNumber = TStRunList::GetRunFromFileName((string)inFile);
+    
+    Int_t runNumber;
+    if(!isMC)
+	runNumber = TStRunList::GetRunFromFileName((string)inFile);
+    else
+	runNumber = 16066000;
     if(runNumber < 1)
     {
     	cout << "Unable to get run number" <<endl;
@@ -54,24 +58,28 @@ void RunEmJetTreeMaker(TString det, TString inFile, TString outFile)
     TString triggerNames_fms[kMaxTriggers] = {"FMS-JP0", "FMS-JP1", "FMS-JP2", "FMS-sm-bs1", "FMS-sm-bs2", "FMS-sm-bs3", "FMS-lg-bs1", "FMS-lg-bs2", "FMS-lg-bs3"};
     TString triggerNames_eemc[kMaxTriggers] = {"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB"};
 
-    if(det == "fms")
+    if(!isMC)
     {
-	for(Int_t i = 0; i < kMaxTriggers; ++i)
+	StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
+	filterMaker->printTriggerId();
+	if(det == "fms")
 	{
-	    trigIds[i] = TStTrigDef::GetTrigId(runNumber, triggerNames_fms[i]);
-	    filterMaker->addTrigger(trigIds[i]);
+	    for(Int_t i = 0; i < kMaxTriggers; ++i)
+	    {
+		trigIds[i] = TStTrigDef::GetTrigId(runNumber, triggerNames_fms[i]);
+		filterMaker->addTrigger(trigIds[i]);
+	    }
+	    filterMaker->addVetoTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-LED"));
 	}
-	filterMaker->addVetoTrigger(TStTrigDef::GetTrigId(runNumber,"FMS-LED"));
-    }
-    else if(det == "eemc")
-    {
-	for(Int_t i = 0; i < kMaxTriggers; ++i)
+	else if(det == "eemc")
 	{
-	    trigIds[i] = TStTrigDef::GetTrigId(runNumber, triggerNames_eemc[i]);
-	    filterMaker->addTrigger(trigIds[i]);
+	    for(Int_t i = 0; i < kMaxTriggers; ++i)
+	    {
+		trigIds[i] = TStTrigDef::GetTrigId(runNumber, triggerNames_eemc[i]);
+		filterMaker->addTrigger(trigIds[i]);
+	    }
 	}
-    }
-             
+    }        
     St_db_Maker* starDb = new St_db_Maker("StarDb","MySQL:StarDb");
     starDb->SetAttr("blacklist", "ist");
     starDb->SetAttr("blacklist", "mtd");
@@ -104,6 +112,8 @@ void RunEmJetTreeMaker(TString det, TString inFile, TString outFile)
     StFmsHitMaker*   fmshitMk = new StFmsHitMaker();
     StFmsPointMaker* fmsptMk  = new StFmsPointMaker();
 
+    if(isMC)
+	fmshitMk->SetReadMuDst(1);                //for simu set to 1
     //-------------------------------------------
 
     StJetSkimEventMaker* skimEventMaker = new StJetSkimEventMaker("StJetSkimEventMaker", muDstMaker, Skimfile);
@@ -161,7 +171,7 @@ void RunEmJetTreeMaker(TString det, TString inFile, TString outFile)
     nanoMaker->SetTrigIds(trigIds);
     
     chain->Init();
-    chain->EventLoop(500);
+    chain->EventLoop();
     chain->Finish();
     delete chain;
 
