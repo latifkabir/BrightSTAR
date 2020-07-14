@@ -6,6 +6,7 @@
 
 #include "TStConfig.h"
 #include "TApplication.h"
+#include "TSystem.h"
 using namespace std;
 
 ClassImp(TStConfig)
@@ -23,9 +24,8 @@ TStConfig::TStConfig()
     //Let's hard code it for those cases.
     if(fStarHome == "" || fStarHome == "/")
     {
-	fStarHome = "/star/u/kabir/GIT/BrightSTAR/";
-	// cout << "\nThe environment STARHOME does not return valid path" <<endl;
-    	// gApplication->Terminate();
+	fStarHome = gSystem->pwd();
+	cout << "\nThe environment STARHOME is set to: " << fStarHome<<endl;
     }
     fConfigFile = fStarHome + (string)"/config/config.cfg";
     //Following are initial values and are overwritten later from the configuratuion file
@@ -33,7 +33,7 @@ TStConfig::TStConfig()
     fResultsPath = "results/";
     fDSTpath = "results/";
     fJobResultsPath = "jobResults/";
-    fRunListDB = "resources/RunList.json";
+    fRunListDB = "database/RunList.json";
     fFileList = "resources/temp/temp.list";
     fProdPath = "./";
     LoadConfig();

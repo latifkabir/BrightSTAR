@@ -112,7 +112,8 @@ case $OPTION in
 	rm -r jobOutput/* 2>/dev/null
 	rm  *.dataset 2>/dev/null
 	rm  *.session.xml 2>/dev/null
-	rm schedTemplateExp.xml 2>/dev/null
+	rm -r sched*.package 2>/dev/null
+	rm sched*.package.zip 2>/dev/null
 	echo "Done!"
 	;;
     *)

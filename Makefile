@@ -14,15 +14,16 @@ ANA_DIR = analysis
 MACRO_DIR = runMacros
 DIFFANA_DIR = diffAnalysis
 EMJANA_DIR = emJetAnalysis
+STARSIM_DIR = starSim
 # makefile name
 MAKE_FILE = Makefile
 
 ####### Build rules
 first: all
 
-.PHONY: lib ana cons macro diff emj
+.PHONY: lib ana cons macro diff emj sim
 
-all: lib ana cons macro diff emj
+all: lib ana cons macro diff emj sim
 	@echo "done!"	
 lib:
 	$(MAKE) -C $(LIB_DIR) -f $(MAKE_FILE)
@@ -39,13 +40,16 @@ macro: cons
 emj: #cons
 	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE)
 
+sim: 
+	$(MAKE) -C $(STARSIM_DIR) -f $(MAKE_FILE)
+
 cons:
 	cons
 
 ####### Clean
-clean: cleanlib cleanana cleanmacro cleancons 
+clean: cleanlib cleanana cleanmacro cleancons cleansim
 
-.PHONY: cleanlib cleanana 
+.PHONY: cleanlib cleanana cleandiff cleanmacro cleanemj cleansim
 
 cleanlib:
 	$(MAKE) -C $(LIB_DIR) -f $(MAKE_FILE) clean
@@ -62,5 +66,8 @@ cleanmacro:
 cleanemj:
 	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE) clean
 
+cleansim:
+	$(MAKE) -C $(STARSIM_DIR) -f $(MAKE_FILE) clean
+
 cleancons:
-	rm -r .sl73_gcc485/*
+	rm -r .$STAR_HOST_SYS/*

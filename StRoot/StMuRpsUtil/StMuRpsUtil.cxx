@@ -9,6 +9,7 @@
 #include <TVector3.h>
 #include <TProcessID.h>
 #include <TROOT.h>
+#include <TSystem.h>
 
 #include "Alignment/pp2ppGeom.h"
 #include "StMuRpsUtil/StMuRpsCollection2.h"
@@ -280,13 +281,19 @@ void StMuRpsUtil::updateRunNumber(int runNum){
 
 
 void StMuRpsUtil::loadAlignment(){
-    mAlignmentPtr = new pp2ppGeom(getenv("STARHOME") + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppRPpositions",getenv("STARHOME") + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppOffsets.bin.v1.1.x"); //Changed the location <-- Latif
+    std::string starHome =  getenv("STARHOME");
+    if(starHome == "" || starHome == "/")
+	starHome = gSystem->pwd();
+    mAlignmentPtr = new pp2ppGeom(starHome + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppRPpositions", starHome + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppOffsets.bin.v1.1.x"); //Changed the location <-- Latif
 }
 
 
 void StMuRpsUtil::loadHotStripList(){
   std::ifstream fp;
-  std::string filePath(getenv("STARHOME") + (string)"/StRoot/StMuRpsUtil/HotStrips/hotStrips.list");
+  std::string starHome =  getenv("STARHOME");
+  if(starHome == "" || starHome == "/")
+      starHome = gSystem->pwd();
+  std::string filePath(starHome + (string)"/StRoot/StMuRpsUtil/HotStrips/hotStrips.list");
   fp.open(filePath.c_str());
 
   if(!fp.good()){

@@ -141,8 +141,13 @@
 #include "StJetFinder/StFastJetPars.h"
 #include "StJetMaker/StJetSkimEventMaker.h"
 #include "StJetFinder/AbstractFourVec.h"
+#include "StJetMaker/tracks/StjTrackCutChi2.h"
 
-
-
+//Simulation
+#include "StJetMaker/StPythiaFourPMaker.h"
+#include "StJetMaker/St_pythia_Maker.h"
+#include "StJetMaker/mcparticles/StjMCParticleCutParton.h"
+#include "StJetMaker/mcparticles/StjMCParticleCutStatus.h"
+#include "StSpinPool/StBfcTriggerFilterMaker/StPythiaEventMaker.h"
 
 #endif

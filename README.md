@@ -11,7 +11,8 @@ Directory structure
 - `analysis`: Prototype analysis example for each detector.
 - `diffAnalysis`: Main analysis scripts for the physics analysis. A_N specific scripts starts with `An`. Detector specific scripts start with the acronym of the detector.
 - `runMacros`: Compilable macros to run the Makers from StRoot.
-
+- `emJetAna`: EM Jet Ananlysis with FMS and EEMC
+- `starSim`: Simulation work for STAR
 
 Bright STAR Maker
 ----------------------
@@ -19,9 +20,9 @@ Bright STAR Maker
 
 - The Maker classes start with `TSt` and the corresponding root macro is inside `macros` directory. Each macro start with `Run` followed by corresponding maker class name (without `TSt`). The macros have extension `.C`.
 
-- All required shared objects are loaded from `rootlogon.C` file on `root` startup and not from the maker macros. Do not use symbolic link. Symbolic link is copied as symbolic link.
+- All required shared objects are loaded from `rootlogon.C` file on `root` startup and not from the maker macros.
 
-- All batch farm job description files are inside `jobConfig/` and has the file name pattern `Sub` + Maker macro name (without Run prefix).
+- User configuration is defined in `config/config.cfg`. All batch farm job description files are inside `condor/`.
 
 
 Bright Scheduler
@@ -29,7 +30,7 @@ Bright Scheduler
 **Condor**
 - Run build-in scheduler from root prompt as:
 ```
-SubmitJob(TString functionName, Int_t firstRun, Int_t lastRunOrNfiles)
+TStScheduler::SubmitJob(TString functionName, Int_t firstRun, Int_t lastRunOrNfiles)
 ```
 For more options type `help()`.
 
@@ -44,7 +45,7 @@ condor_submit condor.job
 - Submit job using SUMS from root prompt:
 
 ```
-SubmitSumsJob(TString function, TString runList, TString outName)
+TStScheduler::SubmitSumsJob(TString function, TString runList, TString outName)
 ```
 For more options type `help()`
 
@@ -58,7 +59,7 @@ Modify `jobMacro.C` and `sumsConfig.sh` accordingly and submit the job as:
 **Check Job Status**
 From root prompt do:
 ```
-JobStatus()
+TSTScheduler::JobStatus(1)
 ```
 
 Directory Tree
@@ -66,80 +67,33 @@ Directory Tree
 ```
 .
 ├── analysis
-│   ├── lib
-│   ├── Makefile
-│   └── src
 ├── bin
-│   ├── activeJobs.sh
-│   ├── GenerateDB.sh
-│   ├── MakeCatalog.sh
-│   ├── PrintFileList.sh
-│   ├── submitSumsJob.csh
-│   ├── tadd.sh
-│   ├── tadd_sorted.sh
-│   ├── TriggerIdMaker.sh
-│   └── trigid.dat
+├── cepAnalysis
 ├── condor
-│   └── condor.config
 ├── config
-│   ├── config.cfg
-│   ├── R15ppTransFmsTrigDef.json
-│   └── R15ppTransPhysTrigDef.json
+├── database
 ├── diffAnalysis
-│   ├── lib
-│   ├── Makefile
-│   └── src
+├── dst -> /star/u/kabir/pwg/dst
+├── emJetAnalysis
 ├── include
-│   ├── BrightStInclude.h
-│   ├── cppInclude.h
-│   ├── RootInclude.h
-│   └── StRootInclude.h
 ├── jobOutput -> /star/u/kabir/pwg/jobOutput
 ├── jobResults -> /star/u/kabir/pwg/jobResults
 ├── jobs
 ├── libBrStar
-│   ├── lib
-│   ├── Makefile
-│   └── src
-├── macros -> ../StROOT/macros
 ├── Makefile
 ├── README.md
 ├── resources
-├── results -> /star/u/kabir/pwg/results
+├── results
 ├── rootlogon.C
 ├── runMacros
-│   ├── lib
-│   ├── Makefile
-│   └── src
+├── scratch -> /star/u/kabir/scratch/dst
 ├── scripts
-│   ├── eemc
-│   ├── emc
-│   ├── fms
-│   ├── jet
-│   ├── jobs
-│   └── pid
 ├── setup.csh
 ├── setup.sh
 ├── star
+├── starSim -> /star/u/kabir/GIT/StarSim
 ├── StRoot
-│   ├── BrAnMaker
-│   ├── BrEEmcMaker
-│   ├── BrEmcMaker
-│   ├── BrFemtoMaker
-│   ├── BrFmsMaker
-│   ├── BrPicoMaker
-│   ├── BrPidMaker
-│   ├── BrRpMaker
-│   ├── BrTemplateMaker
-│   ├── README.md
-│   ├── StFmsJetAnalysisMaker
-│   ├── StFmsOFileMaker
-│   └── StMuRpsUtil
 ├── sums
-    ├── scheduler_template.xml
-    ├── scheduler.xml
-    ├── submitSumsJob.sh
-    └── sumsConfig.sh
 ```
 
 

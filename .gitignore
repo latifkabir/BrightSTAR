@@ -1,4 +1,3 @@
-examples/
 temp_*
 *.root
 *.pdf
@@ -13,7 +12,6 @@ temp_*
 *_Dict*
 *~*
 *.o
-jobDir/
 sched*.package.zip
 sched*.package
 sched*.dataset

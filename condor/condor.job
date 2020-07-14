@@ -1,0 +1,26 @@
+Universe        = vanilla
+Requirements    = (CPU_Speed >= 1)
+Rank		= CPU_Speed
+request_memory  = 1800M
+request_cpus    = 1
+Priority        = 4
+GetEnv          = True
+Input           = /dev/null
+when_to_transfer_output = ON_EXIT_OR_EVICT
++Experiment     = "star"
++Job_Type       = "cas"
+Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/jobResults/condor/16081012
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/081/16081012/st_physics_16081012_raw_0000002.MuDst.root	RunFmsHotChQaMaker_16081012_0000002.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16081012_0000002.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16081012_0000002.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16081012_0000002.log
+Queue
+
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P16id/2015/081/16081012/st_physics_16081012_raw_1000003.MuDst.root	RunFmsHotChQaMaker_16081012_1000003.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16081012_1000003.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16081012_1000003.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunFmsHotChQaMaker_16081012_1000003.log
+Queue
+
+

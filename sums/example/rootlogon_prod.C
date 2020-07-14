@@ -15,8 +15,6 @@
     	cout<<"Please run \"source setup.[c]sh\" to load environments before you start ROOT"<<endl;
     	gApplication->Terminate();
     }
-    else if(getenv("STARHOME") == "" || getenv("STARHOME") == "/")
-	gSystem->Setenv("STARHOME", gSystem->pwd());
     //-------------------------------------------------------------
     // if you want to use root.exe instead of root4star, uncomment block below:
     gSystem->AddDynamicPath("/usr/lib/mysql");
@@ -86,7 +84,7 @@
     
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
-    assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StFmsDbMaker.so")); //Local copy of StFmsDbMaker
+    gSystem->Load("StFmsDbMaker.so"); //Local copy of StFmsDbMaker
     gSystem->Load("StFmsHitMaker");
     gSystem->Load("StFmsPointMaker");
     gSystem->Load("StFmsFpsMaker");
@@ -113,12 +111,12 @@
     gSystem->Load("StJetFinder");
     gSystem->Load("StJetSkimEvent");
     gSystem->Load("StJets");
-    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetEvent.so"); //Use local copy
-    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StUeEvent.so"); //Use local copy
-    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetMaker.so"); //Use local copy
-    //gSystem->Load("StJetEvent");
-    //gSystem->Load("StUeEvent");
-    //gSystem->Load("StJetMaker");
+    // gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetEvent.so"); //Use local copy
+    // gSystem->Load("$STARHOME/.sl73_gcc485/lib/StUeEvent.so"); //Use local copy
+    // gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetMaker.so"); //Use local copy
+    gSystem->Load("StJetEvent");
+    gSystem->Load("StUeEvent");
+    gSystem->Load("StJetMaker");
     gSystem->Load("StTriggerFilterMaker");
 
     //------------- RP ------------------
@@ -146,16 +144,16 @@
     gSystem->Load("BrJetMaker");    
     
     gSystem->Load("libRunMacros.so");
-    gSystem->Load("libDiffAnalysis.so");
+    //gSystem->Load("libDiffAnalysis.so");
     gSystem->Load("libCepAnalysis.so");
     
     //------- Bright STAR Library --------
     //Use $STARHOME/<lib module>/lib/ prefix to load local version
 
     gSystem->Load("libBrStar.so");
-    gSystem->Load("libEmJetAnalysis.so");
+    //gSystem->Load("libEmJetAnalysis.so");
     gSystem->Load("libStAnalysis.so");
-    gSystem->Load("libStarSim.so");
+    //gSystem->Load("libStarSim.so");
      
     cout << "attempt completed !!\n\n";
 
