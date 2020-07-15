@@ -24,7 +24,7 @@ first: all
 
 .PHONY: lib ana cons macro diff emj sim
 
-all: lib ana cons macro diff emj cep sim
+all: lib ana cons macro diff emj cep
 	@echo "done!"	
 lib:
 	$(MAKE) -C $(LIB_DIR) -f $(MAKE_FILE)
