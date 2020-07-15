@@ -5,9 +5,9 @@
 // URL: jlab.org/~latif
 
 #include "RootInclude.h"
-#include "TStJetCandidate.h"
-#include "TStJetEvent.h"
-#include "TStJetSkimEvent.h"
+#include "BrJetMaker/TStJetCandidate.h"
+#include "BrJetMaker/TStJetEvent.h"
+#include "BrJetMaker/TStJetSkimEvent.h"
 #include <iostream>
 
 using namespace std;
