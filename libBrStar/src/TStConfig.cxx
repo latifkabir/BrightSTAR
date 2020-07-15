@@ -21,7 +21,7 @@ TStConfig::TStConfig()
     else 
 	fStarHome = getenv("STARHOME");
     //For some terminal, it does not get the environment correctly. For example from SUMS job
-    //Let's hard code it for those cases.
+    //Let's set it to current directory for those cases.
     if(fStarHome == "" || fStarHome == "/")
     {
 	fStarHome = gSystem->pwd();
@@ -98,12 +98,12 @@ void TStConfig::LoadConfig()
 	    else if(s == "RUN_LIST_DB")
 	    {
 		tokens = strtok(NULL, " :,");
-		fRunListDB = tokens;
+		fRunListDB = fStarHome + "/" + tokens;
 	    }
 	    else if(s == "FILE_LIST")
 	    {
 		tokens = strtok(NULL, " :,");
-		fFileList = tokens;
+		fFileList = fStarHome + "/" + tokens;
 	    }
 	    else if(s == "PROD_PATH")
 	    {
@@ -113,7 +113,7 @@ void TStConfig::LoadConfig()
 	    else if(s == "TRIG_DEF_FILE")
 	    {
 		tokens = strtok(NULL, " :,");
-		fTrigDefFile = tokens;
+		fTrigDefFile = fStarHome + "/" + tokens;
 	    }
 	    else if(s == "STREAM_PREFIX")
 	    {
@@ -123,12 +123,12 @@ void TStConfig::LoadConfig()
 	    else if(s == "FILL_NO_DB")
 	    {
 		tokens = strtok(NULL, " :,");
-		fFillNoDB = tokens;
+		fFillNoDB = fStarHome + "/" + tokens;
 	    }
 	    else if(s == "FMS_HOT_CH_DB")
 	    {
 		tokens = strtok(NULL, " :,");
-		fFmsHotChDB = tokens;
+		fFmsHotChDB = fStarHome + "/" + tokens;
 	    }
 	    else if(s == "ENABLE_EVT")
 	    {

@@ -54,7 +54,6 @@ public:
     const string & GetConfigPath(){return fConfigFile;}
     const string & GetDataPath(){return fDataPath;}
     const string & GetResultsPath(){return fResultsPath;}
-    const string & GetFilePath(){return fResultsPath;}
     const string & GetDSTpath(){return fDSTpath;}
     const string & GetJobResultsPath(){return fJobResultsPath;}
     const string & GetRunListDB(){return fRunListDB;}
