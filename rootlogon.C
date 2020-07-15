@@ -131,7 +131,7 @@
     cout<<"\t\t done loading StRoot libraries ...."<<endl;
 
     cout << "\t\t  Attempting to load BrightSTAR libraries ... ";
-    //------ Bright Star Maker -------------
+    //------ Bright Star Maker Modules-------------
     gSystem->Load("BrTemplateMaker");
     gSystem->Load("BrEEmcMaker");
     gSystem->Load("BrRpMaker");
@@ -144,19 +144,20 @@
     gSystem->Load("BrContainers");    
     gSystem->Load("BrNanoDstMaker");    
     gSystem->Load("BrJetMaker");    
-    
-    gSystem->Load("libRunMacros.so");
-    gSystem->Load("libDiffAnalysis.so");
-    gSystem->Load("libCepAnalysis.so");
-    
+        
     //------- Bright STAR Library --------
     //Use $STARHOME/<lib module>/lib/ prefix to load local version
 
     gSystem->Load("libBrStar.so");
-    gSystem->Load("libEmJetAnalysis.so");
     gSystem->Load("libStAnalysis.so");
+    gSystem->Load("libRunMacros.so");
+    
+    gSystem->Load("libEmJetAnalysis.so");
+    gSystem->Load("libDiffAnalysis.so");
     gSystem->Load("libStarSim.so");
-     
+    
+    gSystem->Load("libCepAnalysis.so");
+    
     cout << "attempt completed !!\n\n";
 
 
