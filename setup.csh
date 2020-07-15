@@ -15,8 +15,16 @@ if ("$called" != "") then
 else
     set scriptdir=$1
     set STARHOME=$scriptdir
+
+    #set scriptdir=`readlink -f  $0`
+    #set STARHOME=`dirname $scriptdir`
 endif
 
-setenv STARHOME "$STARHOME"
+if(! $?SUMS_USER) then
+    setenv STARHOME "$STARHOME"
+else	
+    setenv STARHOME "$PWD"  #For SUMS jobs
+endif
+    
 setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${STARHOME}:${STARHOME}/libBrStar/lib:${STARHOME}/analysis/lib:${STARHOME}/runMacros/lib:${STARHOME}/diffAnalysis/lib:$STARHOME/emJetAnalysis/lib:${STARHOME}/cepAnalysis/lib:${STARHOME}/starSim/lib:${STARHOME}/.sl73_gcc485/lib"
 setenv STARDEV "/afs/rhic.bnl.gov/star/packages/DEV/"

@@ -6,7 +6,7 @@
   <command>
     stardev
     source setup.csh
-
+    
     root4star -l -q -b jobMacro.C\(\"$FILELIST\",\"out\_$JOBID.root\"\)
   </command>
 
@@ -14,11 +14,14 @@
     <Package>
       <File>file:/star/u/kabir/GIT/BrightSTAR/jobMacro.C</File>      <!-- Required -->
       <File>file:/star/u/kabir/GIT/BrightSTAR/.sl73_gcc485</File>
-      <File>file:/star/u/kabir/GIT/BrightSTAR/cepAnalysis/lib/libCepAnalysis.so</File>
       <File>file:/star/u/kabir/GIT/BrightSTAR/libBrStar/lib/libBrStar.so</File>
       <File>file:/star/u/kabir/GIT/BrightSTAR/analysis/lib/libStAnalysis.so</File>
       <File>file:/star/u/kabir/GIT/BrightSTAR/runMacros/lib/libRunMacros.so</File>      
-      <File>file:/star/u/kabir/GIT/BrightSTAR/rootlogon_prod.C</File>    <!-- Required -->
+      <File>file:/star/u/kabir/GIT/BrightSTAR/diffAnalysis/lib/libDiffAnalysis.so</File>      
+      <File>file:/star/u/kabir/GIT/BrightSTAR/emJetAnalysis/lib/libEmJetAnalysis.so</File>
+      <File>file:/star/u/kabir/GIT/BrightSTAR/cepAnalysis/lib/libCepAnalysis.so</File>
+      <File>file:/star/u/kabir/GIT/BrightSTAR/starSim/lib/libStarSim.so</File>
+      <File>file:/star/u/kabir/GIT/BrightSTAR/rootlogon.C</File>         <!-- Required -->
       <File>file:/star/u/kabir/GIT/BrightSTAR/setup.csh</File>           <!-- Required -->      
       <File>file:/star/u/kabir/GIT/BrightSTAR/config</File>              <!-- Required -->      
       <File>file:/star/u/kabir/GIT/BrightSTAR/database</File>            <!-- Required -->

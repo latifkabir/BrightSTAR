@@ -6,7 +6,7 @@
   <command>
     stardev
     source setup.csh
-
+    
     root4star -l -q -b jobMacro.C\(\"$FILELIST\",\"out\_$JOBID.root\"\)
   </command>
 

@@ -17,6 +17,12 @@
     }
     else if(getenv("STARHOME") == "" || getenv("STARHOME") == "/")
 	gSystem->Setenv("STARHOME", gSystem->pwd());
+
+    cout << "Star Home from c++ env: "<< getenv("STARHOME")  <<endl;
+    cout << "Star Home from root pwg: "<< gSystem->pwd()  <<endl;
+    cout << "Star Home from root env: "<< gSystem->Getenv("STARHOME")  <<endl;
+    cout << "Star Home from root env: "<< gSystem->Getenv("STAR")  <<endl;
+    
     //-------------------------------------------------------------
     // if you want to use root.exe instead of root4star, uncomment block below:
     gSystem->AddDynamicPath("/usr/lib/mysql");
@@ -86,7 +92,7 @@
     
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
-    assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StFmsDbMaker.so")); //Local copy of StFmsDbMaker
+    gSystem->Load("${STARHOME}/.sl73_gcc485/lib/StFmsDbMaker.so"); //Local copy of StFmsDbMaker
     gSystem->Load("StFmsHitMaker");
     gSystem->Load("StFmsPointMaker");
     gSystem->Load("StFmsFpsMaker");
