@@ -130,6 +130,46 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fFmsHotChDB = fStarHome + "/" + tokens;
 	    }
+	    else if(s == "USER_EMAIL")
+	    {
+		tokens = strtok(NULL, " :,");
+		fUserEmail = tokens;
+	    }
+	    else if(s == "CONDOR_CONFIG")
+	    {
+		tokens = strtok(NULL, " :,");
+		fCondorConfig = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "CONDOR_JOB")
+	    {
+		tokens = strtok(NULL, " :,");
+		fCondorJob = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "CONDOR_SH")
+	    {
+		tokens = strtok(NULL, " :,");
+		fCondorJobSh = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "SUMS_JOB_SH")
+	    {
+		tokens = strtok(NULL, " :,");
+		fSumsJobSh = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "SUMS_CONFIG")
+	    {
+		tokens = strtok(NULL, " :,");
+		fSumsConfig = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "JOB_COUNTER_SH")
+	    {
+		tokens = strtok(NULL, " :,");
+		fJobCounterSh = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "JOB_COUNTER_TXT")
+	    {
+		tokens = strtok(NULL, " :,");
+		fJobCounterTxt = fStarHome + "/" + tokens;
+	    }	   	    
 	    else if(s == "ENABLE_EVT")
 	    {
 		tokens = strtok(NULL, " :,");
@@ -195,7 +235,48 @@ void TStConfig::Print()
     cout << "==================================================" <<endl;    
 }
 
-void TStConfig::CheckValidity()
+void TStConfig::PrintAll()
 {
-
+    cout << GetStarHome() << endl;
+    cout << GetConfigPath() << endl;
+    cout << GetDataPath() << endl;
+    cout << GetResultsPath() << endl;
+    cout << GetDSTpath() << endl;
+    cout << GetJobResultsPath() << endl;
+    cout << GetRunListDB() << endl;
+    cout << GetFileList() << endl;
+    cout << GetProdPath() << endl;
+    cout << GetTrigDefFile() << endl;
+    cout << GetStreamPrefix() << endl;
+    cout << GetFillNoDB() << endl;
+    cout << GetFmsHotChDB() << endl;
+    cout << GetUserEmail() << endl;
+    cout << GetCondorConfig() << endl;
+    cout << GetCondorJob() << endl;
+    cout << GetCondorJobSh() << endl;
+    cout << GetSumsJobSh() << endl;
+    cout << GetSumsConfig() << endl;
+    cout << GetJobCounterSh() << endl;
+    cout << GetJobCounterTxt() << endl;    
 }
+
+bool TStConfig::CheckValidity(int print)
+{
+    const int size = 18;
+    string fPathArrar[size] = {fConfigFile, fDataPath, fResultsPath, fDSTpath,  fJobResultsPath, fStarHome, fRunListDB, fFileList, fTrigDefFile,  fFillNoDB, fFmsHotChDB, fCondorConfig, fCondorJob, fCondorJobSh, fSumsJobSh, fSumsConfig, fJobCounterSh, fJobCounterTxt};
+
+    for(int i = 0; i < size; ++i)
+    {
+	if(gSystem->AccessPathName((TString)fPathArrar[i]))
+	{
+	    cout << "Invalid path: "<<fPathArrar[i]<<endl;
+	    return false;
+	}
+
+	if(print)
+	    cout << "Path "<< i << " : "<<fPathArrar[i]<<endl;
+    }
+    return true;
+}
+    
+

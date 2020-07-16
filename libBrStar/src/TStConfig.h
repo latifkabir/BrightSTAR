@@ -33,7 +33,15 @@ class TStConfig : public TObject
     string fStreamPrefix;
     string fFillNoDB;
     string fFmsHotChDB;
-
+    string fUserEmail;
+    string fCondorConfig;
+    string fCondorJob;
+    string fCondorJobSh;
+    string fSumsJobSh;
+    string fSumsConfig;
+    string fJobCounterSh;
+    string fJobCounterTxt;
+    
     int fUseEvt;
     int fUseTpc;
     int fUseEmc;
@@ -41,13 +49,14 @@ class TStConfig : public TObject
     int fUseRps;
     int fUseEEmc;
     
-    void CheckValidity();    
 public:
     TStConfig(string file );
     TStConfig();
     ~TStConfig();
     void LoadConfig();
     void Print();
+    void PrintAll();
+    bool CheckValidity(int print = 0);    
 
     //----- Getter for each configuration field -------------
     const string & GetStarHome(){return fStarHome;}
@@ -63,7 +72,16 @@ public:
     const string & GetStreamPrefix(){return fStreamPrefix;}
     const string & GetFillNoDB(){return fFillNoDB;}
     const string & GetFmsHotChDB(){return fFmsHotChDB;}
+    const string & GetUserEmail(){return fUserEmail;}
+    const string & GetCondorConfig(){return fCondorConfig;}
+    const string & GetCondorJob(){return fCondorJob;}
+    const string & GetCondorJobSh(){return fCondorJobSh;}
+    const string & GetSumsJobSh(){return fSumsJobSh;}
+    const string & GetSumsConfig(){return fSumsConfig;}
+    const string & GetJobCounterSh(){return fJobCounterSh;}
+    const string & GetJobCounterTxt(){return fJobCounterTxt;}
 
+    
     bool EnableEvent(){return fUseEvt == 1;}
     bool EnableTpc(){return fUseTpc == 1;}
     bool EnableEmc(){return fUseEmc == 1;}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Task description -->
+<job maxFilesPerProcess="5" filesPerHour="1" fileListSyntax="xrootd" simulateSubmission="false"     >
+
+  <!-- Decription of the task -->
+  <command>
+    stardev
+    source setup.csh
+    
+    root4star -l -q -b jobMacro.C\(\"$FILELIST\",\"out\_$JOBID.root\"\)
+  </command>
+
+  <SandBox installer="ZIP">
+    <Package>
+      <File>file:jobMacro.C</File>      
+      <File>file:.sl73_gcc485</File>
+      <File>file:libBrStar/lib/libBrStar.so</File>
+      <File>file:analysis/lib/libStAnalysis.so</File>
+      <File>file:runMacros/lib/libRunMacros.so</File>      
+      <File>file:diffAnalysis/lib/libDiffAnalysis.so</File>      
+      <File>file:emJetAnalysis/lib/libEmJetAnalysis.so</File>
+      <File>file:cepAnalysis/lib/libCepAnalysis.so</File>
+      <File>file:starSim/lib/libStarSim.so</File>
+      <File>file:rootlogon.C</File>         
+      <File>file:setup.csh</File>           
+      <File>file:config</File>              
+      <File>file:database</File>        
+      <File>file:StRoot</File>              <!-- Required for Rp files -->      
+    </Package>
+  </SandBox>
+
+  <!-- Get input files from get_file_lis.pl -->
+  <input
+      URL="catalog:star.bnl.gov?production=P15ik,trgsetupname=production_pp200trans_2015,filename~st_rp,runnumber[]16079001-16079013,storage!=HPSS" preferStorage="local" singleCopy="true"  nFiles="1" />
+
+  <stdout URL="file:/star/u/kabir/GIT/BrightSTAR/jobOutput/stdout-$JOBID.out" />
+  <stderr URL="file:/star/u/kabir/GIT/BrightSTAR/jobOutput/err_$JOBID.out" />
+  <output fromScratch="*.root" toURL="file:/star/u/kabir/GIT/BrightSTAR/jobResults/"/>
+  <output fromScratch="*.log" toURL="file:/star/u/kabir/GIT/BrightSTAR/jobOutput/"/>
+
+  <Generator>
+    <Location>./jobs</Location>
+    <ReportLocation>/star/u/kabir/GIT/BrightSTAR/jobOutput/</ReportLocation>
+  </Generator>
+
+</job>

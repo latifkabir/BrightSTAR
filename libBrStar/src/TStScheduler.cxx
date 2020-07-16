@@ -100,7 +100,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
     shell_out.close();
     
     cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;
-    TString condor_config = starHome + (TString)"/condor/condor.config";
+    TString condor_config = TStar::gConfig->GetCondorConfig();
     if(gSystem->AccessPathName(condor_config))
     {
 	cout << "Condor job config NOT found at: "<<condor_config<<endl;
@@ -266,7 +266,7 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
     shell_out.close();
     
     cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;
-    TString condor_config = starHome + (TString)"/condor/condor.config";
+    TString condor_config = TStar::gConfig->GetCondorConfig();
     if(gSystem->AccessPathName(condor_config))
     {
 	cout << "Condor job config NOT found at: "<<condor_config<<endl;
@@ -356,7 +356,7 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
     shell_out.close();
     
     cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;
-    TString condor_config = starHome + (TString)"/condor/condor.config";
+    TString condor_config = TStar::gConfig->GetCondorConfig();
     if(gSystem->AccessPathName(condor_config))
     {
 	cout << "Condor job config NOT found at: "<<condor_config<<endl;
@@ -413,8 +413,8 @@ void TStScheduler::SubmitSumsJob(TString function, TString runList, TString outN
 {
     if(outNamePrefix == "")
 	outNamePrefix = function;
-    TString subScript = TStar::Config->GetStarHome() + (TString)"/sums/submitSumsJob.sh";
-    TString subConfig = TStar::Config->GetStarHome() + (TString)"/sums/sumsConfig.sh";
+    TString subScript = TStar::gConfig->GetSumsJobSh();
+    TString subConfig = TStar::gConfig->GetSumsConfig();
     if(gSystem->AccessPathName(subScript) || gSystem->AccessPathName(subConfig))
     {
 	cout << "Submission script or config NOT found"<<endl;
@@ -455,8 +455,8 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
     Int_t sleepTime = mSleepTime*60;
     Int_t iteration = 0;
 
-    TString command_sh = TStar::Config->GetStarHome() + (TString)"/bin/activeJobs.sh"; 
-    TString fileName = TStar::Config->GetStarHome() + (TString)"/resources/temp/ActiveJobs.txt";
+    TString command_sh = TStar::gConfig->GetJobCounterSh(); 
+    TString fileName = TStar::gConfig->GetJobCounterTxt();
         
     cout << "First run: "<< firstRun <<endl;
     cout << "Last run: "<< lastRun <<endl;
@@ -493,7 +493,7 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
 	    TString jobName = functionName + to_string(iteration);
 	    cout << "Submitting jobs for run range: "<< startRun << " to "<< endRun <<endl;
 	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement) + (TString)" Active jobs: " + to_string(activeJobs);
-	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" kabir@rcf.rhic.bnl.gov";
+	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" " + (TString)TStar::gConfig->GetUserEmail();
 	    gROOT->ProcessLine(emailCommand);
 	                           	    
 	    SubmitJob(functionName, startRun, endRun, "", jobName);
