@@ -1,49 +1,50 @@
-// Filename: FmsPi0Maker.C
-// Description: Pi0 (two photons) Invariant Mass from on the fly reconstruction.
-// Author: Latif Kabir < latif@jlab.org >
-// Created: Mon May 20 15:04:13 2019 (-0400)
+// Filename: AnFmsPhotonAngDist.cxx
+// Description: 
+// Author: Latif Kabir < kabir@bnl.gov >
+// Created: Thu Jul 16 17:35:56 2020 (-0400)
 // URL: jlab.org/~latif
+
 
 #include "StRootInclude.h"
 #include "RootInclude.h"
 #include "BrightStInclude.h"
 
-class FmsPi0Maker: public StMaker
+class FmsPhotonAngDistMaker: public StMaker
 {
     StMuDst *mDst;   // Get StMuDst
     StEvent* event;
-    StFmsDbMaker*    mFmsDbMk;
+    StFmsDbMaker* mFmsDbMk;
     TString name;
     StFmsCollection *fmsColl;    
     StMuFmsHit *fmsHit;
     StMuFmsCluster *fmsCluster;
     StMuFmsPoint *fmsPoint;
-    Int_t nPairs;
-    Double_t pairE;
-    Double_t pairM;
-    TH1D *hist1d;
+    Int_t nPoints;
+    Double_t pointEta;
+    Double_t pointPhi;
+    TH1D *hist1d[2];
     TH2D *hist2d;
-    vector<StFmsPointPair*> pointPairs;
+    vector<StFmsPoint*> points;
+    
 public:
-    FmsPi0Maker(TString name): StMaker(name)
+    FmsPhotonAngDistMaker(TString name): StMaker(name)
     {	
 	Init();
-    }
-    ~FmsPi0Maker()
+    }    
+    ~FmsPhotonAngDistMaker()
     {
 	
     }
     Int_t Init()
     {
     	mFmsDbMk = static_cast<StFmsDbMaker*>(GetMaker("fmsDb"));
-    if (!mFmsDbMk) { LOG_ERROR <<"TStFmsTreeMaker::InitRun - !StFmsDbMaker" <<endl; return kStFatal; }
+	if (!mFmsDbMk) { LOG_ERROR <<"TStFmsTreeMaker::InitRun - !StFmsDbMaker" <<endl; return kStFatal; }
 
-    return kStOk;
-	
+	return kStOk;	
     }
-    void Set1dHist(TH1D *h1d)
+    void Set1dHist(TH1D *h1d, Int_t index)
     {
-	hist1d = h1d;	
+	hist1d[index] = h1d;	
     }
     void Set2dHist(TH2D *h2d)
     {
@@ -68,37 +69,30 @@ public:
 	    return kStSkip;
 	}
 
-        pointPairs = fmsColl->pointPairs();
-        nPairs = fmsColl->numberOfPointPairs();
-	for (Int_t i = 0; i < nPairs; ++i)
+        points = fmsColl->points();
+        nPoints = fmsColl->numberOfPairs();
+	for (Int_t i = 0; i < nPoints; ++i)
 	{
-	    StFmsPointPair* pair = pointPairs[i];
-	    if (pair->energy() < 20.) continue;
-	    if (pair->mass()   > 1.0) continue;
-	    if (pair->zgg()    > 0.7) continue;
+	    StFmsPoint* point = points[i];
+	    pointEta = point->XYZ().pseudoRapidity();
+	    pointPhi = point->XYZ().phi();	      
 
-	    //Single point clusters only
-	    if (pair->point(0)->nParentClusterPhotons() != 1 ||
-		pair->point(1)->nParentClusterPhotons() != 1) continue;
-
-	    pairE = pair->energy();
-	    pairM = pair->mass();	      
-	    //cout<<"id1: "<< pair->point(0)->fpsPid()<<endl;
-	    hist1d->Fill(pairM);
-	    hist2d->Fill(pair->x(), pair->y());
+	    hist1d[0]->Fill(pointEta);
+	    hist1d[1]->Fill(pointPhi);
+	    hist2d->Fill(point->XYZ().x(), point->XYZ().y());
 	}
 	return kStOk;
     }
 };			
 
-
-void FmsPi0MakerEx(TString fileList)
+void AnFmsPhotonAngDist(TString fileList)
 {
     // TStRunList::MakeFileList(16072057, 1);
     // TString fileList = TStar::Config->GetFileList();
 
     TFile *f = new TFile("FmsPi0Reconst.root", "RECREATE");
-    TH1D *massDist = new TH1D("massDist","#pi_{0} invariant mass [GeV]; M_{#pi_{0}} [GeV]",200,0.0,1.0);
+    TH1D *etaDist = new TH1D("etaDist","Eta Dist; #eta", 100, 2, 4.5);
+    TH1D *phiDist = new TH1D("phiDist","Phi Dist; #phi [rad]",100, -3.2, 3.2);
     TH2D *xyDist = new TH2D("xyDist", "xyDist", 200, -100.0, 100.0, 200, -100.0, 100.0);
     
     StChain *chain = new StChain;
@@ -116,8 +110,8 @@ void FmsPi0MakerEx(TString fileList)
     StFmsFpsMaker * fpsMk = new StFmsFpsMaker();
     fpsMk->setReadMuDST(1);      // (1) // (reverse 0<->1 convention as FmsHitMaker and FmsPointMaker)
     
-    FmsPi0Maker *pi0Mkr = new FmsPi0Maker("Pi0Maker");
-    pi0Mkr->Set1dHist(massDist);
+    FmsPhotonAngDistMaker *pi0Mkr = new FmsPhotonAngDistMaker("Pi0Maker");
+    pi0Mkr->Set1dHist(etaDist);
     pi0Mkr->Set2dHist(xyDist);
     
     chain->Init();    
@@ -125,8 +119,10 @@ void FmsPi0MakerEx(TString fileList)
     chain->Finish();
 
     TCanvas *c1 = new TCanvas();
-    massDist->Draw();
+    etaDist->Draw();
     TCanvas *c2 = new TCanvas();
     xyDist->Draw("colz");
     f->Write();
 }
+
+
