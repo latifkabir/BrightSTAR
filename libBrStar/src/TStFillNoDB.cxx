@@ -164,6 +164,9 @@ Int_t TStFillNoDB::GetFillNo(Int_t runNo)
     std::ifstream i(TStar::Config->GetFillNoDB());
     json j;
     i >> j;
+
+    Int_t diff = 99999;
+    Int_t closestFill = -1;  //In case exact match for run number is not found
     
     for(int k = 0; k < j.size(); ++k)
     {
@@ -171,10 +174,17 @@ Int_t TStFillNoDB::GetFillNo(Int_t runNo)
 	{
     	    if(j[k]["run"][r] == runNo)
 		return j[k]["fill"];
+
+	    if(abs((int)j[k]["run"][r] - runNo) < diff)
+	    {
+		closestFill = j[k]["fill"];
+		diff = abs((int)j[k]["run"][r] - runNo);
+	    }
 	}
     }
 
-    return -1;
+    cout << "Exact fill number not found. Returning closest fill number:"<< closestFill <<endl;
+    return closestFill;
     i.close();    
 }
 //--------------------------------------------

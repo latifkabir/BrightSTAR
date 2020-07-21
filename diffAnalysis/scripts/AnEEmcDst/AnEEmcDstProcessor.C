@@ -21,7 +21,7 @@ void AnEEmcDstProcessor()
     }
     
     tree_p1->SetBranchStatus("*", 0);
-    // tree_p1->SetBranchStatus("evtHddr", 1);  //THis does not get the object
+    // tree_p1->SetBranchStatus("evtHddr", 1);  //This does not get the object
     
     tree_p1->SetBranchStatus("mRunNumber", 1);
     tree_p1->SetBranchStatus("mEventNumber", 1);

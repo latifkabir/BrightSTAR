@@ -47,22 +47,22 @@ void AnRunNanoDstMaker(TString fileList, TString outFile)
     }
 
     //------- Fms-Rp Corr: FMS stream ----------------
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "FMS-JP0"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-JP1"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-JP2"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2"));
-    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "FMS-JP0"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-JP1"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-JP2"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs1"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs2"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-sm-bs3"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs1"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs2"));
+    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-lg-bs3"));
 
 
     //Veto
-    vetoTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-LED")); 
+    // vetoTrigs->push_back(TStTrigDef::GetTrigId(runNumber,"FMS-LED")); 
     
     //---------- EEmc-Rp Corr: Physics stream --------------
-    // evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "EHT0")); // Generally 480301;
+    evtTrigs->push_back(TStTrigDef::GetTrigId(runNumber, "EHT0")); // Generally 480301;
 
     
     RunNanoDstMaker(fileList, outFile, false, evtTrigs, vetoTrigs);    

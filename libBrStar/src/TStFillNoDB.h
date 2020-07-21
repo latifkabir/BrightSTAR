@@ -12,6 +12,8 @@
 #include <map>
 #include <vector>
 
+using namespace std;
+
 class TStFillNoDB: public TObject
 {
 public:

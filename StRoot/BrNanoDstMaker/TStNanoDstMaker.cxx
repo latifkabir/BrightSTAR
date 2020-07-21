@@ -286,6 +286,10 @@ Int_t TStNanoDstMaker::Make()
     
     mTree->Fill();
     ++mEventCount;
+
+    if(mEventCount % 1000 == 0)
+	cout << "Events saved in the Nano DST tree:"<< mEventCount <<endl;
+
     
     return kStOk;    
 }
