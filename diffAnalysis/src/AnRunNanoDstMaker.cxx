@@ -26,7 +26,7 @@ void AnRunNanoDstMaker(TString fileList, TString outFile)
     string fileName;
     if(fileList.Contains(".list"))
     {
-	ifstream inFile(fileList);
+	ifstream inFile(fileList); //Use absolute path. No ~ for home directory.
 	if(!inFile)
 	{
 	    cout << "Unable to read run number from file list" <<endl;

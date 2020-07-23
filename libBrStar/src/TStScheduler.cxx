@@ -43,6 +43,7 @@ TStScheduler::~TStScheduler()
 Int_t TStScheduler::mJobThreshold = 100;
 Int_t TStScheduler::mSleepTime = 30; //In minutes
 Int_t TStScheduler::mRunIncrement = 20;
+Int_t TStScheduler::mMaxFilesPerJob = 5;
 
 //___________________________________________________________________________________________
 void TStScheduler::JobStatus(Int_t level)
@@ -177,7 +178,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 	    //output_file = outName + "_" + to_string(runNumber) + (string)"_"+ ss.str() + (string)".root";
 	    if(fileNumberStr == "")
 		fileNumberStr = ss.str();
-	    namePrefix = outName + "_" + to_string(runNumber) + (string)"_"+ fileNumberStr;
+	    namePrefix = outName + "_" + to_string(runNumber) + (string)"_" + fileNumberStr;
 	    output_file = namePrefix + (string)".root";
 	    outFile = outDir + namePrefix + (string)".out";
 	    errorFile = outDir + namePrefix + (string)".err";
@@ -222,14 +223,227 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
     cout << "Submission attempt completed." <<endl;
 }
 
+
+//------------ Following is under dev. To be kept one implementation only ------------------
+//__________________________________________________________________________________________________________________
+void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TString outName, TString jobName)    
+{
+    if(outName == "")
+	 outName = functionName;  // Save locally and then copy back from job sh script
+    else
+	outName.ReplaceAll(".root", "");
+    TString starHome = TStar::Config->GetStarHome();
+    TString outDir = starHome + "/jobOutput/";
+    TString jobDir = starHome + (TString) "/jobs/" + jobName;
+    TString createJobDir = (TString)".! mkdir -p " + jobDir;
+    gROOT->ProcessLine(createJobDir);    
+    //================================== Create Job Macro =============================
+    ofstream macro_out(jobDir + (TString)"/jobMacro.C");
+    if(!macro_out)
+    {
+	cout << "Unable to create job macro" <<endl;
+	return;
+    }
+    macro_out<<"void jobMacro(TString fileList, TString outName)"<<endl;
+    macro_out<<"{"<<endl;
+    macro_out<<"\t"<<"gROOT->Macro(\""<<starHome<<"/rootlogon.C\");"<<endl;
+    macro_out<<"\t"<<functionName<<"(fileList, outName);"<<endl;
+    macro_out<<"}"<<endl;
+    macro_out.close();
+    //============================Create Condor execution shell script ========================
+    ofstream shell_out(jobDir + (TString)"/condor.sh");
+    if(!shell_out)
+    {
+	cout << "Unable to create shell script" <<endl;
+	return;
+    }
+    shell_out<<"#!/bin/bash"<<endl;
+    //shell_out<<"stardev"<<endl;
+    shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
+    shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
+    shell_out.close();
+    
+    cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;
+    TString condor_config = TStar::gConfig->GetCondorConfig();
+    if(gSystem->AccessPathName(condor_config))
+    {
+	cout << "Condor job config NOT found at: "<<condor_config<<endl;
+	return;
+    }
+
+    ifstream condorConfig_in(condor_config);
+    ofstream condorConfig_out(jobDir + (TString)("/condor.job"));
+    if(!condorConfig_out)
+    {
+	cout<<"Unable to create condor job description file" << endl;
+	return;
+    }
+    string str;
+    while(getline(condorConfig_in, str))
+    {
+	condorConfig_out << str <<endl;
+    }
+    condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
+    condorConfig_in.close();
+
+    //======================= Get file path and wtite to condor file descriptor ===================================
+    cout << "====================== Reading fileList and writing to Condor Job Description File ... ... ================" <<endl;
+    Int_t lastRun = -1;
+    Int_t limit = -1;
+    Int_t fileCount = 0;
+    if(lastRunOrNfiles == -1)
+	lastRun = firstRun;
+    else if(lastRunOrNfiles != -1 && lastRunOrNfiles < firstRun)
+    {
+	limit = lastRunOrNfiles;
+	lastRun = firstRun;
+    }
+    else if(lastRunOrNfiles >= firstRun)
+	lastRun = lastRunOrNfiles;
+    
+    TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
+    std::ifstream i(TStar::Config->GetRunListDB());
+    json j;
+    i >> j;
+
+    Int_t runNumber;
+    Int_t prevRun = -1;
+    const char *rNumber;
+    string filePath;
+    string fileName;
+    string fileNumberStr;
+    TString output_file;
+    string namePrefix;
+    string arguments;
+    string outFile;
+    string errorFile;
+    string logFile;
+    TString resultDir;
+
+    TString jobFileListPath;
+    Int_t jobFileCount = 0;
+    string lastFileNoStr;
+    Int_t k = 0;
+    
+    while(k < j.size())
+    {
+	runNumber = (int)j[k]["run"];
+	if(runNumber >= firstRun && runNumber <= lastRun)
+	{
+	    rNumber =  (std::to_string((int)j[k]["run"])).c_str();
+	    fileName = (string)j[k]["data"]["file"];
+	    filePath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
+	    //cout << filePath <<endl;
+	    // if(!TStar::IsValid(filePath))
+	    // {
+	    // 	cout<<"The file path: " << filePath << " is no longer valid. Skipping it." << endl;
+	    // 	continue;
+	    // }
+	    fileNumberStr = TStRunList::GetFileNoFromFileName(fileName);
+
+	    if(maxFilesPerJob > 1)
+	    {
+		jobFileListPath = jobDir + (TString)"/jobFileList_" + to_string(runNumber) + (TString)"_"+ fileNumberStr + (TString)".list";
+		ofstream jobFileList(jobFileListPath);
+		if(!jobFileList)
+		{
+		    cout<<"Unable to create job filelist" << endl;
+		    return;
+		}	
+
+	    	jobFileCount = 0;
+	    	while(jobFileCount < maxFilesPerJob)
+	    	{
+	    	    if(runNumber != (int)j[k]["run"])
+	    		break;
+		    if(k >= j.size())
+			break;
+		    
+	    	    rNumber =  (std::to_string((int)j[k]["run"])).c_str();
+	    	    fileName = (string)j[k]["data"]["file"];
+	    	    filePath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
+	    	    jobFileList << filePath <<endl;
+	    	    cout << filePath <<endl;
+
+	    	    ++k;
+	    	    ++jobFileCount;
+	    	}
+		cout<< endl;
+	    	lastFileNoStr = TStRunList::GetFileNoFromFileName(fileName);
+		filePath = jobFileListPath;
+		jobFileList.close();
+	    }
+	    else
+	    {
+		cout << filePath <<endl;
+		++k;
+	    }
+	    
+	    std::stringstream ss;
+	    ss << std::setw(5) << std::setfill('0') << fileCount;
+	    //output_file = outName + "_" + to_string(runNumber) + (string)"_"+ ss.str() + (string)".root";
+	    if(fileNumberStr == "")
+		fileNumberStr = ss.str();
+	    namePrefix = outName + "_" + to_string(runNumber) + (string)"_" + fileNumberStr;
+	    if(maxFilesPerJob > 1)
+		namePrefix += "_" + lastFileNoStr;
+
+	    output_file = namePrefix + (string)".root";
+	    outFile = outDir + namePrefix + (string)".out";
+	    errorFile = outDir + namePrefix + (string)".err";
+	    logFile = outDir + namePrefix + (string)".log";
+	    if(runNumber != prevRun)
+	    {
+		resultDir = TStar::Config->GetJobResultsPath() + jobName + (TString)"/" + to_string(runNumber);
+		gROOT->ProcessLine((TString)".! mkdir -p " + resultDir);    
+		condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
+	    }
+	    prevRun = runNumber;
+	    arguments = "Arguments       = " + (string)"\"" + filePath + "\t" + output_file + "\"";
+	    condorConfig_out << arguments << endl;
+	    condorConfig_out <<"Output          = "<<outFile<<endl;
+	    condorConfig_out <<"Error           = "<<errorFile<<endl;
+	    condorConfig_out <<"Log             = "<<logFile<<endl;
+	    condorConfig_out << "Queue\n" << endl;
+	    
+	    ++fileCount;
+	    if(limit == fileCount)
+		break;
+        }
+	else
+	    ++k;
+    }
+    i.close();
+    condorConfig_out.close();
+
+    if(fileCount < 1)
+    {
+	cout << "0 input file for submission" <<endl;
+	return;
+    }
+    //======================== Submit the job using condor=======================
+    TString subScript = jobDir + (TString)"/condor.job";
+    if(gSystem->AccessPathName(subScript))
+    {
+    	cout << "Submission sh script NOT found at: "<<subScript<<endl;
+    	return;
+    }
+    TString command = (TString)".! condor_submit" + (TString)"\t" + subScript;
+    gROOT->ProcessLine(command);
+
+    cout << "Submission attempt completed." <<endl;
+}
+
+
+
 //_______________________________________________________________________________________________
 void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString outName,  TString jobName)    
 {
     if(outName == "")
-	outName = functionName;  // Save locally and then copy back from job sh script
+	outName = functionName;  
     else
 	outName.ReplaceAll(".root", "");
-    TString namePrefix = outName + "_" + to_string(TStRunList::GetRunFromFileName((string)inFileName)) + (TString)"_"+ TStRunList::GetFileNoFromFileName((string)inFileName);
+    TString namePrefix = outName; //+ "_" + to_string(TStRunList::GetRunFromFileName((string)inFileName)) + (TString)"_"+ TStRunList::GetFileNoFromFileName((string)inFileName);
     outName = namePrefix + (TString)".root" ;    
     TString starHome = TStar::Config->GetStarHome();
     TString outFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)".out";
@@ -495,8 +709,11 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
 	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement) + (TString)" Active jobs: " + to_string(activeJobs);
 	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" " + (TString)TStar::gConfig->GetUserEmail();
 	    gROOT->ProcessLine(emailCommand);
-	                           	    
-	    SubmitJob(functionName, startRun, endRun, "", jobName);
+
+	    if(mMaxFilesPerJob == 1)
+		SubmitJob(functionName, startRun, endRun, "", jobName);
+	    else
+		SubmitJob(mMaxFilesPerJob, functionName, startRun, endRun, "", jobName);
 	    //SubmitJob(functionName, startRun, endRun);
 	    index += (runIncrement + 1);
 	    if(index >= totRuns)

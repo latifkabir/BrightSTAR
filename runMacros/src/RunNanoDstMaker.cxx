@@ -25,7 +25,24 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     }
     StChain *chain		= new StChain;
     StMuDstMaker *muDstMaker	= new StMuDstMaker(0, 0, "", fileList, "", 1000);
-    St_db_Maker *db1		= new St_db_Maker("db","$HOME/StarDb","MySQL:StarDb","$STAR/StarDb");
+    St_db_Maker *starDb		= new St_db_Maker("db","$HOME/StarDb","MySQL:StarDb","$STAR/StarDb");
+
+    //-------- Keep these commented out for Cold QCD Nano Dst files -----------
+    // starDb->SetAttr("blacklist", "emc");
+    // starDb->SetAttr("blacklist", "eemc");
+    // starDb->SetAttr("blacklist", "pp2pp");
+    // starDb->SetAttr("blacklist", "tof");
+    // starDb->SetAttr("blacklist", "tpc");
+    
+    starDb->SetAttr("blacklist", "ftpc");
+    starDb->SetAttr("blacklist", "ist");
+    starDb->SetAttr("blacklist", "mtd");
+    starDb->SetAttr("blacklist", "pmd");
+    starDb->SetAttr("blacklist", "pxl");
+    starDb->SetAttr("blacklist", "ssd");
+    starDb->SetAttr("blacklist", "svt");
+    starDb->SetAttr("blacklist", "fgt");
+    
     StSpinDbMaker* spindb	= new StSpinDbMaker("spinDb");
     StFmsDbMaker* fmsDb		= new StFmsDbMaker("fmsDb");
     

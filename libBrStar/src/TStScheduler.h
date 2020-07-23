@@ -17,12 +17,14 @@ public:
     static Int_t mJobThreshold;
     static Int_t mSleepTime;
     static Int_t mRunIncrement;
+    static Int_t mMaxFilesPerJob;
     
     TStScheduler();
     virtual ~TStScheduler();
 
     static void JobStatus(Int_t level = 0);                                                                                                        // Check Job Status
     static void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor");    // Submit job using condor
+    static void SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor"); 
     static void SubmitJob(TString functionName, TString inFileName, TString outName = "", TString jobName = "condor");                             // Submit Job using condor
     static void SubmitGenericJob(TString functionWithArg, TString jobName);                                                                        // Sumit Job for any function and an argument list
     static void SubmitSumsJob(TString function, TString runList, TString outNamePrefix = "", TString jobName = "sums");                            //Submit job using SUMS
@@ -31,6 +33,7 @@ public:
     void SetJobThreshold(Int_t threshold){mJobThreshold = threshold;}
     void SetInterval(Int_t interval){mSleepTime = interval;}
     void SetRunIncrement(Int_t increment){mRunIncrement = increment;}
+    void SetMaxFilesPerJob(Int_t nFiles){mMaxFilesPerJob = nFiles;}
     
     ClassDef(TStScheduler,1)
 };
