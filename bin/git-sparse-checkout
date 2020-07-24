@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+CMD_NAME="${0##*/}"
+
+read -r -d '' HELP_MSG << EOF
+Usage: $CMD_NAME <git repository address> <path1> [<path2> ...]
+
+  <pathN> is the path to a subdirectory in the git repository to check out,
+  e.g. Manual, Manual/tex, StRoot/macros, or StarDb/Calibrations/tpc
+  Examples: 
+   $CMD_NAME https://github.com/latifkabir/n3He_Soft.git Manual/tex Simulation 
+   $CMD_NAME https://github.com/star-bnl/star-cvs.git StRoot/StPicoEvent StRoot/macros
+  Note: 
+  - All files under the specified subdirectories will be checked out
+  recursively
+  - The repository should not already exist under current directory
+EOF
+
+if [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ $# == 0 ]
+then
+    echo "$HELP_MSG"
+    exit
+fi    
+
+usage() {
+    echo "$HELP_MSG"
+    exit
+}
+
+GITPATH=$1
+REPONAME_GIT="${GITPATH##*/}"
+REPONAME="${REPONAME_GIT%.git}"
+
+echo "Git path: $GITPATH"
+echo "Repository name: $REPONAME"
+
+
+check_git_version() {
+  GIT_VERSION=$1
+  MIN_VERSION=$2
+
+  if [[ "$GIT_VERSION" =~ ^(.*)([0-9]+)\.([0-9]+)\.([0-9]+)(.*)$ ]]; then 
+    GIT_MAJOR=${BASH_REMATCH[2]}; GIT_MINOR=${BASH_REMATCH[3]}; GIT_PATCH=${BASH_REMATCH[4]}; 
+  else
+    echo "Error: Expected Git version in XX.YY.ZZ format"; exit 1
+  fi
+
+  if [[ "$MIN_VERSION" =~ ^(.*)([0-9]+)\.([0-9]+)\.([0-9]+)(.*)$ ]]; then 
+    MIN_MAJOR=${BASH_REMATCH[2]}; MIN_MINOR=${BASH_REMATCH[3]}; MIN_PATCH=${BASH_REMATCH[4]}; 
+  else
+    echo "Error: Expected minimal Git version in XX.YY.ZZ format"; exit 1
+  fi
+
+  if [ "$GIT_MAJOR" -gt "$MIN_MAJOR" ] ||
+     [ "$GIT_MAJOR" -eq "$MIN_MAJOR" -a "$GIT_MINOR" -gt "$MIN_MINOR" ] ||
+     [ "$GIT_MAJOR" -eq "$MIN_MAJOR" -a "$GIT_MINOR" -eq "$MIN_MINOR"  -a "$GIT_PATCH" -ge "$MIN_PATCH" ]
+  then
+    true
+  else
+    false
+  fi
+}
+
+git_version=$(git version)
+min_version="2.26.2"
+  
+if ! check_git_version "$git_version" "$min_version"; then
+  echo -e "Error: $CMD_NAME command requires Git version >= $min_version but found $git_version" 
+  exit 1
+fi
+
+# Take care of unstable UI
+[[ $git_version == *"2.26.2"* ]] && SPARSE_CLONE_ARG="--no-checkout" || SPARSE_CLONE_ARG="--sparse"
+
+if [ $# -lt 1 ]
+then
+  echo "Error: At least one path must be specified"
+  usage
+  exit 1
+fi
+
+[ ! -d "$REPONAME/.git" -a ! -d ".git" ] \
+  && git clone --filter=blob:none $SPARSE_CLONE_ARG $GITPATH \
+  && cd $REPONAME \
+  && git config core.sparseCheckout true \
+  && git config core.sparseCheckoutCone true
+
+# Check that requested directories exist in the repository
+for arg in "${@:2}"; do
+  git ls-tree -r -d --name-only HEAD | grep -q -e "^${arg}$"
+  if [ $? != 0 ]; then
+    echo "Error: No paths found matching $arg"
+    exit 1
+  fi
+done
+
+git sparse-checkout set "$@"
