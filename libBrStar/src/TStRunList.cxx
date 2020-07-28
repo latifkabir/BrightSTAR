@@ -13,6 +13,7 @@
 #include "TStConfig.h"
 #include "TStar.h"
 #include "TString.h"
+#include "TSystem.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -22,6 +23,7 @@ ClassImp(TStRunList)
 TStRunList::TStRunList()
 {
     runList = new TEntryList();
+    missingRunList = new TEntryList();
 }
 
 TStRunList::~TStRunList()
@@ -308,6 +310,20 @@ TEntryList* TStRunList::GetRunList(Int_t firstRun, Int_t lastRunOrNruns)
     }
     i.close();
     return runList;
+}
+
+TEntryList* TStRunList::GetMissingRunList(TString filePathPrefix)
+{
+    missingRunList->Reset();
+    missingRunList = GetRunList();
+    TString fileName;
+    for(Int_t i = 0; i < missingRunList->GetN(); ++i)
+    {
+	fileName = filePathPrefix + to_string(missingRunList->GetEntry(i)) + (TString)".root";
+	if(!gSystem->AccessPathName(fileName))
+	    missingRunList->Remove(missingRunList->GetEntry(i));	    
+    }
+    return missingRunList;
 }
 
 Int_t TStRunList::GetRunIndex(Int_t runNumber)

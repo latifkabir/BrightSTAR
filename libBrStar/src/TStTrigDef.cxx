@@ -26,29 +26,37 @@ using namespace std;
 using json = nlohmann::json;
 
 ClassImp(TStTrigDef)
-
+//____________________________________________________________________________
 TStTrigDef::TStTrigDef()
 {
 
 }
-
+//____________________________________________________________________________
 TStTrigDef::~TStTrigDef()
 {
     
 }
 
+//____________________________________________________________________________
 Int_t TStTrigDef::GetTrigId(Int_t runNumber, TString trigger_name)
 {
     TStar::ExitIfInvalid((TString)TStar::Config->GetTrigDefFile());
     std::ifstream i(TStar::Config->GetTrigDefFile());
     json j;
     i >> j;
-    
+
     Int_t trigId = -1;
-    trigId = j[to_string(runNumber)][trigger_name.Data()];
+    
+    if(j.find(to_string(runNumber)) == j.end())
+	trigId = GetNearestTrigId(runNumber, trigger_name);
+    else if(j[to_string(runNumber)].find(trigger_name.Data()) == j[to_string(runNumber)].end())
+	trigId = GetNearestTrigId(runNumber, trigger_name);
+    else
+	trigId = j[to_string(runNumber)][trigger_name.Data()];
+    
     i.close();
 
-    if( trigId > 0)
+    if(trigId > 0)
 	return trigId;
     else
     {
@@ -57,7 +65,60 @@ Int_t TStTrigDef::GetTrigId(Int_t runNumber, TString trigger_name)
     }    
 }
 
+//____________________________________________________________________________
+Int_t TStTrigDef::GetNearestTrigId(Int_t runNumber, TString trigger_name)
+{
+    TStRunList *runList = new TStRunList();
+    TEntryList *list = runList->GetRunList();
+    Int_t index = runList->GetRunIndex(runNumber);
 
+    if(index == -1)
+    {
+	cout<< "The run could not be found in the current run list" << endl;
+	TStar::Exit();          
+    }
+
+    TStar::ExitIfInvalid((TString)TStar::Config->GetTrigDefFile());
+    std::ifstream i(TStar::Config->GetTrigDefFile());
+    json j;
+    i >> j;
+
+    Bool_t isFound = kFALSE;    
+    Int_t trigId = -1;
+
+    while(!isFound)
+    {
+	if(index < 0)
+	    break;
+	runNumber = list->GetEntry(index);
+	
+	if(j.find(to_string(runNumber)) == j.end())
+	{
+	    --index;
+	    continue;
+	}
+
+	if(j[to_string(runNumber)].find(trigger_name.Data()) == j[to_string(runNumber)].end())
+	{
+	    --index;
+	    continue;
+	}
+	trigId = j[to_string(runNumber)][trigger_name.Data()];
+	isFound = kTRUE;
+	break;
+    }
+    i.close();
+
+    if(trigId > 0)
+	return trigId;
+    else
+    {
+	cout << "Invalid Trigger Request" <<endl;
+	TStar::Exit();
+    }            
+}
+
+//____________________________________________________________________________
 void TStTrigDef::MakeTrigIdDB() 
 {
     TSQLServer *db = TSQLServer::Connect("mysql://db04.star.bnl.gov:3414/Conditions_rts?timeout=60","", ""); //For run 15 only, change to read server from configuration file.

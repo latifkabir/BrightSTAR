@@ -13,5 +13,6 @@
 #include "TStTrigDef.h"
 #include "TStFillNoDB.h"
 #include "TStFmsHotChDB.h"
+#include "TStScheduler.h"
 
 #endif

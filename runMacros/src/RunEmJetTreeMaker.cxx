@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "RootInclude.h"
 #include "StJetMaker/towers/StjTowerEnergyCutFMS.h"
 #include "StJetMaker/StAnaPars.h"
@@ -9,7 +10,7 @@
 
 using namespace std;
 
-void RunEmJetTreeMaker(TString det, TString inFile, TString outFile, Bool_t isMC)
+void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC)
 {
     TStopwatch sw;
     sw.Start();
@@ -19,6 +20,8 @@ void RunEmJetTreeMaker(TString det, TString inFile, TString outFile, Bool_t isMC
     //isMC = kFALSE;
     //isMC = kTRUE;
 
+    det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
+    
     if(!(det == "fms" || det == "eemc"))
     {
 	cout << "Invalid detector name" <<endl;
@@ -43,8 +46,24 @@ void RunEmJetTreeMaker(TString det, TString inFile, TString outFile, Bool_t isMC
     StMuDbReader* muDstDb = StMuDbReader::instance();
     
     Int_t runNumber;
+    string fileName;
+    if(inFile.Contains(".list"))
+    {
+	ifstream inFileList(inFile); //Use absolute path. No ~ for home directory.
+	if(!inFileList)
+	{
+	    cout << "Unable to read run number from file list" <<endl;
+	    return;
+	}
+	getline(inFileList, fileName);
+	inFileList.close();
+	cout << "\n------->Warning: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
+    }
+    else
+	fileName = inFile;
+    
     if(!isMC)
-	runNumber = TStRunList::GetRunFromFileName((string)inFile);
+	runNumber = TStRunList::GetRunFromFileName((string)fileName);
     else
 	runNumber = 16066000;
     if(runNumber < 1)
@@ -169,6 +188,7 @@ void RunEmJetTreeMaker(TString det, TString inFile, TString outFile, Bool_t isMC
 
     TStNanoJetTreeMaker *nanoMaker = new TStNanoJetTreeMaker(jetmaker, skimEventMaker, "NanoJetTreeMaker");
     nanoMaker->SetTrigIds(trigIds);
+    nanoMaker->SetOutFileName((TString)"NanoJetTree_" + outFile);
     
     chain->Init();
     chain->EventLoop();

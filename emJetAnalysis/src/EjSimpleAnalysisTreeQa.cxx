@@ -1,4 +1,4 @@
-// Filename: EjAnalysisTreeQa.C
+// Filename: EjSimpleAnalysisTreeQa.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri May  8 15:08:25 2020 (-0400)
@@ -7,7 +7,8 @@
 #include "RootInclude.h"
 #include "cppInclude.h"
 
-void EjAnalysisTreeQa(TString inFileName, TString outName)
+//Use wildcat in the file name to combine many files.
+void EjSimpleAnalysisTreeQa(TString inFileName, TString outName)
 {
 
     TChain *ch = new TChain("T");

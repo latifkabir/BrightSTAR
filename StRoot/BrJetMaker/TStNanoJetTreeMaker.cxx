@@ -63,7 +63,7 @@ Int_t TStNanoJetTreeMaker::Init()
 
     //branch to hold FMS photons (used in FastJet) info from FMS maker
 
-    cout << "Initialized NanojetMaker!" <<endl;
+    cout << "Initialized NanoJetMaker!" <<endl;
     return kStOK;
 }
 

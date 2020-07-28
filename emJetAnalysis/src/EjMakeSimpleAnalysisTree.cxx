@@ -9,7 +9,7 @@
 */
 
 //Use file name with wildcard to chain many files
-void EjMakeAnalysisTree(
+void EjMakeSimpleAnalysisTree(
     TString det, Int_t nentries,
 	    TString jetfile,
 	    TString skimfile,

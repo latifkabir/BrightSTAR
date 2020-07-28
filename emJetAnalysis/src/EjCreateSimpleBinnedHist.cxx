@@ -1,4 +1,4 @@
-// Filename: EjCreateBinnedHist.C
+// Filename: EjCreateSimpleBinnedHist.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri May  8 15:08:25 2020 (-0400)
@@ -10,7 +10,7 @@
 #include "BrightStInclude.h"
 using namespace std;
 
-void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix)
+void EjCreateSimpleBinnedHist(Int_t fillNo, TString fileNamePrefix)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).

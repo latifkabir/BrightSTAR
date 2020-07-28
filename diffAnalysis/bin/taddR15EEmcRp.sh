@@ -35,8 +35,8 @@ do
 	infile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}_*.root
 	outfile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}.root
 	
-	infile2=${InputDir}/${RunNumber}/RpTree_${FilePrefix}_${RunNumber}_*.root
-	outfile2=${InputDir}/${RunNumber}/RpTree_${RunNumber}.root
+	infile2=${InputDir}/${RunNumber}/EEmc_Part1_${FilePrefix}_${RunNumber}_*.root
+	outfile2=${InputDir}/${RunNumber}/EEmc_Part1_${RunNumber}.root
 	echo -e "\n ============== Now Merging Run Number: ${RunNumber} ======================\n"
 	hadd $outfile $infile
 	hadd $outfile2 $infile2
@@ -46,10 +46,10 @@ do
 	then
 	    echo -e "\n--------->Same output file already exist. Saving with time stamp ...\n"
 	    mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}_ver$TIME.root
-	    mv $outfile2 ${OutDir}/RpTree_${RunNumber}_ver$TIME.root
+	    mv $outfile2 ${OutDir}/EEmc_Part1_${RunNumber}_ver$TIME.root
 	else
 	    mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}.root
-	    mv $outfile2 ${OutDir}/RpTree_${RunNumber}.root
+	    mv $outfile2 ${OutDir}/EEmc_Part1_${RunNumber}.root
 	fi
     fi
 done < $RunList

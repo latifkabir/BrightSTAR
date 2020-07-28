@@ -10,6 +10,7 @@
 #include <TObject.h>
 #include <string>
 #include "TString.h"
+#include "TEntryList.h"
 
 class TStScheduler: public TObject
 {
@@ -25,6 +26,7 @@ public:
     static void JobStatus(Int_t level = 0);                                                                                                        // Check Job Status
     static void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor");    // Submit job using condor
     static void SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor"); 
+    static void SubmitJob(Int_t maxFilesPerJob, TString functionName, TEntryList *runList); 
     static void SubmitJob(TString functionName, TString inFileName, TString outName = "", TString jobName = "condor");                             // Submit Job using condor
     static void SubmitGenericJob(TString functionWithArg, TString jobName);                                                                        // Sumit Job for any function and an argument list
     static void SubmitSumsJob(TString function, TString runList, TString outNamePrefix = "", TString jobName = "sums");                            //Submit job using SUMS

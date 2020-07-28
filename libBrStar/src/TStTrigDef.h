@@ -19,6 +19,7 @@ public:
 
     static void MakeTrigIdDB(); 
     static Int_t GetTrigId(Int_t runNumber, TString trigger_name);
+    static Int_t GetNearestTrigId(Int_t runNumber, TString trigger_name);
 
     ClassDef(TStTrigDef,1)
 };
