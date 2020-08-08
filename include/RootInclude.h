@@ -72,4 +72,6 @@
 #include <TVector3.h>
 #include <TRefArray.h>
 
+#include <TParticle.h>
+
 #endif

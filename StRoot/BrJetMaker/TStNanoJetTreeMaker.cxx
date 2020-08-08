@@ -95,7 +95,6 @@ Int_t TStNanoJetTreeMaker::Make()
     assert(mInJetEvent && mInSkimEvent);
     assert(mInJetEvent->runId() == mInSkimEvent->runId() && mInJetEvent->eventId() == mInSkimEvent->eventId());
 
-    //--------------------------    
     //intermediate variables
     Int_t spin4Bit;
     Int_t spinB;
@@ -110,6 +109,9 @@ Int_t TStNanoJetTreeMaker::Make()
     Double_t jetY;
     Double_t theta;
     Double_t rt;
+
+    if ((mInSkimEvent->bx7() > 30 && mInSkimEvent->bx7() < 40) || (mInSkimEvent->bx7() > 110 && mInSkimEvent->bx7() < 120))
+	    return kStOK;
     
     if(mInJetEvent->numberOfJets() == 0)
 	return kStOK;
@@ -187,7 +189,7 @@ Int_t TStNanoJetTreeMaker::Make()
     {	    
 	eta = mInVertex->jet(i)->eta();
 
-	if(eta < mEtaMin  || eta > mEtaMax) //Consider FMS or EEMC EM Jets only 
+	if(eta < mEtaMin  || eta > mEtaMax) 
 	    continue;
 	    
 	phi = mInVertex->jet(i)->phi();

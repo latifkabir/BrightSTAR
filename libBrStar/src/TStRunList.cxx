@@ -314,14 +314,16 @@ TEntryList* TStRunList::GetRunList(Int_t firstRun, Int_t lastRunOrNruns)
 
 TEntryList* TStRunList::GetMissingRunList(TString filePathPrefix)
 {
+    TEntryList *rList = GetRunList();
     missingRunList->Reset();
-    missingRunList = GetRunList();
     TString fileName;
-    for(Int_t i = 0; i < missingRunList->GetN(); ++i)
+    Int_t run;
+    for(Int_t i = 0; i < rList->GetN(); ++i)
     {
-	fileName = filePathPrefix + to_string(missingRunList->GetEntry(i)) + (TString)".root";
-	if(!gSystem->AccessPathName(fileName))
-	    missingRunList->Remove(missingRunList->GetEntry(i));	    
+	run = rList->GetEntry(i);
+	fileName = filePathPrefix + to_string(run) + (TString)".root";
+	if(gSystem->AccessPathName(fileName))
+	    missingRunList->Enter(run);	    
     }
     return missingRunList;
 }

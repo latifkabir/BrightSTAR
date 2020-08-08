@@ -261,7 +261,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
     //shell_out<<"stardev"<<endl;
     shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
-    shell_out<<"rm jets_*.root skim_*.root ueoc_*.root"<<endl;  //<----------------- TEMPORARY REMOVE ME
+    //shell_out<<"rm jets_*.root skim_*.root ueoc_*.root"<<endl;  //<--- file you do not want
     shell_out.close();
     
     cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;

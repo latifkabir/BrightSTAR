@@ -149,5 +149,7 @@
 #include "StJetMaker/mcparticles/StjMCParticleCutParton.h"
 #include "StJetMaker/mcparticles/StjMCParticleCutStatus.h"
 #include "StSpinPool/StBfcTriggerFilterMaker/StPythiaEventMaker.h"
+#include "StSpinPool/StJetSkimEvent/StPythiaEvent.h"
+
 
 #endif

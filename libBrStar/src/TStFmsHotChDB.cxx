@@ -54,8 +54,7 @@ void TStFmsHotChDB::GetHotChList(Int_t runNo, Bool_t isHotCh[][571])
     for(Int_t k = 0; k < j.size(); ++k)
     {
 	if(j[k]["fill"] == fillNo)
-	{
-	    
+	{	    
 	    for(int r = 0; r < j[k]["hot"].size(); ++r)
 	    {
 		det = j[k]["hot"][r]["det"];

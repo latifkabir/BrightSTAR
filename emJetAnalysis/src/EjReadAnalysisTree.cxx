@@ -33,6 +33,7 @@ void EjReadAnalysisTree()
 
     TH1D *h1nJets = new TH1D("h1nJets", "Number of Jets", 10, 0, 10);
     TH1D *h1TowerEta = new TH1D("h1TowerEta", "Tower Eta", 100, 0, 0);
+    TH1D *h1TowerE = new TH1D("h1TowerE", "Tower E", 100, 0, 0);
     
     for(Int_t evt = 0; evt < tree->GetEntries(); ++evt)
     {
@@ -53,6 +54,7 @@ void EjReadAnalysisTree()
 		tower = jet->GetTower(k);
 		cout << "Tower: "<< k << " Eta: "<< tower->GetEta() <<endl;
 		h1TowerEta->Fill(tower->GetEta());
+		h1TowerE->Fill(tower->GetEnergy());
 	    }
 
 	    for(Int_t k = 0; k < jet->GetNumberOfParticles(); ++k)

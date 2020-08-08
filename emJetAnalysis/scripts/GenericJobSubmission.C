@@ -13,7 +13,7 @@ void GenericJobSubmission(Int_t firstRun = -1, Int_t lastRun = -1)
     //TString funcName = "AnFmsRpCorrPpb";
     //TString funcName = "AnEEmcRpCorrUpb";
     //TString jobName = funcName;
-    TString jobName = "EjAnaJetTreeFms";
+    TString jobName = "NanoJetTree_RunEmJetTreeMaker";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -24,7 +24,7 @@ void GenericJobSubmission(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
 
     //------- 2.Change Here the path and file prefix ---------------
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/R15EmJetFms/";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/scratch/EmJetTree_part1/";
     //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
@@ -66,7 +66,7 @@ void GenericJobSubmission(Int_t firstRun = -1, Int_t lastRun = -1)
 
 	//-------------- 4.Change Here to fit Function's argument ---------------
 	//Fms-Rp Corr
-	argList = "(\"fms\",-1,\"";
+	argList = "(\"eemc\",-1,\"";
 	argList += jetfile;
 	argList += "\",\"";
 	argList += skimfile;

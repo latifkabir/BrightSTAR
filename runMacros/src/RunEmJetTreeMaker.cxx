@@ -20,7 +20,7 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
     //isMC = kFALSE;
     //isMC = kTRUE;
 
-    det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
+    //det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
     
     if(!(det == "fms" || det == "eemc"))
     {
@@ -57,7 +57,7 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
 	}
 	getline(inFileList, fileName);
 	inFileList.close();
-	cout << "\n------->Warning: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
+	cout << "\n------->Note: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
     }
     else
 	fileName = inFile;
@@ -77,6 +77,11 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
     TString triggerNames_fms[kMaxTriggers] = {"FMS-JP0", "FMS-JP1", "FMS-JP2", "FMS-sm-bs1", "FMS-sm-bs2", "FMS-sm-bs3", "FMS-lg-bs1", "FMS-lg-bs2", "FMS-lg-bs3"};
     TString triggerNames_eemc[kMaxTriggers] = {"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB"};
 
+    //Consider FMS or EEMC EM Jets only. Note, bulk of the jets come from mid-rapidity.
+    //Unless this cut is applied, file size will be large and no need to make separate nano Dst.
+    Double_t etaMax = 4.5;
+    Double_t etaMin = 0.8;
+    
     if(!isMC)
     {
 	StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
@@ -114,15 +119,23 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
     StFmsDbMaker*  fmsDb  = new StFmsDbMaker("fmsDb"); 
     fmsDb->SetAttr("fmsGainCorr","fmsGainCorr-BNL-C");
     Bool_t isHotCh[4][571] = {0};
+    Int_t nHotCh = 0;
     TStFmsHotChDB *fmsHotChDb = new TStFmsHotChDB();
     fmsHotChDb->GetHotChList(runNumber, isHotCh);
     cout << "The following FMS cells are masked:" <<endl;
     for(int i = 0; i < 4; ++i)
     {
 	for(int j = 0; j < 571; ++j)
+	{
 	    if(isHotCh[i][j])
+	    {
 		cout << "det "<< (i + 1)<< " ch "<< (j+1) << " hot/bad status:"<< isHotCh[i][j] <<endl;
+		++nHotCh;
+	    }
+	}
     }
+    cout << "Total manually masked bad / hot channels: "<< nHotCh <<endl;
+
     fmsDb->maskChannels(isHotCh);
 
     
@@ -140,7 +153,8 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
     StJetMaker2015* jetmaker = new StJetMaker2015("StJetMaker2015");
     jetmaker->setJetFile(Jetfile);
     jetmaker->setJetFileUe(Uefile);
-    jetmaker->ReadBbcSlewing("/star/u/kabir/GIT/BrightSTAR/database/bbc_slewing_run15_pp200.dat"); //CKim
+    TString bbcSlewingData = TStar::gConfig->GetStarHome() + "/database/bbc_slewing_run15_pp200.dat"; 
+    jetmaker->ReadBbcSlewing(bbcSlewingData.Data()); //CKim
 
     StAnaPars* anapars12 = new StAnaPars;
     anapars12->useTpc  = true;
@@ -189,6 +203,8 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
     TStNanoJetTreeMaker *nanoMaker = new TStNanoJetTreeMaker(jetmaker, skimEventMaker, "NanoJetTreeMaker");
     nanoMaker->SetTrigIds(trigIds);
     nanoMaker->SetOutFileName((TString)"NanoJetTree_" + outFile);
+    nanoMaker->SetEtaMax(etaMax);
+    nanoMaker->SetEtaMin(etaMin);
     
     chain->Init();
     chain->EventLoop();

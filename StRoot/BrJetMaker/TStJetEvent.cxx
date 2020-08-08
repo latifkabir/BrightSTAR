@@ -24,6 +24,7 @@ void TStJetEvent::CopyTower(StJetTower*  t, TStJetTower* tower) //Copy from t to
     tower->SetPedestal(t->pedestal());
     tower->SetRms(t->rms());
 	
+    tower->SetEnergy(t->energy());
     tower->SetPt(t->pt());
     tower->SetEta(t->eta());
     tower->SetPhi(t->phi());	
