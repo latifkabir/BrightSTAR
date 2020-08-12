@@ -237,6 +237,13 @@ void AnFmsHotChFinder(Int_t fillNoFirst, Int_t fillNoLast, Int_t iteration)
 	{
 	    if(TStar::gBrDebug)
 		cout << "Calculating Average Activity for Radial Bin: "<< i << " Number of Cells: " << chList[i].size() <<endl;
+	    if(chList[i].size() <= 10)
+	    {
+		averages[i] = 999999;
+		if(TStar::gBrDebug)
+		    cout << "Radial bin has too few entries. Setting default very high average "<< averages[i] <<endl;
+		continue;
+	    }
 	    for(Int_t j = 5; j < chList[i].size() - 5 ; ++j)
 		averages[i] += chList[i][j].entries;	    
 	    averages[i] = averages[i] / (chList[i].size() - 10);

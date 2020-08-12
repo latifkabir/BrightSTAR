@@ -29,6 +29,8 @@ Instruction()
     echo "          job | status       : Check farm job status from current node"    
     echo "          jobs               : Check farm job status report from all nodes"
     echo "          submit             : Submit job using SLUMS"
+    echo "          sout               : Open job std-out for corresponding root output"
+    echo "          serr               : Open job err out for corresponding root output"
 
     echo "          ------------------------------------------------------------------------------------------------"
     echo "                    "    
@@ -116,7 +118,15 @@ case $OPTION in
 	rm sched*.package.zip 2>/dev/null
 	echo "Done!"
 	;;
+    sout)
+	fileName=$(echo $2 | sed "s/root/out/")
+	cat $STARHOME/jobOutput/$fileName
+	;;
+    serr)
+	fileName=$(echo $2 | sed "s/root/err/")
+	cat $STARHOME/jobOutput/$fileName
+	;;
     *)
 	echo "                                       "	   
-	echo "              Invalid option or to be implemented        "	   
+	echo "              Invalid option or to be implemented        "
 esac  

@@ -374,6 +374,20 @@ Int_t TStRunList::MakeFileListWithEvents(Int_t minEvents)
 
 Int_t TStRunList::GetRunFromFileName(string fileName)
 {
+    TString inFile = fileName;
+    if(inFile.Contains(".list"))
+    {
+	ifstream inFileList(inFile); //Use absolute path. No ~ for home directory.
+	if(!inFileList)
+	{
+	    cout << "Unable to read run number from file list" <<endl;
+	    return -1;
+	}
+	getline(inFileList, fileName);
+	inFileList.close();
+	cout << "\n------->Note: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
+    }
+    
     TString fName = fileName;
     fName.ReplaceAll("adc_", "");
     string mFileName = (string)fName;

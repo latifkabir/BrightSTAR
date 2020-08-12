@@ -1,10 +1,10 @@
-// Filename: MergeFiles.C
+// Filename: MergeFmsHotChQaFiles.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Tue Jun  2 12:54:51 2020 (-0400)
 // URL: jlab.org/~latif
 
-void MergeFiles()
+void MergeFmsHotChQaFiles()
 {
     TString filePath = "~/GIT/BrightSTAR/dst/FmsHotChQaFull/RunFmsHotChQaMaker_";
     TString fileName;

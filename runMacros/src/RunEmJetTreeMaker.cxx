@@ -45,25 +45,9 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
     StMuDstMaker* muDstMaker = new StMuDstMaker(0, 0, "", inFile, "", 1000);
     StMuDbReader* muDstDb = StMuDbReader::instance();
     
-    Int_t runNumber;
-    string fileName;
-    if(inFile.Contains(".list"))
-    {
-	ifstream inFileList(inFile); //Use absolute path. No ~ for home directory.
-	if(!inFileList)
-	{
-	    cout << "Unable to read run number from file list" <<endl;
-	    return;
-	}
-	getline(inFileList, fileName);
-	inFileList.close();
-	cout << "\n------->Note: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
-    }
-    else
-	fileName = inFile;
-    
+    Int_t runNumber;    
     if(!isMC)
-	runNumber = TStRunList::GetRunFromFileName((string)fileName);
+	runNumber = TStRunList::GetRunFromFileName((string)inFile);
     else
 	runNumber = 16066000;
     if(runNumber < 1)

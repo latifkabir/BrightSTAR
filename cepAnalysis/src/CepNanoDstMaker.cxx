@@ -23,23 +23,8 @@ void CepNanoDstMaker(TString fileList, TString outFile)
     
     vector<Int_t> *evtTrigs = new vector<Int_t>();
     vector<Int_t> *vetoTrigs = new vector<Int_t>();
-    string fileName;
-    if(fileList.Contains(".list"))
-    {
-	ifstream inFile(fileList);
-	if(!inFile)
-	{
-	    cout << "Unable to read run number from file list" <<endl;
-	    return;
-	}
-	getline(inFile, fileName);
-	inFile.close();
-	cout << "\n------->Warning: Setting trigger ID based on first run number only: "<< fileName <<"<-----\n"<<endl;
-    }
-    else
-	fileName = fileList;
     
-    Int_t runNumber = TStRunList::GetRunFromFileName(fileName);
+    Int_t runNumber = TStRunList::GetRunFromFileName((string)fileList);
     if(runNumber < 1)
     {
 	cout << "Unable to get run number" <<endl;
