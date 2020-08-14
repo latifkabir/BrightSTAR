@@ -155,7 +155,7 @@
     
     gSystem->Load("libEmJetAnalysis.so");
     gSystem->Load("libDiffAnalysis.so");
-    //gSystem->Load("libStarSim.so");
+    gSystem->Load("libStarSim.so");
     
     gSystem->Load("libCepAnalysis.so");
     

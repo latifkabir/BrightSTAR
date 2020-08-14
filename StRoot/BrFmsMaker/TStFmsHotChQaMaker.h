@@ -13,7 +13,7 @@
 
 class StEvent;
 class StMuDst;
-class StFmsDbMaker;
+//class StFmsDbMaker;
 class StFmsCollection;
 class StFmsHit;
 
@@ -23,7 +23,7 @@ private:
     StMuDst *mMuDst;  
     StEvent* mEvent;
     TFile *mFile;
-    StFmsDbMaker* mDbMaker;
+    //StFmsDbMaker* mDbMaker;
     StFmsCollection *mFmsColl;
     StFmsHit *mHit;
     TH1D *mEngDist[4][571];

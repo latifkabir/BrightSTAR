@@ -19,7 +19,6 @@ sched*.dataset
 temp_gccflags.c
 *.dat
 temp/
-*.list
 .root_history
 .consign
 *.dat
@@ -32,3 +31,6 @@ schedTemplateExp.xml
 temp*.txt
 *_cxx.d
 jobs/
+*.metafile
+starSimSL19a/
+resources/jobRunList/

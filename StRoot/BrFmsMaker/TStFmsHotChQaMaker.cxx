@@ -9,7 +9,7 @@
 #include "StEvent/StFmsCollection.h"
 #include "StEvent/StFmsHit.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
-#include "StFmsDbMaker/StFmsDbMaker.h"
+//#include "StFmsDbMaker/StFmsDbMaker.h"
 
 ClassImp(TStFmsHotChQaMaker)
 
@@ -28,12 +28,12 @@ TStFmsHotChQaMaker::~TStFmsHotChQaMaker()
 //_____________________________________________________________________________ 
 Int_t TStFmsHotChQaMaker::Init()
 {
-    mDbMaker = static_cast<StFmsDbMaker*>(GetMaker("fmsDb"));
-    if (!mDbMaker)
-    {
-    	LOG_ERROR <<"TStFmsTreeMaker::InitRun - !StFmsDbMaker" <<endl;
-    	return kStFatal;
-    }
+    // mDbMaker = static_cast<StFmsDbMaker*>(GetMaker("fmsDb"));
+    // if (!mDbMaker)
+    // {
+    // 	LOG_ERROR <<"TStFmsTreeMaker::InitRun - !StFmsDbMaker" <<endl;
+    // 	return kStFatal;
+    // }
     mFile = new TFile(mOutName, "RECREATE");
 
     for(Int_t i = 0; i < 4; ++i)
@@ -108,7 +108,7 @@ Int_t TStFmsHotChQaMaker::Finish()
 	    MaxCh = iMaxCh;
 	for (Int_t l = 0; l < MaxCh; l++)
 	{
-	    if(mDbMaker->getGain(i + 8, l + 1) != 0.0)  //Exclude unphysical cells
+	    //if(mDbMaker->getGain(i + 8, l + 1) != 0.0)  //Exclude unphysical cells
 		mEngDist[i][l]->Write();
 	}	
     }

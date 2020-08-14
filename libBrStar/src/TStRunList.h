@@ -32,6 +32,7 @@ public:
     static Int_t MakeFileListWithEvents(Int_t minEvents);
     static void PrintFileList();
     static Int_t ViewRunList(Int_t firstRun, Int_t lastRunOrNruns = -1);
+    static void CheckFileStatus(Int_t firstRun, Int_t lastRunOrNfiles);
     TEntryList* GetRunList(Int_t firstRun = -1, Int_t lastRunOrNruns = -1);
     TEntryList* GetMissingRunList(TString filePathPrefix);
     Int_t GetRunIndex(Int_t runNumber);
