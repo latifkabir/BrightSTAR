@@ -102,3 +102,19 @@ void TStFmsHotChDB::PrintHotChDB()
     i.close();
 }
 
+
+void TStFmsHotChDB::HotChCounter()
+{
+    TStar::ExitIfInvalid((TString)TStar::Config->GetFmsHotChDB());
+    std::ifstream i(TStar::Config->GetFmsHotChDB());
+    json j;
+    i >> j;
+    
+    for(int k = 0; k < j.size(); ++k)
+    {
+    	std::cout <<"Fill No: "<<j[k]["fill"] << ", Number of hot + bad channels: " << j[k]["hot"].size() << " and " << j[k]["bad"].size() << ", Total:" << (j[k]["hot"].size() + j[k]["bad"].size()) << std::endl;
+    }
+    
+    i.close();
+}
+

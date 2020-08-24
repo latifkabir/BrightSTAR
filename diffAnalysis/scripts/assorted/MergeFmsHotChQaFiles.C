@@ -6,7 +6,7 @@
 
 void MergeFmsHotChQaFiles()
 {
-    TString filePath = "~/GIT/BrightSTAR/dst/FmsHotChQaFull/RunFmsHotChQaMaker_";
+    TString filePath = "~/GIT/BrightSTAR/dst/fmsHotChQaRedone/RunFmsHotChQaMaker_";
     TString fileName;
     
     TStFillNoDB db;
@@ -20,7 +20,7 @@ void MergeFmsHotChQaFiles()
 	runs = db.GetRunsWithFill(fills[i]);
 	TString inFiles;
 	TString outFile;
-	outFile = "~/GIT/BrightSTAR/dst/R15FmsHotChQa/R15FmsHotChQa_Fill_";
+	outFile = "~/GIT/BrightSTAR/dst/fmsHotChQaRedone/R15FmsHotChQa_Fill_";
 	outFile += fills[i];
 	outFile += ".root";
 	

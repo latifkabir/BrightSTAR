@@ -6,6 +6,7 @@ request_cpus    = 1
 Priority        = 4
 GetEnv          = True
 Input           = /dev/null
+should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"

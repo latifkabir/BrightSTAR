@@ -26,5 +26,5 @@ else
     setenv STARHOME "$PWD"  #For SUMS jobs
 endif
     
-setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${STARHOME}:${STARHOME}/libBrStar/lib:${STARHOME}/analysis/lib:${STARHOME}/runMacros/lib:${STARHOME}/diffAnalysis/lib:$STARHOME/emJetAnalysis/lib:${STARHOME}/cepAnalysis/lib:${STARHOME}/starSim/lib:${STARHOME}/.sl73_gcc485/lib"
+setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${STARHOME}/${STARHOME}/lib:${STARHOME}/.sl73_gcc485/lib:.sl73_gcc485/lib:lib"
 setenv STARDEV "/afs/rhic.bnl.gov/star/packages/DEV/"

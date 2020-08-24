@@ -6,7 +6,7 @@
 #include "TStTrigDef.h"
 
 //Use file name with wildcard to chain many files
-void EjQaPlots(
+void EjJetQaPlots(
             Int_t nentries,
 	    TString jetfile,
 	    TString skimfile,

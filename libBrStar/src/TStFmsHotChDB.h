@@ -20,6 +20,7 @@ public:
 
     void GetHotChList(Int_t runNo, Bool_t isHotCh[][571]);
     void PrintHotChDB();
+    void HotChCounter();
     
     ClassDef(TStFmsHotChDB,1)
 };

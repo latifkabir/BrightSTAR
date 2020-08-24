@@ -1,0 +1,68 @@
+<job name="simuprod_BNL" 
+    fileListSyntax="paths"  
+    nProcesses="11000"  
+    filesPerHour="24"  
+    simulateSubmission="false">
+
+  <stdout URL="file:./logs/$JOBID.log" />
+  <stderr URL="file:./logs/$JOBID.err" />
+  <Generator><Location>./jobs/</Location></Generator>
+
+  <ResourceUsage>
+    <Priority>50</Priority>
+  </ResourceUsage>
+
+  <!-- //////////////////////////////////////////////////////////////// -->
+  <command><![CDATA[
+
+
+  setup debug
+
+
+# Grab KUMAC files and reconstruction macro 
+  cp ${SUBMITTINGDIRECTORY}/*.kumac .
+  cp ${SUBMITTINGDIRECTORY}/*.C .
+
+# Copy LHAPDF files and setup path...  
+  cp -R ${SUBMITTINGDIRECTORY}/current .
+  cp -R ${SUBMITTINGDIRECTORY}/.$STAR_HOST_SYS .
+
+  setenv LHAPDF_DATA_PATH current
+
+  setenv JOBINDEX `echo "${JOBINDEX} + 5000" | bc`
+
+  set run     = 18010
+  set cycle   = $JOBINDEX
+  set nevents = 10000
+
+  set basename = rcf${run}_${cycle}_${nevents}evts
+  
+# Simulate in DEV please 
+  starver DEV
+  starsim -w 0 -b simJetForward nevents=${nevents} run=${run} cycle=${cycle} file=${basename}.fzd
+
+set fzdfile=`ls *.fzd`
+echo $fzdfile
+
+# Reconstruction in SL17i 
+  starver SL17i
+  root4star -q -b bfcFms.C\(${nevents},\"${fzdfile}\"\) >& ${basename}.log
+  
+  /usr/bin/gzip *.log
+
+   rm *.C
+   rm *.kumac
+   rm *.metafile
+
+  set outputDir=/star/data98/simu/rcf18010/out_3/ 
+  mkdir -p ${outputDir}              
+  mv *.log.gz ${outputDir}
+  mv *.geant.root  ${outputDir}
+  mv *.pythia.root ${outputDir}
+  mv *.MuDst.root ${outputDir}
+
+    
+  ]]></command>
+  <!-- //////////////////////////////////////////////////////////////// -->
+
+</job>

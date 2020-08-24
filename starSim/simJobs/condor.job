@@ -1,0 +1,25 @@
+Universe        = vanilla
+Requirements    = (CPU_Speed >= 1)
+Rank		= CPU_Speed
+request_memory  = 7200M
+request_disk    = 8000M
+request_cpus    = 1
+Priority        = 4
+GetEnv          = True
+Input           = /dev/null
+#Following two are needed for Simulation Jobs
+Input           = /star/u/kabir/GIT/BrightSTAR/starSim/lhapdf
+should_transfer_files = YES
+transfer_input_files =  /star/u/kabir/GIT/BrightSTAR/starSim/simJobs/.sl73_gcc485_19a, /star/u/kabir/GIT/BrightSTAR/starSim/simJobs/lib19a, /star/u/kabir/GIT/BrightSTAR/starSim/simJobs/.sl73_gcc485_20a, /star/u/kabir/GIT/BrightSTAR/starSim/simJobs/lib20a
+when_to_transfer_output = ON_EXIT_OR_EVICT
++Experiment     = "star"
++Job_Type       = "cas"
+Executable      = /star/u/kabir/GIT/BrightSTAR/starSim/simJobs/condor.csh
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/scratch/condor/
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).log
+
+Arguments       = $(Process) 5000 	
+Queue 1000
+

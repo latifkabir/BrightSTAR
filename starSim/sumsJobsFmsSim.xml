@@ -1,0 +1,66 @@
+<job fileListSyntax="paths"  
+    nProcesses="2000"  
+    filesPerHour="24"  
+    simulateSubmission="false">
+
+  <stdout URL="file:./logs/$JOBID.log" />
+  <stderr URL="file:./logs/$JOBID.err" />
+  <Generator><Location>./jobs/</Location></Generator>
+
+  <!-- <ResourceUsage> -->
+  <!--   <Priority>50</Priority> -->
+  <!-- </ResourceUsage> -->
+
+  <!-- //////////////////////////////////////////////////////////////// -->
+  <command><![CDATA[
+
+
+  setup debug
+
+
+# Grab KUMAC files and reconstruction macro 
+  cp ${SUBMITTINGDIRECTORY}/*.kumac .
+  cp ${SUBMITTINGDIRECTORY}/*.C .
+
+# Copy LHAPDF files and setup path...  
+  cp -R ${SUBMITTINGDIRECTORY}/lhapdf .
+  #cp -R ${SUBMITTINGDIRECTORY}/.$STAR_HOST_SYS .
+
+  setenv LHAPDF_DATA_PATH lhapdf
+  set fileno  = $JOBINDEX
+  setenv JOBINDEX `echo "${JOBINDEX} + 5000" | bc`
+
+  set run     = 16000
+  set cycle   = $JOBINDEX
+  #set nevents = 5000
+  set nevents = 500
+
+  set basename = FmsJetSim${run}_${fileno}_${nevents}evts
+  
+  #Set STAR library version 
+  starver SL20a
+  starsim -w 0 -b pythia.kumac NEVENTS=${nevents} RUN=${run} CYCLE=${cycle} FILE=${basename}.fzd
+
+  set fzdfile=`ls *.fzd`
+  echo $fzdfile
+
+  root4star -q -b runBfcFms.C\(${nevents},\"${fzdfile}\"\) >& ${basename}.log
+  
+  /usr/bin/gzip *.log
+
+   rm *.C
+   rm *.kumac
+   rm *.metafile
+
+  set outputDir=${SUBMITTINGDIRECTORY}/data/ 
+  mkdir -p ${outputDir}              
+  mv *.log.gz ${outputDir}
+  mv *.geant.root  ${outputDir}
+  mv *.pythia.root ${outputDir}
+  mv *.MuDst.root ${outputDir}
+  mv *.fzd ${outputDir}
+    
+  ]]></command>
+  <!-- //////////////////////////////////////////////////////////////// -->
+
+</job>

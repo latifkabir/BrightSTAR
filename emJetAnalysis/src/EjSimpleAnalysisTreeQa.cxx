@@ -13,27 +13,7 @@ void EjSimpleAnalysisTreeQa(TString inFileName, TString outName)
 
     TChain *ch = new TChain("T");
     ch->Add(inFileName);
-
-    /*
-    TCanvas *c1 = new TCanvas();
-    ch->Draw("phi");
-
-    TCanvas *c2 = new TCanvas();
-    ch->Draw("eta:phi>>hist1(100, -3.5, 3.5, 100, 2.0, 4.5)", "", "colz");
-
-    TCanvas *c3 = new TCanvas();
-    ch->Draw("eng:pt>>hist2(100, 0, 20, 100, 0, 100)", "", "colz");
-
-    TCanvas *c4 = new TCanvas();
-    ch->Draw("nPhotons:eng>>hist3(100, 0, 100, 20, 0, 20)", "", "colz");
-
-    TCanvas *c5 = new TCanvas();
-    ch->Draw("nPhotons:pt>>hist4(100, 0, 20, 20, 0, 20)", "", "colz");
-
-    TCanvas *c6 = new TCanvas();
-    ch->Draw("jetY:jetX>>hist5(100, -100, 100, 100, -100, 100)", "", "colz");
-    */
-
+    
     TFile *file = new TFile(outName, "recreate");
     Int_t nPhotons;
     Int_t spinB;
@@ -82,8 +62,8 @@ void EjSimpleAnalysisTreeQa(TString inFileName, TString outName)
     {
 	ch->GetEntry(i);
 
-	if(rt != 1)
-	    continue;
+	// if(rt != 1)
+	//     continue;
 	
 	h1Eta->Fill(eta);
 	h1Phi->Fill(phi);

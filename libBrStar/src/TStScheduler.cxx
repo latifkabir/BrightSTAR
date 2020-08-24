@@ -120,6 +120,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
     {
 	condorConfig_out << str <<endl;
     }
+    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib"<< endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -284,6 +285,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
     {
 	condorConfig_out << str <<endl;
     }
+    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib"<< endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -513,6 +515,7 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
     {
 	condorConfig_out << str <<endl;
     }
+    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib"<< endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -603,6 +606,7 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
     {
 	condorConfig_out << str <<endl;
     }
+    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib"<< endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 

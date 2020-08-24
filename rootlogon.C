@@ -87,7 +87,7 @@
     
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
-    gSystem->Load("${STARHOME}/.sl73_gcc485/lib/StFmsDbMaker.so"); //Local copy of StFmsDbMaker
+    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StFmsDbMaker.so"); //Local copy of StFmsDbMaker
     gSystem->Load("StFmsHitMaker");
     gSystem->Load("StFmsPointMaker");
     gSystem->Load("StFmsFpsMaker");
@@ -117,9 +117,9 @@
     gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetEvent.so"); //Use local copy
     gSystem->Load("$STARHOME/.sl73_gcc485/lib/StUeEvent.so"); //Use local copy
     gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetMaker.so"); //Use local copy
-    //gSystem->Load("StJetEvent");
-    //gSystem->Load("StUeEvent");
-    //gSystem->Load("StJetMaker");
+    // gSystem->Load("StJetEvent");
+    // gSystem->Load("StUeEvent");
+    // gSystem->Load("StJetMaker");
     gSystem->Load("StTriggerFilterMaker");
 
     //------------- RP ------------------
@@ -127,7 +127,14 @@
 
     //------------ Simulation ---------------
     gSystem->Load("StBfcTriggerFilterMaker");
-    gSystem->Load("StBFChain");
+    //gSystem->Load("StBFChain");
+    gSystem->Load("StMcEvent");
+    gSystem->Load("StMcEventMaker");
+    gSystem->Load("StFmsSimulatorMaker");
+    gSystem->Load("StFmsFilterMaker");
+    
+    //gSystem->Load("StFmsFastSimulatorMaker"); //Another implementation
+    //gSystem->Load("StFmsTriggerMaker");       //Not compatible with beyond SL19a
     
     cout<<"\t\t done loading StRoot libraries ...."<<endl;
 

@@ -22,29 +22,31 @@ MAKE_FILE = Makefile
 ####### Build rules
 first: all
 
-.PHONY: lib ana cons macro diff emj sim
+.PHONY: lib ana cons macro diff emj sim 
 
-all: lib ana cons macro diff emj cep
+all: lib ana cons macro diff emj cep sim
 	@echo "done!"	
 lib:
 	$(MAKE) -C $(LIB_DIR) -f $(MAKE_FILE)
-
+	@cp -ur $(LIB_DIR)/lib/*.so lib
 ana: lib
 	$(MAKE) -C $(ANA_DIR) -f $(MAKE_FILE)
-
+	@cp -ur $(ANA_DIR)/lib/*.so lib	
 diff: lib
 	$(MAKE) -C $(DIFFANA_DIR) -f $(MAKE_FILE)
-
+	@cp -ur $(DIFFANA_DIR)/lib/*.so lib
 macro: cons
 	$(MAKE) -C $(MACRO_DIR) -f $(MAKE_FILE)
-
+	@cp -ur $(MACRO_DIR)/lib/*.so lib
 emj: #cons
 	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE)
+	@cp -ur $(EMJANA_DIR)/lib/*.so lib
 cep: 
 	$(MAKE) -C $(CEP_DIR) -f $(MAKE_FILE)
+	@cp -ur $(CEP_DIR)/lib/*.so lib
 sim: 
 	$(MAKE) -C $(STARSIM_DIR) -f $(MAKE_FILE)
-
+	@cp -ur $(STARSIM_DIR)/lib/*.so lib
 cons:
 	cons
 
