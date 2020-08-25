@@ -7,7 +7,7 @@
     cout << "\n\t\t=======================================================" <<endl;
     cout << "\t\t|  Welcome to Bright-STAR Analysis Framework at RHIC  |"<<endl;
     cout << "\t\t|   Type: 'help()' for a list of available options    |" <<endl;
-    cout << "\t\t|   Report issues to: kabir@bnl.gov                   |" <<endl;
+    cout << "\t\t|   Report issues to: latiful.kabir@ucr.edu           |" <<endl;
     cout << "\t\t=======================================================" <<endl;
 
     if(getenv("STARHOME") == NULL)
@@ -50,7 +50,6 @@
     gSystem->Load("StPreEclMaker");
     gSystem->Load("StStrangeMuDstMaker");
     gSystem->Load("StMuDSTMaker");
-    //assert(!gSystem->Load("$STARHOME/.sl73_gcc485/lib/StMuDSTMaker.so"));  // Local copy of StMuDstMaker in batch mode
 
     //-------------Trigger --------------
     gSystem->Load("StTriggerUtilities");
@@ -87,7 +86,7 @@
     
     //----------- FMS Related -----------------
     gSystem->Load("StFmsUtil");
-    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StFmsDbMaker.so"); //Local copy of StFmsDbMaker
+    gSystem->Load("StFmsDbMaker.so"); //Local copy of StFmsDbMaker
     gSystem->Load("StFmsHitMaker");
     gSystem->Load("StFmsPointMaker");
     gSystem->Load("StFmsFpsMaker");
@@ -114,12 +113,9 @@
     gSystem->Load("StJetFinder");
     gSystem->Load("StJetSkimEvent");
     gSystem->Load("StJets");
-    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetEvent.so"); //Use local copy
-    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StUeEvent.so"); //Use local copy
-    gSystem->Load("$STARHOME/.sl73_gcc485/lib/StJetMaker.so"); //Use local copy
-    // gSystem->Load("StJetEvent");
-    // gSystem->Load("StUeEvent");
-    // gSystem->Load("StJetMaker");
+    gSystem->Load("StJetEvent");
+    gSystem->Load("StUeEvent");
+    gSystem->Load("StJetMaker");
     gSystem->Load("StTriggerFilterMaker");
 
     //------------- RP ------------------
@@ -127,14 +123,14 @@
 
     //------------ Simulation ---------------
     gSystem->Load("StBfcTriggerFilterMaker");
-    //gSystem->Load("StBFChain");
+    //gSystem->Load("StBFChain"); //This causes problem in compiled bfc.C
     gSystem->Load("StMcEvent");
     gSystem->Load("StMcEventMaker");
     gSystem->Load("StFmsSimulatorMaker");
     gSystem->Load("StFmsFilterMaker");
     
     //gSystem->Load("StFmsFastSimulatorMaker"); //Another implementation
-    //gSystem->Load("StFmsTriggerMaker");       //Not compatible with beyond SL19a
+    //gSystem->Load("StFmsTriggerMaker");       //Not compatible with release beyond SL19a
     
     cout<<"\t\t done loading StRoot libraries ...."<<endl;
 

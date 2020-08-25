@@ -11,10 +11,9 @@
 
 using namespace std;
 
-void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents, Int_t baseCycle)
+void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents)
 {
-    cycle += baseCycle;
-    TString kumacFile = TStar::gConfig->GetStarHome() + (TString)"/starSim/pythia.kumac";
+    TString kumacFile = TStar::gConfig->GetBrightHome() + (TString)"/starSim/pythia.kumac";
 
     if(gSystem->AccessPathName(kumacFile))
     {
@@ -40,7 +39,7 @@ void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents, Int_t baseCycle)
     // 	return;
     // }
 
-    TString bfcMacro =  TStar::gConfig->GetStarHome() + "/starSim/src/FmsSimRunBfc.C(-1,\"" + fileName + "\")";
+    TString bfcMacro =  TStar::gConfig->GetBrightHome() + "/starSim/src/FmsSimRunBfc.C(-1,\"" + fileName + "\")";
     //cout << bfcMacro <<endl;
     gROOT->Macro(bfcMacro);
     

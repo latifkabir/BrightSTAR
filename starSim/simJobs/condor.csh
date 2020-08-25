@@ -2,6 +2,7 @@
 
 setenv STARSIM_CYCLE $1
 setenv STARSIM_ENTRIES $2    
+@ STARSIM_CYCLE = $STARSIM_CYCLE + 1000
 
 #-------------------------------------------- Part 1------------------------------------------------
 #source /star/u/kabir/GIT/BrightSTAR/setup.csh

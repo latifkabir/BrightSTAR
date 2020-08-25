@@ -12,7 +12,7 @@ WelcomeMessage()
     echo "          |										  |"
     echo "          |                      Welcome to Bright STAR Software Manager		  |"
     echo -e "          |                    For a list of options, type \"star -h\" \t                  |"
-    echo "          |		           Report issues to: latif@jlab.org			  |"
+    echo "          |		           Report issues to: latiful.kabir@ucr.edu		  |"
     echo "          ---------------------------------------------------------------------------------"    
 }
 

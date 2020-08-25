@@ -21,6 +21,7 @@ class TStConfig : public TObject
 {
     //-----Buffer for each configuration field to be read goes here------
     string fConfigFile;
+    string fBrightHome;
     string fDataPath;
     string fResultsPath;
     string fDSTpath;
@@ -59,6 +60,7 @@ public:
     bool CheckValidity(int print = 0);    
 
     //----- Getter for each configuration field -------------
+    const string & GetBrightHome(){return fBrightHome;}
     const string & GetStarHome(){return fStarHome;}
     const string & GetConfigPath(){return fConfigFile;}
     const string & GetDataPath(){return fDataPath;}

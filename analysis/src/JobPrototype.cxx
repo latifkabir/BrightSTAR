@@ -11,6 +11,6 @@ void JobPrototype(TString inFile, TString outFile)
 {
     TStar::Config->Print();
     TFile *f = new TFile(outFile, "RECREATE");
-    gROOT->ProcessLine(".! ls");
+    gROOT->ProcessLine(".! ls -ltra");
     f->Close();
 }

@@ -75,6 +75,11 @@ void TStConfig::LoadConfig()
 	while( tokens != NULL)
 	{
 	    string s = tokens;
+	    if(s == "BRIGHT_HOME")
+	    {
+		tokens = strtok(NULL, " :,");
+		fBrightHome = tokens;
+	    }
 	    if(s == "DATA_PATH")
 	    {
 		tokens = strtok(NULL, " :,");
@@ -212,6 +217,7 @@ void TStConfig::LoadConfig()
 void TStConfig::Print()
 {
     cout << "==============Bright-Star Configuration===================" <<endl;
+    cout << "Bright Home: "<< GetBrightHome()<<"\n"<<endl;
     cout << "Star Home: "<< GetStarHome()<<"\n"<<endl;
     cout << "Config file: "<< GetConfigPath()<<"\n"<<endl;
     cout << "Data-file path: "<< GetDataPath()<<"\n"<<endl;
@@ -262,8 +268,8 @@ void TStConfig::PrintAll()
 
 bool TStConfig::CheckValidity(int print)
 {
-    const int size = 18;
-    string fPathArrar[size] = {fConfigFile, fDataPath, fResultsPath, fDSTpath,  fJobResultsPath, fStarHome, fRunListDB, fFileList, fTrigDefFile,  fFillNoDB, fFmsHotChDB, fCondorConfig, fCondorJob, fCondorJobSh, fSumsJobSh, fSumsConfig, fJobCounterSh, fJobCounterTxt};
+    const int size = 19;
+    string fPathArrar[size] = {fBrightHome, fConfigFile, fDataPath, fResultsPath, fDSTpath,  fJobResultsPath, fStarHome, fRunListDB, fFileList, fTrigDefFile,  fFillNoDB, fFmsHotChDB, fCondorConfig, fCondorJob, fCondorJobSh, fSumsJobSh, fSumsConfig, fJobCounterSh, fJobCounterTxt};
 
     for(int i = 0; i < size; ++i)
     {

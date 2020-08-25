@@ -284,7 +284,7 @@ void StMuRpsUtil::loadAlignment(){
     std::string starHome =  getenv("STARHOME");
     if(starHome == "" || starHome == "/")
 	starHome = gSystem->pwd();
-    mAlignmentPtr = new pp2ppGeom(starHome + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppRPpositions", starHome + (string)"/StRoot/StMuRpsUtil/Alignment/pp2ppOffsets.bin.v1.1.x"); //Changed the location <-- Latif
+    mAlignmentPtr = new pp2ppGeom(starHome + (string)"/database/rpAfterburner/Alignment/pp2ppRPpositions", starHome + (string)"/database/rpAfterburner/Alignment/pp2ppOffsets.bin.v1.1.x"); //Changed the location <-- Latif
 }
 
 
@@ -293,7 +293,7 @@ void StMuRpsUtil::loadHotStripList(){
   std::string starHome =  getenv("STARHOME");
   if(starHome == "" || starHome == "/")
       starHome = gSystem->pwd();
-  std::string filePath(starHome + (string)"/StRoot/StMuRpsUtil/HotStrips/hotStrips.list");
+  std::string filePath(starHome + (string)"/database/rpAfterburner/HotStrips/hotStrips.list");
   fp.open(filePath.c_str());
 
   if(!fp.good()){

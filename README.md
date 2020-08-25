@@ -24,9 +24,16 @@ Bright STAR Maker
 
 - User configuration is defined in `config/config.cfg`. All batch farm job description files are inside `condor/`.
 
+Environment Variables
+--------------------------
+
+- `STARHOME`: The top level directory on the execution host where setup.[c]sh file resides. Depending on whether command is issued locally or on batch farm nodes, `STARHOME` will point to different location. This vaiable is set by the setup.[c]sh script.
+- `BRIGHTHOME`: The top level directory of the BrightStar framework on user's machine. This variable is static and set from the `config` file. 
+
 
 Bright Scheduler
 -------------------
+
 **Condor**
 - Run build-in scheduler from root prompt as:
 ```
@@ -104,3 +111,8 @@ To Be Done
 - Charged particle pid: for TPC dEdx, use veto on nsig of proton while identifyting pion and so on. See Zinlong's slide.
 - Sometimes `condor_q -global` fails to retrieve status. Depending on it to count no. of jobs might be fail. grep output to count `Failed` first.
 - Move event info from EEMC part1 and merge to part3 and delete part1 completely which takes large disk space/
+
+
+
+
+
