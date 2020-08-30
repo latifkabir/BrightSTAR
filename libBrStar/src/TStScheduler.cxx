@@ -44,6 +44,7 @@ Int_t TStScheduler::mJobThreshold = 100;
 Int_t TStScheduler::mSleepTime = 30; //In minutes
 Int_t TStScheduler::mRunIncrement = 20;
 Int_t TStScheduler::mMaxFilesPerJob = 5;
+Int_t TStScheduler::mCopyToExeHost = 1;
 
 //___________________________________________________________________________________________
 void TStScheduler::JobStatus(Int_t level)
@@ -83,7 +84,8 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
     }
     macro_out<<"void jobMacro(TString fileList, TString outName)"<<endl;
     macro_out<<"{"<<endl;
-    //macro_out<<"\t"<<"gROOT->Macro(\"rootlogon.C\");"<<endl;
+    if(!mCopyToExeHost)
+	macro_out<<"\t"<<"gROOT->Macro(\""<<starHome<<"/rootlogon.C\");"<<endl;
     macro_out<<"\t"<<functionName<<"(fileList, outName);"<<endl;
     macro_out<<"}"<<endl;
     macro_out.close();
@@ -96,7 +98,10 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
     }
     shell_out<<"#!/bin/bash"<<endl;
     //shell_out<<"stardev"<<endl;
-    shell_out<<"source setup.sh"<<endl;
+    if(mCopyToExeHost)
+	shell_out<<"source setup.sh"<<endl;
+    else
+	shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
     shell_out.close();
     
@@ -120,7 +125,8 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
     {
 	condorConfig_out << str <<endl;
     }
-    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+    if(mCopyToExeHost)
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -247,7 +253,8 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
     }
     macro_out<<"void jobMacro(TString fileList, TString outName)"<<endl;
     macro_out<<"{"<<endl;
-    //macro_out<<"\t"<<"gROOT->Macro(\"rootlogon.C\");"<<endl;
+    if(!mCopyToExeHost)
+	macro_out<<"\t"<<"gROOT->Macro(\""<<starHome<<"/rootlogon.C\");"<<endl;
     macro_out<<"\t"<<functionName<<"(fileList, outName);"<<endl;
     macro_out<<"}"<<endl;
     macro_out.close();
@@ -260,7 +267,10 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
     }
     shell_out<<"#!/bin/bash"<<endl;
     //shell_out<<"stardev"<<endl;
-    shell_out<<"source setup.sh"<<endl;
+    if(mCopyToExeHost)
+	shell_out<<"source setup.sh"<<endl;
+    else
+	shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
     //shell_out<<"rm jets_*.root skim_*.root ueoc_*.root"<<endl;  //<--- file you do not want
     shell_out.close();
@@ -285,7 +295,8 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
     {
 	condorConfig_out << str <<endl;
     }
-    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+    if(mCopyToExeHost)
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -478,7 +489,8 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
     }
     macro_out<<"void jobMacro(TString fileList, TString outName)"<<endl;
     macro_out<<"{"<<endl;
-    //macro_out<<"\t"<<"gROOT->Macro(\"rootlogon.C\");"<<endl;
+    if(!mCopyToExeHost)
+	macro_out<<"\t"<<"gROOT->Macro(\""<<starHome<<"/rootlogon.C\");"<<endl;
     macro_out<<"\t"<<functionName<<"(fileList, outName);"<<endl;
     macro_out<<"}"<<endl;
     macro_out.close();
@@ -491,7 +503,10 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
     }
     shell_out<<"#!/bin/bash"<<endl;
     //shell_out<<"stardev"<<endl;
-    shell_out<<"source setup.sh"<<endl;
+    if(mCopyToExeHost)
+	shell_out<<"source setup.sh"<<endl;
+    else
+	shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b \""<< jobDir <<"/jobMacro.C(\\\"$1\\\", \\\"$2\\\")\""<<endl;
     shell_out.close();
     
@@ -515,7 +530,8 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
     {
 	condorConfig_out << str <<endl;
     }
-    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+    if(mCopyToExeHost)
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -569,7 +585,8 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
     }
     macro_out<<"void jobMacro()"<<endl;
     macro_out<<"{"<<endl;
-    //macro_out<<"\t"<<"gROOT->Macro(\"rootlogon.C\");"<<endl;
+    if(!mCopyToExeHost)
+	macro_out<<"\t"<<"gROOT->Macro(\""<<starHome<<"/rootlogon.C\");"<<endl;
     macro_out<<"\t"<<functionWithArg<<";"<<endl;
     macro_out<<"}"<<endl;
     macro_out.close();
@@ -582,7 +599,10 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
     }
     shell_out<<"#!/bin/bash"<<endl;
     //shell_out<<"stardev"<<endl;
-    shell_out<<"source setup.sh"<<endl;
+    if(mCopyToExeHost)
+	shell_out<<"source setup.sh"<<endl;
+    else
+	shell_out<<"source "<<starHome<<"/setup.sh"<<endl;
     shell_out<<"root4star -l -q -b  "<< jobDir <<"/jobMacro.C"<<endl;
     shell_out.close();
     
@@ -606,7 +626,8 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
     {
 	condorConfig_out << str <<endl;
     }
-    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+    if(mCopyToExeHost)
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 

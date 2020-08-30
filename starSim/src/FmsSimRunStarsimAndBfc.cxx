@@ -11,9 +11,9 @@
 
 using namespace std;
 
-void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents)
+void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents, Int_t filterThres = 15)
 {
-    TString kumacFile = TStar::gConfig->GetBrightHome() + (TString)"/starSim/pythia.kumac";
+    TString kumacFile = TStar::gConfig->GetBrightHome() + (TString)"starSim/pythia.kumac";
 
     if(gSystem->AccessPathName(kumacFile))
     {
@@ -39,8 +39,8 @@ void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents)
     // 	return;
     // }
 
-    TString bfcMacro =  TStar::gConfig->GetBrightHome() + "/starSim/src/FmsSimRunBfc.C(-1,\"" + fileName + "\")";
-    //cout << bfcMacro <<endl;
+    TString bfcMacro =  TStar::gConfig->GetBrightHome() + "/starSim/src/FmsSimRunBfc.C(-1,\"" + fileName + "\"" + Form(",%i", filterThres) + ")";
+    cout << bfcMacro <<endl;
     gROOT->Macro(bfcMacro);
     
     cout << "------------------> Warning: Deleting the fzd file <-------------------" <<endl;

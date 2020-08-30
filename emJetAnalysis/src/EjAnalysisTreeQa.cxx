@@ -49,6 +49,7 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
     TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 100, -200, 200);
         
     TH2D *h2EvsPt = new TH2D("h2EvsPt", "Eng vs Pt; Pt [GeV/C]; E [GeV]", 100, 0, 20, 100, 0, 100);
+    TH2D *h2PtvsE = new TH2D("h2PtvsE", "Pt vs E; E [GeV]; Pt [GeV/c]", 100,  0, 100, 100, 0, 20);
     TH2D *h2nPhVsEng = new TH2D("h2nPhVsEng", "Number of photons vs Eng; E [Gev]; No. of Photons", 100, 0, 100, 20, 0, 20);
     TH2D *h2xy_fms = new TH2D ("h2xy_fms", "Jet Position [FMS]; Jet X [cm]; Jet Y [cm]", 100, -100, 100, 100, -100, 100);
     TH2D *h2xy_eemc = new TH2D ("h2xy_eemc", "Jet Position [EEMC]; Jet X [cm]; Jet Y [cm]", 100, -250, 250, 100, -250, 250);
@@ -129,6 +130,7 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	    h1E->Fill(eng);
 	    
 	    h2EvsPt->Fill(pt, eng);
+	    h2PtvsE->Fill(eng, pt);
 	    h2nPhVsEng->Fill(eng, jet->GetNumberOfTowers());
 
 	    jetX = (detZ - vtxZ) * tan(theta) * cos(phi);

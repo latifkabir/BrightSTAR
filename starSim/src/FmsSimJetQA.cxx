@@ -75,6 +75,8 @@ void FmsSimJetQA(
     TH2D *h2JetEP = new TH2D ("h2Jetep_fms", "Jet Eta Phi [FMS]; Jet #eta; Jet #phi", 100, 2.5, 4.5, 100, -3.2, 3.2);
     
     TH2D *h2Jetxy_eemc = new TH2D ("h2Jetxy_eemc", "Jet position [EEMC]; Jet X [cm]; Jet Y [cm]", 100, -200.0, 200.0, 100, -200, 200);
+    TH2D *h2EvsPt = new TH2D("h2EvsPt", "Eng vs Pt; Pt [GeV/C]; E [GeV]", 100, 0, 20, 100, 0, 100);
+    TH2D *h2PtvsE = new TH2D("h2PtvsE", "Pt vs E; E [GeV]; Pt [GeV/c]", 100,  0, 100, 100, 0, 20);
     
     TLorentzVector lv;
     TVector3 v3;
@@ -177,6 +179,9 @@ void FmsSimJetQA(
 
 	    if(eta < 2.0  || eta > 4.5) //Consider FMS EM Jets only (for trigger specific plots)
 		continue;
+
+	    h2EvsPt->Fill(pt, E);
+	    h2PtvsE->Fill(E, pt);
 	}	
     } // End event loop
 

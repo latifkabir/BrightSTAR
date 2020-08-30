@@ -19,6 +19,7 @@ public:
     static Int_t mSleepTime;
     static Int_t mRunIncrement;
     static Int_t mMaxFilesPerJob;
+    static Int_t mCopyToExeHost;
     
     TStScheduler();
     virtual ~TStScheduler();

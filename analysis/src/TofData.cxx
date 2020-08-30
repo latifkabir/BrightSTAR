@@ -21,7 +21,7 @@
 
 /*
 
-This script do not work. As the data is not fille in the MuDST.
+This script does not work. As the data is not fille in the MuDST.
 People generally loop over TPC primary tracks and get corresponding BtofPidTrait and
 then extrack relevant beta, tof, pathlength.
 

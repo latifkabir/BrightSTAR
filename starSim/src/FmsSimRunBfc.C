@@ -4,7 +4,7 @@
 //
 
 
-void FmsSimRunBfc(int nevents, const char* fzfile) 
+void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 15) 
 {
     // const char* chainopt = "DbV20150923 y2015 MakeEvent ITTF NoSsdIt NoSvtIt Idst BAna l0 Tree logger Sti VFPPVnoCTB beamLine tpcDB TpcHitMover TpxClu fmsDb fmsSim fmspoint  tags emcY2 EEfs evout -dstout IdTruth geantout big fzin MiniMcMk clearmem  sdt20150417.193427"; //Mriganka
 
@@ -56,9 +56,9 @@ void FmsSimRunBfc(int nevents, const char* fzfile)
     pythia->SetPythiaFile(pyfile);
    
     //---------> Need find out appropriate threshold <----------------
-    StFmsFilterMaker* fmsFilter = new StFmsFilterMaker("fmsFilter");    
-    fmsFilter->setEThres(15); //Initial value was 30. It was too high to produce MuDst
-
+    StFmsFilterMaker* fmsFilter = new StFmsFilterMaker("fmsFilter");
+    fmsFilter->setEThres(filterThreshold); //Initial value was 30. It was too high to produce MuDst
+    cout << "-----------------> !!! The FMS Filter Maker Threshold is set to:  "<< filterThreshold << " !!!<----------------------------"<<endl;
     
     // Delay write until after filter
     chain->AddAfter("fmsSim",fmsFilter);
@@ -73,7 +73,7 @@ void FmsSimRunBfc(int nevents, const char* fzfile)
 }
 
 
-void FmsSimRunBfc(int cycle, int nevents)
+void FmsSimRunBfc(int cycle, int nevents, int filterThreshold, int filterThreshold = 15)
 {
-    FmsSimRunBfc(-1, Form("FmsSim_Run15_%i_evt%i.fzd", cycle, nevents));     
+    FmsSimRunBfc(-1, Form("FmsSim_Run15_%i_evt%i.fzd", cycle, nevents), filterThreshold);     
 }

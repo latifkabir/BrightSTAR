@@ -14,18 +14,11 @@
     <Package>
       <File>file:jobMacro.C</File>      
       <File>file:.sl73_gcc485</File>
-      <File>file:libBrStar/lib/libBrStar.so</File>
-      <File>file:analysis/lib/libStAnalysis.so</File>
-      <File>file:runMacros/lib/libRunMacros.so</File>      
-      <File>file:diffAnalysis/lib/libDiffAnalysis.so</File>      
-      <File>file:emJetAnalysis/lib/libEmJetAnalysis.so</File>
-      <File>file:cepAnalysis/lib/libCepAnalysis.so</File>
-      <File>file:starSim/lib/libStarSim.so</File>
+      <File>file:lib</File>
       <File>file:rootlogon.C</File>         
       <File>file:setup.csh</File>           
       <File>file:config</File>              
       <File>file:database</File>        
-      <File>file:StRoot</File>              <!-- Required for Rp files -->      
     </Package>
   </SandBox>
 

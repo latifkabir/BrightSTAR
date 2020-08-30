@@ -4,5 +4,5 @@
 // Created: Fri Jul 10 00:12:19 2020 (-0400)
 // URL: jlab.org/~latif
 
-void FmsSimRunBfc(int nevents = -1, const char* fzfile = "inPythiaFile.fzd"); 
-void FmsSimRunBfc(int cycle, int nevents);
+void FmsSimRunBfc(int nevents = -1, const char* fzfile = "inPythiaFile.fzd", int filterThreshold = 15); 
+void FmsSimRunBfc(int cycle, int nevents, int filterThreshold = 15);

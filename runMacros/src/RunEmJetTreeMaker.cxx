@@ -191,8 +191,7 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
     nanoMaker->SetEtaMin(etaMin);
     
     chain->Init();
-    //chain->EventLoop();
-    chain->EventLoop(1000);
+    chain->EventLoop();
     chain->Finish();
     delete chain;
 
