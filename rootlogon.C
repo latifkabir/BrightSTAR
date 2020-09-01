@@ -128,9 +128,10 @@
     gSystem->Load("StMcEventMaker");
     gSystem->Load("StFmsSimulatorMaker");
     gSystem->Load("StFmsFilterMaker");
-    
+    gSystem->Load("StFmsTriggerMaker");
+    gSystem->Load("BrFmsSimTreeMaker.so");        
     //gSystem->Load("StFmsFastSimulatorMaker"); //Another implementation
-    //gSystem->Load("StFmsTriggerMaker");       //Not compatible with release beyond SL19a
+
     
     cout<<"\t\t done loading StRoot libraries ...."<<endl;
 

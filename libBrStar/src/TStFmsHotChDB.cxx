@@ -73,6 +73,69 @@ void TStFmsHotChDB::GetHotChList(Int_t runNo, Bool_t isHotCh[][571])
 	    break;
 	}
     }
+
+    //----------- Mask beam background / ring of fire channels -----------------
+    
+    //(11, 284) and its surrrounding
+    isHotCh[11 - 8][271 - 1] = 1;
+    isHotCh[11 - 8][272 - 1] = 1;
+    isHotCh[11 - 8][273 - 1] = 1;
+    isHotCh[11 - 8][283 - 1] = 1;
+    isHotCh[11 - 8][284 - 1] = 1;
+    isHotCh[11 - 8][285 - 1] = 1;
+    isHotCh[9 - 8][429 - 1] = 1;
+    isHotCh[9 - 8][430 - 1] = 1;
+    isHotCh[9 - 8][431 - 1] = 1;
+
+    //(11, 286) and its surrounding
+    isHotCh[11 - 8][273 - 1] = 1;
+    isHotCh[11 - 8][274 - 1] = 1;
+    isHotCh[11 - 8][275 - 1] = 1;
+    isHotCh[11 - 8][285 - 1] = 1;
+    isHotCh[11 - 8][286 - 1] = 1;
+    isHotCh[11 - 8][287 - 1] = 1;
+    isHotCh[9 - 8][431 - 1] = 1;
+    isHotCh[9 - 8][432 - 1] = 1;
+    isHotCh[9 - 8][433 - 1] = 1;	    
+
+   
+    isHotCh[11 - 8][218 - 1] = 1;
+    isHotCh[11 - 8][219 - 1] = 1;
+    
+    isHotCh[10 - 8][282 - 1] = 1;
+    isHotCh[10 - 8][283 - 1] = 1;
+    isHotCh[10 - 8][284 - 1] = 1;
+    isHotCh[10 - 8][285 - 1] = 1;
+    isHotCh[10 - 8][286 - 1] = 1;
+    isHotCh[10 - 8][274 - 1] = 1;
+    isHotCh[10 - 8][275 - 1] = 1;
+    isHotCh[10 - 8][262 - 1] = 1;
+    isHotCh[10 - 8][263 - 1] = 1;
+    
+    isHotCh[10 - 8][19 - 1] = 1;
+    isHotCh[10 - 8][20 - 1] = 1;
+    isHotCh[10 - 8][31 - 1] = 1;
+    isHotCh[10 - 8][32 - 1] = 1;
+    isHotCh[10 - 8][69 - 1] = 1;
+    
+    isHotCh[11 - 8][92 - 1] = 1;
+    isHotCh[11 - 8][93 - 1] = 1;
+    isHotCh[11 - 8][82 - 1] = 1;
+    isHotCh[11 - 8][81 - 1] = 1;
+    isHotCh[11 - 8][6 - 1] = 1;
+    isHotCh[11 - 8][7 - 1] = 1;
+    isHotCh[11 - 8][8 - 1] = 1;
+    isHotCh[11 - 8][34 - 1] = 1;
+    isHotCh[11 - 8][35 - 1] = 1;
+
+    isHotCh[10 - 8][276 - 1] = 1;
+    isHotCh[10 - 8][275 - 1] = 1;
+
+
+    
+
+
+    isHotCh[11][34] = 1;
     
     i.close();    
 }

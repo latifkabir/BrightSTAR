@@ -1,6 +1,9 @@
 
 #ifdef __CINT__
 
+#pragma link C++ function AnFmsPos2ChLookupTable;                // Make 2D Hist as FMS Position to channel lookup table
+#pragma link C++ function AnFmsGetChFromPos;                     // Get FMS ch and det id from position
+#pragma link C++ function AnFmsPrintChIdOnHist;                  // Print det/ch id on given 2d histogram
 #pragma link C++ function AnFmsHotChFinder;                      // Fms Hot and Bad Channels Finder
 #pragma link C++ function AnFmsCellActivity;                     // Fms Hot and Bad Channels on 2d plot for manual iteration
 #pragma link C++ function AnHotChQaSaveAsPdf;                    // Fms Hot and Bad Channels on 2d plot for manual iteration
