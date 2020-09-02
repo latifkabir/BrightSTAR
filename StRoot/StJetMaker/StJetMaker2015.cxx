@@ -40,6 +40,9 @@
 #include "StSpinPool/StUeEvent/StUeOffAxisConesJet.h"
 #include "StSpinPool/StUeEvent/StUeOffAxisCones.h"
 
+#include "StSpinPool/StFmsTriggerMaker/StFmsTriggerMaker.h"
+#include "StTriggerDataMaker/StTriggerDataMaker.h"
+
 #include "StJetMaker2015.h"
 ClassImp(StJetMaker2015);
 
@@ -58,6 +61,47 @@ Int_t StJetMaker2015::Make()
     mEvent++;
     if (mEvent%1000 == 0) cout <<Form("%5i processed...", mEvent) <<endl;
 
+    Int_t triggerBit = 0;
+    if(mIsMCmode)
+    {
+	//---------------------- FMS Trigger Simulator ---------------------------------------
+	StFmsTriggerMaker* fmstrig = (StFmsTriggerMaker*)GetMakerInheritsFrom("StFmsTriggerMaker");
+	assert(fmstrig);
+
+
+	Int_t trg1 = 0; 
+	Int_t trg2 = 0 ; 
+	Int_t trg3 = 0; 
+	Int_t trg4 = 0; 
+	Int_t trg5 = 0; 
+	Int_t trg6 = 0 ;
+	Int_t trg7 = 0; 
+	Int_t trg8 = 0; 
+	Int_t trg9 = 0 ;
+  
+	int FP201 = fmstrig->FP201output();
+	int HT  = FP201 & 0x3;
+	int SBS = (FP201>>2) & 0x7;
+	int LBS = (FP201>>5) & 0x7;
+	int JP  = (FP201>>8) & 0x7;
+  
+	if( fmstrig->FmsSmallClusterTh0())  trg1 = 1;
+	if( fmstrig->FmsSmallClusterTh1())  trg2 = 1;
+	if( fmstrig->FmsSmallClusterTh2())  trg3 = 1;
+	if( fmstrig->FmsLargeClusterTh0())  trg4 = 1;
+	if( fmstrig->FmsLargeClusterTh1())  trg5 = 1;
+	if( fmstrig->FmsLargeClusterTh2())  trg6 = 1;
+	if( fmstrig->FmsJetPatchTh0())  trg7 = 1;
+	if( fmstrig->FmsJetPatchTh1())  trg8 = 1;
+	if( fmstrig->FmsJetPatchTh2())  trg9 = 1;
+	fmstrig->Clear();
+   
+	triggerBit = 1000000000 + trg1*100000000 + trg2*10000000 + trg3*1000000 + trg4*100000 + trg5*10000 + trg6*1000 + trg7*100 + trg8*10 + trg9;
+
+	cout<<" TRIGGER : SmBS 1 2 LgBS 1 2 JP 1 2   : "<<trg1<<"  "<<trg2<<"  "<<trg3<<"  "<<trg4<<"  "<<trg5<<"  "<<trg6<<"  "<<trg7<<"  "<<trg8<<"  "<<trg9<<"  "<<triggerBit<<endl;
+    }
+
+    
     //Loop over jet branches
     for (size_t iBranch = 0; iBranch < mJetBranches.size(); ++iBranch)
     {
@@ -67,7 +111,8 @@ Int_t StJetMaker2015::Make()
 	jetbranch->event->mRunId   = GetRunNumber();
 	jetbranch->event->mEventId = GetEventNumber();
 	jetbranch->event->mDatime  = GetDateTime();
-
+	if(mIsMCmode) jetbranch->event->mRunId = triggerBit;
+	
 	if (jetbranch->anapars->useTpc)
 	{
 	    StjTPCMuDst tpc;
@@ -196,31 +241,32 @@ Int_t StJetMaker2015::Make()
 		float zVtx = 0.;
 		float vpdZ = -999.;
 		float bbcZ = -999.;
-
-		StMuDst* muDST = (StMuDst*)GetInputDS("MuDst");
-		if (!muDST) { LOG_ERROR <<"StJetMaker2015::Make - cannot find MuDst!" <<endl; return kStErr; }
-
-		//Check VPD zVtx
-		if (muDST->btofHeader()) vpdZ = muDST->btofHeader()->vpdVz();
-
-		//Assign zVtx
-		if (vpdZ != -999.) zVtx = vpdZ; //Use vpdZ and be done with it, if it's valid
-		else
+		if(!mIsMCmode)
 		{
-		    //No vpdZ or found vpdZ is NOT valid: go to BBC
-		    if (mReadBbcSlewing == true) //BBCz w/ slewing
-		    {
-			const StTriggerData* triggerData = muDST->event()->triggerData();
-			bbcZ = GetBbcZCorr(triggerData);
-		    }
+		    StMuDst* muDST = (StMuDst*)GetInputDS("MuDst");
+		    if (!muDST) { LOG_ERROR <<"StJetMaker2015::Make - cannot find MuDst!" <<endl; return kStErr; }
+
+		    //Check VPD zVtx
+		    if (muDST->btofHeader()) vpdZ = muDST->btofHeader()->vpdVz();
+
+		    //Assign zVtx
+		    if (vpdZ != -999.) zVtx = vpdZ; //Use vpdZ and be done with it, if it's valid
 		    else
 		    {
-			const float bbcTdiff = muDST->event()->triggerData()->bbcTimeDifference();
-			if (fabs(bbcTdiff) > 1.e-6) bbcZ = -0.3 * (bbcTdiff - 4096);
+			//No vpdZ or found vpdZ is NOT valid: go to BBC
+			if (mReadBbcSlewing == true) //BBCz w/ slewing
+			{
+			    const StTriggerData* triggerData = muDST->event()->triggerData();
+			    bbcZ = GetBbcZCorr(triggerData);
+			}
+			else
+			{
+			    const float bbcTdiff = muDST->event()->triggerData()->bbcTimeDifference();
+			    if (fabs(bbcTdiff) > 1.e-6) bbcZ = -0.3 * (bbcTdiff - 4096);
+			}
+			if (bbcZ != -999.) zVtx = bbcZ;
 		    }
-		    if (bbcZ != -999.) zVtx = bbcZ;
 		}
-
 		//Get BEMC towers
 		StjTowerEnergyList bemcEnergyList;
 		if (jetbranch->anapars->useBemc)

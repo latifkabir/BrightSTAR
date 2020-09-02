@@ -1,17 +1,18 @@
-// #include <iostream>
-// #include "TString.h"
-// #include "StRootIncludeFmsJet.h"
+#include <iostream>
+#include "TString.h"
+#include "StRootIncludeFmsJet.h"
 
-// #include "StIOMaker/StIOMaker.h"
-// #include "StMcEventMaker/StMcEventMaker.h"
-// #include "StJetMaker/mcparticles/StjMCParticleCutEta.h"
-// #include "StSpinPool/StFmsTriggerMaker/StFmsTriggerMaker.h"
-// #include "StJetMaker/StJetMaker2015.h"
-// #include "StJetMaker/towers/StjTowerEnergyCutFMS.h"
+#include "StIOMaker/StIOMaker.h"
+#include "StMcEventMaker/StMcEventMaker.h"
+#include "StJetMaker/mcparticles/StjMCParticleCutEta.h"
+#include "StSpinPool/StFmsTriggerMaker/StFmsTriggerMaker.h"
+#include "StJetMaker/StJetMaker2015.h"
+#include "StJetMaker/towers/StjTowerEnergyCutFMS.h"
 
-// #include "FmsSimTreeMaker.h"
+#include "BrFmsSimTreeMaker/TStFmsSimTreeMaker.h"
 
-// using namespace std;
+
+using namespace std;
 
 void FmsSimTreeMaker(TString inMuDstFile, TString outName, Int_t nEvents)
 {

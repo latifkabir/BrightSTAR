@@ -1,4 +1,4 @@
-// Filename: FmsSimJetMakerJobs.C
+// Filename: RunFmsJetFinderJobs.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Jan 15 18:47:02 2020 (-0500)
@@ -6,33 +6,32 @@
 
 // Make sure to change 3 places nummbered below
 
-#include <iostream>
-#include "RootInclude.h"
-#include "BrightStInclude.h"
+// #include <iostream>
+// #include "RootInclude.h"
+// #include "BrightStInclude.h"
 
-using namespace std;
+// using namespace std;
 
-void FmsSimJetMakerJobs(TString inFilePrefix, Int_t maxNfiles)
-{    
+void RunFmsJetFinderJobs(TString inFilePrefix, Int_t maxNfiles, Int_t firstNumber = 0)
+{
+    gSystem->Load("libBrStar.so");
     //------- 1.Change Here Function Name ------------
-    TString funcName = "FmsSimRunJetMaker";
+    TString funcName = "RunFmsJetFinderPro";
     TString jobName = "FmsJetSim";
     //--------------------------------------
-        
+    //TStScheduler::mCopyToExeHost = 0;   
     cout << "Total number of jobs to be processed: "<< maxNfiles <<endl;
 
     //------------ Loop for jobs --------------------------
-    for (Int_t i = 0; i < maxNfiles; ++i)
+    for (Int_t i = firstNumber; i < maxNfiles; ++i)
     {
 	TString argList;
 	TString currentJobName;
 	TString muDstName = inFilePrefix + Form("%i_", i) + "evt5000.MuDst.root";
-	TString pyName = inFilePrefix + Form("%i_", i) + "evt5000.pythia.root";
-	TString outName = "FmsJetSim_evt5000_pass0";
-	outName += Form("_%i.root",i);
-	if(gSystem->AccessPathName(muDstName) || gSystem->AccessPathName(pyName))
+	TString outName = Form("FmsJet_Run15_%i_evt5000.root", i);
+	if(gSystem->AccessPathName(muDstName))
 	{
-	    cout << "File not found:"<< muDstName <<" ...... SKIPPED"<<endl;
+	    cout << "File not found: "<< muDstName <<" ...... SKIPPED"<<endl;
 	    continue;
 	}
 	
@@ -40,18 +39,14 @@ void FmsSimJetMakerJobs(TString inFilePrefix, Int_t maxNfiles)
 	currentJobName += i;
 	
 	argList = "(";
-	argList += "-1,";
 	argList += "\"";
 	argList += muDstName;
 	argList += "\"";
 	argList += ",";
 	argList += "\"";
-	argList += pyName;
-	argList += "\"";
-	argList += ",";
-	argList += "\"";
 	argList += outName;
 	argList += "\"";
+	argList += ",-1";
 	argList += ")";
 	
 	//---------------------------------------------------------------------
