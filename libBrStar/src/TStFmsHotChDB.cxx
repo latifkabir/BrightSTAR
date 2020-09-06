@@ -60,7 +60,7 @@ void TStFmsHotChDB::GetHotChList(Int_t runNo, Bool_t isHotCh[][571])
 		det = j[k]["hot"][r]["det"];
 		ch = j[k]["hot"][r]["ch"];
 		if((det - 8) < 4 && (ch - 1) < 571)
-		    isHotCh[det - 8][ch -1] = 1;
+		    isHotCh[det - 8][ch - 1] = 1;
 	    }
 
 	    for(Int_t r = 0; r < j[k]["bad"].size(); ++r)
@@ -68,21 +68,39 @@ void TStFmsHotChDB::GetHotChList(Int_t runNo, Bool_t isHotCh[][571])
 		det = j[k]["bad"][r]["det"];
 		ch = j[k]["bad"][r]["ch"];
 		if((det - 8) < 4 && (ch - 1) < 571)
-		    isHotCh[det - 8][ch -1] = 1;
+		    isHotCh[det - 8][ch - 1] = 1;
 	    }
 	    break;
 	}
     }
 
+    isHotCh[8 - 8][180 - 1] = 1;
+    isHotCh[8 - 8][132 - 1] = 1;
+    isHotCh[8 - 8][235 - 1] = 1;
+    isHotCh[8 - 8][152 - 1] = 1;
+    isHotCh[8 - 8][320 - 1] = 1;
+    isHotCh[8 - 8][420 - 1] = 1;
+    isHotCh[8 - 8][438 - 1] = 1;
+    isHotCh[8 - 8][121 - 1] = 1;
+    isHotCh[8 - 8][78 - 1] = 1;
+    
+    isHotCh[9 - 8][111 - 1] = 1;
+    isHotCh[9 - 8][180 - 1] = 1;
+    isHotCh[9 - 8][169 - 1] = 1;
+
+    isHotCh[11 - 8][208 - 1] = 1;
+    isHotCh[11 - 8][219 - 1] = 1;
+    isHotCh[11 - 8][218 - 1] = 1;
+
     //----------- Mask beam background / ring of fire channels -----------------
-    int rof = j.size() - 1; //Ring of fire entry
-    for(int r = 0; r < j[rof]["hot"].size(); ++r)
-    {
-	det = j[rof]["hot"][r]["det"];
-	ch = j[rof]["hot"][r]["ch"];
-	if((det - 8) < 4 && (ch - 1) < 571)
-	    isHotCh[det - 8][ch -1] = 1;
-    }
+    // int rof = j.size() - 1; //Ring of fire entry
+    // for(int r = 0; r < j[rof]["hot"].size(); ++r)
+    // {
+    // 	det = j[rof]["hot"][r]["det"];
+    // 	ch = j[rof]["hot"][r]["ch"];
+    // 	if((det - 8) < 4 && (ch - 1) < 571)
+    // 	    isHotCh[det - 8][ch -1] = 1;
+    // }
   
     
     i.close();    

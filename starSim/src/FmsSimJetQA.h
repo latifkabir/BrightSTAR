@@ -7,5 +7,6 @@
 void FmsSimJetQA(
             Int_t nentries,
 	    TString jetfile,
-	    TString outfile
+	    TString outfile,
+	    Int_t thresCut
     );

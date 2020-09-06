@@ -67,10 +67,10 @@ Int_t TStFmsSimTreeMaker::Make()
     if(mNevents % 1000 == 0)
 	cout << "Events Processed: " << mNevents <<endl;
 
+    mFmsPointArray->Clear();
     //---------------------- FMS Trigger Simulator ---------------------------------------
     StFmsTriggerMaker* fmstrig = (StFmsTriggerMaker*)GetMakerInheritsFrom("StFmsTriggerMaker");
     assert(fmstrig);
-
 
     Int_t trg1 = 0;                                                                                                           
     Int_t trg2 = 0; 
@@ -93,7 +93,6 @@ Int_t TStFmsSimTreeMaker::Make()
     if( fmstrig->FmsJetPatchTh2())  trg9 = 1;
     fmstrig->Clear();
 
-
     mTriggerBit = 1000000000 + trg1*100000000 + trg2*10000000 + trg3*1000000 + trg4*100000 + trg5*10000 + trg6*1000 + trg7*100 + trg8*10 + trg9;
 
     cout<<" TRIGGER : SmBS 1 2 LgBS 1 2 JP 1 2   : "<<trg1<<"  "<<trg2<<"  "<<trg3<<"  "<<trg4<<"  "<<trg5<<"  "<<trg6<<"  "<<trg7<<"  "<<trg8<<"  "<<trg9<<"  "<<mTriggerBit<<endl;
@@ -112,6 +111,18 @@ Int_t TStFmsSimTreeMaker::Make()
 	    mPointXY_trg->Fill(mFmsPoint->xyz().x(), mFmsPoint->xyz().y());
 	    mPointPhi_trg->Fill(mFmsPoint->xyz().phi());
 	}
+
+	mFmsPointData =  new((*mFmsPointArray)[i])TStFmsPointData();	
+	mFmsPointData->SetE();
+	mFmsPointData->SetPt();
+	mFmsPointData->SetEta();
+	mFmsPointData->SetPhi();
+	mFmsPointData->SetPx();
+	mFmsPointData->SetPy();
+	mFmsPointData->SetPz();
+	mFmsPointData->SetX();
+	mFmsPointData->SetY()
+	    ;
     }
 
     ++mNevents;    

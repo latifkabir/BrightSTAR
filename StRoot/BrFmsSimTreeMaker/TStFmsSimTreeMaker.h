@@ -13,7 +13,7 @@
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TClonesArray.h"
-#include "TStFmsPointData.h"
+#include "BrContainers/TStFmsPointData.h"
 
 class StEvent;
 class StMuDst;
@@ -40,7 +40,7 @@ private:
     TClonesArray *mFmsPointArray;
     StMuFmsPoint *mFmsPoint;
     //StPythiaEvent *pythiaEvent;
-    TStFmsPointData *fmsPointData;    
+    TStFmsPointData *mFmsPointData;    
 
     
     TH2D *mPointXY_trg;

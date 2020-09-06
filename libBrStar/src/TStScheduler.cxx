@@ -750,10 +750,10 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
 	    gROOT->ProcessLine(emailCommand);
 
 	    if(mMaxFilesPerJob == 1)
-		SubmitJob(functionName, startRun, endRun, "", jobName);
+	    	SubmitJob(functionName, startRun, endRun, "", jobName);
 	    else
-		SubmitJob(mMaxFilesPerJob, functionName, startRun, endRun, "", jobName);
-	    //SubmitJob(functionName, startRun, endRun);
+	    	SubmitJob(mMaxFilesPerJob, functionName, startRun, endRun, "", jobName);
+	   
 	    index += (runIncrement + 1);
 	    if(index >= totRuns)
 		index = (totRuns - 1);

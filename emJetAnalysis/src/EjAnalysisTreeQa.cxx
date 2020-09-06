@@ -104,6 +104,13 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 		h1TrigType->Fill(t);
 	}
 
+	//Exclude FMS small-bs3 trigger that gives ring of fire issue.
+	if(det == "fms")
+	{
+	    if(skimEvent->GetTrigFlag(5))
+		continue;
+	}
+	
 	nJets = 0;	
 	for(Int_t j = 0; j <  jetEvent->GetNumberOfJets(); ++j)
 	{

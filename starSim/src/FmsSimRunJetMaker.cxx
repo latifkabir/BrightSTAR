@@ -5,6 +5,12 @@
 
 #include "StJetMaker/StJetMaker2015.h"
 
+/*
+
+This Jet Maker Run script was a simplified and test version. Use the other pro version for real analysis.
+
+*/
+
 void FmsSimRunJetMaker(Int_t nEvents, const char* inFile, const char* pythiaFile, const char* outFile)
 {
     StChain* chain = new StChain("StChain");

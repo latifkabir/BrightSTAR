@@ -6,12 +6,6 @@
 
 // Make sure to change 3 places nummbered below
 
-#include <iostream>
-#include "RootInclude.h"
-#include "BrightStInclude.h"
-
-using namespace std;
-
 void StarsimAndPythiaJobs(Int_t nJobs, Int_t nEvents)
 {
     //-----------0. Change condor config to copy LHAPDF data ----------
@@ -29,6 +23,13 @@ void StarsimAndPythiaJobs(Int_t nJobs, Int_t nEvents)
     {
 	TString argList;
 	TString currentJobName;
+	TString filePath = Form("/star/u/kabir/GIT/BrightSTAR/dst/fmsSimData/fzdFiles/FmsSim_Run15_%i_evt%i", i,nEvents);
+	filePath += ".fzd";
+        if(gSystem->AccessPathName(filePath))
+	{
+	    cout << "Zibra file NOT found, SKIPPED ....." <<endl;
+	    continue;
+	}
 	
 	currentJobName = jobName;
 	currentJobName += i;
@@ -38,7 +39,7 @@ void StarsimAndPythiaJobs(Int_t nJobs, Int_t nEvents)
 	argList += ",";
 	argList += nEvents;
 	argList += ")";
-	
+
 	//---------------------------------------------------------------------
 	
 	cout << (funcName + argList)<<endl;

@@ -45,28 +45,3 @@
 
 
 
-/*
-
------------ List of DST or Tree Maker Run Macros -------------
-RunEEmcTreeMakerPart1 : EEMC reconstruction using TSIU algorithm. This is step no. 1 out of 3.
-RunEEmcTreeMakerPart2and3 : EEMC reconstruction using TSIU algorithm. This is step no. 2 and 3 out of 3 of the process.
-RunFmsTreeMaker : FMS reconstruction
-RunEmcTreeMaker :  Emc gamma, pi0 reconstruction
-
-RunEmcJetFinder : EMC Jet Tree Maker
-RunPicoDstMaker : Make PicoDST files from MuDst files
-RunEmcCalibTreeMaker : EMC Calibration Tree Maker
-RunPicoMiniTreeMaker : Mini Tree Maker from PicoDst
-RunFemtoDstMaker     : Make Femto DST from MuDst
-RunPidTreeMaker      : PID Tree Maker using TPC and BTOF
-
---------  List of yet to be compiled scripts -----------
-
-RunEmcJetFinder : EMC Jet Tree Maker
-RunPicoDstMaker : Make PicoDST files from MuDst files
-RunEmcCalibTreeMaker : EMC Calibration Tree Maker
-RunPicoMiniTreeMaker : Mini Tree Maker from PicoDst
-RunFemtoDstMaker     : Make Femto DST from MuDst
-RunFmsOFileMaker     : PSU FMS + RP Tree maker (moved to diffAnalysis)
-
-*/

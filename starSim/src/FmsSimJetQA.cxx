@@ -9,7 +9,8 @@
 void FmsSimJetQA(
             Int_t nentries,
 	    TString jetfile,
-	    TString outfile
+	    TString outfile,
+	    Int_t thresCut
     )
 {
     cout << "nentries = " << nentries << endl;
@@ -42,9 +43,13 @@ void FmsSimJetQA(
     StJetEvent* jetEvent = 0;
     jetChain->SetBranchAddress("AntiKtR070NHits12",&jetEvent);
 
-    
+    TString title;
+    if(thresCut != -1)
+	title = " [" + to_string(thresCut) + " GeV Threshold]";
+    else
+	title = " ";
     //-- All Triggers -------
-    TH1D *h1TrigTypes = new TH1D ("h1TrigTypes", "Trigger Types; Trigger Types", 30, 0, 30);
+    TH1D *h1TrigTypes = new TH1D ("h1TrigTypes", "Trigger Types" + title + "; Trigger Types", 30, 0, 30);
 
     h1TrigTypes->GetXaxis()->SetBinLabel(3,"Small BS1");
     h1TrigTypes->GetXaxis()->SetBinLabel(5,"Small BS2");
@@ -57,26 +62,26 @@ void FmsSimJetQA(
     h1TrigTypes->GetXaxis()->SetBinLabel(19,"FMS-JP2");
     h1TrigTypes->GetXaxis()->SetBinLabel(21,"None");
     
-    TH1D *h1nJets = new TH1D ("h1nJets", "Number of Jets; No. of Jets", 10, -1, 9);
+    TH1D *h1nJets = new TH1D ("h1nJets", "Number of Jets" + title + "; No. of Jets", 10, -1, 9);
 
-    TH1D *h1nVtx = new TH1D("h1nVtx", "Number of Vertices", 5, 0, 5);
-    TH1D* h1Vtxz = new TH1D("h1Vtxz", "Vtx z Distribution [All Sources]; Vertex z [cm]",100, -200, 200);
+    TH1D *h1nVtx = new TH1D("h1nVtx", "Number of Vertices" + title + "; No of vertices", 5, 0, 5);
+    TH1D* h1Vtxz = new TH1D("h1Vtxz", "Vtx z Distribution [All Sources]" + title + "; Vertex z [cm]",100, -200, 200);
     
-    TH1D *h1JetEta = new TH1D ("h1JetEta", "EM Jet Eta; Jet #eta", 100, -1.5, 5.0);
-    TH1D *h1JetPhi = new TH1D ("h1JetPhi", "EM Jet Phi; Jet #phi [rad]", 100, -3.1, 3.1);
-    TH1D *h1JetE = new TH1D ("h1JetE", "EM Jet E; Jet E [GeV]", 100, 0.0, 70.0);
-    TH1D *h1JetE_s = new TH1D ("h1JetE_s", "EM Jet E [small cells]; Jet E [GeV]", 100, 0.0, 85.0);
-    TH1D *h1JetE_l = new TH1D ("h1JetE_l", "EM Jet E [large cells]; Jet E [GeV]", 100, 0.0, 70.0);
-    TH1D *h1JetPt = new TH1D ("h1JetPt", "Jet Pt; Jet Pt [GeV/c]", 100, 0.0, 50.0);
-    TH1D *h1JetVtxZ = new TH1D ("h1JetVtxZ", "Jet Vtx z; Jet vtx z [cm]", 100, -200.0, 200.0);
-    TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets", 20, 0, 20);
+    TH1D *h1JetEta = new TH1D ("h1JetEta", "EM Jet Eta" + title + "; Jet #eta", 100, -1.5, 5.0);
+    TH1D *h1JetPhi = new TH1D ("h1JetPhi", "EM Jet Phi" + title + "; Jet #phi [rad]", 100, -3.1, 3.1);
+    TH1D *h1JetE = new TH1D ("h1JetE", "EM Jet E" + title + "; Jet E [GeV]", 100, 0.0, 70.0);
+    TH1D *h1JetE_s = new TH1D ("h1JetE_s", "EM Jet E [small cells]" + title + "; Jet E [GeV]", 100, 0.0, 85.0);
+    TH1D *h1JetE_l = new TH1D ("h1JetE_l", "EM Jet E [large cells]" + title + "; Jet E [GeV]", 100, 0.0, 70.0);
+    TH1D *h1JetPt = new TH1D ("h1JetPt", "Jet Pt" + title + "; Jet Pt [GeV/c]", 100, 0.0, 50.0);
+    TH1D *h1JetVtxZ = new TH1D ("h1JetVtxZ", "Jet Vtx z" + title + "; Jet vtx z [cm]", 100, -200.0, 200.0);
+    TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets" + title + "; Number of photons", 20, 0, 20);
     
-    TH2D *h2Jetxy = new TH2D ("h2Jetxy", "Jet Position [FMS]; Jet X [cm]; Jet Y [cm]", 100, -100, 100, 100, -100, 100);
-    TH2D *h2JetEP = new TH2D ("h2Jetep_fms", "Jet Eta Phi [FMS]; Jet #eta; Jet #phi", 100, 2.5, 4.5, 100, -3.2, 3.2);
+    TH2D *h2Jetxy = new TH2D ("h2Jetxy", "Jet Position [FMS]" + title + "; Jet X [cm]; Jet Y [cm]", 100, -100, 100, 100, -100, 100);
+    TH2D *h2JetEP = new TH2D ("h2Jetep_fms", "Jet Eta Phi [FMS]" + title + "; Jet #eta; Jet #phi", 100, 2.5, 4.5, 100, -3.2, 3.2);
     
-    TH2D *h2Jetxy_eemc = new TH2D ("h2Jetxy_eemc", "Jet position [EEMC]; Jet X [cm]; Jet Y [cm]", 100, -200.0, 200.0, 100, -200, 200);
-    TH2D *h2EvsPt = new TH2D("h2EvsPt", "Eng vs Pt; Pt [GeV/C]; E [GeV]", 100, 0, 20, 100, 0, 100);
-    TH2D *h2PtvsE = new TH2D("h2PtvsE", "Pt vs E; E [GeV]; Pt [GeV/c]", 100,  0, 100, 100, 0, 20);
+    TH2D *h2Jetxy_eemc = new TH2D ("h2Jetxy_eemc", "Jet position [EEMC]" + title + "; Jet X [cm]; Jet Y [cm]", 100, -200.0, 200.0, 100, -200, 200);
+    TH2D *h2EvsPt = new TH2D("h2EvsPt", "Eng vs Pt" + title + "; Pt [GeV/C]; E [GeV]", 100, 0, 20, 100, 0, 100);
+    TH2D *h2PtvsE = new TH2D("h2PtvsE", "Pt vs E" + title + "; E [GeV]; Pt [GeV/c]", 100,  0, 100, 100, 0, 20);
     
     TLorentzVector lv;
     TVector3 v3;
