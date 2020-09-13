@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents, Int_t filterThres = 15)
+void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents, Int_t filterThres)
 {
     TString kumacFile = TStar::gConfig->GetBrightHome() + (TString)"starSim/pythia.kumac";
 
@@ -21,7 +21,7 @@ void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents, Int_t filterThres = 15)
 	return;
     }
 
-    TString fileName = "/star/u/kabir/GIT/BrightSTAR/dst/fmsSimData/fzdFiles/FmsSim_Run15_" + to_string(cycle) + Form("_evt%i", nEvents) + ".fzd";   
+    TString fileName = "FmsSim_Run15_" + to_string(cycle) + Form("_evt%i", nEvents) + ".fzd";   
     TString pythiaCmd = ".! starsim -w 0 -b ";
     pythiaCmd += kumacFile; 
     pythiaCmd += Form(" NEVENTS=%i ", nEvents);
@@ -32,7 +32,7 @@ void FmsSimRunStarsimAndBfc(Int_t cycle, Int_t nEvents, Int_t filterThres = 15)
     cout << "starsim command:"<< pythiaCmd <<endl;
 
     gROOT->ProcessLine(".! ls -lha");
-    //gROOT->ProcessLine(pythiaCmd);
+    gROOT->ProcessLine(pythiaCmd);
     if(gSystem->AccessPathName(fileName.Data()))
     {
     	cout << "No fzd file. SKipping ..." <<endl;

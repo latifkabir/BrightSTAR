@@ -63,27 +63,13 @@ void FmsSimTreeMaker(TString inMuDstFile, TString outName, Int_t nEvents)
     fmstrig->useQTSim();  // was there
     //fmstrig->useDsmData(); //Does not work
 
-    // fmstrig->overwriteThr("FMS-sm-bs1", 5.0);
-    // fmstrig->overwriteThr("FMS-sm-bs2", 10.0);
-    // fmstrig->overwriteThr("FMS-sm-bs3", 15.0);
-
-    // fmstrig->overwriteThr("FMS-lg-bs1", 20.0);
-    // fmstrig->overwriteThr("FMS-lg-bs2", 25.0);
-    // fmstrig->overwriteThr("FMS-lg-bs3", 30.0);
-    
-    // fmstrig->overwriteThr("FMS-JP0", 53.0);
-    // fmstrig->overwriteThr("FMS-JP1", 79.0);
-    // fmstrig->overwriteThr("FMS-JP2", 105.0);
-
-
     //for pythia event 
-    St_pythia_Maker* pythia = new St_pythia_Maker;
-    pythia->SetFile(pythiaFile);
-
+    // St_pythia_Maker* pythia = new St_pythia_Maker;
+    // pythia->SetFile(pythiaFile);
 
     TStFmsSimTreeMaker *fmsSimTreeMaker = new TStFmsSimTreeMaker();
-    //fmsSimTreeMaker->setJetFile(outName);
-
+    fmsSimTreeMaker->SetOutFileName(outName);
+    fmsSimTreeMaker->SetPythiaFile(pythiaFile);
     
     chain->Init();
     if(nEvents == -1)

@@ -23,6 +23,7 @@ class TStConfig : public TObject
     string fConfigFile;
     string fBrightHome;
     string fDataPath;
+    string fTempPath;
     string fResultsPath;
     string fDSTpath;
     string fJobResultsPath;
@@ -42,6 +43,7 @@ class TStConfig : public TObject
     string fSumsConfig;
     string fJobCounterSh;
     string fJobCounterTxt;
+    string fXrootdPrefix;
     
     int fUseEvt;
     int fUseTpc;
@@ -64,6 +66,7 @@ public:
     const string & GetStarHome(){return fStarHome;}
     const string & GetConfigPath(){return fConfigFile;}
     const string & GetDataPath(){return fDataPath;}
+    const string & GetTempPath(){return fTempPath;}
     const string & GetResultsPath(){return fResultsPath;}
     const string & GetDSTpath(){return fDSTpath;}
     const string & GetJobResultsPath(){return fJobResultsPath;}
@@ -82,6 +85,7 @@ public:
     const string & GetSumsConfig(){return fSumsConfig;}
     const string & GetJobCounterSh(){return fJobCounterSh;}
     const string & GetJobCounterTxt(){return fJobCounterTxt;}
+    //const string & GetXrootdPrefix(){return fXrootdPrefix;}
 
     
     bool EnableEvent(){return fUseEvt == 1;}

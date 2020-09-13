@@ -12,10 +12,10 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 +Job_Type       = "cas"
 transfer_input_files =   /star/u/kabir/GIT/BrightSTAR/.sl73_gcc485, /star/u/kabir/GIT/BrightSTAR/lib, /star/u/kabir/GIT/BrightSTAR/rootlogon.C, /star/u/kabir/GIT/BrightSTAR/setup.sh, /star/u/kabir/GIT/BrightSTAR/setup.csh, /star/u/kabir/GIT/BrightSTAR/config, /star/u/kabir/GIT/BrightSTAR/database
 Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/scratch/condor/16093010
-Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093010/st_fms_16093010_raw_0000005.MuDst.root	RunEmJetTreeMaker_16093010_0000005.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunEmJetTreeMaker_16093010_0000005.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunEmJetTreeMaker_16093010_0000005.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/RunEmJetTreeMaker_16093010_0000005.log
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/scratch/condor/
+Arguments       = "/star/u/kabir/GIT/BrightSTAR/scratch/condor/FmsSim_Run15_2499_evt5000.MuDst.root	FmsSimTreeTriggered_2499.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimTreeTriggered_2499.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimTreeTriggered_2499.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimTreeTriggered_2499.log
 Queue
 

@@ -129,7 +129,6 @@
     gSystem->Load("StFmsSimulatorMaker");
     gSystem->Load("StFmsFilterMaker");
     gSystem->Load("StFmsTriggerMaker");
-    gSystem->Load("BrFmsSimTreeMaker.so");        
     //gSystem->Load("StFmsFastSimulatorMaker"); //Another implementation
 
     
@@ -149,7 +148,8 @@
     gSystem->Load("BrContainers");    
     gSystem->Load("BrNanoDstMaker");    
     gSystem->Load("BrJetMaker");    
-        
+    gSystem->Load("BrFmsSimTreeMaker");
+    
     //------- Bright STAR Library --------
     //Use $STARHOME/<lib module>/lib/ prefix to load local version
 

@@ -8,29 +8,39 @@
 #define TSTFMSSIMTREEMAKER_H
 
 #include "StMaker.h"
+#include "StMuDSTMaker/COMMON/StMuDstMaker.h"
 #include "TTree.h"
 #include "TFile.h"
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TClonesArray.h"
+#include "TParticle.h"
+#include "TChain.h"
 #include "BrContainers/TStFmsPointData.h"
+#include "StSpinPool/StJetSkimEvent/StPythiaEvent.h"
 
 class StEvent;
 class StMuDst;
+class StMuEvent;
 class StMuFmsCollection;  
 class StMuFmsPoint;
+class St_pythia_Maker;
 
 class TStFmsSimTreeMaker : public StMaker
 {
 private:
     StMuDst *mMuDst;  
     StEvent* mEvent;
-    //StFmsDbMaker* mDbMaker; // Example DB Maker, replace with desired detector.
-
+    StMuEvent *mMuEvent;
+    St_pythia_Maker *mPythiaMaker;
+    
     TString mOutName = "FmsSimTree.root";
     TFile *mFile;
     TTree *mTree = 0;
     Int_t mNevents;
+    TChain *mPyChain;
+    TString mPythiaFile;
+    Int_t mPyEvt;
     
     StMuFmsCollection *mFmsMuColl;
 
@@ -39,9 +49,13 @@ private:
     Int_t mTriggerBit;
     TClonesArray *mFmsPointArray;
     StMuFmsPoint *mFmsPoint;
-    //StPythiaEvent *pythiaEvent;
-    TStFmsPointData *mFmsPointData;    
 
+    TStFmsPointData *mFmsPointData;    
+    StPythiaEvent *mOutPythiaEvent;
+    StPythiaEvent *mInPythiaEvent;
+
+    //TParticle *mInPyParticle;
+    TParticle mOutPyParticle;
     
     TH2D *mPointXY_trg;
     TH2D *mPointXY_notrg;
@@ -59,8 +73,9 @@ public:
     virtual Int_t Finish();
     // virtual Int_t InitRun  (int runumber){return 0;}; // Overload empty StMaker::InitRun 
     // virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun 
-
-
+    void SetPythiaFile(TString pythiaFile){mPythiaFile = pythiaFile;}
+    void SetOutFileName(TString outName){mOutName = outName;}
+    
     ClassDef(TStFmsSimTreeMaker,1) 
 };
 

@@ -80,10 +80,15 @@ void TStConfig::LoadConfig()
 		tokens = strtok(NULL, " :,");
 		fBrightHome = tokens;
 	    }
-	    if(s == "DATA_PATH")
+	    else if(s == "DATA_PATH")
 	    {
 		tokens = strtok(NULL, " :,");
 		fDataPath = tokens;
+	    }
+	    else if(s == "TEMP_PATH")
+	    {
+		tokens = strtok(NULL, " :,");
+		fTempPath = tokens;
 	    }
 	    else if(s == "RESULTS_PATH")
 	    {
@@ -174,6 +179,11 @@ void TStConfig::LoadConfig()
 	    {
 		tokens = strtok(NULL, " :,");
 		fJobCounterTxt = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "XROOTD_PREFIX")
+	    {
+		tokens = strtok(NULL, " :,");
+		fXrootdPrefix = tokens;
 	    }	   	    
 	    else if(s == "ENABLE_EVT")
 	    {
@@ -221,6 +231,7 @@ void TStConfig::Print()
     cout << "Star Home: "<< GetStarHome()<<"\n"<<endl;
     cout << "Config file: "<< GetConfigPath()<<"\n"<<endl;
     cout << "Data-file path: "<< GetDataPath()<<"\n"<<endl;
+    cout << "Temp path: "<< GetTempPath()<<"\n"<<endl;
     cout << "Results path: "<< GetResultsPath()<<"\n"<<endl;
     cout << "DST path: "<< GetDSTpath()<<"\n"<<endl;
     cout << "Job results path: "<< GetJobResultsPath()<<"\n"<<endl;
@@ -246,6 +257,7 @@ void TStConfig::PrintAll()
     cout << GetStarHome() << endl;
     cout << GetConfigPath() << endl;
     cout << GetDataPath() << endl;
+    cout << GetTempPath() << endl;
     cout << GetResultsPath() << endl;
     cout << GetDSTpath() << endl;
     cout << GetJobResultsPath() << endl;
@@ -268,8 +280,8 @@ void TStConfig::PrintAll()
 
 bool TStConfig::CheckValidity(int print)
 {
-    const int size = 19;
-    string fPathArrar[size] = {fBrightHome, fConfigFile, fDataPath, fResultsPath, fDSTpath,  fJobResultsPath, fStarHome, fRunListDB, fFileList, fTrigDefFile,  fFillNoDB, fFmsHotChDB, fCondorConfig, fCondorJob, fCondorJobSh, fSumsJobSh, fSumsConfig, fJobCounterSh, fJobCounterTxt};
+    const int size = 20;
+    string fPathArrar[size] = {fBrightHome, fConfigFile, fDataPath, fTempPath, fResultsPath, fDSTpath,  fJobResultsPath, fStarHome, fRunListDB, fFileList, fTrigDefFile,  fFillNoDB, fFmsHotChDB, fCondorConfig, fCondorJob, fCondorJobSh, fSumsJobSh, fSumsConfig, fJobCounterSh, fJobCounterTxt};
 
     for(int i = 0; i < size; ++i)
     {

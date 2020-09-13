@@ -4,7 +4,7 @@
 //
 
 
-void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 15) 
+void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 12) 
 {
     // const char* chainopt = "DbV20150923 y2015 MakeEvent ITTF NoSsdIt NoSvtIt Idst BAna l0 Tree logger Sti VFPPVnoCTB beamLine tpcDB TpcHitMover TpxClu fmsDb fmsSim fmspoint  tags emcY2 EEfs evout -dstout IdTruth geantout big fzin MiniMcMk clearmem  sdt20150417.193427"; //Mriganka
 
@@ -73,7 +73,7 @@ void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 15)
 }
 
 
-void FmsSimRunBfc(int cycle, int nevents, int filterThreshold, int filterThreshold = 15)
+void FmsSimRunBfc(int cycle, int nevents, int filterThreshold, int filterThreshold = 12)
 {
     FmsSimRunBfc(-1, Form("FmsSim_Run15_%i_evt%i.fzd", cycle, nevents), filterThreshold);     
 }

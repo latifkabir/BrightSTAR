@@ -152,7 +152,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 
     Int_t runNumber;
     Int_t prevRun = -1;
-    const char *rNumber;
+    string rNumber;
     string filePath;
     string fileName;
     string fileNumberStr;
@@ -322,7 +322,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 
     Int_t runNumber;
     Int_t prevRun = -1;
-    const char *rNumber;
+    string rNumber;
     string filePath;
     string fileName;
     string fileNumberStr;
@@ -344,7 +344,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	runNumber = (int)j[k]["run"];
 	if(runNumber >= firstRun && runNumber <= lastRun)
 	{
-	    rNumber =  (std::to_string((int)j[k]["run"])).c_str();
+	    rNumber =  std::to_string((int)j[k]["run"]);
 	    fileName = (string)j[k]["data"]["file"];
 	    filePath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
 	    //cout << filePath <<endl;
@@ -373,7 +373,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 		    if(k >= j.size())
 			break;
 		    
-	    	    rNumber =  (std::to_string((int)j[k]["run"])).c_str();
+	    	    rNumber =  std::to_string((int)j[k]["run"]);
 	    	    fileName = (string)j[k]["data"]["file"];
 	    	    filePath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
 	    	    jobFileList << filePath <<endl;
@@ -766,3 +766,108 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
     }
 }
 
+//_______________________________________________________________________________________________________
+void TStScheduler::AnalyzeJobResults(TString dirPath, TString filePrefix, Int_t threshold, TString treeName)
+{
+    TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
+    std::ifstream i(TStar::Config->GetRunListDB());
+    json j;
+    i >> j;
+
+    Int_t nFiles = 0;
+    string rNumber;
+    string filePath;
+    string fileNumberStr;
+    string fileName;
+    string outFileName;
+    string xrootdPath;
+    Int_t runNumber;
+    Int_t nEntries_muDst = 0;
+    Int_t nEntries_out = 0;
+    Double_t frac;
+    ofstream fileList(TStar::gConfig->GetStarHome() + "/resources/failedJobsFiles.list");
+    
+    for(int k = 0; k < j.size(); ++k)
+    {
+	rNumber =  std::to_string((int)j[k]["run"]);
+	fileName = (string)j[k]["data"]["file"];
+	runNumber =  (int)j[k]["run"];
+	if(runNumber < 0) continue;
+	fileNumberStr = TStRunList::GetFileNoFromFileName(fileName);
+	outFileName = dirPath + "/" + to_string(runNumber) + "/" + filePrefix + to_string(runNumber) + (string)"_" + fileNumberStr + (string)".root";
+	xrootdPath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
+	    
+	if(gSystem->AccessPathName(outFileName.c_str()))
+	{
+	    cout << "Out file is missing. To be reprocessed:"<< fileName <<endl;
+	    fileList << xrootdPath << endl;
+	    continue;
+	}
+	nEntries_muDst = j[k]["data"]["events"];
+
+	TFile *tFile = new TFile(outFileName.c_str());
+	TTree *t = (TTree*)tFile->Get(treeName);
+
+	if(!t)
+	{
+	    cout << "Unable to retrieve tree named "<< treeName << " File: "<< fileName <<endl;
+	    fileList << xrootdPath << endl;
+	    tFile->Close();
+	    delete tFile;
+	    continue;
+	}
+	    
+	nEntries_out = t->GetEntries();
+	if(nEntries_muDst != 0)
+	    frac = (100.0*nEntries_out) / nEntries_muDst;
+	else
+	    frac = 0;
+	cout << "File: "<< fileName<<", Fraction of Events Processed: "<< nEntries_out << " / " << nEntries_muDst <<" = "<< frac  <<endl;
+
+	if(frac < threshold)
+	    fileList << xrootdPath << endl;
+	
+	tFile->Close();
+	delete tFile;
+	++nFiles;
+    }
+    cout << "Number of files in the range:"<<nFiles<<endl;
+    i.close();
+    fileList.close();
+}
+
+//_______________________________________________________________________
+TString TStScheduler::CopyInputFiles(TString inFileName)
+{
+    TString outName = inFileName;
+    outName.ReplaceAll("root://xrdstar.rcf.bnl.gov:1095/","");
+    outName.ReplaceAll(TStar::gConfig->GetProdPath(), "");
+    outName.ReplaceAll("/", "_");
+    outName = TStar::gConfig->GetTempPath() + outName;
+    
+    TString copyCmd = ".! xrdcp --retry 3 " + inFileName + " " + outName;
+    cout << copyCmd << endl;
+    if(gSystem->AccessPathName(outName))
+    {
+	gROOT->ProcessLine(".! mkdir -p " + (TString)TStar::gConfig->GetTempPath());
+	gROOT->ProcessLine(copyCmd);
+    }
+    else
+	cout << "File exists. Skipped xrootd copying ..." <<endl;
+
+    if(gSystem->AccessPathName(outName))
+	return "unavailable";
+	
+    cout << "copying xrootd file is successful" <<endl;
+    return outName;    
+}
+
+//_______________________________________________________________________
+void TStScheduler::DeleteTempFiles(TString inFileName)
+{
+    if(!gSystem->AccessPathName(inFileName))
+    {
+	cout << "Deleting input files from tmp ..." <<endl;
+	gROOT->ProcessLine(".! rm " + inFileName);
+    }
+}

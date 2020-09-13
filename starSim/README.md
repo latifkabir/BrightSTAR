@@ -25,7 +25,7 @@ The work-flow:
 
 
 
-How to Run
+How to Run Examples
 --------------
 
 1. Generate Pythia Events:

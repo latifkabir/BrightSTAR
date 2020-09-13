@@ -23,6 +23,8 @@ protected:
     Int_t mSpinY;
     Double_t mVertexZ;
     UInt_t mUnixTime;
+    Float_t mBbcWestRate;
+    Float_t mBbcEastRate;
 public:    
     Int_t GetRunNumber(){return mRunNumber;}
     Int_t GetEventId(){return mEventId;}
@@ -31,7 +33,9 @@ public:
     Int_t GetSpinY(){return mSpinY;}
     Double_t GetVertexZ(){return mVertexZ;}
     UInt_t GetUnixTime(){return mUnixTime;}
-
+    Float_t GetBbcWestRate(){return mBbcWestRate;}
+    Float_t GetBbcEastRate(){return mBbcEastRate;}
+    
     void SetRunNumber(Int_t run){mRunNumber = run;}
     void SetEventId(Int_t id){ mEventId = id;}
     void SetTrigFlag(Int_t index, Int_t flag){if(index >= 0 && index < mMaxTrigs) mTrigFlags[index] = flag;}
@@ -39,7 +43,9 @@ public:
     void SetSpinY(Int_t spin){ mSpinY = spin;}
     void SetVertexZ(Double_t z){ mVertexZ = z;}
     void SetUnixTime(UInt_t time){ mUnixTime = time;}
-        
+    void SetBbcWestRate(Float_t rate){mBbcWestRate = rate;}
+    void SetBbcEastRate(Float_t rate){mBbcEastRate = rate;}
+    
     TStJetSkimEvent()
     {
 	Reset();
@@ -56,6 +62,9 @@ public:
 	mSpinB = -999;
 	mSpinY = -999;
 	mVertexZ = -999;
+	mUnixTime = -1;
+	mBbcWestRate = -1;
+	mBbcEastRate = -1;
     }
 
 	       	

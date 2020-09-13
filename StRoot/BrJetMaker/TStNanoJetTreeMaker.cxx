@@ -81,8 +81,8 @@ Int_t TStNanoJetTreeMaker::Make()
 	return kStFatal;
     }
 
-    //mJetMaker = (StJetMaker2015*)GetInputDS("StJetMaker2015"); //This did not work
-    //mSkimEventMaker = (StJetSkimEventMaker*)GetInputDS("StJetSkimEventMaker"); //Did not work
+    //mJetMaker = (StJetMaker2015*)GetMaker("StJetMaker2015"); //This did not work --> bug fixed, try again
+    //mSkimEventMaker = (StJetSkimEventMaker*)GetMaker("StJetSkimEventMaker"); //Did not work --> bug fixed, try again
     if(!mJetMaker || !mSkimEventMaker)
     {
 	LOG_ERROR << "TStNanoJetTreeMaker::Make - No JetMaker or SkimEventMaker found" <<endm;
@@ -140,7 +140,9 @@ Int_t TStNanoJetTreeMaker::Make()
     mOutSkimEvent->SetEventId(mInJetEvent->eventId());
     mOutSkimEvent->SetVertexZ(vtxZ);
     mOutSkimEvent->SetUnixTime(mInSkimEvent->unixTime());
-
+    mOutSkimEvent->SetBbcWestRate(mInSkimEvent->bbcWestRate());
+    mOutSkimEvent->SetBbcEastRate(mInSkimEvent->bbcEastRate());
+    
     spin4Bit = mInSkimEvent->spin4usingBx48(); 
     /*
       Spin info to be interpreted based on: https://drupal.star.bnl.gov/STAR/blog/oleg/spin-patterns-and-polarization-direction

@@ -8,10 +8,11 @@
 #include "TStFmsSimTreeMaker.h"
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
+#include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StMuDSTMaker/COMMON/StMuFmsCollection.h"
 #include "StMuDSTMaker/COMMON/StMuFmsPoint.h"
 #include "StSpinPool/StFmsTriggerMaker/StFmsTriggerMaker.h"
-
+#include "StJetMaker/St_pythia_Maker.h"
 
 ClassImp(TStFmsSimTreeMaker)
 
@@ -22,7 +23,11 @@ TStFmsSimTreeMaker::TStFmsSimTreeMaker(const char *name):StMaker(name)
 
     //FMS Buffer
     mFmsPointArray = new TClonesArray("TStFmsPointData");
-    mNevents = 0;    
+    mOutPythiaEvent = new StPythiaEvent();
+    mNevents = 0;
+    mPyEvt = 0;
+    mPyChain = new TChain("PythiaTree");
+    mInPythiaEvent = new StPythiaEvent();
 }
 
 //_____________________________________________________________________________ 
@@ -37,10 +42,14 @@ Int_t TStFmsSimTreeMaker::Init()
 {
     mFile = new TFile(mOutName, "RECREATE");
     mTree = new TTree("T", "Sim Tree");
+    mPyChain->Add(mPythiaFile);
 
-    mTree->Branch("runId", &mRunId, "runId");
-    mTree->Branch("eventId", &mEventId, "eventId");
-    mTree->Branch("trigBit", &mTriggerBit, "trigBit");
+    mPyChain->SetBranchAddress("PythiaBranch", &mInPythiaEvent);
+    
+    mTree->Branch("runId", &mRunId, "runId/I");
+    mTree->Branch("eventId", &mEventId, "eventId/I");
+    mTree->Branch("trigBit", &mTriggerBit, "trigBit/I");
+    mTree->Branch("pythiaEvent", &mOutPythiaEvent, 256000, 99);
     mTree->Branch("fmsPoint", &mFmsPointArray, 256000, 99);
 
     mPointPhi_trg = new TH1D("pointPhi_trg", "FMS Point Phi for Triggered Events", 100, -3.2, 3.2);
@@ -57,17 +66,42 @@ Int_t TStFmsSimTreeMaker::Make()
 {
     mMuDst = (StMuDst*)GetInputDS("MuDst");
     mEvent = (StEvent*)GetInputDS("StEvent");
+    //mPythiaMaker = (St_pythia_Maker*)GetMaker("St_pythia_Maker"); //This does not synchronize pythia tree if it has different number of events (happens when filter is used)
     
     // Check if mMuDst or mEvent is valid
     if(!mMuDst)
     {
-	LOG_ERROR << "TSt<Template>Maker::Make - No MuDst found" <<endm;
+	LOG_ERROR << "TStFmsSimMaker::Make - No MuDst found" <<endm;
+	return kStFatal;
+    }
+
+    if(!mPythiaMaker)
+    {
+	LOG_ERROR << "TStFmsSimMaker::Make - No PythiaMaker found" <<endm;
 	return kStFatal;
     }
     if(mNevents % 1000 == 0)
 	cout << "Events Processed: " << mNevents <<endl;
 
+    mOutPythiaEvent->Clear();
     mFmsPointArray->Clear();
+
+    //mInPythiaEvent = mPythiaMaker->GetEvent();
+    mPyChain->GetEntry(mPyEvt);
+    
+    mMuEvent = mMuDst->event();
+    mRunId = mMuEvent->runNumber();
+    mEventId = mMuEvent->eventId();
+
+    //--------- Synchronize Pythia event with reconstructed events ---------
+    while(mInPythiaEvent->eventId() != mEventId)
+    {
+    	cout << "Event id did not match, going to next Pythia event..." <<endl;
+    	mPyChain->GetEntry(++mPyEvt);
+    }
+    cout << "Match Found !!!" <<endl;
+
+    
     //---------------------- FMS Trigger Simulator ---------------------------------------
     StFmsTriggerMaker* fmstrig = (StFmsTriggerMaker*)GetMakerInheritsFrom("StFmsTriggerMaker");
     assert(fmstrig);
@@ -97,6 +131,25 @@ Int_t TStFmsSimTreeMaker::Make()
 
     cout<<" TRIGGER : SmBS 1 2 LgBS 1 2 JP 1 2   : "<<trg1<<"  "<<trg2<<"  "<<trg3<<"  "<<trg4<<"  "<<trg5<<"  "<<trg6<<"  "<<trg7<<"  "<<trg8<<"  "<<trg9<<"  "<<mTriggerBit<<endl;
 
+    //---------- Keep only triggered events ----------
+    if(mTriggerBit == 1000000000)
+	return kStOK;
+    
+    //----------- Pythia Event Information ----------------------------------
+    mOutPythiaEvent->setRunId(mInPythiaEvent->runId());    
+    mOutPythiaEvent->setEventId(mInPythiaEvent->eventId());
+    for(Int_t i = 0; i < mInPythiaEvent->numberOfParticles(); ++i)
+    {
+    	const TParticle * mInPyParticle = mInPythiaEvent->particle(i);	
+    	mOutPyParticle.SetMomentum(mInPyParticle->Px(), mInPyParticle->Py(), mInPyParticle->Pz(), mInPyParticle->Energy());
+    	mOutPyParticle.SetPdgCode(mInPyParticle->GetPdgCode());
+    	mOutPyParticle.SetPolarTheta(mInPyParticle->GetPolarTheta());
+    	mOutPyParticle.SetPolarPhi(mInPyParticle->GetPolarPhi());
+
+	//Similarly, Set Other Properties Here 
+	
+    	mOutPythiaEvent->addParticle(mOutPyParticle);
+    }
 
     //---------- Fill FMS Information -----------------
     mFmsMuColl = mMuDst->muFmsCollection(); // Note: This is directly from MuDst. 
@@ -113,18 +166,19 @@ Int_t TStFmsSimTreeMaker::Make()
 	}
 
 	mFmsPointData =  new((*mFmsPointArray)[i])TStFmsPointData();	
-	mFmsPointData->SetE();
-	mFmsPointData->SetPt();
-	mFmsPointData->SetEta();
-	mFmsPointData->SetPhi();
-	mFmsPointData->SetPx();
-	mFmsPointData->SetPy();
-	mFmsPointData->SetPz();
-	mFmsPointData->SetX();
-	mFmsPointData->SetY()
-	    ;
+	mFmsPointData->SetE(mFmsPoint->energy());
+	mFmsPointData->SetPt(mFmsPoint->fourMomentum().perp());
+	mFmsPointData->SetEta(mFmsPoint->xyz().pseudoRapidity());
+	mFmsPointData->SetPhi(mFmsPoint->xyz().phi());
+	mFmsPointData->SetPx(mFmsPoint->fourMomentum().px());
+	mFmsPointData->SetPy(mFmsPoint->fourMomentum().py());
+	mFmsPointData->SetPz(mFmsPoint->fourMomentum().pz());
+	mFmsPointData->SetX(mFmsPoint->xyz().x());
+	mFmsPointData->SetY(mFmsPoint->xyz().y());	    
     }
 
+    mTree->Fill();
+    
     ++mNevents;    
     return kStOK;
 }
