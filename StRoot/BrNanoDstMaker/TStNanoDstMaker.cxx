@@ -392,11 +392,11 @@ Int_t TStNanoDstMaker::MakeEvent()
     mEventData->SetVy(mMuDst->event()->primaryVertexPosition().y());
     mEventData->SetVz(mMuDst->event()->primaryVertexPosition().z());
     
-    // StRunInfo* runInfo = &(mMuEvent->runInfo());
+    StRunInfo* runInfo = &(mMuEvent->runInfo());
     // mFill = runInfo->beamFillNumber(blue);
     // mBbcCo = runInfo->bbcCoincidenceRate();
-    // mBbcE = runInfo->bbcEastRate();
-    // mBbcW = runInfo->bbcWestRate();
+    mEventData->SetBbcEastRate(runInfo->bbcEastRate());
+    mEventData->SetBbcWestRate(runInfo->bbcWestRate());
     //--------- Spin States -------------
     mBunchid7bit = mMuEvent->triggerData()->bunchId7Bit();
     mSpin4bit = mSpinDbMaker->spin4usingBX7(mBunchid7bit); 

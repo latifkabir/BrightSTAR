@@ -32,6 +32,9 @@ public:
     Int_t mBbcEarliestTDC[2];		//
     Int_t mBbcEarliestTDCLarge[2];	//
 
+    Double_t mBbcRateE;                 //
+    Double_t mBbcRateW;                 //
+    
     Int_t mZdcADCSum[2];		// 
     Int_t mVpdADCSum[2];		//
     Int_t mTofMultiplicity;		//
@@ -67,7 +70,9 @@ public:
     Double_t GetVx(){return mVx;}								//
     Double_t GetVy(){return mVy;}								//
     Double_t GetVz(){return mVz;}								//
-
+    Double_t GetBbcEastRate(){return mBbcRateE;}
+    Double_t GetBbcWestRate(){return mBbcRateW;}
+    
     //-----------
     void SetRunNumber( Int_t run){mRunNumber = run;}						//
     void SetFillNumber( Float_t yellow_fill_number){mFillNumber = yellow_fill_number;}						//
@@ -92,7 +97,8 @@ public:
     void SetVx(Double_t vx){mVx = vx;}							//
     void SetVy(Double_t vy){mVy = vy;}							//
     void SetVz(Double_t vz){mVz = vz;}							//
-
+    void SetBbcEastRate(Double_t rate){mBbcRateE = rate;}
+    void SetBbcWestRate(Double_t rate){mBbcRateW = rate;}
     
     TStEventData()
     {
@@ -134,6 +140,9 @@ public:
 	mVx = -999.0;
 	mVy = -999.0;
 	mVz = -999.0;
+
+	mBbcRateE = -1;
+	mBbcRateW = -1;
     }
     
     // Int_t GetYear() const { return (mRunId / 1000000) - 1 + 2000; }

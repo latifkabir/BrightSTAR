@@ -1,11 +1,11 @@
-// Filename: TStFmsSimTreeMaker.cxx
+// Filename: TStFmsSimTreeMakerCustom.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon Aug 19 17:37:54 2019 (-0400)
 // URL: jlab.org/~latif
 
 
-#include "TStFmsSimTreeMaker.h"
+#include "TStFmsSimTreeMakerCustom.h"
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
@@ -14,32 +14,33 @@
 #include "StSpinPool/StFmsTriggerMaker/StFmsTriggerMaker.h"
 #include "StJetMaker/St_pythia_Maker.h"
 
-ClassImp(TStFmsSimTreeMaker)
+ClassImp(TStFmsSimTreeMakerCustom)
 
 //_____________________________________________________________________________ 
-TStFmsSimTreeMaker::TStFmsSimTreeMaker(const char *name):StMaker(name)
+TStFmsSimTreeMakerCustom::TStFmsSimTreeMakerCustom(const char *name):StMaker(name)
 {
+    //
+
     //FMS Buffer
-    mFmsPointArray = new TClonesArray("StMuFmsPoint");
+    mFmsPointArray = new TClonesArray("TStFmsPointData");
     mNevents = 0;
     mPyEvt = 0;
     mPyChain = new TChain("PythiaTree");
-    //Pythia event buffer
     mInPythiaEvent = new StPythiaEvent();
 }
 
 //_____________________________________________________________________________ 
-TStFmsSimTreeMaker::~TStFmsSimTreeMaker()
+TStFmsSimTreeMakerCustom::~TStFmsSimTreeMakerCustom()
 {
     //
 }
 
 
 //_____________________________________________________________________________ 
-Int_t TStFmsSimTreeMaker::Init()
+Int_t TStFmsSimTreeMakerCustom::Init()
 {
     mFile = new TFile(mOutName, "RECREATE");
-    mTree = new TTree("PythiaTree", "Sim Tree");
+    mTree = new TTree("T", "Sim Tree");
     mPyChain->Add(mPythiaFile);
 
     mPyChain->SetBranchAddress("PythiaBranch", &mInPythiaEvent);
@@ -50,21 +51,17 @@ Int_t TStFmsSimTreeMaker::Init()
     mTree->Branch("pythiaEvent", &mInPythiaEvent, 256000, 99);
     mTree->Branch("fmsPoint", &mFmsPointArray, 256000, 99);
 
-    mMuDstMaker = (StMuDstMaker*)GetMaker("MuDst");
-    mChain = mMuDstMaker->chain();
-    mChain->SetBranchAddress("FmsPoint", &mFmsPointArray); //If you do setaddress, fmsPoint access in all other Maker will be lost (check) because of Reset?.
-        
+    mPointPhi_trg = new TH1D("pointPhi_trg", "FMS Point Phi for Triggered Events", 100, -3.2, 3.2);
+    mPointPhi_notrg = new TH1D("pointPhi_notrg", "FMS Point Phi for all events (including no trigger)", 100, -3.2, 3.2);
+    mPointXY_trg = new TH2D("pointXY_trg", "FMS point XY for triggered events", 100, -100, 100, 100, -100, 100);
+    mPointXY_notrg = new TH2D("pointXY_notrg", "FMS point XY for all events (including no trigger) ", 100, -100, 100, 100, -100, 100);
+    
     return kStOK;
 }
+
+
 //_____________________________________________________________________________
-void TStFmsSimTreeMaker::Reset()
-{
-    mInPythiaEvent->Clear();
-    mFmsPointArray->Clear();    
-}
-    
-//_____________________________________________________________________________
-Int_t TStFmsSimTreeMaker::Make()
+Int_t TStFmsSimTreeMakerCustom::Make()
 {
     mMuDst = (StMuDst*)GetInputDS("MuDst");
     mEvent = (StEvent*)GetInputDS("StEvent");
@@ -74,18 +71,19 @@ Int_t TStFmsSimTreeMaker::Make()
     if(!mMuDst)
     {
 	LOG_ERROR << "TStFmsSimMaker::Make - No MuDst found" <<endm;
-	Reset();
 	return kStFatal;
     }
 
     if(!mPythiaMaker)
     {
 	LOG_ERROR << "TStFmsSimMaker::Make - No PythiaMaker found" <<endm;
-	Reset();
 	return kStFatal;
     }
     if(mNevents % 1000 == 0)
 	cout << "Events Processed: " << mNevents <<endl;
+
+    mInPythiaEvent->Clear();
+    mFmsPointArray->Clear();
 
     mPyChain->GetEntry(mPyEvt);
     
@@ -133,26 +131,45 @@ Int_t TStFmsSimTreeMaker::Make()
 
     //---------- Keep only triggered events ----------
     if(mTriggerBit == 1000000000)
-    {
-	Reset();
 	return kStOK;
-    }
-    //----------- Fill Pythia Event Information ----------------------------------
+    
+    //----------- Pythia Event Information ----------------------------------
     // Will be stored from the branch directly
-    
+
     //---------- Fill FMS Information -----------------
-    //Will be stored from MuDst root file directly
-    
+    mFmsMuColl = mMuDst->muFmsCollection(); // Note: This is directly from MuDst. 
+    for(Int_t i = 0; i < mFmsMuColl->numberOfPoints(); ++i)
+    {
+	mFmsPoint = mFmsMuColl->getPoint(i);
+	mPointPhi_notrg->Fill(mFmsPoint->xyz().phi());
+	mPointXY_notrg->Fill(mFmsPoint->xyz().x(), mFmsPoint->xyz().y());
+
+	if(mTriggerBit > 1000000000)
+	{
+	    mPointXY_trg->Fill(mFmsPoint->xyz().x(), mFmsPoint->xyz().y());
+	    mPointPhi_trg->Fill(mFmsPoint->xyz().phi());
+	}
+
+	mFmsPointData =  new((*mFmsPointArray)[i])TStFmsPointData();	
+	mFmsPointData->SetE(mFmsPoint->energy());
+	mFmsPointData->SetPt(mFmsPoint->fourMomentum().perp());
+	mFmsPointData->SetEta(mFmsPoint->xyz().pseudoRapidity());
+	mFmsPointData->SetPhi(mFmsPoint->xyz().phi());
+	mFmsPointData->SetPx(mFmsPoint->fourMomentum().px());
+	mFmsPointData->SetPy(mFmsPoint->fourMomentum().py());
+	mFmsPointData->SetPz(mFmsPoint->fourMomentum().pz());
+	mFmsPointData->SetX(mFmsPoint->xyz().x());
+	mFmsPointData->SetY(mFmsPoint->xyz().y());	    
+    }
+
     mTree->Fill();
     
-    ++mNevents;
-
-    Reset();
+    ++mNevents;    
     return kStOK;
 }
 
 //_____________________________________________________________________________
-Int_t TStFmsSimTreeMaker::Finish()
+Int_t TStFmsSimTreeMakerCustom::Finish()
 {
     //Write histograms to root file etc.
 

@@ -7,18 +7,19 @@
 #include "StRootInclude.h"
 #include "RootInclude.h"
 #include "BrightStInclude.h"
+#include "BrContainers/TStFmsPointData.h"
 
 void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use wildcat to combine files
 {
     Double_t Emin = minE;//2.0;
     Double_t Emax = maxE; //500.0;
     
-    TChain *tree = new TChain("PythiaTree");
+    TChain *tree = new TChain("T");
     tree->Add(fileList);
 
     StPythiaEvent *pyEvent = 0;
-    TClonesArray *fmsPointArr = new TClonesArray("StMuFmsPoint");
-    StMuFmsPoint *fmsPoint;
+    TClonesArray *fmsPointArr = new TClonesArray("TStFmsPointData");
+    TStFmsPointData *fmsPointData;
     Int_t trgBit;
     string trgBitStr;
     
@@ -108,18 +109,18 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
 	nPhotonMu = 0;
 	for(Int_t i = 0; i < fmsPointArr->GetEntriesFast(); ++i)
 	{
-	    fmsPoint = (StMuFmsPoint*)fmsPointArr->At(i);
+	    fmsPointData = (TStFmsPointData*)fmsPointArr->At(i);
 	    
-	    if(fmsPoint->xyz().pseudoRapidity() < 2.5 || fmsPoint->xyz().pseudoRapidity() > 4.5)
+	    if(fmsPointData->GetEta() < 2.5 || fmsPointData->GetEta() > 4.5)
 		continue;
 
-	    if(fmsPoint->energy() < Emin || fmsPoint->energy() > Emax)
+	    if(fmsPointData->GetE() < Emin || fmsPointData->GetE() > Emax)
 	    	continue;
 	    
-	    h1EngMu->Fill(fmsPoint->energy());
-	    h1PtMu->Fill(fmsPoint->fourMomentum().perp());
-	    h1EtaMu->Fill(fmsPoint->xyz().pseudoRapidity());
-	    h1PhiMu->Fill(fmsPoint->xyz().phi());
+	    h1EngMu->Fill(fmsPointData->GetE());
+	    h1PtMu->Fill(fmsPointData->GetPt());
+	    h1EtaMu->Fill(fmsPointData->GetEta());
+	    h1PhiMu->Fill(fmsPointData->GetPhi());
 	    ++nPhotonMu;	    
 	}
 	h1nPhotonMu->Fill(nPhotonMu);

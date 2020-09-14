@@ -1,11 +1,11 @@
-// Filename: TStFmsSimTreeMaker.h
+// Filename: TStFmsSimTreeMakerCustom.h
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon Aug 19 17:38:04 2019 (-0400)
 // URL: jlab.org/~latif
 
-#ifndef TSTFMSSIMTREEMAKER_H
-#define TSTFMSSIMTREEMAKER_H
+#ifndef TSTFMSSIMTREEMAKERCUSTOM_H
+#define TSTFMSSIMTREEMAKERCUSTOM_H
 
 #include "StMaker.h"
 #include "StMuDSTMaker/COMMON/StMuDstMaker.h"
@@ -20,17 +20,15 @@
 #include "StSpinPool/StJetSkimEvent/StPythiaEvent.h"
 
 class StEvent;
-class StMuDstMaker;
 class StMuDst;
 class StMuEvent;
 class StMuFmsCollection;  
 class StMuFmsPoint;
 class St_pythia_Maker;
 
-class TStFmsSimTreeMaker : public StMaker
+class TStFmsSimTreeMakerCustom : public StMaker
 {
 private:
-    StMuDstMaker *mMuDstMaker;  
     StMuDst *mMuDst;  
     StEvent* mEvent;
     StMuEvent *mMuEvent;
@@ -43,20 +41,29 @@ private:
     TChain *mPyChain;
     TString mPythiaFile;
     Int_t mPyEvt;
-    TChain *mChain;
     
+    StMuFmsCollection *mFmsMuColl;
+
     Int_t mRunId;
     Int_t mEventId;
     Int_t mTriggerBit;
     TClonesArray *mFmsPointArray;
-    StPythiaEvent *mInPythiaEvent;
+    StMuFmsPoint *mFmsPoint;
 
+    TStFmsPointData *mFmsPointData;    
+    StPythiaEvent *mInPythiaEvent;
+    
+    TH2D *mPointXY_trg;
+    TH2D *mPointXY_notrg;
+    TH1D *mPointPhi_trg;
+    TH1D *mPointPhi_notrg;
+    
 protected:
-    void Reset();
+
     
 public: 
-    TStFmsSimTreeMaker(const char *name  = "FmsSimTreeMaker");
-    virtual ~TStFmsSimTreeMaker();
+    TStFmsSimTreeMakerCustom(const char *name  = "FmsSimTreeMaker");
+    virtual ~TStFmsSimTreeMakerCustom();
     virtual Int_t Init();
     virtual Int_t Make();
     virtual Int_t Finish();
@@ -65,7 +72,7 @@ public:
     void SetPythiaFile(TString pythiaFile){mPythiaFile = pythiaFile;}
     void SetOutFileName(TString outName){mOutName = outName;}
     
-    ClassDef(TStFmsSimTreeMaker,1) 
+    ClassDef(TStFmsSimTreeMakerCustom,1) 
 };
 
 #endif
