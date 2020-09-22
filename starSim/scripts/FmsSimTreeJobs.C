@@ -4,14 +4,14 @@
 // Created: Fri Sep 11 07:20:13 2020 (-0400)
 // URL: jlab.org/~latif
 
-void FmsSimTreeJobs()
+void FmsSimTreeJobs(TString filePrefix, Int_t first, Int_t last)
 {
     TString inFile;
     TString outFile;
 
-    for(Int_t i = 1500; i < 2500; ++i)
+    for(Int_t i = first; i < last; ++i)
     {
-	inFile = "/star/u/kabir/GIT/BrightSTAR/scratch/condor/FmsSim_Run15_";
+	inFile = filePrefix;
 	inFile += i;
 	inFile += "_evt5000.MuDst.root";
 

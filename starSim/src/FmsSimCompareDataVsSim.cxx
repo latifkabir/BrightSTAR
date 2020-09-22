@@ -15,6 +15,7 @@ using namespace std;
 
 void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
 {
+    gStyle->SetOptStat(10);
     TFile *outFile = new TFile("fmsJetDataVsSim.root", "recreate");
 
     TString det = "fms";
@@ -82,7 +83,7 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
     TH1D *h1JetE_lg_s = new TH1D ("h1JetE_lg_s", "EM Jet E [large cells]; Jet E [GeV]", 100, 0.0, 70.0);
     TH1D *h1JetPt_s = new TH1D ("h1JetPt_s", "Jet Pt; Jet Pt [GeV/c]", 100, 0.0, 50.0);
     TH1D *h1JetVtxZ_s = new TH1D ("h1JetVtxZ_s", "Jet Vtx z; Jet vtx z [cm]", 100, -200.0, 200.0);
-    TH1D *h1nPhotons_s = new TH1D("h1nPhotons_s", "number of photons in EM jets", 20, 0, 20);
+    TH1D *h1nPhotons_s = new TH1D("h1nPhotons_s", "number of photons in EM jets; Number of photons", 20, 0, 20);
         
     Double_t eta;
     Double_t phi;
@@ -133,10 +134,20 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
 	    continue;
 	}
 
-	//-------- Consider JP1 Trigger only ------------
-	if(trgBitStr[8] != '1')
-	    continue;
+	// if(trgBitStr[1] != '1') //sm-bs1
+	//     continue;
+	
+	// if(trgBitStr[4] != '1') //Lg-bs1
+	//     continue;
 
+	if(trgBitStr[7] != '1') //Fms-JP0
+	    continue;
+	
+	// if(trgBitStr[8] != '1') //Fms-JP1
+	//     continue;
+
+
+	
 	if(jetEventSim->numberOfJets() == 0)
 	    continue;
 	
@@ -228,10 +239,18 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
 		h1TrigType_d->Fill(t);
 	}
 
-	//-------- Consider JP1 Trigger only ------------
-	if(!skimEventData->GetTrigFlag(1))
-	    continue;
+	
+	// if(!skimEventData->GetTrigFlag(3)) //sm-bs1 Trigger
+	//     continue;
 
+	// if(!skimEventData->GetTrigFlag(6)) //lg-bs1 Trigger
+	//     continue;
+	
+	if(!skimEventData->GetTrigFlag(0)) //JP0 Trigger
+	    continue;
+	
+	// if(!skimEventData->GetTrigFlag(1)) //JP1 Trigger
+	//     continue;
 	
 	nJets = 0;	
 	for(Int_t j = 0; j <  jetEventData->GetNumberOfJets(); ++j)
@@ -283,56 +302,69 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
 	    h1nJets_d->Fill(nJets); //this is must for EEMC 
     }
 
-    //------------------------------- Comparison ----------------------------------------------
+    //------------------------------- Comparison ----------------------------------------------    
     TCanvas *c[10];
+
+    TLegend *legend = new TLegend(0.1,0.7,0.48,0.9);
+    legend->AddEntry(h1nJets_d,"Data","lep");
+    legend->AddEntry(h1nJets_s,"Simulation","l");
+    
     c[0] = new TCanvas("c1");
     h1nJets_d->SetLineColor(kBlue);
     h1nJets_d->SetMarkerColor(kBlue);
     h1nJets_d->DrawNormalized("e");
     h1nJets_s->DrawNormalized("same");
-
+    legend->Draw();
+    
     c[1] = new TCanvas("c2");
     h1JetE_d->SetLineColor(kBlue);
     h1JetE_d->SetMarkerColor(kBlue);
     h1JetE_s->DrawNormalized();
     h1JetE_d->DrawNormalized("samee");
-
+    legend->Draw();
+    
     c[2] = new TCanvas("c3");
     h1JetPt_d->SetLineColor(kBlue);
     h1JetPt_d->SetMarkerColor(kBlue);
     h1JetPt_s->DrawNormalized();
     h1JetPt_d->DrawNormalized("samee");
-
+    legend->Draw();
+    
     c[3] = new TCanvas("c4");
     h1JetEta_d->SetLineColor(kBlue);
     h1JetEta_d->SetMarkerColor(kBlue);
     h1JetEta_s->DrawNormalized();
     h1JetEta_d->DrawNormalized("samee");
-
+    legend->Draw();
+    
     c[4] = new TCanvas("c5");
     h1JetPhi_d->SetLineColor(kBlue);
     h1JetPhi_d->SetMarkerColor(kBlue);
     h1JetPhi_s->DrawNormalized();
     h1JetPhi_d->DrawNormalized("samee");
-
+    legend->Draw();
+    
     c[5] = new TCanvas("c6");
     h1JetE_sm_d->SetLineColor(kBlue);
     h1JetE_sm_d->SetMarkerColor(kBlue);
     h1JetE_sm_s->DrawNormalized();
     h1JetE_sm_d->DrawNormalized("samee");
-
+    legend->Draw();
+    
     c[6] = new TCanvas("c7");
     h1JetE_lg_d->SetLineColor(kBlue);
     h1JetE_lg_d->SetMarkerColor(kBlue);
     h1JetE_lg_s->DrawNormalized();
     h1JetE_lg_d->DrawNormalized("samee");
-
+    legend->Draw();
+    
     c[7] = new TCanvas("c8");
     h1nPhotons_d->SetLineColor(kBlue);
     h1nPhotons_d->SetMarkerColor(kBlue);
     h1nPhotons_s->DrawNormalized();
     h1nPhotons_d->DrawNormalized("samee");
-
+    legend->Draw();
+    
     for(Int_t i = 0; i < 8; ++i)
     	c[i]->Write();
     

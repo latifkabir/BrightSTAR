@@ -8,10 +8,17 @@
 #include "RootInclude.h"
 #include "BrightStInclude.h"
 
+//Use this script to compare generated vs reconstructed photons
 void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use wildcat to combine files
 {
+    gStyle->SetOptStat(0);
+    
     Double_t Emin = minE;//2.0;
     Double_t Emax = maxE; //500.0;
+
+    //The range of eta was taken to have some fedutial cut, so that pythia particles would not be missed at the edges.
+    Double_t etaMin = 2.5;
+    Double_t etaMax = 4.4;
     
     TChain *tree = new TChain("PythiaTree");
     tree->Add(fileList);
@@ -42,21 +49,23 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
     h1TrigTypes->GetXaxis()->SetBinLabel(21,"None");
 
     
-    TH1D* h1EngPy = new TH1D("h1EngPy", "Energy; E [GeV]", 120, 0, 120);
-    TH1D* h1PtPy = new TH1D("h1PtPy", "Pt; Pt [GeV/c]", 100, 0, 15);
-    TH1D* h1EtaPy = new TH1D("h1EtaPy", "Eta; #Eta", 100, 2.5, 4.5);
+    TH1D* h1EngPy = new TH1D("h1EngPy", "Energy; E [GeV]", 100, 0, 100);
+    TH1D* h1PtPy = new TH1D("h1PtPy", "Pt; Pt [GeV/c]", 100, 0, 10);
+    TH1D* h1EtaPy = new TH1D("h1EtaPy", "Eta; #eta", 100, 2.5, 4.5);
     TH1D* h1PhiPy = new TH1D("h1PhiPy", "Phi; #phi [rad]", 100, -3.2, 3.2);
     TH1D* h1nPhotonPy = new TH1D("h1nPhotonPy", "Number of Photons; Number of photons", 20, -1, 19);
     Int_t nPhotonPy;
     
-    TH1D* h1EngMu = new TH1D("h1EngMu", "Energy; E [GeV]", 120, 0, 120);
-    TH1D* h1PtMu = new TH1D("h1PtMu", "Pt; Pt [GeV/c]", 100, 0, 15);
-    TH1D* h1EtaMu = new TH1D("h1EtaMu", "Eta; #Eta", 100, 2.5, 4.5);
+    TH1D* h1EngMu = new TH1D("h1EngMu", "Energy; E [GeV]", 100, 0, 100);
+    TH1D* h1PtMu = new TH1D("h1PtMu", "Pt; Pt [GeV/c]", 100, 0, 10);
+    TH1D* h1EtaMu = new TH1D("h1EtaMu", "Eta; #eta", 100, 2.5, 4.5);
     TH1D* h1PhiMu = new TH1D("h1PhiMu", "Phi; #phi [rad]", 100, -3.2, 3.2);
     TH1D* h1nPhotonMu = new TH1D("h1nPhotonMu", "Number of Photons; Number of photons", 20, -1, 19);   
     Int_t nPhotonMu;
 
-    TH2D* h2nPhoton = new TH2D("h2nPhoton", "Number of Photons; Number of photons [Generated]; Number of photons [Reconstructed]", 20, -1, 19, 20, -1, 19);   
+    TH2D* h2nPhoton = new TH2D("h2nPhoton", "Number of Photons; Number of photons [Generated]; Number of photons [Reconstructed]", 15, -1, 14, 15, -1, 14);
+
+    TH2D *h2xyMu = new TH2D ("h2xyPy", "Photon Position [Reconstructed]; Photon X [cm]; Photon Y [cm]", 100, -100, 100, 100, -100, 100);
     
     cout << "Total events:"<< tree->GetEntries() <<endl;
 
@@ -75,9 +84,15 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
 		h1TrigTypes->Fill(2*ii);
 	}	
 
+	// if(trgBitStr[1] != '1') //sm-bs1
+	//     continue;
+	
 	// if(trgBitStr[4] != '1') //Lg-bs1
 	//     continue;
 
+	// if(trgBitStr[7] != '1') //Fms-JP0
+	//     continue;
+	
 	// if(trgBitStr[8] != '1') //Fms-JP1
 	//     continue;
 	
@@ -90,7 +105,7 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
 	    if(part->GetPdgCode() !=  22)
 	    	continue;
 	    
-	    if(part->Eta() < 2.5 || part->Eta() > 4.5)
+	    if(part->Eta() < etaMin || part->Eta() > etaMax)
 		continue;
 
 	    if(part->Energy() < Emin || part->Energy() > Emax)
@@ -99,8 +114,12 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
 	    h1EngPy->Fill(part->Energy());
 	    h1PtPy->Fill(part->Pt());
 	    h1EtaPy->Fill(part->Eta());
-	    h1PhiPy->Fill(part->Phi() - TMath::Pi());
-
+	    
+	    if(part->Phi() > TMath::Pi())
+		h1PhiPy->Fill(-2.0*TMath::Pi() + part->Phi());
+	    else
+		h1PhiPy->Fill(part->Phi());
+	    
 	    ++nPhotonPy;
 	}	
 	h1nPhotonPy->Fill(nPhotonPy);
@@ -110,7 +129,7 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
 	{
 	    fmsPoint = (StMuFmsPoint*)fmsPointArr->At(i);
 	    
-	    if(fmsPoint->xyz().pseudoRapidity() < 2.5 || fmsPoint->xyz().pseudoRapidity() > 4.5)
+	    if(fmsPoint->xyz().pseudoRapidity() < etaMin || fmsPoint->xyz().pseudoRapidity() > etaMax)
 		continue;
 
 	    if(fmsPoint->energy() < Emin || fmsPoint->energy() > Emax)
@@ -120,6 +139,8 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
 	    h1PtMu->Fill(fmsPoint->fourMomentum().perp());
 	    h1EtaMu->Fill(fmsPoint->xyz().pseudoRapidity());
 	    h1PhiMu->Fill(fmsPoint->xyz().phi());
+	    h2xyMu->Fill(fmsPoint->xyz().x(), fmsPoint->xyz().y());
+	    
 	    ++nPhotonMu;	    
 	}
 	h1nPhotonMu->Fill(nPhotonMu);
@@ -127,39 +148,55 @@ void FmsSimAnalyzeSimTree(TString fileList, Double_t minE, Double_t maxE) // Use
 	h2nPhoton->Fill(nPhotonPy, nPhotonMu);
     }
 
-    const Int_t nCanvas = 6;
+    const Int_t nCanvas = 8;
     TCanvas *c1[nCanvas];
+    TLegend *legend = new TLegend(0.1,0.7,0.48,0.9);
+    legend->AddEntry(h1EngPy,"Generated","l");
+    legend->AddEntry(h1EngMu,"Reconstructed","lep");
     
     c1[0] = new TCanvas("c0");
     h1EngPy->SetLineColor(kBlue);
     c1[0]->SetLogy();
     h1EngPy->Draw();
-    h1EngMu->Draw("samee");
-
+    h1EngMu->DrawNormalized("samee", h1EngPy->GetEntries());
+    legend->Draw();
+    
     c1[1] = new TCanvas("c1");
     c1[1]->SetLogy();
     h1PtPy->SetLineColor(kBlue);
     h1PtPy->Draw();
-    h1PtMu->Draw("samee");
-
+    h1PtMu->DrawNormalized("samee", h1PtPy->GetEntries());
+    legend->Draw();
+    
     c1[2] = new TCanvas("c2");
     h1EtaPy->SetLineColor(kBlue);
     h1EtaPy->Draw();
-    h1EtaMu->Draw("samee");
-
+    h1EtaMu->DrawNormalized("samee", h1EtaPy->GetEntries());
+    legend->Draw();
+    
     c1[3] = new TCanvas("c3");
     h1PhiPy->SetLineColor(kBlue);
     h1PhiPy->Draw();
-    h1PhiMu->Draw("samee");
-
+    h1PhiMu->DrawNormalized("samee", h1PhiPy->GetEntries());
+    legend->Draw();
+    
     c1[4] = new TCanvas("c4");
     h1nPhotonPy->SetLineColor(kBlue);
     h1nPhotonPy->Draw();
-    h1nPhotonMu->Draw("samee");
-
-    c1[5] = new TCanvas("c5");    
+    h1nPhotonMu->DrawNormalized("samee", h1nPhotonPy->GetEntries());
+    legend->Draw();
+    
+    c1[5] = new TCanvas("c5");
+    c1[5]->SetGrid(1);
     h2nPhoton->Draw("colz");
 
+    c1[6] = new TCanvas("c6");
+    h2xyMu->Draw("colz");
+
+    c1[7] = new TCanvas("c7");
+    h1TrigTypes->Draw();
+
+    
     for(Int_t i = 0; i < nCanvas; ++i)
 	c1[i]->Write();
     
