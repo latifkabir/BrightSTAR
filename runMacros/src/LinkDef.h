@@ -29,7 +29,7 @@
 //Emc
 #pragma link C++ function RunEmcTreeMaker;                       // Emc gamma, pi0 reconstruction 
 
-//TPC + BTPF
+//TPC + BTOF
 #pragma link C++ function RunPidTreeMaker;                       // PID Treemaker using TPC and BTOF
 
 //Jet
@@ -37,9 +37,6 @@
 
 //Nano Dst
 #pragma link C++ function RunNanoDstMaker;                       // Run Nano DST maker. 
-
-//EM Jet 
-#pragma link C++ function RunEmJetTreeMaker;                     // Run EM Jet tree maker. 
 
 #endif
 

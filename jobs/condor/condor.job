@@ -12,10 +12,10 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 +Job_Type       = "cas"
 transfer_input_files =   /star/u/kabir/GIT/BrightSTAR/.sl73_gcc485, /star/u/kabir/GIT/BrightSTAR/lib, /star/u/kabir/GIT/BrightSTAR/rootlogon.C, /star/u/kabir/GIT/BrightSTAR/setup.sh, /star/u/kabir/GIT/BrightSTAR/setup.csh, /star/u/kabir/GIT/BrightSTAR/config, /star/u/kabir/GIT/BrightSTAR/database
 Executable      = /star/u/kabir/GIT/BrightSTAR/jobs/condor/condor.sh
-Initialdir      = /star/u/kabir/GIT/BrightSTAR/scratch/condor/
-Arguments       = "/star/u/kabir/GIT/BrightSTAR/scratch/condor/FmsSim_Run15_3720_evt5000.MuDst.root	FmsSimTreeTriggered_3720.root"
-Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimTreeTriggered_3720.out
-Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimTreeTriggered_3720.err
-Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimTreeTriggered_3720.log
+Initialdir      = /star/u/kabir/GIT/BrightSTAR/scratch/condor/16093014
+Arguments       = "root://xrdstar.rcf.bnl.gov:1095//home/starlib/home/starreco/reco/production_pp200trans_2015/ReversedFullField/P15ik/2015/093/16093014/st_fms_16093014_raw_0000001.MuDst.root	AnRunNanoDstMaker_16093014_0000001.root"
+Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093014_0000001.out
+Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093014_0000001.err
+Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/AnRunNanoDstMaker_16093014_0000001.log
 Queue
 

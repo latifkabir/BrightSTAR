@@ -9,8 +9,11 @@
 
 #include <TObject.h>
 #include <string>
+#include <vector>
 #include "TString.h"
 #include "TEntryList.h"
+
+using namespace std;
 
 class TStScheduler: public TObject
 {
@@ -20,11 +23,13 @@ public:
     static Int_t mRunIncrement;
     static Int_t mMaxFilesPerJob;
     static Int_t mCopyToExeHost;
+    static Int_t mJobCounter;
     
     TStScheduler();
     virtual ~TStScheduler();
 
     static void JobStatus(Int_t level = 0);                                                                                                        // Check Job Status
+    static void SubmitJob(vector<string> jobList, TString jobName);
     static void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor");    // Submit job using condor
     static void SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor"); 
     static void SubmitJob(Int_t maxFilesPerJob, TString functionName, TEntryList *runList); 

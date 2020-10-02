@@ -15,7 +15,7 @@ fi
 RunList=$1
 FolderName=$2
 FilePrefix=$3
-InputDir=$STARHOME/jobResults/${FolderName}
+InputDir=$STARHOME/scratch/${FolderName}
 OutDir=$STARHOME/dst/${FolderName}
 TIME=`date "+%Y%m%d%I"`
 
@@ -33,18 +33,18 @@ while read -r RunNumber
 do
     if ! [ "${RunNumber}" == "" ]
     then
-	infile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}_*.root
-	outfile=${InputDir}/${RunNumber}/${FilePrefix}_${RunNumber}.root
+	infile=${InputDir}/${RunNumber}/${FilePrefix}${RunNumber}_*.root
+	outfile=${InputDir}/${RunNumber}/${FilePrefix}${RunNumber}.root
 	echo -e "\n ============== Now Merging Run Number: ${RunNumber} ======================\n"
 	hadd $outfile $infile
 
 	echo -e "\n-----> Moving the merged file ... ..."
-	if [ -f ${OutDir}/${FilePrefix}_${RunNumber}.root ]
+	if [ -f ${OutDir}/${FilePrefix}${RunNumber}.root ]
 	then
 	    echo -e "\n--------->Same output file already exist. Saving with time stamp ...\n"
-	    mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}_ver$TIME.root
+	    mv $outfile ${OutDir}/${FilePrefix}${RunNumber}_ver$TIME.root
 	else
-	    mv $outfile ${OutDir}/${FilePrefix}_${RunNumber}.root
+	    mv $outfile ${OutDir}/${FilePrefix}${RunNumber}.root
 	fi
     fi
 done < $RunList

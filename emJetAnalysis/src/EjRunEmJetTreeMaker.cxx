@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC)
+void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC)
 {
     TStopwatch sw;
     sw.Start();
@@ -22,7 +22,7 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
 
     //det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
 
-    if(gROOT->IsBatch())
+    if(gROOT->IsBatch() && !inFile.Contains(".list"))
 	inFile = TStScheduler::CopyInputFiles(inFile);
         
     if(!(det == "fms" || det == "eemc"))
@@ -205,9 +205,12 @@ void RunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC
 
     if(gROOT->IsBatch() && inFile.Contains("/tmp/"))
 	TStScheduler::DeleteTempFiles(inFile);
+
+    cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
+    gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root");
     
     std::cout <<"Done!" <<endl;
-
+    
     return;
 }//Main
 

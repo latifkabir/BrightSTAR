@@ -1,4 +1,4 @@
 void jobMacro(TString fileList, TString outName)
 {
-	FmsSimTreeMaker(fileList, outName);
+	AnRunNanoDstMaker(fileList, outName);
 }

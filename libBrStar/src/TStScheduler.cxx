@@ -45,6 +45,7 @@ Int_t TStScheduler::mSleepTime = 30; //In minutes
 Int_t TStScheduler::mRunIncrement = 20;
 Int_t TStScheduler::mMaxFilesPerJob = 5;
 Int_t TStScheduler::mCopyToExeHost = 1;
+Int_t TStScheduler::mJobCounter = 0;
 
 //___________________________________________________________________________________________
 void TStScheduler::JobStatus(Int_t level)
@@ -64,12 +65,88 @@ void TStScheduler::JobStatus(Int_t level)
 }
 
 //___________________________________________________________________________________________
+void TStScheduler::SubmitJob(vector <string> jobList, TString jobName)    
+{
+    TString namePrefix = jobName;   
+    TString starHome = TStar::Config->GetStarHome();
+    TString outFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)"$(Process).out";
+    TString errorFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)"$(Process).err";
+    TString logFile = starHome + (TString)"/jobOutput/" + namePrefix + (TString)"$(Process).log";
+    TString outDir = starHome + "/jobOutput/";
+    TString jobDir = starHome + (TString) "/jobs/" + jobName;
+    TString createJobDir = (TString)".! mkdir -p " + jobDir;
+    gROOT->ProcessLine(createJobDir);    
+    
+    cout << "====================== Reading Condor Job Configuration ... ... ================" <<endl;
+    TString condor_config = TStar::gConfig->GetCondorConfig();
+    if(gSystem->AccessPathName(condor_config))
+    {
+	cout << "Condor job config NOT found at: "<<condor_config<<endl;
+	return;
+    }
+    
+    ifstream condorConfig_in(condor_config);
+    ofstream condorConfig_out(jobDir + (TString)("/condor.job"));
+    if(!condorConfig_out)
+    {
+	cout<<"Unable to create condor job description file" << endl;
+	return;
+    }
+    string str;
+    while(getline(condorConfig_in, str))
+    {
+	condorConfig_out << str <<endl;
+    }
+  
+    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+    condorConfig_in.close();
+
+    //======================= Get File Path and wtite to condor file descriptor ===================================
+    cout << "====================== Reading fileList and writing to Condor Job Description File ... ... ================" <<endl;
+    TString resultDir;
+    TString rootCommand;
+    resultDir = TStar::Config->GetJobResultsPath() + "condor" + (TString)"/";
+    gROOT->ProcessLine((TString)".! mkdir -p " + resultDir);
+    condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
+    condorConfig_out << "Executable       =  /bin/bash" << endl;
+    condorConfig_out <<"Output          = "<<outFile<<endl;
+    condorConfig_out <<"Error           = "<<errorFile<<endl;
+    condorConfig_out <<"Log             = "<<logFile<<endl;
+    for(Int_t job = 0; job < jobList.size(); ++job)
+    {
+	rootCommand = jobList[job];
+	rootCommand.ReplaceAll("\"", "\\\"\"");
+	condorConfig_out << "Arguments   =  \"-c '" << "echo \"\""<< rootCommand << "\"\" | root4star -l -b'\"" <<endl;
+	condorConfig_out << "Queue\n" << endl;
+    }	    
+    condorConfig_out.close();
+
+    //======================== Submit the job using condor=======================
+    TString subScript = jobDir + (TString)"/condor.job";
+    if(gSystem->AccessPathName(subScript))
+    {
+    	cout << "Submission sh script NOT found at: "<<subScript<<endl;
+    	return;
+    }
+    TString command = (TString)".! condor_submit" + (TString)"\t" + subScript;
+    gROOT->ProcessLine(command);
+
+    cout << "Submission attempt completed." <<endl;
+
+}
+
+
+//___________________________________________________________________________________________
 void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles, TString outName, TString jobName)    
 {
     if(outName == "")
 	 outName = functionName;  // Save locally and then copy back from job sh script
     else
 	outName.ReplaceAll(".root", "");
+
+    if(jobName == "condor")
+	jobName += to_string(++mJobCounter);
+    
     TString starHome = TStar::Config->GetStarHome();
     TString outDir = starHome + "/jobOutput/";
     TString jobDir = starHome + (TString) "/jobs/" + jobName;
@@ -239,6 +316,10 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	 outName = functionName;  // Save locally and then copy back from job sh script
     else
 	outName.ReplaceAll(".root", "");
+
+    if(jobName == "condor")
+	jobName += to_string(++mJobCounter);
+    
     TString starHome = TStar::Config->GetStarHome();
     TString outDir = starHome + "/jobOutput/";
     TString jobDir = starHome + (TString) "/jobs/" + jobName;
@@ -470,6 +551,10 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
 	outName = functionName;  
     else
 	outName.ReplaceAll(".root", "");
+
+    if(jobName == "condor")
+	jobName += to_string(++mJobCounter);
+    
     TString namePrefix = outName; //+ "_" + to_string(TStRunList::GetRunFromFileName((string)inFileName)) + (TString)"_"+ TStRunList::GetFileNoFromFileName((string)inFileName);
     outName = namePrefix + (TString)".root" ;    
     TString starHome = TStar::Config->GetStarHome();

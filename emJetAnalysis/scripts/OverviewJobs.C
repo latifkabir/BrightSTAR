@@ -13,6 +13,6 @@ void OverviewJobs()
     for(int k = 0; k < fills.size(); ++k)
     {
 	run = db.GetRunsWithFill(fills[k])[0];
-	TStScheduler::SubmitJob("RunEmJetTreeMaker", run, 1);
+	TStScheduler::SubmitJob("EjRunEmJetTreeMaker", run, 1);
     }    
 }

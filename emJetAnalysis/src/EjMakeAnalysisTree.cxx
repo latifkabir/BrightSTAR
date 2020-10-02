@@ -8,7 +8,7 @@
 #include "BrJetMaker/TStJetEvent.h"
 
 /*
- It is possible to integrate it as part of maker and create the tree from JetMaker buffer. See Zhanwen's FMS jet analysis maker as the example. This way you do not need to keep large jet trees.
+ This implementation has been integrated as part of maker and create the tree from JetMaker buffer. 
 */
 
 //Use file name with wildcard to chain many files

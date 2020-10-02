@@ -31,6 +31,7 @@ Instruction()
     echo "          submit             : Submit job using SLUMS"
     echo "          sout               : Open job std-out for corresponding root output"
     echo "          serr               : Open job err out for corresponding root output"
+    echo "          hold-reason        : Print job hold reason"
 
     echo "          ------------------------------------------------------------------------------------------------"
     echo "                    "    
@@ -126,6 +127,9 @@ case $OPTION in
 	fileName=$(echo $2 | sed "s/root/err/")
 	cat $STARHOME/jobOutput/$fileName
 	;;
+    hold-reason)
+	condor_q -hold -af HoldReason
+	;;    
     *)
 	echo "                                       "	   
 	echo "              Invalid option or to be implemented        "
