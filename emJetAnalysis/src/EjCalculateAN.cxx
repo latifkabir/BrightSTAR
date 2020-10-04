@@ -8,6 +8,7 @@
 #include "RootInclude.h"
 #include "cppInclude.h"
 #include "BrightStInclude.h"
+#include "Hists.h"
 using namespace std;
 
 void EjCalculateAN(TString inFileName, TString outName)
@@ -179,8 +180,8 @@ void EjCalculateAN(TString inFileName, TString outName)
 	    bGrPhy[i][j]->SetTitle(Form("%.1f GeV < E < %.1f GeV, No. of Photons %i; P_{T} [GeV/c]; A_{N}", engBins[i], engBins[i + 1], j + 1));
 	    yGrPhy[i][j]->SetName(Form("yEbin%i_PhotonBin%i", i, j));
 	    yGrPhy[i][j]->SetTitle(Form(" %.1f GeV < E < %.1f GeV, No. of Photons %i; P_{T} [GeV/c]; A_{N}", engBins[i], engBins[i + 1], j + 1));
-	    bGrPhy[i][j]->SetMarkerColor(kBlue);
-	    bGrPhy[i][j]->SetLineColor(kBlue);
+	    bGrPhy[i][j]->SetMarkerColor(kBlack);
+	    bGrPhy[i][j]->SetLineColor(kBlack);
 	    bGrPhy[i][j]->SetMarkerStyle(kFullCircle);
 	    
 	    bGrPhy[i][j]->SetMaximum(0.1);
@@ -202,7 +203,7 @@ void EjCalculateAN(TString inFileName, TString outName)
 	    
 	    yGrPhy[i][j]->SetMarkerColor(kRed);
 	    yGrPhy[i][j]->SetLineColor(kRed);
-	    yGrPhy[i][j]->SetMarkerStyle(kFullCircle);
+	    yGrPhy[i][j]->SetMarkerStyle(kOpenCircle);
 	    
 	    // if(i == 0)
 	    // {
@@ -334,4 +335,38 @@ void EjCalculateAN(TString inFileName, TString outName)
     */
     
     //outFile->Write();
+
+    //---------------- This area is just for plotting final physics result ----------------
+    TCanvas* c3 = new TCanvas("casym","Asymmetries",1000,600);
+    float varMins[5] = { 1.8, 1.8, 1.8, 1.8, 1.8};
+    float varMaxs[5] = { 8.2, 8.2, 8.2, 8.2, 8.2};
+    const char* xTitles[3] = { "p_{T} [GeV/c]","p_{T} [GeV/c]","p_{T} [GeV/c]" };
+    const char* yTitles[5] = { "A_{N}", "A_{N}", "A_{N}", "A_{N}", "A_{N}" };
+
+    PanelPlot* asymPlot = new PanelPlot(c3,3,5,2,"asym",xTitles,yTitles);
+
+    for (int i = 0; i < 5; i++)
+    {
+	for (int j = 0; j < 3; j++)
+	{
+	    asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
+	    asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
+
+	    if(i == 4 && j == 0)
+	    {
+		asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
+		asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
+	    }
+	    else
+	    {
+		asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
+		asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
+	    }
+	    if(i == 0 && j == 0)
+	    	asymPlot->GetPlot(j,i)->AddText(2.5, -0.04, "Preliminary", 0.10);       
+	}
+    }
+    asymPlot->Draw();
+    
+    c3->Write();    
 }

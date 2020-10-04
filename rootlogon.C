@@ -164,15 +164,14 @@
     gSystem->Load("libCepAnalysis.so");
     
     cout << "attempt completed !!\n\n";
-
-
+    /*
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square
     gStyle->SetMarkerStyle(4);      // Circle
     gStyle->SetMarkerSize(.4);      // larger than half a pixel ...
     gStyle->SetMarkerColor(kBlack);
     //gStyle->SetMarkerColor(kRed);
-   
+    
     //------------- Plotting Style -----------------------------
     TStyle* dStyle = new TStyle("Bright_Star_Style", "Bright_Star_Style");
     dStyle->Reset("Modern");
@@ -225,10 +224,10 @@
     dStyle->SetPadGridY(kFALSE);
 
     //Histogram/Graph Title Size
+    //dStyle->SetTitleSize(0.08, "xyz"); 
     dStyle->SetTitleSize(0.075, "t"); //"t": could be anything that is not "x" "y" or "z"
-
     dStyle->cd();
-
+    
     //-----------------------------------
     const Int_t NRGBs = 5;
     const Int_t NCont = 255;
@@ -241,6 +240,6 @@
     gStyle->SetNumberContours(NCont);
 
     using namespace TStar;
-
+    */
 }
 

@@ -15,5 +15,6 @@
 #pragma link C++ function EjCreateBinnedHist;           // Create binned histograms in pt, E, phi, #photons, spin to be used to extract yield
 
 #pragma link C++ function EjCalculateAN;                // Calculate A_N from binned histograms
+#pragma link C++ function EjPlotAn;                     // Calculate A_N from binned histograms
 
 #endif
