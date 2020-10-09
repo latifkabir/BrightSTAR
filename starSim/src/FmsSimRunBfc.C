@@ -55,8 +55,9 @@ void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 12)
     pyfile.ReplaceAll(".fzd",".pythia.root");
     pythia->SetPythiaFile(pyfile);
    
-    //---------> Need find out appropriate threshold <----------------
-    StFmsFilterMaker* fmsFilter = new StFmsFilterMaker("fmsFilter");
+    //---------> Need to find out appropriate threshold <----------------
+    //StFmsFilterMaker* fmsFilter = new StFmsFilterMaker("fmsFilter"); // Energy sum per quadrant or pie
+    StFmsEtFilterMaker* fmsFilter = new StFmsEtFilterMaker("fmsFilter"); // Transverse Energy sum per quadrant or pie
     fmsFilter->setEThres(filterThreshold); //Initial value was 30. It was too high to produce MuDst
     cout << "-----------------> !!! The FMS Filter Maker Threshold is set to:  "<< filterThreshold << " !!!<----------------------------"<<endl;
     

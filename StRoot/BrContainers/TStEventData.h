@@ -154,7 +154,7 @@ public:
     // 	this->mPrimaryVertex_mX3 = z;
     // }
 
-    ClassDef( TStEventData, 2 )
+    ClassDef( TStEventData, 3 )
 };
 
 

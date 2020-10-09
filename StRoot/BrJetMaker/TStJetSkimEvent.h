@@ -68,7 +68,7 @@ public:
     }
 
 	       	
-    ClassDef(TStJetSkimEvent, 1 )
+    ClassDef(TStJetSkimEvent, 2 )
 };
 
 #endif

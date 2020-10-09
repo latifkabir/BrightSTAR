@@ -151,11 +151,11 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    spinY = skimEvent->GetSpinY();
 
 	    //Exclude FMS small-bs3 trigger that gives ring of fire issue.
-	    if(det == "fms")
-	    {
-		if(skimEvent->GetTrigFlag(5))
-		    continue;
-	    }
+	    // if(det == "fms")
+	    // {
+	    // 	if(skimEvent->GetTrigFlag(5))
+	    // 	    continue;
+	    // }
 	    
 	    if(fabs(vtxZ) > 80)
 		continue;

@@ -11,7 +11,7 @@
 #include "Hists.h"
 using namespace std;
 
-void EjCalculateAN(TString inFileName, TString outName)
+void EjCalculateAN(TString inFileName, TString outName, TString det)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
@@ -34,7 +34,8 @@ void EjCalculateAN(TString inFileName, TString outName)
     TH2D *yHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0}; //For info only
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
-
+    Double_t photonBins[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};// Last bin contains 6 or more photons
+    
     //Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
     for(Int_t i = 0; i < kSpinBins; ++i)
@@ -189,33 +190,11 @@ void EjCalculateAN(TString inFileName, TString outName)
 
 	    yGrPhy[i][j]->SetMaximum(0.1);
 	    yGrPhy[i][j]->SetMinimum(-0.1);
-
-	    // if(i == 0)
-	    // {
-	    // 	bGrPhy[i][j]->SetMaximum(0.006);
-	    // 	bGrPhy[i][j]->SetMinimum(-0.006);
-	    // }
-	    // else
-	    // {
-	    // 	bGrPhy[i][j]->SetMaximum(0.05);
-	    // 	bGrPhy[i][j]->SetMinimum(-0.05);
-	    // }
 	    
 	    yGrPhy[i][j]->SetMarkerColor(kRed);
 	    yGrPhy[i][j]->SetLineColor(kRed);
 	    yGrPhy[i][j]->SetMarkerStyle(kOpenCircle);
-	    
-	    // if(i == 0)
-	    // {
-	    // 	yGrPhy[i][j]->SetMaximum(0.006);
-	    // 	yGrPhy[i][j]->SetMinimum(-0.006);
-	    // }
-	    // else
-	    // {
-	    // 	yGrPhy[i][j]->SetMaximum(0.05);
-	    // 	yGrPhy[i][j]->SetMinimum(-0.05);
-	    // }
-	    
+	    	    
 	    nPointsPhyB = 0;
 	    nPointsPhyY = 0;
 	    
@@ -227,10 +206,6 @@ void EjCalculateAN(TString inFileName, TString outName)
 		bGr[i][j][k]->SetTitle(Form("Blue Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; #phi [rad]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
 		yGr[i][j][k]->SetName(Form("yEbin%i_PhotonBin%i_PtBin%i", i, j, k));
 		yGr[i][j][k]->SetTitle(Form("Yellow Beam, %.1f GeV < E < %.1f GeV,  No. of Photons %i, %.1f GeV/c < Pt < %.1f GeV/c; #phi [rad]; A_{raw}", engBins[i], engBins[i + 1] , j + 1, ptBins[k], ptBins[k + 1]));
-		// bGr[i][j][k]->SetMaximum(0.01);
-		// bGr[i][j][k]->SetMinimum(-0.01);
-		// yGr[i][j][k]->SetMaximum(0.01);
-		// yGr[i][j][k]->SetMinimum(-0.01);
 
 		bGr[i][j][k]->SetMaximum(0.1);
 		bGr[i][j][k]->SetMinimum(-0.1);
@@ -282,10 +257,7 @@ void EjCalculateAN(TString inFileName, TString outName)
 		    ++nPointsPhyY;		    
 		}
 		bGr[i][j][k]->Write();
-		yGr[i][j][k]->Write();
-
-		// bCanvas[i][j][k]->Write();
-		// yCanvas[i][j][k]->Write();		
+		yGr[i][j][k]->Write();	
 	    }
 	    bGrPhy[i][j]->Write();
 	    yGrPhy[i][j]->Write();
@@ -293,80 +265,124 @@ void EjCalculateAN(TString inFileName, TString outName)
     }
 
     //------------------ Plot physics A_N --------------------
-    TCanvas *c1 = new TCanvas("EMjet_A_N", "EM Jet A_{N}");
     Int_t canvasCount = 1;
 
     //------------- For FMS --------------------
-    c1->Divide(kEnergyBins -1, kPhotonBins -1);
-    for(Int_t i = 0; i < kPhotonBins - 1; ++i)
+    if(det == "fms")
     {
-    	for(Int_t j = 1; j < kEnergyBins; ++j)
-    	{
-    	    c1->cd(canvasCount);
-    	    bGrPhy[j][i]->Draw("AP");
-    	    yGrPhy[j][i]->Draw("P");
-    	    TLine* L1Temp = new TLine(1.5, 0, 9.5, 0);
-    	    L1Temp->Draw("same");
-    	    ++canvasCount;
-    	}
+	TCanvas *c1 = new TCanvas("EMjet_A_N_fms", "EM Jet A_{N}");
+	c1->Divide(kEnergyBins -1, kPhotonBins -1);
+	for(Int_t i = 0; i < kPhotonBins - 1; ++i)
+	{
+	    for(Int_t j = 1; j < kEnergyBins; ++j)
+	    {
+		c1->cd(canvasCount);
+		bGrPhy[j][i]->Draw("AP");
+		yGrPhy[j][i]->Draw("P");
+		TLine* L1Temp = new TLine(1.5, 0, 9.5, 0);
+		L1Temp->Draw("same");
+		++canvasCount;
+	    }
+	}
+	c1->Write();
+
+	//This area is just for plotting final physics result ----------------
+	//--- For Fms ---
+	//only consider energy ranges 20 -40, 40 - 60, 60 - 80 i.e. bin index 1, 2, 3  and nPhotons = 1 - 5
+	TCanvas* c2 = new TCanvas("asym_fms","Asymmetries",1000,600);
+	float varMins[5] = { 1.8, 1.8, 1.8, 1.8, 1.8};
+	float varMaxs[5] = { 8.2, 8.2, 8.2, 8.2, 8.2};
+	const char* xTitles[3] = { "p_{T} [GeV/c]","p_{T} [GeV/c]","p_{T} [GeV/c]" };
+	const char* yTitles[5] = { "A_{N}", "A_{N}", "A_{N}", "A_{N}", "A_{N}" };
+
+	PanelPlot* asymPlot = new PanelPlot(c2, 3, 5, 2, "asym_fms", xTitles, yTitles);
+
+	for (int i = 0; i < 5; i++)
+	{
+	    for (int j = 0; j < 3; j++)
+	    {
+		asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
+		asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
+
+		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
+		// {
+		//     asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
+		//     asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
+		// }
+		// else
+		{
+		    asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
+		    asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
+		}
+		if(i == 0 && j == 0)
+		    asymPlot->GetPlot(j,i)->AddText(2.5, -0.04, "Preliminary", 0.10);       
+	    }
+	}
+	asymPlot->Draw();
+    
+	c2->Write();   
+    } 
+    //---------- For EEMC Jet -----------------------
+    if(det = "eemc")
+    {
+	TCanvas *c3 = new TCanvas("EMjet_A_N_eemc", "EM Jet A_{N}");
+	canvasCount = 1;
+	c3->Divide(5, 2);
+	for(Int_t i = 0; i < 2; ++i)
+	{
+	    for(Int_t j = 0; j < 5; ++j)
+	    {
+		c3->cd(canvasCount);
+		bGrPhy[i][j]->Draw("AP");
+		yGrPhy[i][j]->Draw("P");
+		TLine* L1Temp = new TLine(2.5, 0, 9.5, 0);
+		L1Temp->Draw("same");
+		++canvasCount;
+	    }
+	}    
+	c3->Write();
+    
+	//--- For Eemc ---
+	//only consider energy ranges 0 - 20, i.e. bin index 0, 1  and nPhotons = 1 - 5
+	TCanvas* c4 = new TCanvas("asym_eemc","Asymmetries", 1000, 600);
+	float varMins_e[] = { 1.8, 4.5, 1.8, 1.8, 1.8};
+	float varMaxs_e[] = { 9.2, 9.2, 9.2, 9.2, 9.2};
+	const char* xTitles_e[] = { "p_{T} [GeV/c]","p_{T} [GeV/c]"};
+	const char* yTitles_e[] = { "A_{N}", "A_{N}", "A_{N}", "A_{N}", "A_{N}" };
+
+	PanelPlot* asymPlot_e = new PanelPlot(c4, 2, 5, 2, "asym_eemc", xTitles_e, yTitles_e);
+
+	for(int i = 0; i < 5; i++)
+	{
+	    for(int j = 0; j < 2; j++)
+	    {
+		asymPlot_e->GetPlot(j,i)->SetXRange( varMins_e[j], varMaxs_e[j]);
+		asymPlot_e->GetPlot(j,i)->SetYRange( -0.05, 0.05);
+
+		// if(i == 4 && j == 0)
+		// {
+		//     asymPlot_e->GetPlot(j,i)->Add(bGrPhy[j][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
+		//     asymPlot_e->GetPlot(j,i)->Add(yGrPhy[j][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
+		// }
+		// else
+		{
+		    asymPlot_e->GetPlot(j,i)->Add(bGrPhy[j][4 - i], Plot::Point | Plot::Erry, 0);
+		    asymPlot_e->GetPlot(j,i)->Add(yGrPhy[j][4 - i], Plot::Point | Plot::Erry, 8);
+		}
+		if(i == 0 && j == 0)
+		    asymPlot_e->GetPlot(j,i)->AddText(2.5, -0.004, "Preliminary", 0.10);       
+	    }
+	}
+	asymPlot_e->Draw();
+    
+	c4->Write();    
     }
 
-    //---------- For EEMC Jet -----------------------
-    // c1->Divide(5, 2);
-    // for(Int_t i = 0; i < 2; ++i)
-    // {
-    // 	for(Int_t j = 0; j < 5; ++j)
-    // 	{
-    // 	    c1->cd(canvasCount);
-    // 	    bGrPhy[i][j]->Draw("AP");
-    // 	    yGrPhy[i][j]->Draw("P");
-    // 	    TLine* L1Temp = new TLine(2.5, 0, 9.5, 0);
-    // 	    L1Temp->Draw("same");
-    // 	    ++canvasCount;
-    // 	}
-    // }
-    
-    c1->Write();
-    
     /*
-     Plot the saved fitted graphs as:
-     gStyle->SetOptFit(1)
-     bEbin1_PhotonBin0_PtBin0->Draw("AP*")
+      Plot the saved fitted graphs as:
+      gStyle->SetOptFit(1)
+      bEbin1_PhotonBin0_PtBin0->Draw("AP*")
     */
     
     //outFile->Write();
-
-    //---------------- This area is just for plotting final physics result ----------------
-    TCanvas* c3 = new TCanvas("casym","Asymmetries",1000,600);
-    float varMins[5] = { 1.8, 1.8, 1.8, 1.8, 1.8};
-    float varMaxs[5] = { 8.2, 8.2, 8.2, 8.2, 8.2};
-    const char* xTitles[3] = { "p_{T} [GeV/c]","p_{T} [GeV/c]","p_{T} [GeV/c]" };
-    const char* yTitles[5] = { "A_{N}", "A_{N}", "A_{N}", "A_{N}", "A_{N}" };
-
-    PanelPlot* asymPlot = new PanelPlot(c3,3,5,2,"asym",xTitles,yTitles);
-
-    for (int i = 0; i < 5; i++)
-    {
-	for (int j = 0; j < 3; j++)
-	{
-	    asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-	    asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
-
-	    if(i == 4 && j == 0)
-	    {
-		asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
-		asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
-	    }
-	    else
-	    {
-		asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
-		asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
-	    }
-	    if(i == 0 && j == 0)
-	    	asymPlot->GetPlot(j,i)->AddText(2.5, -0.04, "Preliminary", 0.10);       
-	}
-    }
-    asymPlot->Draw();
-    
-    c3->Write();    
 }
