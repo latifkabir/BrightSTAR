@@ -13,9 +13,16 @@
 
 using namespace std;
 
-void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
+void FmsSimCompareDataVsSim(TString simFile, TString dataFile, TString trigger)
 {
     gStyle->SetOptStat(10);
+
+    if(!(trigger == "sm-bs1" || trigger == "lg-bs1" || trigger == "jp0" || trigger == "jp1"))
+    {
+	cout << "Invalid trigger" <<endl;
+	return;
+    }
+    
     TFile *outFile = new TFile("fmsJetDataVsSim.root", "recreate");
 
     TString det = "fms";
@@ -24,8 +31,12 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
     Double_t detZ; //For FMS
     if(det == "fms")
     {
-	etaMin = 2.0;
-	etaMax = 4.5;
+
+	etaMin = 2.8;
+	etaMax = 3.9;
+	
+	// etaMin = 2.0;
+	// etaMax = 4.5;
 	detZ = 735.; //For FMS
     }
     else if(det == "eemc")
@@ -134,18 +145,26 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
 	    continue;
 	}
 
-	// if(trgBitStr[1] != '1') //sm-bs1
-	//     continue;
-	
-	// if(trgBitStr[4] != '1') //Lg-bs1
-	//     continue;
-
-	if(trgBitStr[7] != '1') //Fms-JP0
-	    continue;
-	
-	// if(trgBitStr[8] != '1') //Fms-JP1
-	//     continue;
-
+	if(trigger == "sm-bs1")
+	{
+	    if(trgBitStr[1] != '1') //sm-bs1
+		continue;
+	}
+	else if(trigger == "lg-bs1")
+	{
+	    if(trgBitStr[4] != '1') //Lg-bs1
+		continue;
+	}
+	else if(trigger == "jp0")
+	{
+	    if(trgBitStr[7] != '1') //Fms-JP0
+		continue;
+	}
+	else if(trigger == "jp1")
+	{
+	    if(trgBitStr[8] != '1') //Fms-JP1
+		continue;
+	}
 
 	
 	if(jetEventSim->numberOfJets() == 0)
@@ -239,18 +258,26 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile)
 		h1TrigType_d->Fill(t);
 	}
 
-	
-	// if(!skimEventData->GetTrigFlag(3)) //sm-bs1 Trigger
-	//     continue;
-
-	// if(!skimEventData->GetTrigFlag(6)) //lg-bs1 Trigger
-	//     continue;
-	
-	if(!skimEventData->GetTrigFlag(0)) //JP0 Trigger
-	    continue;
-	
-	// if(!skimEventData->GetTrigFlag(1)) //JP1 Trigger
-	//     continue;
+	if(trigger == "sm-bs1")
+	{
+	    if(!skimEventData->GetTrigFlag(3)) //sm-bs1 Trigger
+		continue;
+	}
+	else if(trigger == "lg-bs1")
+	{
+	    if(!skimEventData->GetTrigFlag(6)) //lg-bs1 Trigger
+		continue;
+	}
+	else if(trigger == "jp0")
+	{
+	    if(!skimEventData->GetTrigFlag(0)) //JP0 Trigger
+		continue;
+	}
+	else if(trigger == "jp1")
+	{
+	    if(!skimEventData->GetTrigFlag(1)) //JP1 Trigger
+		continue;
+	}
 	
 	nJets = 0;	
 	for(Int_t j = 0; j <  jetEventData->GetNumberOfJets(); ++j)

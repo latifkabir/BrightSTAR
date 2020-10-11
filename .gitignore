@@ -19,6 +19,7 @@ sched*.dataset
 temp_gccflags.c
 *.dat
 temp/
+results/
 .root_history
 .consign
 *.dat
@@ -32,5 +33,4 @@ temp*.txt
 *_cxx.d
 jobs/
 *.metafile
-starSimSL19a/
 resources/jobRunList/

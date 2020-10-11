@@ -59,12 +59,12 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
 
     //------------------- You Need Geant file to get vertex and other info used in the particles branches in jet trees ----------   
     //GEANT reader
-    cout <<"!!!!!!!!!!!!!!! WARNING: GEANT file reader is Disabled. FIX IT !!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
-    // StIOMaker* ioMaker = new StIOMaker;
-    // ioMaker->SetFile(geantFile);
-    // ioMaker->SetIOMode("r");
-    // ioMaker->SetBranch("*",0,"0");             // Deactivate all branches  
-    // ioMaker->SetBranch("geantBranch",0,"r");   // Activate geant branch    
+    //cout <<"!!!!!!!!!!!!!!! WARNING: GEANT file reader is Disabled. FIX IT !!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
+    StIOMaker* ioMaker = new StIOMaker;
+    ioMaker->SetFile(geantFile);
+    ioMaker->SetIOMode("r");
+    ioMaker->SetBranch("*",0,"0");             // Deactivate all branches  
+    ioMaker->SetBranch("geantBranch",0,"r");   // Activate geant branch    
     
     StMcEventMaker* mcEventMaker = new StMcEventMaker;
     mcEventMaker->doPrintEventInfo  = false;
@@ -143,7 +143,7 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
 
     //FMS cuts, CKim
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong
-    anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //min, max //Latif: Photon energy cut allows to reject low energy photons / hadronic contribitions and match a lot better with data //!!!!!!!!!! TEST TEST TEST !!!!!!
+    anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //min, max //Latif: Photon energy cut allows to reject low energy photons / hadronic contribitions and match a lot better with data
     //* 3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
 
     //Jet cuts
