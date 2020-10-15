@@ -32,11 +32,11 @@ void FmsSimCompareDataVsSim(TString simFile, TString dataFile, TString trigger)
     if(det == "fms")
     {
 
-	etaMin = 2.8;
-	etaMax = 3.9;
+	// etaMin = 2.8;
+	// etaMax = 3.9;
 	
-	// etaMin = 2.0;
-	// etaMax = 4.5;
+	etaMin = 2.0;
+	etaMax = 4.5;
 	detZ = 735.; //For FMS
     }
     else if(det == "eemc")

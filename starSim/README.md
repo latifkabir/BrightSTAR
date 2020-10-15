@@ -75,3 +75,22 @@ This module is available from early tag. It (`StFmsTriggerMaker`) is still avail
 
 
 
+The Synchronization Issue: Pythia vs MuDst/Jet Tree
+------------------------------------------------
+
+Because we use event filter, only events passing the filter will end up in the MuDst file and jet files. However, the pythia branch is still unfiltered. This will cause synchronizaton issue if you want to compare generated vs reconstructed quantities. A separate script has been written for the synchronization purpose. In the jet trees, the particle branch will not be filtered and will definitely have event-by-event synchronization issue.
+
+
+Improvement compared to Run 11 analysis effort
+-------------------------------------------------
+
+- starsim bug has been fixed (the problem reported by Minghui)
+- The FMS trigger simulator has been fixed to give correct phi distibution
+- The FMS event filter big has been fixed to use six phi bins instead of eight. Also one phi bin was implemented incorrectly. E sum has been replaced by E_T sum.
+- Previous analysis probably had the synchronization issue between Pythia and MuDst/Jet trees.
+
+
+
+
+
+

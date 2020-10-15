@@ -38,6 +38,7 @@ public:
     Int_t mZdcADCSum[2];		// 
     Int_t mVpdADCSum[2];		//
     Int_t mTofMultiplicity;		//
+    Int_t mRefMultiplicity;		//
     Int_t mNprimaryTracks;              //   
     Int_t mNvertices;                   //   
     Int_t mRanking;                     //   
@@ -64,6 +65,7 @@ public:
     Int_t GetZdcSum(Int_t ew){if(ew < 2) return mZdcADCSum[ew]; return -1;}			// 
     Int_t GetVpdSum(Int_t ew){if(ew < 2) return mVpdADCSum[ew]; return -1;}			//
     Int_t GetTofMultiplicity(){return mTofMultiplicity;}					//
+    Int_t GetRefMultiplicity(){return mRefMultiplicity;}					//
     Int_t GetNprimaryTracks(){return mNprimaryTracks;}					//
     Int_t GetNvertices(){return mNvertices;}					//
     Int_t GetRanking(){return mRanking;}					//
@@ -91,6 +93,7 @@ public:
     void SetZdcSum(Int_t ew, Int_t sum){if(ew < 2) mZdcADCSum[ew] = sum;}			// 
     void SetVpdSum(Int_t ew, Int_t sum){if(ew < 2) mVpdADCSum[ew] = sum;}			//
     void SetTofMultiplicity(Int_t mult){mTofMultiplicity = mult;}				//
+    void SetRefMultiplicity(Int_t mult){mRefMultiplicity = mult;}				//
     void SetNprimaryTracks(Int_t nTracks){mNprimaryTracks = nTracks;}					//
     void SetNvertices(Int_t nVertices){mNvertices = nVertices;}					//
     void SetRanking(Int_t ranking){mRanking = ranking;}					//
@@ -136,6 +139,7 @@ public:
 	mVpdADCSum[0] = 0;
 	mVpdADCSum[1] = 0;
 	mTofMultiplicity = -1;
+	mRefMultiplicity = -1;
 
 	mVx = -999.0;
 	mVy = -999.0;
@@ -154,7 +158,7 @@ public:
     // 	this->mPrimaryVertex_mX3 = z;
     // }
 
-    ClassDef( TStEventData, 3 )
+    ClassDef( TStEventData, 4 )
 };
 
 

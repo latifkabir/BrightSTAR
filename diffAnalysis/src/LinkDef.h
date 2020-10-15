@@ -8,7 +8,7 @@
 #pragma link C++ function AnFmsCellActivity;                     // Fms Hot and Bad Channels on 2d plot for manual iteration
 #pragma link C++ function AnHotChQaSaveAsPdf;                    // Fms Hot and Bad Channels on 2d plot for manual iteration
 #pragma link C++ function AnFmsPhotonAngDist;                    // Fms Hot and Bad Channels Finder QA
-#pragma link C++ function AnFmsPhotonAngDistJobs;                // Fms Hot and Bad Channels Finder QA
+#pragma link C++ function AnFmsPhotonAngDistJobs;                // Fms Hot and Bad Channels Finder QA Jobs
 
 #pragma link C++ function AnRunFmsRpTreeMaker;                   // Run Fms + Rp Tree Maker
 #pragma link C++ class TAnFmsRpTreeReader;                       // Fms + Rp Tree Reader

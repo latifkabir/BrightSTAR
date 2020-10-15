@@ -370,6 +370,7 @@ Int_t TStNanoDstMaker::MakeEvent()
 	mEventData->SetVpdSum(ew, mAdcSum[ew]);
     } 
     mEventData->SetTofMultiplicity(mMuEvent->triggerData()->tofMultiplicity());
+    mEventData->SetRefMultiplicity(mMuEvent->refMult());
     mEventData->SetNprimaryTracks(mMuDst->numberOfPrimaryTracks());
     mEventData->SetNvertices(mMuDst->primaryVertices()->GetEntries());
     if(mMuDst->primaryVertex())
