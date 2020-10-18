@@ -17,6 +17,7 @@ class TStJetSkimEvent : public TObject
 protected:
     const static Int_t mMaxTrigs = 9;
     Int_t mRunNumber;
+    Int_t mFillNumber;
     Int_t mEventId;
     Int_t mTrigFlags[mMaxTrigs];
     Int_t mSpinB;
@@ -27,6 +28,7 @@ protected:
     Float_t mBbcEastRate;
 public:    
     Int_t GetRunNumber(){return mRunNumber;}
+    Int_t GetFillNumber(){return mFillNumber;}
     Int_t GetEventId(){return mEventId;}
     Int_t GetTrigFlag(Int_t index){if(index >= 0 && index < mMaxTrigs) return mTrigFlags[index]; return -1;}
     Int_t GetSpinB(){return mSpinB;}
@@ -37,6 +39,7 @@ public:
     Float_t GetBbcEastRate(){return mBbcEastRate;}
     
     void SetRunNumber(Int_t run){mRunNumber = run;}
+    void SetFillNumber(Int_t fill){mFillNumber = fill;}
     void SetEventId(Int_t id){ mEventId = id;}
     void SetTrigFlag(Int_t index, Int_t flag){if(index >= 0 && index < mMaxTrigs) mTrigFlags[index] = flag;}
     void SetSpinB(Int_t spin){ mSpinB = spin;}
@@ -57,6 +60,7 @@ public:
     void Reset()
     {
 	mRunNumber = -1;
+	mFillNumber = -1;
 	mEventId = -1;
 	std::fill_n(mTrigFlags, mMaxTrigs, 0);
 	mSpinB = -999;
@@ -68,7 +72,7 @@ public:
     }
 
 	       	
-    ClassDef(TStJetSkimEvent, 2 )
+    ClassDef(TStJetSkimEvent, 3)
 };
 
 #endif

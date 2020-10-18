@@ -142,6 +142,7 @@ Int_t TStNanoJetTreeMaker::Make()
     mOutSkimEvent->SetUnixTime(mInSkimEvent->unixTime());
     mOutSkimEvent->SetBbcWestRate(mInSkimEvent->bbcWestRate());
     mOutSkimEvent->SetBbcEastRate(mInSkimEvent->bbcEastRate());
+    mOutSkimEvent->SetFillNumber((Int_t)mInSkimEvent->fill());
     
     spin4Bit = mInSkimEvent->spin4usingBx48(); 
     /*

@@ -34,6 +34,7 @@ class TStConfig : public TObject
     string fTrigDefFile;
     string fStreamPrefix;
     string fFillNoDB;
+    string fPolDB;
     string fFmsHotChDB;
     string fUserEmail;
     string fCondorConfig;
@@ -76,6 +77,7 @@ public:
     const string & GetTrigDefFile(){return fTrigDefFile;}
     const string & GetStreamPrefix(){return fStreamPrefix;}
     const string & GetFillNoDB(){return fFillNoDB;}
+    const string & GetPolDB(){return fPolDB;}
     const string & GetFmsHotChDB(){return fFmsHotChDB;}
     const string & GetUserEmail(){return fUserEmail;}
     const string & GetCondorConfig(){return fCondorConfig;}

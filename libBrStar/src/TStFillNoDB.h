@@ -29,6 +29,8 @@ public:
     vector <int> GetAllFillNos();
     Int_t GetFillNo(Int_t runNo);
     
+    void GetFillPolarization(Int_t fill, Double_t &energy, Int_t &startTime, Int_t &stopTime, Double_t &p_b, Double_t &dp_b, Double_t &dpdt_b, Double_t &edpdt_b, Double_t &p_y, Double_t &dp_y, Double_t &dpdt_y, Double_t &edpdt_y);
+    
     ClassDef(TStFillNoDB,1)
 };
 #endif

@@ -34,7 +34,7 @@ TStConfig::TStConfig()
     fDSTpath = "results/";
     fJobResultsPath = "jobResults/";
     fRunListDB = "database/RunList.json";
-    fFileList = "resources/temp/temp.list";
+    fFileList = "database/temp/temp.list";
     fProdPath = "./";
     LoadConfig();
 }
@@ -134,6 +134,11 @@ void TStConfig::LoadConfig()
 	    {
 		tokens = strtok(NULL, " :,");
 		fFillNoDB = fStarHome + "/" + tokens;
+	    }
+	    else if(s == "POL_DB")
+	    {
+		tokens = strtok(NULL, " :,");
+		fPolDB = fStarHome + "/" + tokens;
 	    }
 	    else if(s == "FMS_HOT_CH_DB")
 	    {
@@ -238,6 +243,7 @@ void TStConfig::Print()
     cout << "File-list: "<< GetFileList()<<"\n"<<endl;
     cout << "\033[1;31mRun-list DB file: \033[0m"<< GetRunListDB()<<"\n"<<endl;
     cout << "\033[1;31mFill Number DB file: \033[0m"<< GetFillNoDB()<<"\n"<<endl;
+    cout << "\033[1;31mPolarization DB file: \033[0m"<< GetPolDB()<<"\n"<<endl;
     cout << "\033[1;31mFms Hot Channel DB file: \033[0m"<< GetFmsHotChDB()<<"\n"<<endl;
     cout << "\033[1;31mTrigger Definition file: \033[0m"<< GetTrigDefFile()<<"\n"<<endl;
     cout << "\033[1;31mProduction data path: \033[0m"<< GetProdPath()<<"\n"<<endl;
@@ -267,6 +273,7 @@ void TStConfig::PrintAll()
     cout << GetTrigDefFile() << endl;
     cout << GetStreamPrefix() << endl;
     cout << GetFillNoDB() << endl;
+    cout << GetPolDB() << endl;
     cout << GetFmsHotChDB() << endl;
     cout << GetUserEmail() << endl;
     cout << GetCondorConfig() << endl;
@@ -280,8 +287,8 @@ void TStConfig::PrintAll()
 
 bool TStConfig::CheckValidity(int print)
 {
-    const int size = 20;
-    string fPathArrar[size] = {fBrightHome, fConfigFile, fDataPath, fTempPath, fResultsPath, fDSTpath,  fJobResultsPath, fStarHome, fRunListDB, fFileList, fTrigDefFile,  fFillNoDB, fFmsHotChDB, fCondorConfig, fCondorJob, fCondorJobSh, fSumsJobSh, fSumsConfig, fJobCounterSh, fJobCounterTxt};
+    const int size = 21;
+    string fPathArrar[size] = {fBrightHome, fConfigFile, fDataPath, fTempPath, fResultsPath, fDSTpath,  fJobResultsPath, fStarHome, fRunListDB, fFileList, fTrigDefFile,  fFillNoDB, fFmsHotChDB, fCondorConfig, fCondorJob, fCondorJobSh, fSumsJobSh, fSumsConfig, fJobCounterSh, fJobCounterTxt, fPolDB};
 
     for(int i = 0; i < size; ++i)
     {

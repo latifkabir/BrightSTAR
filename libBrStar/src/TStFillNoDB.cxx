@@ -20,18 +20,18 @@ using namespace std;
 using json = nlohmann::json;
 
 ClassImp(TStFillNoDB)
-
+//_________________________________________________________________________
 TStFillNoDB::TStFillNoDB()
 {
 
 }
-
+//_________________________________________________________________________
 TStFillNoDB::~TStFillNoDB()
 {
 
 }
 
-
+//_________________________________________________________________________
 //Use the shell script to generate txt DB and use this script to generate JSON DB from text DB
 void TStFillNoDB::GenerateFillDB(TString inFile)
 {
@@ -85,7 +85,7 @@ void TStFillNoDB::GenerateFillDB(TString inFile)
     inTxtFile.close();
     outFile.close();
 }
-
+//_________________________________________________________________________
 void TStFillNoDB::PrintFillNoDB()
 {
     TStar::ExitIfInvalid((TString)TStar::Config->GetFillNoDB());
@@ -104,7 +104,7 @@ void TStFillNoDB::PrintFillNoDB()
     
     i.close();
 }
-
+//_________________________________________________________________________
 map <int, vector<int> > TStFillNoDB::GetFillNoDB()
 {
     TStar::ExitIfInvalid((TString)TStar::Config->GetFillNoDB());
@@ -128,7 +128,7 @@ map <int, vector<int> > TStFillNoDB::GetFillNoDB()
 
     return fillNoDB;
 }
-
+//_________________________________________________________________________
 void TStFillNoDB::ReadFillNoDB()
 {
     map <int, vector <int> > db = GetFillNoDB();
@@ -143,7 +143,7 @@ void TStFillNoDB::ReadFillNoDB()
     }
     //cout << db[18856].size() <<endl;
 }
-
+//_________________________________________________________________________
 vector <int> TStFillNoDB::GetRunsWithFill(Int_t fillNo)
 {
     map <int, vector <int> > db = GetFillNoDB();
@@ -157,7 +157,7 @@ vector <int> TStFillNoDB::GetRunsWithFill(Int_t fillNo)
 	vec = it->second; //same as db[fillNo]
     return vec;
 }
-
+//_________________________________________________________________________
 Int_t TStFillNoDB::GetFillNo(Int_t runNo)
 {
     TStar::ExitIfInvalid((TString)TStar::Config->GetFillNoDB());
@@ -187,7 +187,7 @@ Int_t TStFillNoDB::GetFillNo(Int_t runNo)
     return closestFill;
     i.close();    
 }
-//--------------------------------------------
+//_________________________________________________________________________
 vector<int> TStFillNoDB::GetAllFillNos()
 {
     TStar::ExitIfInvalid((TString)TStar::Config->GetFillNoDB());
@@ -203,4 +203,54 @@ vector<int> TStFillNoDB::GetAllFillNos()
     i.close();
 
     return vec;
+}
+//_________________________________________________________________________
+void TStFillNoDB::GetFillPolarization(Int_t fill, Double_t &energy, Int_t &startTime, Int_t &stopTime, Double_t &p_b, Double_t &dp_b, Double_t &dpdt_b, Double_t &edpdt_b, Double_t &p_y, Double_t &dp_y, Double_t &dpdt_y, Double_t &edpdt_y)
+{
+    string polDb = TStar::gConfig->GetPolDB();
+    ifstream polFile(polDb);
+    if(!polFile)
+    {
+	cout << "Polarization data file NOT found" <<endl;
+	return;
+    }
+    Int_t tFill; // prefix t to dindicate temporary buffer
+    Double_t tEnergy;
+    Int_t tStartTime;
+    Int_t tStopTime;
+    Double_t tP_b;
+    Double_t tDp_b;
+    Double_t tDpdt_b;
+    Double_t tEdpdt_b;
+    Double_t tP_y;
+    Double_t tDp_y;
+    Double_t tDpdt_y;
+    Double_t tEdpdt_y;
+
+    while (!polFile.eof()) 
+    {
+	polFile >> tFill >> tEnergy >> tStartTime >> tStopTime >> tP_b >> tDp_b >> tDpdt_b >> tEdpdt_b >> tP_y >> tDp_y >> tDpdt_y >> tEdpdt_y;
+
+	if(tFill == fill)
+	{
+	    energy = tEnergy;
+	    startTime = tStartTime;
+	    stopTime = tStopTime;
+
+	    p_b = tP_b;
+	    dp_b = tDp_b;
+	    dpdt_b = tDpdt_b;
+	    edpdt_b = tEdpdt_b;
+
+	    p_y = tP_y;
+	    dp_y = tDp_y;
+	    dpdt_y = tDpdt_y;
+	    edpdt_y = tEdpdt_y;
+	    
+	    break;
+	}
+    }
+
+    polFile.close();
+    
 }
