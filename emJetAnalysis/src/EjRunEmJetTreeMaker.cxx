@@ -169,9 +169,8 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 
     //FMS cuts, CKim
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong
-    anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //!!!!!!!!!! TEST TEST For Simulation !!!!!!
+    anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //!!!!!!!!!! Updated based on Simulation !!!!!!
     //* 3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
-    cout << "!!!!!!!!!! TEST TEST For Simulation !!!!!!" <<endl;
 
     //Jet cuts
     anapars12->addJetCut(new StProtoJetCutPt(0.01,200));

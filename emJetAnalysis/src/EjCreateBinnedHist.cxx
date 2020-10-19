@@ -67,27 +67,28 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     grPol_y->SetTitle("Polarization [yellow beam]");
     TGraphErrors *grPolRunEx_b;
     TGraphErrors *grPolRunEx_y;
-    TH1D *hPolB = new TH1D("hPolB", "Polarization [Blue Beam]", 40, 40, 80);
-    TH1D *hPolY = new TH1D("hPolY", "Polarization [Yellow Beam]", 40, 40, 80);
+    TH1D *hPolB = new TH1D("hPolB", "Polarization [Blue Beam]", 400, 40, 80);
+    TH1D *hPolY = new TH1D("hPolY", "Polarization [Yellow Beam]", 400, 40, 80);
     
     Double_t etaMin;
     Double_t etaMax;
     if(det == "fms")
     {
-	etaMin = 2.4;
-	etaMax = 4.5;
+	//limit jet axis within 2.8 - 3.8 following Carl's suggestion in spin pwg  mailing list 2019-11-22 email.
+	etaMin = 2.8;  //2.4;
+	etaMax = 3.8;  //4.5;
     }
     else if(det == "eemc")
     {
-	etaMin = 0.8;
-	etaMax = 2.5;
+	etaMin = 1.0; //0.8;
+	etaMax = 2.0; //2.5;
     }
     else
     {
 	cout << "Invalid detector" <<endl;
 	return;
     }
-
+    
     //Event buffer
     TStJetEvent *jetEvent = 0;
     TStJetSkimEvent *skimEvent;
@@ -119,7 +120,8 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     
     Int_t runNumber;
     TString fileName;
-
+    Bool_t didPassPtCut;
+    
     //For Beam Polarization
     Int_t fillNoFmData;
     Int_t lastFillNoFmData = -1;
@@ -137,7 +139,6 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     Double_t pol_ave_y;
     Double_t ePol_ave_b;
     Double_t ePol_ave_y;
-
     
     Int_t fillNoFmDb;
     Double_t energy;
@@ -175,6 +176,18 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	}	
 	tree->SetBranchAddress("jetEvents", &jetEvent);
 
+	//See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22. 15% higher than nominal trigger threshold.
+	Double_t sm_bs1 = 1.15; 
+	Double_t sm_bs3 = 2.18; 
+	Double_t lg_bs1 = 1.15; 
+	if(runNumber < 16069040)
+	{
+	    sm_bs1 = 1.26;
+	    sm_bs3 = 2.53;
+	    lg_bs1 = 1.26;
+	}
+	Double_t fmsTrigPtTh[9] = {1.84, 2.76, 3.68, sm_bs1, 1.84, sm_bs3, lg_bs1, 1.84, 2.76}; //"FMS-JP0", "FMS-JP1", "FMS-JP2", "FMS-sm-bs1", "FMS-sm-bs2", "FMS-sm-bs3", "FMS-lg-bs1", "FMS-lg-bs2", "FMS-lg-bs3"
+	
 	//For polarization
 	TGraphErrors *grPolRun_b = new TGraphErrors(); 
 	TGraphErrors *grPolRun_y = new TGraphErrors();
@@ -233,6 +246,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 
 	    for(Int_t j = 0; j <  jetEvent->GetNumberOfJets(); ++j)
 	    {
+		didPassPtCut = kFALSE;
 		jet = jetEvent->GetJet(j);
 		
 		eta = jet->GetEta();
@@ -243,6 +257,30 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		nPhotons = jet->GetNumberOfTowers();
 
 		if(eta < etaMin || eta > etaMax) //Conside only EEMC and FMS coverage
+		    continue;
+
+		//Trigger dependent Pt cuts: See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22.
+		for(Int_t t = 0; t < 9; ++t)
+		{
+		    if(det == "fms")
+		    {
+			if(skimEvent->GetTrigFlag(t) && pt > fmsTrigPtTh[t])
+			{
+			    didPassPtCut = kTRUE;
+			    break;
+			}
+		    }
+		    else if(det == "eemc")
+		    {
+			if(skimEvent->GetTrigFlag(t) && pt > 4.0) // <------------- !!To be updated with real values!!
+			{
+			    didPassPtCut = kTRUE;
+			    break;
+			}			
+		    }
+		}
+
+		if(!didPassPtCut)
 		    continue;
 		
 		if(nPhotons > 0 && nPhotons < kPhotonBins)
@@ -317,16 +355,19 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    ePol_ave_y += pow(ePol_y, 2);
 
 	    hPolB->Fill(pol_b);
-	    hPolB->Fill(pol_y);
+	    hPolY->Fill(pol_y);
 	    
 	    ++nPoints;
 	}
-	grPolRun_b->Fit(fnc_b);
-	grPolRun_y->Fit(fnc_y);
+	grPolRun_b->Fit(fnc_b, "Q");
+	grPolRun_y->Fit(fnc_y, "Q");
 
 	pol_ave_b /= nPoints;
 	pol_ave_y /= nPoints;
 
+	//!!!! Error Propagation/Calculation is NOT final and to be revisited !!!!!!!!!
+	// Various attempts are implemented here.
+	
 	ePol_ave_b = sqrt(ePol_ave_b / nPoints);
 	ePol_ave_y = sqrt(ePol_ave_y / nPoints);
 	
@@ -361,11 +402,11 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     grPolRunEx_b->SetName("RunPolEx_b");
     grPolRunEx_y->SetName("RunPolEx_y");
     
-    file->cd();
-    grPolRunEx_b->Write();
-    grPolRunEx_y->Write();
-    grPol_b->Write();
-    grPol_y->Write();
+    // file->cd(); //Saving Tgraph is incovenient for jobs and merging files
+    // grPolRunEx_b->Write();
+    // grPolRunEx_y->Write();
+    // grPol_b->Write();
+    // grPol_y->Write();
     file->Write();    
 }
 

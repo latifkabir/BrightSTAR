@@ -22,7 +22,8 @@ void GenericJob(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
 
     //------- 2.Change Here the path and file prefix ---------------
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_";
     //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
@@ -47,7 +48,7 @@ void GenericJob(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += run;
 	argList += ",\"";
 	argList += filePrefix;
-	argList += "\",\"eemc\",";
+	argList += "\",\"fms\",";
 	argList += run;
 	argList += ",";
 	argList += run;

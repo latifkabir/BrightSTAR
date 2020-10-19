@@ -323,7 +323,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	c2->Write();   
     } 
     //---------- For EEMC Jet -----------------------
-    if(det = "eemc")
+    if(det == "eemc")
     {
 	TCanvas *c3 = new TCanvas("EMjet_A_N_eemc", "EM Jet A_{N}");
 	canvasCount = 1;
@@ -374,7 +374,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	    }
 	}
 	asymPlot_e->Draw();
-    
+
 	c4->Write();    
     }
 

@@ -67,8 +67,8 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
     }
     else if(det == "eemc")
     {
-	etaMin = 0.8;
-	etaMax = 2.5;
+	etaMin = 1.0;
+	etaMax = 2.0;
 	detZ = kEEmcZSMD; //For EEMC
     }
     else
@@ -98,18 +98,19 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	h1nJets_all->Fill(jetEvent->GetNumberOfJets());
 	vtxZ = skimEvent->GetVertexZ();
 	
-	for(Int_t t = 0; t < 9; ++t)
-	{
-	    if(skimEvent->GetTrigFlag(t))
-		h1TrigType->Fill(t);
-	}
+	// for(Int_t t = 0; t < 9; ++t) //Moved to the end of envet loop
+	// {
+	//     if(skimEvent->GetTrigFlag(t))
+	// 	h1TrigType->Fill(t);
+	// }
 
-	//Exclude FMS small-bs3 trigger that gives ring of fire issue.
+	//Exclude FMS small-bs3 trigger that gives ring of fire issue. But this removes most of high energetic jets.
 	if(det == "fms")
 	{
 	    if(skimEvent->GetTrigFlag(5))
 		continue;
 	}
+	//Alternative way to reduce ring of fire, require: BBCMult > 2 and TofMult > 2
 	
 	nJets = 0;	
 	for(Int_t j = 0; j <  jetEvent->GetNumberOfJets(); ++j)
@@ -177,6 +178,15 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	    // }	    
 	}
 	h1nJets->Fill(nJets);
+
+	if(nJets > 0)
+	{
+	    for(Int_t t = 0; t < 9; ++t)
+	    {
+		if(skimEvent->GetTrigFlag(t))
+		    h1TrigType->Fill(t);
+	    }
+	}
     }
 
     outFile->Write();
