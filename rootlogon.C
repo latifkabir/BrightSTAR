@@ -164,7 +164,7 @@
     gSystem->Load("libCepAnalysis.so");
     
     cout << "attempt completed !!\n\n";
-    
+       
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square
     gStyle->SetMarkerStyle(4);      // Circle
@@ -238,7 +238,7 @@
     Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
     TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
     gStyle->SetNumberContours(NCont);
-
+    
     using namespace TStar;
     
 }

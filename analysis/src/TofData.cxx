@@ -16,6 +16,7 @@
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuTofHit.h"
+#include "StEvent/StTriggerData.h"
 #include "TStar.h"
 #include "TStRunList.h"
 
@@ -39,6 +40,7 @@ void TofData(TString fileList, TString outFile)
     // muDstMaker->SetStatus("*Vert*", 1);
     
     StMuDst *mDst = muDstMaker->muDst();  
+    StMuEvent *muEvent;
     
     TFile *file = new TFile(outFile, "RECREATE"); 
     TH1D *hist1 = new TH1D("tof", "TOF", 100, 0.0, 0.0);
@@ -46,6 +48,8 @@ void TofData(TString fileList, TString outFile)
     TH1D *hist3 = new TH1D("pathLength", "Path Length", 100, 0.0, 0.0);
     TH1D *hist4 = new TH1D("eta", "Eta", 100, 0.0, 0.0);
     TH1D *hist5 = new TH1D("phi", "Phi", 100, 0.0, 0.0);
+    TH1D *hist6 = new TH1D("tofMult", "tofMulf", 100, 0.0, 0.0);
+    TH1D *hist7 = new TH1D("tofTrayMult", "tofTrayMulf", 100, 0.0, 0.0);
         
     chain->Init();
     Int_t nEvents = 1000;//muDstMaker->chain()->GetEntries();
@@ -63,6 +67,10 @@ void TofData(TString fileList, TString outFile)
 	chain->Clear();
 	int iret = chain->Make(iev); 
 
+	muEvent = mDst->event();
+	hist6->Fill(muEvent->triggerData()->tofMultiplicity());
+	hist7->Fill(muEvent->btofTrayMultiplicity());
+	
 	for(Int_t t = 0; t < mDst->numberOfTofHit(); ++t) //<--------- this infrmation is not available in MuDST. So the size is zero.
 	{
 	    tofHit = mDst->tofHit(t);

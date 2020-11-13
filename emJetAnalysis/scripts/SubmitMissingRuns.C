@@ -8,5 +8,5 @@ void SubmitMissingRuns()
 {
     TStRunList *rList = new TStRunList();
     TEntryList *missingList = rList->GetMissingRunList("/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_");
-    TStScheduler::SubmitJob(2, "RunEmJetTreeMaker", missingList);    
+    TStScheduler::SubmitJob(1, "EjRunEmJetTreeMaker", missingList);    
 }

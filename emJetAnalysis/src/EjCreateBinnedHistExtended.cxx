@@ -1,4 +1,4 @@
-// Filename: EjCreateBinnedHist.C
+// Filename: EjCreateBinnedHistExtended.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri May  8 15:08:25 2020 (-0400)
@@ -13,23 +13,28 @@
 #include "BrJetMaker/TStJetSkimEvent.h"
 using namespace std;
 
-void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t firstRun, Int_t lastRun)
+void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString det, Int_t firstRun, Int_t lastRun, Int_t minNphotons)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
       Let's create TH2D histograms of array size [2(spin)][4(energy)][#photon(5)]. The 2D histogram to be filled with phi bins along x and pt bins along y.
       We need another similar array for yellow beam as well.
     */
-    TString outName = (TString)"BinnedHist_" + to_string(fillNo) + (TString)".root";
+    TString outName = (TString)"BinnedHist_ext_" + to_string(fillNo) + (TString)".root";
     TFile *file = new TFile(outName, "recreate");
     const Int_t kSpinBins = 2;
     const Int_t kEnergyBins = 5;
     const Int_t kPhotonBins = 6;
     const Int_t kPhiBins = 16;
+    const Int_t kXfBins = 10;
+    
     TH2D *bHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     TH2D *yHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
+    Double_t xfBins[] = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7};
+    Double_t sqrt_s = 200.0;
+    
     Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
     for(Int_t i = 0; i < kSpinBins; ++i)
@@ -41,21 +46,39 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		TString bTitle = Form("bHist_%i_%i_%i", i, j, k);
 		TString yTitle = Form("yHist_%i_%i_%i", i, j, k);
 		bHist[i][j][k] = new TH2D(bTitle, bTitle, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), nPtBins, ptBins);
-		yHist[i][j][k] = new TH2D(yTitle, yTitle, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), nPtBins, ptBins);
+		yHist[i][j][k] = new TH2D(yTitle, yTitle, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), nPtBins, ptBins);       
 	    }
 	}
     }
 
+    TH2D *bHist3p[kSpinBins]; //3 pthotons or more or any number of photons
+    TH2D *bHist2p[kSpinBins]; //Just 2 photons
+    TH2D *bHistPtVsXf3p;
+    TH2D *bHistPtVsXf2p;
+    for(Int_t i = 0; i < kSpinBins; ++i)
+    {
+	TString title = Form("bHist3p_%i", i);
+	bHist3p[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+	title = Form("bHist2p_%i", i);
+	bHist2p[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    }
+    bHistPtVsXf3p = new TH2D("PtVsXf3p", "PtVsXf3p; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
+    bHistPtVsXf2p = new TH2D("PtVsXf2p", "PtVsXf2p; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
+    
     Int_t bSpin_i;
     Int_t ySpin_i;
     Int_t nPhotons_i;
     Int_t phi_i;
     Int_t eng_i;
+    Int_t xf_i;
 
     TH1D *h1bSpinI = new TH1D("h1bSpinI", "Blue Spin index", 10, -1, 4);
     TH1D *h1ySpinI = new TH1D("h1ySpinI", "Yellow Spin index", 10, -1, 4);
     TH1D *h1nPhotonsI = new TH1D("h1nPhotonsI", "Number of photons index", 11, -1, 10);    
     TH1D *h1EngI = new TH1D("h1EngI", "Energy bin index", 7, -1, 6);
+    TH1D *h1Eng = new TH1D("h1Eng", "Jet Energy", 100, 0, 200);
+    TH1D *h1XfI = new TH1D("h1XfI", "X_{F} index", 10, 0, 10);
+    TH1D *h1Xf = new TH1D("h1Xf", "X_{F}", 50, 0, 2.0);
     TH1D *h1PhiB = new TH1D("h1PhiB", "Phi [Blue beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
     TH1D *h1PhiY = new TH1D("h1PhiY", "Phi [Yellow beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
 
@@ -109,7 +132,9 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     Double_t jetY;
     Double_t vtxZ;
     Double_t rt;
-
+    Double_t xf;
+    TLorentzVector LV; 
+    
     Double_t phi_y;
     Double_t phi_b;
 
@@ -192,8 +217,8 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    lg_bs1 = 1.26;
 	}
 	Double_t fmsTrigPtTh[9] = {1.84, 2.76, 3.68, sm_bs1, 1.84, sm_bs3, lg_bs1, 1.84, 2.76}; //"FMS-JP0", "FMS-JP1", "FMS-JP2", "FMS-sm-bs1", "FMS-sm-bs2", "FMS-sm-bs3", "FMS-lg-bs1", "FMS-lg-bs2", "FMS-lg-bs3"
-
 	Double_t eemcTrigPtTh[9] = {4.25, 5.405, 7.285, 4.25, 7.285, 0, 0, 0, 0}; //"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB";
+	//Confirm thresholds for convoluted triggers.
 	
 	//For polarization
 	TGraphErrors *grPolRun_b = new TGraphErrors(); 
@@ -214,7 +239,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	{
 	    jetEvent->Reset();
 	    
-	    if(evt % 5000 == 0)
+	    if(evt%5000 == 0)
 		cout << "Events processed: "<< evt <<endl;
 	
 	    tree->GetEntry(evt);
@@ -232,6 +257,12 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    {
 	    	if(skimEvent->GetTrigFlag(5))
 	    	    continue;
+
+	    	if(skimEvent->GetTrigFlag(8))
+	    	    continue;
+		
+		// if(!(skimEvent->GetBbcMult() > 0 && skimEvent->GetTofTrayMult() > 2))
+		//     continue;
 	    }
 	    
 	    if(fabs(vtxZ) > 80)
@@ -251,7 +282,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    else
 		continue;
 
-	    for(Int_t j = 0; j < jetEvent->GetNumberOfJets(); ++j)
+	    for(Int_t j = 0; j <  jetEvent->GetNumberOfJets(); ++j)
 	    {
 		didPassPtCut = kFALSE;
 		jet = jetEvent->GetJet(j);
@@ -262,10 +293,15 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		eng = jet->GetE();
 		pt = jet->GetPt();
 		nPhotons = jet->GetNumberOfTowers();
-
+		LV.SetPtEtaPhiE(pt, eta, phi, eng);
+		xf = 2.0*(LV.Pz()) / sqrt_s;
+				
 		if(eta < etaMin || eta > etaMax) //Conside only EEMC and FMS coverage
 		    continue;
 
+		h1Xf->Fill(xf);
+		h1Eng->Fill(eng);
+		
 		//Trigger dependent Pt cuts: See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22.
 		for(Int_t t = 0; t < 9; ++t)
 		{
@@ -279,7 +315,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		    }
 		    else if(det == "eemc")
 		    {
-			if(skimEvent->GetTrigFlag(t) && pt > eemcTrigPtTh[t]) // <------------- !!To be confirmed!!
+			if(skimEvent->GetTrigFlag(t) && pt >  eemcTrigPtTh[t])
 			{
 			    didPassPtCut = kTRUE;
 			    break;
@@ -289,6 +325,20 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 
 		if(!didPassPtCut)
 		    continue;
+
+		//!!!!!!----> For comparing with Zhanwen's em-jet result only. Consider FMS JP0, JP1 and JP2 Triggers only <---------------------------
+		if(skimEvent->GetTrigFlag(0) != 1 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
+		    continue;
+		//----------- > Ensure FMS-JP trigger dependent threshold here <----------------------
+		
+
+		xf_i = int(fabs(xf)*10.0);
+		
+		if(xf_i < 0 || xf_i > 9)
+		{
+		    cout << "Unphysical x_F value. Investigate ...."<< "X_F: "<<xf <<"\t Eng: "<< eng <<endl;
+		    continue;
+		}
 		
 		if(nPhotons > 0 && nPhotons < kPhotonBins)
 		    nPhotons_i = nPhotons - 1;
@@ -312,14 +362,27 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		    phi_b = phi;
 		    phi_y = -1.0*TMath::Pi() - phi;		
 		}
-	    
+		
 		bHist[bSpin_i][eng_i][nPhotons_i]->Fill(phi_b, pt);
 		yHist[ySpin_i][eng_i][nPhotons_i]->Fill(phi_y, pt);
 
+		if(nPhotons >= minNphotons)
+		{
+		    bHist3p[bSpin_i]->Fill(phi_b, xf);
+		    bHistPtVsXf3p->Fill(xf, pt);
+		}
+		
+		if(nPhotons == 2)
+		{
+		    bHist2p[bSpin_i]->Fill(phi_b, xf);
+		    bHistPtVsXf2p->Fill(xf, pt);
+		}
+		
 		h1bSpinI->Fill(bSpin_i);
 		h1ySpinI->Fill(ySpin_i);
 		h1nPhotonsI->Fill(nPhotons_i);
 		h1EngI->Fill(eng_i);
+		h1XfI->Fill(xf_i);
 		h1PhiB->Fill(phi_b);
 		h1PhiY->Fill(phi_y);
 

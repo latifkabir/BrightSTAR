@@ -1,4 +1,4 @@
-// Filename: GenericJob.C
+// Filename: CreateBinnedHistJobs.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Jan 15 18:47:02 2020 (-0500)
@@ -6,12 +6,12 @@
 
 // Make sure to change 3 places nummbered below
 
-void GenericJob(Int_t firstRun = -1, Int_t lastRun = -1)
+void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 {
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
-    TString funcName = "EjCreateBinnedHist";
-    TString jobName = "EjCreateBinnedHist";
+    TString funcName = "EjCreateBinnedHistExtended";
+    TString jobName = "EjCreateBinnedHistExtended";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -22,7 +22,8 @@ void GenericJob(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
 
     //------- 2.Change Here the path and file prefix ---------------
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJetFmsPass3_partial/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_";
     //----------
     
@@ -32,15 +33,15 @@ void GenericJob(Int_t firstRun = -1, Int_t lastRun = -1)
     for (Int_t run_i = 0; run_i < maxRuns; ++run_i)
     {
 	run = runList->GetEntry(run_i);
-	// fileName = filePrefix;
-	// fileName += run;
-	// fileName += ".root";
+	fileName = filePrefix;
+	fileName += run;
+	fileName += ".root";
 
-	// if(gSystem->AccessPathName(fileName))
-	// {
-	//     cout << "No DST file for run number "<< run <<" ... SKIPPED."<<endl;
-	//     continue;
-	// }
+	if(gSystem->AccessPathName(fileName))
+	{
+	    cout << "No DST file for run number "<< run <<" ... SKIPPED."<<endl;
+	    continue;
+	}
 	cout << "Processing run number: "<< run <<endl;
 
 	//-------------- 4.Change Here to fit Function's argument ---------------

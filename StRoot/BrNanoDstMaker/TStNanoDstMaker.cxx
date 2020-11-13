@@ -326,7 +326,7 @@ Int_t TStNanoDstMaker::MakeEvent()
 {    
     //Run no. and event no.     
     mEventData->SetRunNumber(mMuEvent->runNumber());
-    mEventData->SetFillNumber(mMuEvent->runInfo().beamFillNumber(StBeamDirection::east)); //Check which index is blue and which is yellow
+    mEventData->SetFillNumber(mMuEvent->runInfo().beamFillNumber(StBeamDirection::east)); //For yellow beam
     mEventData->SetEventId(mMuEvent->eventId());
     mEventData->SetTime(mMuEvent->eventInfo().time());
 
@@ -346,7 +346,7 @@ Int_t TStNanoDstMaker::MakeEvent()
 	for(Int_t i = 0; i < mEventData->GetNtrigs(); i++)
 	    mEventData->SetTrigger(i, trgIDs.triggerIds().at(i));
     }
-    // BBC, ZDC, VPD branches <------- To be verified/revisited
+    // BBC, ZDC, VPD branches
     for(Int_t ew = 0; ew < 2; ew++)
     {
 	// BBC

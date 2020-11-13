@@ -16,5 +16,8 @@
 
 #pragma link C++ function EjCalculateAN;                // Calculate A_N from binned histograms
 #pragma link C++ function EjPlotAn;                     // Calculate A_N from binned histograms
+#pragma link C++ function EjCreateBinnedHistExtended;   // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield
+#pragma link C++ function EjCalculateANextended;        // Calculate A_N from binned histograms
+#pragma link C++ function EjCalculateFalseAN;           // Calculate false asymmetry for A_N from binned histograms
 
 #endif

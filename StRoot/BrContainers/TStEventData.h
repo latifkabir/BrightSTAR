@@ -19,7 +19,7 @@ public:
     Int_t mRunNumber;			//
     Float_t mFillNumber;		// Yellow Fill Number 
     Int_t mEventId;			//
-    Int_t mTime;                       //
+    Int_t mTime;                        //
     Short_t mBspin;			//
     Short_t mYspin;			//
     Int_t mTrigFlag;			//
@@ -49,11 +49,11 @@ public:
 
     //---------
     Int_t GetRunNumber(){return mRunNumber;}							//
-    Float_t GetFillNumber(){return mFillNumber;}							// Yellow Fill Number
+    Float_t GetFillNumber(){return mFillNumber;}						// Yellow Fill Number
     Int_t GetEventId(){return mEventId;}							//
     Int_t GetTime(){return mTime;}
     Short_t GetBlueSpin(){return mBspin;}							//
-    Short_t GetYellowSPin(){return mYspin;}							//
+    Short_t GetYellowSpin(){return mYspin;}							//
     Int_t GetTrigFlag(){return mTrigFlag;}							//
     Int_t GetNtrigs(){return mNtrig;}								//
     Int_t GetTrigger(Int_t index){if(index < mNtrig) return mTriggers[index]; return -1;}	//    
@@ -66,20 +66,20 @@ public:
     Int_t GetVpdSum(Int_t ew){if(ew < 2) return mVpdADCSum[ew]; return -1;}			//
     Int_t GetTofMultiplicity(){return mTofMultiplicity;}					//
     Int_t GetRefMultiplicity(){return mRefMultiplicity;}					//
-    Int_t GetNprimaryTracks(){return mNprimaryTracks;}					//
-    Int_t GetNvertices(){return mNvertices;}					//
-    Int_t GetRanking(){return mRanking;}					//
+    Int_t GetNprimaryTracks(){return mNprimaryTracks;}						//
+    Int_t GetNvertices(){return mNvertices;}							//
+    Int_t GetRanking(){return mRanking;}							//
     Double_t GetVx(){return mVx;}								//
     Double_t GetVy(){return mVy;}								//
     Double_t GetVz(){return mVz;}								//
     Double_t GetBbcEastRate(){return mBbcRateE;}
     Double_t GetBbcWestRate(){return mBbcRateW;}
     
-    //-----------
+												//-----------
     void SetRunNumber( Int_t run){mRunNumber = run;}						//
-    void SetFillNumber( Float_t yellow_fill_number){mFillNumber = yellow_fill_number;}						//
+    void SetFillNumber( Float_t yellow_fill_number){mFillNumber = yellow_fill_number;}		//
     void SetEventId(Int_t id){mEventId = id;}							//
-    void SetTime(Int_t time){ mTime = time;}                                           //
+    void SetTime(Int_t time){ mTime = time;}							//
     void SetBlueSpin(Short_t spin){mBspin = spin;}						//
     void SetYellowSPin(Short_t spin){mYspin = spin;}						//
     void SetTrigFlag(Int_t flag){mTrigFlag = flag;}						//
@@ -94,12 +94,12 @@ public:
     void SetVpdSum(Int_t ew, Int_t sum){if(ew < 2) mVpdADCSum[ew] = sum;}			//
     void SetTofMultiplicity(Int_t mult){mTofMultiplicity = mult;}				//
     void SetRefMultiplicity(Int_t mult){mRefMultiplicity = mult;}				//
-    void SetNprimaryTracks(Int_t nTracks){mNprimaryTracks = nTracks;}					//
+    void SetNprimaryTracks(Int_t nTracks){mNprimaryTracks = nTracks;}				//
     void SetNvertices(Int_t nVertices){mNvertices = nVertices;}					//
-    void SetRanking(Int_t ranking){mRanking = ranking;}					//
-    void SetVx(Double_t vx){mVx = vx;}							//
-    void SetVy(Double_t vy){mVy = vy;}							//
-    void SetVz(Double_t vz){mVz = vz;}							//
+    void SetRanking(Int_t ranking){mRanking = ranking;}						//
+    void SetVx(Double_t vx){mVx = vx;}								//
+    void SetVy(Double_t vy){mVy = vy;}								//
+    void SetVz(Double_t vz){mVz = vz;}								//
     void SetBbcEastRate(Double_t rate){mBbcRateE = rate;}
     void SetBbcWestRate(Double_t rate){mBbcRateW = rate;}
     

@@ -8,6 +8,7 @@
 #include "TStNanoJetTreeMaker.h"
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
+#include "StMuDSTMaker/COMMON/StMuEvent.h"
 #include "StSpinPool/StJetEvent/StJetEvent.h"
 #include "StSpinPool/StJetSkimEvent/StJetSkimEvent.h"
 #include "StSpinPool/StJetEvent/StJetCandidate.h"
@@ -18,6 +19,7 @@
 #include "StJetFinder/StProtoJet.h"
 #include "StJetMaker/StJetMaker2015.h"
 #include "StJetMaker/StJetSkimEventMaker.h"
+#include "StEvent/StTriggerData.h"
 
 #include "TStJetEvent.h"
 #include "TStJetSkimEvent.h"
@@ -80,7 +82,8 @@ Int_t TStNanoJetTreeMaker::Make()
 	LOG_ERROR << "TSt<Template>Maker::Make - No MuDst found" <<endm;
 	return kStFatal;
     }
-
+    mMuEvent = mMuDst->event();
+    
     //mJetMaker = (StJetMaker2015*)GetMaker("StJetMaker2015"); //This did not work --> bug fixed, try again
     //mSkimEventMaker = (StJetSkimEventMaker*)GetMaker("StJetSkimEventMaker"); //Did not work --> bug fixed, try again
     if(!mJetMaker || !mSkimEventMaker)
@@ -136,6 +139,26 @@ Int_t TStNanoJetTreeMaker::Make()
 
     vtxZ = mInVertex->position().z();
 
+    //tof and bbc multiplicity. Needed to minimize FMS ring of fire.
+    mOutSkimEvent->SetTofMult(mMuEvent->triggerData()->tofMultiplicity()); 
+    mOutSkimEvent->SetTofTrayMult(mMuEvent->btofTrayMultiplicity()); 
+    //bbc multiplicity
+    Int_t tac, adc;
+    Int_t bbcMult = 0;
+    Int_t east = 0;
+    for(Int_t i = 1; i <= 16; i++)
+    {
+	tac = mMuEvent->triggerData()->bbcTDC((StBeamDirection)east,i);
+	if(tac > 100 && tac < 2400)
+	{
+	    adc = mMuEvent->triggerData()->bbcADC((StBeamDirection)east, i);
+	    if(adc > 50)
+		bbcMult++;
+	    //bbcEsum += trgd->bbcADC(east,i);
+	}
+    } 
+    mOutSkimEvent->SetBbcMult(bbcMult);
+    
     mOutSkimEvent->SetRunNumber(mInJetEvent->runId());
     mOutSkimEvent->SetEventId(mInJetEvent->eventId());
     mOutSkimEvent->SetVertexZ(vtxZ);

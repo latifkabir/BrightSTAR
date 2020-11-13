@@ -69,7 +69,11 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH1D* hist19 = new TH1D("emc_nPoints", "BEMC point multiplicity", 100, 0, 10);
     TH1D* hist20 = new TH1D("emc_pointE", "BEMC point energy; BEMC point energy [GeV]", 100, 0, 5);
     TH1D* hist21 = new TH1D("emc_eta", "BEMC point eta", 40, -1.0, 1.0);
-
+    TH1D* hist22 = new TH1D("spin", "spin", 5, -2.0, 2.0);
+    TH1D* hist23 = new TH1D("phiB", "phiB", 100, -1.0*TMath::Pi(), 1.0*TMath::Pi());
+    TH1D* hist24 = new TH1D("phiY", "phiY", 100, -1.0*TMath::Pi(), 1.0*TMath::Pi());
+    TH1D* hist25 = new TH1D("xf", "xf", 120, -1.2, 1.2);
+    
     TH1D *hist_emc0 = new TH1D("sumE_west_emc0", "E_{p + #pi^{0}}^{West} [No activity in all bins]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     TH1D *hist_emc1 = new TH1D("sumE_west_emc1", "E_{p + #pi^{0}}^{West} [No activity in bin 1]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
     TH1D *hist_emc2 = new TH1D("sumE_west_emc2", "E_{p + #pi^{0}}^{West} [No activity in bin 2 & 3]; E_{p + #pi^{0}}^{West} [GeV]", 100, 60, 200);
@@ -91,7 +95,17 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH1D *histEtaBin = new TH1D("histEtaBin", "BEMC Eta Bins", 4, -1.0, 1.0);
     
     TH1D *hEvtCount_all = new TH1D("hEvtCount_all", "Event Count", 20, 0, 20);
-      
+
+    //--- Histograms for A_N calculation ---
+    const Int_t kPhiBins = 16;
+    const Int_t kXfBins = 10;
+    Double_t xfBins[] = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7};
+    TH2D *bXfVsPhiUp = new TH2D("bXfVsPhiUp","bXfVsPhiUp", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    TH2D *bXfVsPhiDn = new TH2D("bXfVsPhiDn","bXfVsPhiDn", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    TH2D *yXfVsPhiUp = new TH2D("yXfVsPhiUp","yXfVsPhiUp", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    TH2D *yXfVsPhiDn = new TH2D("yXfVsPhiDn","yXfVsPhiDn", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    //-------
+    
     //Input data     
     TTree *tree;
     Int_t nEntries = 0;
@@ -107,6 +121,15 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     Int_t nEmcPhotons = 0;
     Double_t emcPhotonEng = 0.0;
     TVector3 emcVec;
+    
+    Int_t spinB = 0;
+    Int_t spinY = 0;
+    Double_t phi;
+    Double_t phiB;
+    Double_t phiY;
+    Double_t xf;
+    Double_t sqrt_s = 200.0;
+    TLorentzVector LV;
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
 
@@ -159,6 +182,12 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    tree->GetEntry(evt);
 	    ++eventCount[0]; //Event Counter
 
+	    spinB = event->GetBlueSpin();
+	    spinY = event->GetYellowSpin();
+
+	    if(spinB == 0 || spinY == 0)
+		continue;
+	    
 	    trigList.clear();
 	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
 	    {
@@ -355,15 +384,46 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    if(pion->GetM() > 0.0 && pion->GetM() < 0.20)
 		hist18->Fill(sumE_w);
 	    //----------------------------- Diffractive p + p -----> pi^0 + p + X event cut ------------------------
-	    if((sumE_w > 80 && sumE_w < 107)            // <------- Energy Conservation cut (WIDER RANGE USED!!)
-	       && (pion->GetM() > 0.0 && pion->GetM() < 0.25))  // <----- Pion mass range (WIDER RANGE USED!!)
+	    if(!(sumE_w > 80 && sumE_w < 107)            // <------- Energy Conservation cut (WIDER RANGE USED!!)
+	       || !(pion->GetM() > 0.0 && pion->GetM() < 0.25))  // <----- Pion mass range (WIDER RANGE USED!!)
+		continue;
+	    
+	    hist2d4->Fill(pion->GetPhi(), rpsTrack->GetPhi());
+	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
+		hist17->Fill(event->GetTrigger(t));
+	    
+	    ++eventCount[4];
+
+	    //---- Fill Hist for A_N calculation -----
+	    hist22->Fill(spinB);
+	    
+	    phi = pion->GetPhi();
+	    if(phi >= 0)
 	    {
-		hist2d4->Fill(pion->GetPhi(), rpsTrack->GetPhi());
-		for(Int_t t = 0; t < event->GetNtrigs(); ++t)
-		    hist17->Fill(event->GetTrigger(t));
-		
-		++eventCount[4];	    
-	    }	    
+		phiB = phi;
+		phiY = TMath::Pi() - phi;
+	    }
+	    else
+	    {
+		phiB = phi;
+		phiY = -1.0*TMath::Pi() - phi;		
+	    }
+	    hist23->Fill(phiB);
+	    hist24->Fill(phiY);
+	    
+	    LV.SetPtEtaPhiE(pion->GetPt(), pion->GetEta(), pion->GetPhi(), pion->GetE());
+	    xf = 2.0*(LV.Pz()) / sqrt_s;
+	    hist25->Fill(xf);
+	    
+	    if(spinB == 1)
+		bXfVsPhiUp->Fill(phiB, xf);
+	    else if(spinB == -1)
+		bXfVsPhiDn->Fill(phiB, xf);
+
+	    if(spinY == 1)
+		yXfVsPhiUp->Fill(phiY, xf);
+	    else if(spinY == -1)
+		yXfVsPhiDn->Fill(phiY, xf);	    
 	}		
 	//-----------
 	

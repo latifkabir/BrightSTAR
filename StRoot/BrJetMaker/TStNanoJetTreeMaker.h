@@ -14,6 +14,7 @@
 
 class StEvent;
 class StMuDst;
+class StMuEvent;
 class StJetMaker2015;
 class StJetEvent;
 class StJetTower;
@@ -34,7 +35,8 @@ class TStNanoJetTreeMaker : public StMaker
 private:
     StMuDst *mMuDst;  
     StEvent* mEvent;
-
+    StMuEvent *mMuEvent;
+    
     StJetMaker2015 *mJetMaker;
     StJetSkimEventMaker *mSkimEventMaker;
     StJetEvent* mInJetEvent;

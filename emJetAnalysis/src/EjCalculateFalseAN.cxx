@@ -1,4 +1,4 @@
-// Filename: EjCalculateAN.cxx
+// Filename: EjCalculateFalseAN.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri May  8 15:08:25 2020 (-0400)
@@ -11,7 +11,7 @@
 #include "Hists.h"
 using namespace std;
 
-void EjCalculateAN(TString inFileName, TString outName, TString det)
+void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).

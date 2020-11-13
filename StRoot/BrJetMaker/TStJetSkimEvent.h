@@ -26,6 +26,10 @@ protected:
     UInt_t mUnixTime;
     Float_t mBbcWestRate;
     Float_t mBbcEastRate;
+    Int_t mTofMult;
+    Int_t mTofTrayMult;
+    Int_t mBbcMult;
+    
 public:    
     Int_t GetRunNumber(){return mRunNumber;}
     Int_t GetFillNumber(){return mFillNumber;}
@@ -37,6 +41,9 @@ public:
     UInt_t GetUnixTime(){return mUnixTime;}
     Float_t GetBbcWestRate(){return mBbcWestRate;}
     Float_t GetBbcEastRate(){return mBbcEastRate;}
+    Int_t GetTofMult(){return mTofMult;}
+    Int_t GetTofTrayMult(){return mTofTrayMult;}
+    Int_t GetBbcMult(){return mBbcMult;}
     
     void SetRunNumber(Int_t run){mRunNumber = run;}
     void SetFillNumber(Int_t fill){mFillNumber = fill;}
@@ -48,6 +55,9 @@ public:
     void SetUnixTime(UInt_t time){ mUnixTime = time;}
     void SetBbcWestRate(Float_t rate){mBbcWestRate = rate;}
     void SetBbcEastRate(Float_t rate){mBbcEastRate = rate;}
+    void SetTofMult(Int_t tofm){mTofMult = tofm;}
+    void SetTofTrayMult(Int_t traym){mTofTrayMult = traym;}
+    void SetBbcMult(Int_t bbcm){mBbcMult = bbcm;}
     
     TStJetSkimEvent()
     {
@@ -69,10 +79,12 @@ public:
 	mUnixTime = -1;
 	mBbcWestRate = -1;
 	mBbcEastRate = -1;
+	mTofMult = -1;
+	mBbcMult = -1;
     }
 
 	       	
-    ClassDef(TStJetSkimEvent, 3)
+    ClassDef(TStJetSkimEvent, 4)
 };
 
 #endif
