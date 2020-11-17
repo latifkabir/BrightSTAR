@@ -17,7 +17,6 @@ sched*.package
 sched*.dataset
 *.session.xml
 temp_gccflags.c
-*.dat
 temp/
 results/
 .root_history
