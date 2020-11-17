@@ -22,7 +22,6 @@ temp/
 results/
 .root_history
 .consign
-*.dat
 .project
 .cproject
 FmsCellStat.txt

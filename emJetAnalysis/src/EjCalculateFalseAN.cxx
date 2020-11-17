@@ -166,6 +166,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
     TF1 *yFitFnc[kEnergyBins][kPhotonBins][nPtBins];
     TGraphErrors *bGrPhy[kEnergyBins][kPhotonBins];
     TGraphErrors *yGrPhy[kEnergyBins][kPhotonBins];
+    TH1D *hChiSq = new TH1D("hChiSq", "Chi Sq / NDF Distribution", 50, 0, 0);
     Int_t nPointsB;
     Int_t nPointsY;
     Int_t nPointsPhyB;
@@ -257,18 +258,20 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 
 		if(bGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
 		{
-		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(0) / polB;
-		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(0) / polB;
+		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(1); // / polB;                // For residual, not asymmetry 
+		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(1); // / polB;            // For residual, not asymmetry
 
 		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
-		    ++nPointsPhyB;		    
+		    ++nPointsPhyB;
+
+		    hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare() / bFitFnc[i][j][k]->GetNDF());
 		}
 
 		if(yGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
 		{
-		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(0) / polY;
-		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(0) / polY;
+		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(1); // / polY;               //residual, not asymmetry
+		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(1); // / polY;           //residual, not asymmetry
 
 		    yGrPhy[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
 		    yGrPhy[i][j]->SetPointError(nPointsPhyY, 0, yAnError[i][j][k]);
@@ -281,7 +284,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 	    yGrPhy[i][j]->Write();
 	}
     }
-
+    hChiSq->Write();
     //------------------ Plot physics A_N --------------------
     Int_t canvasCount = 1;
 
@@ -320,7 +323,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 	    for (int j = 0; j < 3; j++)
 	    {
 		asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-		asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
+		asymPlot->GetPlot(j,i)->SetYRange( -0.01, 0.01);
 
 		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
 		// {
