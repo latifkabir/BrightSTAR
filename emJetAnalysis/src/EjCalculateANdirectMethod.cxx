@@ -1,4 +1,4 @@
-// Filename: EjCalculateFalseAN.cxx
+// Filename: EjCalculateANdirectMethod.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri May  8 15:08:25 2020 (-0400)
@@ -11,7 +11,7 @@
 #include "Hists.h"
 using namespace std;
 
-void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
+void EjCalculateANdirectMethod(TString inFileName, TString outName, TString det)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
@@ -52,6 +52,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 	}
     }
 
+    const Int_t nPhiBins = bHist[0][0][0]->GetNbinsX();   //# of Phi bins 
     const Int_t nHalfPhiBins = bHist[0][0][0]->GetNbinsX() / 2; //Phi bins per hemisphere
     const Int_t nPtBins = bHist[0][0][0]->GetNbinsY();
 
@@ -60,68 +61,57 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
     Int_t phiBins_left[] = {9, 10, 11, 12, 13, 14, 15, 16}; //<----------- Update here if nPhiBins changes
     Int_t phiBins_right[] = {1, 2, 3, 4, 5, 6, 7, 8}; //<----------- Update here if nPhiBins changes
     
-    Double_t phiValues[nHalfPhiBins];
+    Double_t phiValues[nPhiBins];
     
-    Double_t bAnRaw[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
-    Double_t bAnRawError[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
+    Double_t bAnRaw[kEnergyBins][kPhotonBins][nPhiBins][nPtBins];
+    Double_t bAnRawError[kEnergyBins][kPhotonBins][nPhiBins][nPtBins];
     Double_t bAn[kEnergyBins][kPhotonBins][nPtBins];
     Double_t bAnError[kEnergyBins][kPhotonBins][nPtBins];
     memset(bAn, 0, sizeof(bAn));
     memset(bAnError, 0, sizeof(bAnError));
     
-    Double_t yAnRaw[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
-    Double_t yAnRawError[kEnergyBins][kPhotonBins][nHalfPhiBins][nPtBins];
+    Double_t yAnRaw[kEnergyBins][kPhotonBins][nPhiBins][nPtBins];
+    Double_t yAnRawError[kEnergyBins][kPhotonBins][nPhiBins][nPtBins];
     Double_t yAn[kEnergyBins][kPhotonBins][nPtBins];      // A_N with polarization correction
     Double_t yAnError[kEnergyBins][kPhotonBins][nPtBins]; // A_N error with polarization correction
     memset(yAn, 0, sizeof(yAn));
     memset(yAnError, 0, sizeof(yAnError));
     
-    Double_t bNu_l;
-    Double_t bNu_r;
-    Double_t bNd_l;
-    Double_t bNd_r;
+    Double_t bNu;
+    Double_t bNd;
 
-    Double_t yNu_l;
-    Double_t yNu_r;
-    Double_t yNd_l;
-    Double_t yNd_r;
+    Double_t yNu;
+    Double_t yNd;
 
     Double_t numer;
     Double_t denom;
-    Double_t numerErrSq;
-    Double_t denomErrSq;
+    Double_t errSq;
     
     for(Int_t i = 0; i < kEnergyBins; ++i)
     {
 	for(Int_t j = 0; j < kPhotonBins; ++j)
 	{
-	    for(Int_t k = 0; k < nHalfPhiBins; ++k)
+	    for(Int_t k = 0; k < nPhiBins; ++k)
 	    {
 		for(Int_t l = 0; l < nPtBins; ++l)
 		{
 		    if(i == 0 && j == 0 && l == 0)
-			phiValues[k] = bHist[0][i][j]->GetXaxis()->GetBinCenter(phiBins_left[k]);
+			phiValues[k] = bHist[0][i][j]->GetXaxis()->GetBinCenter(k + 1);
 
-		    bNd_l = bHist[0][i][j]->GetBinContent(phiBins_left[k], l + 1);
-		    bNu_l = bHist[1][i][j]->GetBinContent(phiBins_left[k], l + 1);
+		    bNd = bHist[0][i][j]->GetBinContent(k + 1, l + 1);
+		    bNu = bHist[1][i][j]->GetBinContent(k + 1, l + 1);
+		    		    
+		    yNd = yHist[0][i][j]->GetBinContent(k + 1, l + 1);
+		    yNu = yHist[1][i][j]->GetBinContent(k + 1, l + 1);
 		    
-		    bNd_r = bHist[0][i][j]->GetBinContent((phiBins_right[k]), l + 1);
-		    bNu_r = bHist[1][i][j]->GetBinContent((phiBins_right[k]), l + 1);
-		    
-		    yNd_l = yHist[0][i][j]->GetBinContent(phiBins_left[k], l + 1);
-		    yNu_l = yHist[1][i][j]->GetBinContent(phiBins_left[k], l + 1);
-		    
-		    yNd_r = yHist[0][i][j]->GetBinContent((phiBins_right[k]), l + 1);
-		    yNu_r = yHist[1][i][j]->GetBinContent((phiBins_right[k]), l + 1);
       		    
 		    //You need to ensure that the Left-Right pairing is done exactly as in the formula
 		    //----- Blue beam measured asymmetry ------------
-		    numer = sqrt(bNu_l*bNd_r) - sqrt(bNd_l*bNu_r);
-		    denom = sqrt(bNu_l*bNd_r) + sqrt(bNd_l*bNu_r);
-
-		    numerErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
-		    denomErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
-		    
+		    numer = (bNu - bNd);
+		    denom = (bNu + bNd);
+		    		    
+		    errSq = 4.0*bNu*bNd / pow((bNu + bNd), 3); //See analysis note for error propagation
+		    		    
 		    if(denom == 0)
 		    {
 			bAnRaw[i][j][k][l] = -999;
@@ -129,20 +119,18 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 		    }
 		    else
 		    {
-			bAnRaw[i][j][k][l] = numer / denom;
-			bAnRawError[i][j][k][l] = fabs( bAnRaw[i][j][k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+			bAnRaw[i][j][k][l] = numer / denom;  //This gives beam asymmetry. See PhD thesis for derivation
+			bAnRawError[i][j][k][l] = sqrt(errSq); //See error propagation in the analysis note
 		    }
 
 		    //cout << "Raw Asym:"<< bAnRaw[i][j][k][l] << " +- "<< bAnRawError[i][j][k][l]  <<endl;
-
 		    
 		    //----- Yellow beam measured asymmetry ------------
-		    numer = sqrt(yNu_l*yNd_r) - sqrt(yNd_l*yNu_r);
-		    denom = sqrt(yNu_l*yNd_r) + sqrt(yNd_l*yNu_r);
-
-		    numerErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
-		    denomErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
-		    
+		    numer = (yNu - yNd);
+		    denom = (yNu + yNd);
+		    		    
+		    errSq = 4.0*yNu*yNd / pow((yNu + yNd), 3); //See analysis note for error propagation
+		    		    
 		    if(denom == 0)
 		    {
 			yAnRaw[i][j][k][l] = -999;
@@ -150,8 +138,8 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 		    }
 		    else
 		    {
-			yAnRaw[i][j][k][l] = numer / denom;
-			yAnRawError[i][j][k][l] = fabs(yAnRaw[i][j][k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+			yAnRaw[i][j][k][l] = numer / denom;  //This gives beam asymmetry. See PhD thesis for derivation
+			yAnRawError[i][j][k][l] = sqrt(errSq); //See error propagation in the analysis note
 		    }
 		}
 	    }
@@ -166,7 +154,6 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
     TF1 *yFitFnc[kEnergyBins][kPhotonBins][nPtBins];
     TGraphErrors *bGrPhy[kEnergyBins][kPhotonBins];
     TGraphErrors *yGrPhy[kEnergyBins][kPhotonBins];
-    TH1D *hChiSq = new TH1D("hChiSq", "Chi Sq / NDF Distribution", 50, 0, 0);
     Int_t nPointsB;
     Int_t nPointsY;
     Int_t nPointsPhyB;
@@ -236,7 +223,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 
 		nPointsB = 0;
 		nPointsY = 0;
-		for(Int_t l = 0; l < nHalfPhiBins; ++l)
+		for(Int_t l = 0; l < nPhiBins; ++l)
 		{
 		    if(bAnRaw[i][j][l][k] != -999)
 		    {
@@ -256,24 +243,20 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 		bGr[i][j][k]->Fit(Form("bFitFnc_%i_%i_%i", i, j, k));
 		yGr[i][j][k]->Fit(Form("yFitFnc_%i_%i_%i", i, j, k));
 
-		if(bGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
+		if(bGr[i][j][k]->GetN() >= 0.5*nPhiBins)
 		{
-		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(1); // / polB;                // For residual, not asymmetry 
-		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(1); // / polB;            // For residual, not asymmetry
+		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(0) / polB;
+		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(0) / polB;
 
 		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
-		    ++nPointsPhyB;
-
-		    //hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare() / bFitFnc[i][j][k]->GetNDF());
-		    hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare());
-		    cout << "Number of degrees of freedom: "<< bFitFnc[i][j][k]->GetNDF() <<endl;
+		    ++nPointsPhyB;		    
 		}
 
-		if(yGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
+		if(yGr[i][j][k]->GetN() >= 0.5*nPhiBins)
 		{
-		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(1); // / polY;               //residual, not asymmetry
-		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(1); // / polY;           //residual, not asymmetry
+		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(0) / polY;
+		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(0) / polY;
 
 		    yGrPhy[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
 		    yGrPhy[i][j]->SetPointError(nPointsPhyY, 0, yAnError[i][j][k]);
@@ -286,7 +269,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 	    yGrPhy[i][j]->Write();
 	}
     }
-    hChiSq->Write();
+
     //------------------ Plot physics A_N --------------------
     Int_t canvasCount = 1;
 
@@ -325,7 +308,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 	    for (int j = 0; j < 3; j++)
 	    {
 		asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-		asymPlot->GetPlot(j,i)->SetYRange( -0.01, 0.01);
+		asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
 
 		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
 		// {

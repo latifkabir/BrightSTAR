@@ -26,7 +26,7 @@ public:
     static const Int_t mMaxTrigs = 30;	//
     Int_t mNtrig;			//
     Int_t mTriggers[mMaxTrigs];		//
-    
+    Long_t mTrigBits;                   //    
     Int_t mBbcADCSum[2];		//
     Int_t mBbcADCSumLarge[2];		//
     Int_t mBbcEarliestTDC[2];		//
@@ -56,7 +56,8 @@ public:
     Short_t GetYellowSpin(){return mYspin;}							//
     Int_t GetTrigFlag(){return mTrigFlag;}							//
     Int_t GetNtrigs(){return mNtrig;}								//
-    Int_t GetTrigger(Int_t index){if(index < mNtrig) return mTriggers[index]; return -1;}	//    
+    Int_t GetTrigger(Int_t index){if(index < mNtrig) return mTriggers[index]; return -1;}	//
+    Bool_t IsTrigBitSet(Int_t bit){return (mTrigBits & (1 << bit));}
     Int_t GetBbcSumSmall(Int_t ew){if(ew < 2) return mBbcADCSum[ew]; return -1;}		//
     Int_t GetBbcSumLarge(Int_t ew){if(ew < 2) return mBbcADCSumLarge[ew]; return -1;}		//
     Int_t GetEarliestTdcSmall(Int_t ew){if(ew < 2) return mBbcEarliestTDC[ew]; return -1;}	//
@@ -84,7 +85,8 @@ public:
     void SetYellowSPin(Short_t spin){mYspin = spin;}						//
     void SetTrigFlag(Int_t flag){mTrigFlag = flag;}						//
     void SetNtrigs(Int_t ntrig){mNtrig = ntrig;}						//
-    void SetTrigger(Int_t index, Int_t trig){if(index < mMaxTrigs) mTriggers[index] = trig;}	//    
+    void SetTrigger(Int_t index, Int_t trig){if(index < mMaxTrigs) mTriggers[index] = trig;}	//
+    void SetTrigBit(Int_t bit){mTrigBits = mTrigBits | 1 << bit;}
     void SetBbcSumSmall(Int_t ew, Int_t sum){if(ew < 2) mBbcADCSum[ew] = sum;}			//
     void SetBbcSumLarge(Int_t ew, Int_t sum){if(ew < 2) mBbcADCSumLarge[ew] = sum;}		//
     void SetEarliestTdcSmall(Int_t ew, Int_t tdc){if(ew < 2) mBbcEarliestTDC[ew] = tdc;}	//
@@ -120,7 +122,7 @@ public:
 	mNtrig = 0;
 	for(Int_t i = 0; i < mMaxTrigs; ++i)
 	    mTriggers[i] = 0;
-    
+	mTrigBits = 0;    
 	mBbcADCSum[0] = 0;
 	mBbcADCSum[1] = 0;
 	
@@ -158,7 +160,7 @@ public:
     // 	this->mPrimaryVertex_mX3 = z;
     // }
 
-    ClassDef( TStEventData, 4 )
+    ClassDef( TStEventData, 5 )
 };
 
 

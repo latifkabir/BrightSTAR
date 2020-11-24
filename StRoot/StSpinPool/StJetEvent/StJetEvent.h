@@ -20,7 +20,7 @@ class StJetParticle;
 
 #include "TObject.h"
 #include "TDatime.h"
-
+#include "TTimeStamp.h"
 class StJetEvent : public TObject {
 public:
   StJetEvent();
@@ -39,8 +39,8 @@ public:
   int hour  () const { return mDatime.GetHour  (); }
   int minute() const { return mDatime.GetMinute(); }
   int second() const { return mDatime.GetSecond(); }
-  unsigned int unixTime() const { return mDatime.Convert(); }
-
+    //unsigned int unixTime() const { return mDatime.Convert(); }
+  time_t unixTime() const { TTimeStamp stamp(mDatime.GetYear(), mDatime.GetMonth(), mDatime.GetDay(), mDatime.GetHour(), mDatime.GetMinute(), mDatime.GetSecond()); return stamp.GetSec(); }
   int numberOfVertices () const;
   int numberOfJets     () const;
   int numberOfTracks   () const;

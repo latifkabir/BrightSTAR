@@ -11,7 +11,7 @@
 #include "Hists.h"
 using namespace std;
 
-void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
+void EjCalculateBeamAsymmetry(TString inFileName, TString outName, TString det)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
@@ -86,11 +86,13 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
     Double_t yNd_l;
     Double_t yNd_r;
 
-    Double_t numer;
-    Double_t denom;
-    Double_t numerErrSq;
-    Double_t denomErrSq;
-    
+    Double_t numer_l;
+    Double_t denom_l;
+    Double_t numer_r;
+    Double_t denom_r;
+    Double_t lErrSq;
+    Double_t rErrSq;
+        
     for(Int_t i = 0; i < kEnergyBins; ++i)
     {
 	for(Int_t j = 0; j < kPhotonBins; ++j)
@@ -116,42 +118,52 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
       		    
 		    //You need to ensure that the Left-Right pairing is done exactly as in the formula
 		    //----- Blue beam measured asymmetry ------------
-		    numer = sqrt(bNu_l*bNd_r) - sqrt(bNd_l*bNu_r);
-		    denom = sqrt(bNu_l*bNd_r) + sqrt(bNd_l*bNu_r);
-
-		    numerErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
-		    denomErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
+		    numer_l = (bNu_l - bNd_l);
+		    denom_l = (bNu_l + bNd_l);
 		    
-		    if(denom == 0)
+		    numer_r = (bNu_r - bNd_r);
+		    denom_r = (bNu_r + bNd_r);
+		    
+		    lErrSq = 4.0*bNu_l*bNd_l / pow((bNu_l + bNd_l), 3); //See analysis note for error propagation
+
+		    rErrSq = 4.0*bNu_r*bNd_r / pow((bNu_r + bNd_r), 3); //See analysis note for error propagation
+
+		    		    
+		    if(denom_l == 0 || denom_r == 0)
 		    {
 			bAnRaw[i][j][k][l] = -999;
 			bAnRawError[i][j][k][l] = -999;
 		    }
 		    else
 		    {
-			bAnRaw[i][j][k][l] = numer / denom;
-			bAnRawError[i][j][k][l] = fabs( bAnRaw[i][j][k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+			bAnRaw[i][j][k][l] = 0.5*(numer_l / denom_l + numer_r / denom_r); //This gives beam asymmetry. See PhD thesis for derivation
+			bAnRawError[i][j][k][l] = sqrt(lErrSq + rErrSq); //See error propagation in the analysis note
 		    }
 
 		    //cout << "Raw Asym:"<< bAnRaw[i][j][k][l] << " +- "<< bAnRawError[i][j][k][l]  <<endl;
 
 		    
 		    //----- Yellow beam measured asymmetry ------------
-		    numer = sqrt(yNu_l*yNd_r) - sqrt(yNd_l*yNu_r);
-		    denom = sqrt(yNu_l*yNd_r) + sqrt(yNd_l*yNu_r);
-
-		    numerErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
-		    denomErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
+		    numer_l = (yNu_l - yNd_l);
+		    denom_l = (yNu_l + yNd_l);
 		    
-		    if(denom == 0)
+		    numer_r = (yNu_r - yNd_r);
+		    denom_r = (yNu_r + yNd_r);
+		    
+		    lErrSq = 4.0*yNu_l*yNd_l / pow((yNu_l + yNd_l), 3); //See analysis note for error propagation
+
+		    rErrSq = 4.0*yNu_r*yNd_r / pow((yNu_r + yNd_r), 3); //See analysis note for error propagation
+
+		    		    
+		    if(denom_l == 0 || denom_r == 0)
 		    {
 			yAnRaw[i][j][k][l] = -999;
 			yAnRawError[i][j][k][l] = -999;
 		    }
 		    else
 		    {
-			yAnRaw[i][j][k][l] = numer / denom;
-			yAnRawError[i][j][k][l] = fabs(yAnRaw[i][j][k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+			yAnRaw[i][j][k][l] = 0.5*(numer_l / denom_l + numer_r / denom_r); //This gives beam asymmetry. See PhD thesis for derivation
+			yAnRawError[i][j][k][l] = sqrt(lErrSq + rErrSq); //See error propagation in the analysis note
 		    }
 		}
 	    }
@@ -231,8 +243,8 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 		yGr[i][j][k]->SetMaximum(0.1);
 		yGr[i][j][k]->SetMinimum(-0.1);
 		
-		bFitFnc[i][j][k] = new TF1(Form("bFitFnc_%i_%i_%i", i, j, k), "[0]*cos(x) + [1]");
-		yFitFnc[i][j][k] = new TF1(Form("yFitFnc_%i_%i_%i", i, j, k), "[0]*cos(x) + [1]");
+		bFitFnc[i][j][k] = new TF1(Form("bFitFnc_%i_%i_%i", i, j, k), "pol0");
+		yFitFnc[i][j][k] = new TF1(Form("yFitFnc_%i_%i_%i", i, j, k), "pol0");
 
 		nPointsB = 0;
 		nPointsY = 0;
@@ -258,22 +270,20 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 
 		if(bGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
 		{
-		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(1); // / polB;                // For residual, not asymmetry 
-		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(1); // / polB;            // For residual, not asymmetry
+		    bAn[i][j][k] = bFitFnc[i][j][k]->GetParameter(0);                 // For beam asymmtery
+		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(0);             // For beam asymmetry
 
 		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
 		    ++nPointsPhyB;
 
-		    //hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare() / bFitFnc[i][j][k]->GetNDF());
-		    hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare());
-		    cout << "Number of degrees of freedom: "<< bFitFnc[i][j][k]->GetNDF() <<endl;
+		    hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare() / bFitFnc[i][j][k]->GetNDF());
 		}
 
 		if(yGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
 		{
-		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(1); // / polY;               //residual, not asymmetry
-		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(1); // / polY;           //residual, not asymmetry
+		    yAn[i][j][k] = yFitFnc[i][j][k]->GetParameter(0);                //For beam asymmetry
+		    yAnError[i][j][k] = yFitFnc[i][j][k]->GetParError(0);            //For beam asymmetry
 
 		    yGrPhy[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
 		    yGrPhy[i][j]->SetPointError(nPointsPhyY, 0, yAnError[i][j][k]);
@@ -325,7 +335,7 @@ void EjCalculateFalseAN(TString inFileName, TString outName, TString det)
 	    for (int j = 0; j < 3; j++)
 	    {
 		asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-		asymPlot->GetPlot(j,i)->SetYRange( -0.01, 0.01);
+		asymPlot->GetPlot(j,i)->SetYRange( -0.02, 0.02);
 
 		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
 		// {

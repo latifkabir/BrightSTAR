@@ -159,7 +159,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     Int_t nPoints = 0;
     Int_t nRuns = 0;
     Bool_t eventAccepted = kFALSE;
-
+    Int_t gmt2etCorr;
+    
     Double_t pol_ave_b;
     Double_t pol_ave_y;
     Double_t ePol_ave_b;
@@ -221,6 +222,10 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	//Confirm thresholds for convoluted triggers.
 	
 	//For polarization
+	if(runNumber < 16067006)
+	    gmt2etCorr = 5*3600; //GMT to EST
+	else
+	    gmt2etCorr = 4*3600; //GMT to EDT
 	TGraphErrors *grPolRun_b = new TGraphErrors(); 
 	TGraphErrors *grPolRun_y = new TGraphErrors();
 	TF1 *fnc_b = new TF1("fnc_b", "pol0");
@@ -406,7 +411,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    if(p_b == -1 || p_y == -1)
 		continue;
 	    
-	    dT = (evtTime - startTime) / 3600.0; 
+	    dT = (evtTime - gmt2etCorr - startTime) / 3600.0; 
 	    pol_b = p_b + dpdt_b*dT;
 	    pol_y = p_y + dpdt_y*dT;
 

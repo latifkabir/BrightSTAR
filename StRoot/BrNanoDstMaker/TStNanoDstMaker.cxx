@@ -345,6 +345,14 @@ Int_t TStNanoDstMaker::MakeEvent()
 	
 	for(Int_t i = 0; i < mEventData->GetNtrigs(); i++)
 	    mEventData->SetTrigger(i, trgIDs.triggerIds().at(i));
+
+	mTrigFlag = 0;
+	for(Int_t k = 0; k < mTrigIDs.size(); ++k)
+	{
+	    mTrigFlag = mMuEvent->triggerIdCollection().nominal().isTrigger(mTrigIDs[k]);
+	    if(mTrigFlag)
+		mEventData->SetTrigBit(k);
+	}	
     }
     // BBC, ZDC, VPD branches
     for(Int_t ew = 0; ew < 2; ew++)

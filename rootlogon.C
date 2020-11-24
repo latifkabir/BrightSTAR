@@ -171,7 +171,7 @@
     gStyle->SetMarkerSize(.4);      // larger than half a pixel ...
     gStyle->SetMarkerColor(kBlack);
     //gStyle->SetMarkerColor(kRed);
-    
+        
     //------------- Plotting Style -----------------------------
     TStyle* dStyle = new TStyle("Bright_Star_Style", "Bright_Star_Style");
     dStyle->Reset("Modern");
@@ -238,6 +238,11 @@
     Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
     TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
     gStyle->SetNumberContours(NCont);
+    
+
+    // gStyle->SetPadGridX(kFALSE);
+    // gStyle->SetPadGridY(kFALSE);
+    // gStyle->SetOptStat(0);
     
     using namespace TStar;
     

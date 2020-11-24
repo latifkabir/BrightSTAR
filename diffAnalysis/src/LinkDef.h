@@ -28,4 +28,6 @@
 #pragma link C++ function AnFmsRpPionSource;                     // For Rp-stream, plot pions based on category/source
 #pragma link C++ function AnRunNanoDstMaker;                     // Nano DST maker for AN Analysis
 
+#pragma link C++ function AnRunDiffJetTreeMaker;                 // Diffractive Jet Tree Maker
+
 #endif

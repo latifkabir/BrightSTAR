@@ -1,11 +1,11 @@
-// Filename: TStNanoJetTreeMaker.cxx
+// Filename: TStNanoDiffJetTreeMaker.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Mon Aug 19 17:37:54 2019 (-0400)
 // URL: jlab.org/~latif
 
 
-#include "TStNanoJetTreeMaker.h"
+#include "TStNanoDiffJetTreeMaker.h"
 #include "StEvent/StEvent.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
@@ -25,10 +25,10 @@
 #include "TStJetSkimEvent.h"
 #include "TStJetCandidate.h"
 
-ClassImp(TStNanoJetTreeMaker)
+ClassImp(TStNanoDiffJetTreeMaker)
 
 //_____________________________________________________________________________ 
-TStNanoJetTreeMaker::TStNanoJetTreeMaker(StJetMaker2015* jetMaker,  StJetSkimEventMaker* skimMaker, const char *name):StMaker(name)
+TStNanoDiffJetTreeMaker::TStNanoDiffJetTreeMaker(StJetMaker2015* jetMaker,  StJetSkimEventMaker* skimMaker, const char *name):StMaker(name)
 {
     mOutJetEvent = new TStJetEvent();
     mOutSkimEvent = mOutJetEvent->GetEvent();
@@ -44,18 +44,25 @@ TStNanoJetTreeMaker::TStNanoJetTreeMaker(StJetMaker2015* jetMaker,  StJetSkimEve
 
     mJetMaker = jetMaker;
     mSkimEventMaker = skimMaker;
+
+    //RP Buffer
+    TStRpsTrackData::Class()->IgnoreTObjectStreamer();
+    mRpsArray = new TClonesArray("TStRpsTrackData");    
 }
 
 //_____________________________________________________________________________ 
-TStNanoJetTreeMaker::~TStNanoJetTreeMaker()
+TStNanoDiffJetTreeMaker::~TStNanoDiffJetTreeMaker()
 {
     //
     delete mOutJetEvent;
+
+    //RP Buffer    
+    delete mRpsArray;
 }
 
 
 //_____________________________________________________________________________ 
-Int_t TStNanoJetTreeMaker::Init()
+Int_t TStNanoDiffJetTreeMaker::Init()
 {
 
     mOutFile = new TFile(mOutName, "recreate");
@@ -64,14 +71,17 @@ Int_t TStNanoJetTreeMaker::Init()
     mTree->Branch("jetEvents", &mOutJetEvent, 256000, 99);
 
     //branch to hold FMS photons (used in FastJet) info from FMS maker
-
+    
+    //RP branch
+    mTree->Branch("rpTrack", &mRpsArray, 256000, 99);
+    
     cout << "Initialized NanoJetMaker!" <<endl;
     return kStOK;
 }
 
 
 //_____________________________________________________________________________
-Int_t TStNanoJetTreeMaker::Make()
+Int_t TStNanoDiffJetTreeMaker::Make()
 {
     mMuDst = (StMuDst*)GetInputDS("MuDst");
     mEvent = (StEvent*)GetInputDS("StEvent");
@@ -88,7 +98,7 @@ Int_t TStNanoJetTreeMaker::Make()
     //mSkimEventMaker = (StJetSkimEventMaker*)GetMaker("StJetSkimEventMaker"); //Did not work --> bug fixed, try again
     if(!mJetMaker || !mSkimEventMaker)
     {
-	LOG_ERROR << "TStNanoJetTreeMaker::Make - No JetMaker or SkimEventMaker found" <<endm;
+	LOG_ERROR << "TStNanoDiffJetTreeMaker::Make - No JetMaker or SkimEventMaker found" <<endm;
 	return kStFatal;	
     }
 
@@ -122,7 +132,8 @@ Int_t TStNanoJetTreeMaker::Make()
     mInVertex = mInJetEvent->vertex(); //same as mInJetEvent->vertex(0), i.e. highest ranked vertex only
     if (!mInVertex)
 	return kStOK;
-    
+
+    mRpsArray->Clear();    
     mOutJetEvent->Reset();
 
     for(Int_t i = 0; i < mMaxTriggers; ++i)
@@ -262,14 +273,65 @@ Int_t TStNanoJetTreeMaker::Make()
 
 	//Add track info (if needed) in a similar fashion as tower and particles	    
     }
-
+    
+    MakeRps();
     mTree->Fill();
         
     return kStOK;
 }
 
 //_____________________________________________________________________________
-Int_t TStNanoJetTreeMaker::Finish()
+Int_t TStNanoDiffJetTreeMaker::MakeRps()
+{
+    //------ Using afterburner ----
+    // if(mUseRpsAfterburner)
+    // {    
+    //	mAfterburner->updateVertex(0.000415, 0.000455, 0.0); // specific to run 15 pp200 trans !!! To be set with set method
+    //	mRpsMuColl = mAfterburner->process(); // executes afterburner
+    // }
+    //------
+    
+    mRpsMuColl = mMuDst->RpsCollection();  //No afterburner
+    if(!mRpsMuColl)
+    {
+	cout<<"No RP data for this event"<<endl;
+	return kStSkip;
+    }
+    
+    mRpNtracks = mRpsMuColl->numberOfTracks();
+    Int_t trkType;
+    for(Int_t i = 0; i < mRpNtracks; ++i)
+    {	
+	mRpsTrackData =  new((*mRpsArray)[i])TStRpsTrackData();	
+	mRpsTrk = mRpsMuColl->track(i);
+	trkType = (mRpsTrk->type() == StMuRpsTrack::rpsGlobal) ? 1 : 0;
+	
+	mRpsTrackData->SetType(trkType);
+	mRpsTrackData->SetNplanes(mRpsTrk->planesUsed());
+	mRpsTrackData->SetBranch(mRpsTrk->branch());	
+	mRpsTrackData->SetTheta(1000.0*mRpsTrk->theta());	
+	mRpsTrackData->SetThetaX(1000.0*mRpsTrk->theta(0));	
+	mRpsTrackData->SetThetaY(1000.0*mRpsTrk->theta(1));	
+	mRpsTrackData->SetEta(mRpsTrk->eta());
+	mRpsTrackData->SetPhi(mRpsTrk->phi());
+	mRpsTrackData->SetPt(mRpsTrk->pt());		
+	mRpsTrackData->SetP(mRpsTrk->p());		
+	mRpsTrackData->SetPx(mRpsTrk->pVec().x());		
+	mRpsTrackData->SetPy(mRpsTrk->pVec().y());		
+	mRpsTrackData->SetPz(mRpsTrk->pVec().z());		
+	mRpsTrackData->SetXi(mRpsTrk->xi(mBeamMom)); // Beam momentum is approximate		
+	mRpsTrackData->SetMt(-1.0*mRpsTrk->t(mBeamMom));	
+    }
+
+    //afterburner
+    //mAfterburner->clear(); //Critical!!!
+    
+    return kStOk;    
+}
+
+
+//_____________________________________________________________________________
+Int_t TStNanoDiffJetTreeMaker::Finish()
 {
     //Write histograms to root file etc.
     mOutFile->Write();
@@ -277,7 +339,7 @@ Int_t TStNanoJetTreeMaker::Finish()
 }
 
 //_____________________________________________________________________________
-void TStNanoJetTreeMaker:: SetTrigIds(Int_t *trigIds)
+void TStNanoDiffJetTreeMaker::SetTrigIds(Int_t *trigIds)
 {
     for(Int_t i = 0; i < mMaxTriggers; ++i)
 	mTrigIds[i] = trigIds[i];

@@ -66,7 +66,7 @@ Modify `jobMacro.C` and `sumsConfig.sh` accordingly and submit the job as:
 **Check Job Status**
 From root prompt do:
 ```
-TSTScheduler::JobStatus(1)
+TStScheduler::JobStatus(1)
 ```
 
 Directory Tree

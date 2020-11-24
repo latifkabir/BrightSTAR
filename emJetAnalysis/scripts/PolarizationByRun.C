@@ -16,7 +16,7 @@ void PolarizationByRun(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
 
     //------- 2.Change Here the path and file prefix ---------------
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/scratch/condor/BinnedHist_ext_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/scratch/condor/BinnedHist_";
     //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
@@ -53,14 +53,18 @@ void PolarizationByRun(Int_t firstRun = -1, Int_t lastRun = -1)
 	grY->SetPoint(nRunsDone, nRunsDone, histY->GetMean());
 	grY->SetPointError(nRunsDone, 0, histY->GetMeanError());
 
+	if(histB->GetMean() < 10)
+	    cout << "Too low polarization. RUn number: "<< run <<endl;
+
+	
 	++nRunsDone;
 	file->Close();
 	delete file;
     }
 
-    TCanvas *c1 = new TCanvas("c1");
+    TCanvas *c1 = new TCanvas("c1", "Blue");
     grB->Draw("AP*");
 
-    TCanvas *c2 = new TCanvas("c2");
+    TCanvas *c2 = new TCanvas("c2", "Yellow");
     grY->Draw("AP*");
 }
