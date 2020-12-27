@@ -26,8 +26,13 @@
 #pragma link C++ function AnRunAnTreeMaker;                      // Run AnTree Maker
 #pragma link C++ function AnDstQA;                               // DST QA Plots
 #pragma link C++ function AnFmsRpPionSource;                     // For Rp-stream, plot pions based on category/source
+#pragma link C++ function AnCalculateAN;                         // Calculate A_N from Binned Histogram (Diffractive Pions)
+
 #pragma link C++ function AnRunNanoDstMaker;                     // Nano DST maker for AN Analysis
 
 #pragma link C++ function AnRunDiffJetTreeMaker;                 // Diffractive Jet Tree Maker
+#pragma link C++ function AnDiffJetCreateBinnedHist;             // Create Binned Histograms for Diffractive Jets 
+
+
 
 #endif

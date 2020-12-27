@@ -22,17 +22,18 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     Int_t nRunsDone = 0;
     TString fileName;
     TString filePrefix = inFilePrefix;
+
     //----- Mask Hot Channels (naive approach) --------
-    TFile *fHotCh = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/R15FmsTrigNanoDst/FmsPointXYmerged.root");
-    TH2D *histHot = (TH2D*)fHotCh->Get("FmsPointXY_Merged");
-    for(Int_t i = 1; i <= histHot->GetNbinsX(); ++i)
-    {
-    	for (Int_t j = 1; j <= histHot->GetNbinsY(); ++j)
-    	{
-    	    if(histHot->GetBinContent(i, j) > 2.5e6)
-    		histHot->SetBinContent(i, j, 0);
-    	}
-    }
+    // TFile *fHotCh = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/R15FmsTrigNanoDst/FmsPointXYmerged.root");
+    // TH2D *histHot = (TH2D*)fHotCh->Get("FmsPointXY_Merged");
+    // for(Int_t i = 1; i <= histHot->GetNbinsX(); ++i)
+    // {
+    // 	for (Int_t j = 1; j <= histHot->GetNbinsY(); ++j)
+    // 	{
+    // 	    if(histHot->GetBinContent(i, j) > 2.5e6)
+    // 		histHot->SetBinContent(i, j, 0);
+    // 	}
+    // }
     
     //Histograms
     TFile *outFile = new TFile(outName, "RECREATE");
@@ -262,10 +263,10 @@ void AnFmsRpCorrUpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 		    continue;
 
 		//--------- Mask Hot Channel (Naive approach)------------
-		if(histHot->GetBinContent(histHot->FindBin(pion->GetX1(), pion->GetY1())) == 0)
-		    continue;
-		if(histHot->GetBinContent(histHot->FindBin(pion->GetX2(), pion->GetY2())) == 0)
-		    continue;
+		// if(histHot->GetBinContent(histHot->FindBin(pion->GetX1(), pion->GetY1())) == 0)
+		//     continue;
+		// if(histHot->GetBinContent(histHot->FindBin(pion->GetX2(), pion->GetY2())) == 0)
+		//     continue;
 
 		// ------ Exclude Small Cells --------
 		// if(fabs(pion->GetX1()) < 48 || fabs(pion->GetY1()) < 48 )

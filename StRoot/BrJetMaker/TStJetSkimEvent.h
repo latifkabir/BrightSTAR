@@ -29,7 +29,7 @@ protected:
     Float_t mBbcEastRate;
     Int_t mTofMult;
     Int_t mTofTrayMult;
-    Int_t mBbcMult;
+    Int_t mBbcMult;  //East BBC Multiplicity (PMT)
     
 public:    
     Int_t GetRunNumber(){return mRunNumber;}
@@ -45,7 +45,7 @@ public:
     Float_t GetBbcEastRate(){return mBbcEastRate;}
     Int_t GetTofMult(){return mTofMult;}
     Int_t GetTofTrayMult(){return mTofTrayMult;}
-    Int_t GetBbcMult(){return mBbcMult;}
+    Int_t GetBbcMult(){return mBbcMult;}                  //East BBC
     
     void SetRunNumber(Int_t run){mRunNumber = run;}
     void SetFillNumber(Int_t fill){mFillNumber = fill;}

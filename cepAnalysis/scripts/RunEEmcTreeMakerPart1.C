@@ -237,6 +237,7 @@ void RunEEmcTreeMakerPart1(const Char_t *inputFileName,
 
 void LoadLibs()
 {
+    gSystem->Load("libMinuit.so");
     //--------- MuDST Related --------------
     gSystem->Load("libStTableUtilities");
     gSystem->Load("libTable");

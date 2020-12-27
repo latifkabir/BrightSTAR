@@ -179,18 +179,18 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     Int_t nPointsY;
     Int_t nPointsPhyB;
     Int_t nPointsPhyY;
-    Double_t polB = 0.5365 ; // RMS: 0.0403 in fraction
-    Double_t polY = 0.5614;  // RMS: 0.0380 
+    Double_t polB = 0.570;   // RMS: 0.0371 in fraction
+    Double_t polY = 0.5795;  // RMS: 0.0366 
 
     if(det == "fms")
     {
-	polB = 0.5365; // RMS: 0.0403 in fraction
-	polY = 0.5614;  // RMS: 0.0380
+	polB = 0.570; 
+	polY = 0.5795;  
     }
     else if(det == "eemc")
     {
-	cout << "Update these values" <<endl;
-	return;
+	polB = 0.570; 
+	polY = 0.5795;  
     }
     else
     {
@@ -198,7 +198,6 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	return;
     }
     
-
     bGrPhy = new TGraphErrors(); //b for 2 photons case
     yGrPhy = new TGraphErrors(); // y for 3 or more photons case
     bGrPhy->SetName("An2Photons");
@@ -300,16 +299,16 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     //yGrPhy->Draw("AP");
     // TLine* L1Temp = new TLine(1.5, 0, 9.5, 0);
     // L1Temp->Draw("same");
+    
+    //Zhanwen's values for 3 or more photons (Data taken from HepData):
+    Double_t x_z3[] = {0.2213, 0.2571, 0.3038, 0.3529, 0.4029, 0.4531, 0.5033, 0.5536, 0.6123}; 
+    Double_t y_z3[] = {0.0008, 0.0023, 0.0032, 0.0051, 0.0056, 0.0078, 0.0084, 0.0125, 0.0135}; 
+    Double_t y_z3err[] = {0.0013, 0.0005, 0.0005, 0.0007, 0.0009, 0.0011, 0.0014, 0.0017, 0.0018};
 
-    //Zhanwen's values for 3 or more photons:
-    Double_t x_z3[] = {0.2130, 0.2558, 0.3036, 0.3535, 0.4034, 0.4532, 0.5031, 0.5536, 0.6120}; 
-    Double_t y_z3[] = {0.0018, 0.0028, 0.0039, 0.0044, 0.0048, 0.0056, 0.0055, 0.0075, 0.0075}; 
-    Double_t y_z3err[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0004, 0.0010, 0.0011, 0.0015};
-
-    //Zhanwen's values for all photons:
-    Double_t x_z[] = {0.2130, 0.2558, 0.3036, 0.3535, 0.4034, 0.4532, 0.5031, 0.5536, 0.6120}; 
-    Double_t y_z[] = {0.0046, 0.0054, 0.0057, 0.0064, 0.0065, 0.0070, 0.0068, 0.0097, 0.0090}; 
-    Double_t y_zerr[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0006, 0.0010, 0.0011, 0.0013}; 
+    //Zhanwen's values for all photons (Data taken from HepData):
+    Double_t x_z[] = {0.22116, 0.25683, 0.30373, 0.35284, 0.40294, 0.45320, 0.50343, 0.55365, 0.61238}; 
+    Double_t y_z[] = {0.0044, 0.0053, 0.0066, 0.0079, 0.0074, 0.0099, 0.0096, 0.0141, 0.0161}; 
+    Double_t y_zerr[] = {0.0011, 0.0005, 0.0005, 0.0006, 0.0008, 0.0010, 0.0012, 0.0015, 0.0015}; 
     
     TGraphErrors *znGr3 = new TGraphErrors(9, x_z3, y_z3, 0, y_z3err);
     znGr3->SetName("znGr3");

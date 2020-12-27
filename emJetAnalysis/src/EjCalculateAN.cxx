@@ -170,18 +170,18 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
     Int_t nPointsY;
     Int_t nPointsPhyB;
     Int_t nPointsPhyY;
-    Double_t polB = 0.5365 ; // RMS: 0.0403 in fraction
-    Double_t polY = 0.5614;  // RMS: 0.0380 
+    Double_t polB = 0.570;   // RMS: 0.0371 in fraction
+    Double_t polY = 0.5795;  // RMS: 0.0366 
 
     if(det == "fms")
     {
-	polB = 0.5365; // RMS: 0.0403 in fraction
-	polY = 0.5614;  // RMS: 0.0380
+	polB = 0.570; 
+	polY = 0.5795;  
     }
     else if(det == "eemc")
     {
-	polB = 0.5365; // RMS: 0.0403 in fraction
-	polY = 0.5614;  // RMS: 0.0380
+	polB = 0.570; 
+	polY = 0.5795;  
     }
     else
     {

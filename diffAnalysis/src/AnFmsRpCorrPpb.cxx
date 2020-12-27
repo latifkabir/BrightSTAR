@@ -64,6 +64,11 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH1D *hist24 = new TH1D("pi0E_final", "Diphoton Energy; E_{#gamma#gamma} [GeV]", 200, 10, 100);
     TH1D *hist25 = new TH1D("trkPeast_final", "East RP trk P; RP track P [GeV/c]", 200, 60, 150);
 
+    TH1D* hist26 = new TH1D("spin", "spin", 5, -2.0, 2.0);
+    TH1D* hist27 = new TH1D("phiB", "phiB", 100, -1.0*TMath::Pi(), 1.0*TMath::Pi());
+    TH1D* hist28 = new TH1D("phiY", "phiY", 100, -1.0*TMath::Pi(), 1.0*TMath::Pi());
+    TH1D* hist29 = new TH1D("xf", "xf", 120, -1.2, 1.2);
+    
     TH2D *hist2d1 = new TH2D("E_p_vs_E_pion", "E_{p}^{west} vs E_{#pi^{0}}; E_{#pi^{0}} [GeV]; E_{p}^{west} [GeV]", 100, 10, 80, 100, 60, 150);
     TH2D *hist2d2 = new TH2D("E_sum_vs_BBC_large", "E_{sum} vs BBC ADC Sum (Large); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Large)", 100, 50, 200, 300, 0, 6000);
     TH2D *hist2d3 = new TH2D("E_sum_vs_BBC_small", "E_{sum} vs BBC ADC Sum (Small); E_{p + #pi^{0}}^{west} [GeV]; BBC ADC Sum (Small)", 100, 50, 200, 300, 0, 4000);
@@ -71,7 +76,18 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     TH2D *hist2d5 = new TH2D("pionXY", "#pi^{0} position; X [cm]; Y[cm]", 100, -100, 100, 100, -100, 100);
 
     TH1D *hEvtCount_all = new TH1D("hEvtCount_all", "Event Count", 20, 0, 20);
-      
+
+    //--- Histograms for A_N calculation ---
+    const Int_t kPhiBins = 16;
+    const Int_t kXfBins = 10;
+    Double_t xfBins[] = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7};
+    TH2D *bXfVsPhiUp = new TH2D("bXfVsPhiUp","bXfVsPhiUp", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    TH2D *bXfVsPhiDn = new TH2D("bXfVsPhiDn","bXfVsPhiDn", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    TH2D *yXfVsPhiUp = new TH2D("yXfVsPhiUp","yXfVsPhiUp", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    TH2D *yXfVsPhiDn = new TH2D("yXfVsPhiDn","yXfVsPhiDn", kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+    //-------
+
+    
     //Input data     
     TTree *tree;
     Int_t nEntries = 0;
@@ -87,6 +103,15 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
     Int_t nEmcPhotons = 0;
     Double_t emcPhotonEng = 0.0;
     TVector3 emcVec;
+
+    Int_t spinB = 0;
+    Int_t spinY = 0;
+    Double_t phi;
+    Double_t phiB;
+    Double_t phiY;
+    Double_t xf;
+    Double_t sqrt_s = 200.0;
+    TLorentzVector LV;
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
 
@@ -139,6 +164,12 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    tree->GetEntry(evt);
 	    ++eventCount[0]; //Event Counter
 
+	    spinB = event->GetBlueSpin();
+	    spinY = event->GetYellowSpin();
+
+	    if(spinB == 0 || spinY == 0)
+		continue;
+	    
 	    trigList.clear();
 	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
 	    {
@@ -296,7 +327,41 @@ void AnFmsRpCorrPpb(Int_t firstRun, Int_t lastRun, TString outName, TString inFi
 	    for(Int_t t = 0; t < event->GetNtrigs(); ++t)
 	        hist17->Fill(event->GetTrigger(t));
 		
-	    ++eventCount[4];	    
+	    ++eventCount[4];
+
+	    //---- Fill Hist for A_N calculation -----
+	    if(!(pion->GetM() > 0.07 && pion->GetM() < 0.20))
+		continue;
+
+	    hist26->Fill(spinB);
+	    
+	    phi = pion->GetPhi();
+	    if(phi >= 0)
+	    {
+		phiB = phi;
+		phiY = TMath::Pi() - phi;
+	    }
+	    else
+	    {
+		phiB = phi;
+		phiY = -1.0*TMath::Pi() - phi;		
+	    }
+	    hist27->Fill(phiB);
+	    hist28->Fill(phiY);
+	    
+	    LV.SetPtEtaPhiE(pion->GetPt(), pion->GetEta(), pion->GetPhi(), pion->GetE());
+	    xf = 2.0*(LV.Pz()) / sqrt_s;
+	    hist29->Fill(xf);
+	    
+	    if(spinB == 1)
+		bXfVsPhiUp->Fill(phiB, xf);
+	    else if(spinB == -1)
+		bXfVsPhiDn->Fill(phiB, xf);
+
+	    if(spinY == 1)
+		yXfVsPhiUp->Fill(phiY, xf);
+	    else if(spinY == -1)
+		yXfVsPhiDn->Fill(phiY, xf);	    		    		    
 	}		
 	//-----------
 	
