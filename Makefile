@@ -14,7 +14,7 @@ ANA_DIR = analysis
 MACRO_DIR = runMacros
 DIFFANA_DIR = diffAnalysis
 EMJANA_DIR = emJetAnalysis
-CEP_DIR = cepAnalysis
+STDANA_DIR = studentsAna
 STARSIM_DIR = starSim
 # makefile name
 MAKE_FILE = Makefile
@@ -24,7 +24,7 @@ first: all
 
 .PHONY: lib ana cons macro diff emj sim 
 
-all: lib ana cons macro diff emj cep sim
+all: lib ana cons macro diff emj ucr sim
 	@echo "done!"	
 lib:
 	$(MAKE) -C $(LIB_DIR) -f $(MAKE_FILE)
@@ -41,9 +41,9 @@ macro: cons
 emj: #cons
 	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE)
 	@cp -ur $(EMJANA_DIR)/lib/*.so lib
-cep: 
-	$(MAKE) -C $(CEP_DIR) -f $(MAKE_FILE)
-	@cp -ur $(CEP_DIR)/lib/*.so lib
+ucr: 
+	$(MAKE) -C $(STDANA_DIR) -f $(MAKE_FILE)
+	@cp -ur $(STDANA_DIR)/lib/*.so lib
 sim: 
 	$(MAKE) -C $(STARSIM_DIR) -f $(MAKE_FILE)
 	@cp -ur $(STARSIM_DIR)/lib/*.so lib
@@ -51,7 +51,7 @@ cons:
 	cons
 
 ####### Clean
-clean: cleanlib cleanana cleanmacro cleancons cleansim cleancep
+clean: cleanlib cleanana cleanmacro cleancons cleansim cleanucr
 
 .PHONY: cleanlib cleanana cleandiff cleanmacro cleanemj cleansim
 
@@ -70,8 +70,8 @@ cleanmacro:
 cleanemj:
 	$(MAKE) -C $(EMJANA_DIR) -f $(MAKE_FILE) clean
 
-cleancep:
-	$(MAKE) -C $(CEP_DIR) -f $(MAKE_FILE) clean
+cleanucr:
+	$(MAKE) -C $(STDANA_DIR) -f $(MAKE_FILE) clean
 
 cleansim:
 	$(MAKE) -C $(STARSIM_DIR) -f $(MAKE_FILE) clean

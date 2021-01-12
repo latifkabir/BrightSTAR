@@ -20,19 +20,19 @@ MODULES = .part4/include .part8/include .part9/include
 SRC_DIR   =   $(addprefix ${STARDEV}/,$(MODULES)) 
 LIB_INCLUDE  = -I${STARHOME}/StRoot/ $(addprefix -I,$(SRC_DIR)) -I${STAR}/ -I${STAR}/StRoot/ -I${STARHOME}/libBrStar/src/ -I${STARHOME}/runMacros/src/ -I${STARHOME} -I${STARHOME}/include/ -I${STAR}/StRoot/StJetMaker/towers/ -I${STAR}/StRoot/StJetMaker/tracks/ -I${STAR}/StRoot/StJetMaker/mcparticles/
 
-all: libCepAnalysis
+all: libUcrAnalysis
 
-clean: libCepAnalysis_clean
-clear: libCepAnalysis_clear
+clean: libUcrAnalysis_clean
+clear: libUcrAnalysis_clear
 
 
-libCepAnalysis: lib/libCepAnalysis.so
-libCepAnalysis_base= $(wildcard src/*.cxx)  
-libCepAnalysis_inc	= $(patsubst src/%.cxx, ./%.h,$(libCepAnalysis_base)) 
-libCepAnalysis_obj	= $(patsubst src/%.cxx, src/%.o,$(libCepAnalysis_base))
+libUcrAnalysis: lib/libUcrAnalysis.so
+libUcrAnalysis_base= $(wildcard src/*.cxx)  
+libUcrAnalysis_inc	= $(patsubst src/%.cxx, ./%.h,$(libUcrAnalysis_base)) 
+libUcrAnalysis_obj	= $(patsubst src/%.cxx, src/%.o,$(libUcrAnalysis_base))
 
-lib/libCepAnalysis.so: $(libCepAnalysis_obj)  src/libCepAnalysis_Dict.o
-	$(CXX) -o $@ $(CXXFLAGS) -shared -Wl,-soname,libCepAnalysis.so $^	
+lib/libUcrAnalysis.so: $(libUcrAnalysis_obj)  src/libUcrAnalysis_Dict.o
+	$(CXX) -o $@ $(CXXFLAGS) -shared -Wl,-soname,libUcrAnalysis.so $^	
 	@echo "                                                                        "
 	@echo "-----------------------------------------------------------------------"
 	@echo "Finished the compilation!"
@@ -40,16 +40,16 @@ lib/libCepAnalysis.so: $(libCepAnalysis_obj)  src/libCepAnalysis_Dict.o
 src/%.o:src/%.cxx
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) $(LIB_INCLUDE) $(ROOTFLAGS) $<
 
-src/libCepAnalysis_Dict.cxx:
-	cd src/; $(ROOTCINT) -f libCepAnalysis_Dict.cxx -c $(libCepAnalysis_inc) LinkDef.h
+src/libUcrAnalysis_Dict.cxx:
+	cd src/; $(ROOTCINT) -f libUcrAnalysis_Dict.cxx -c $(libUcrAnalysis_inc) LinkDef.h
 
-libCepAnalysis_clean:
-	rm -f $(libCepAnalysis_obj)
+libUcrAnalysis_clean:
+	rm -f $(libUcrAnalysis_obj)
 	rm -f  src/*_Dict.*
-	rm -f lib/libCepAnalysis.so
+	rm -f lib/libUcrAnalysis.so
 
-libCepAnalysis_clear:
-	rm -f $(libCepAnalysis_obj)
+libUcrAnalysis_clear:
+	rm -f $(libUcrAnalysis_obj)
 	rm -f  src/*_Dict.*
 
 
