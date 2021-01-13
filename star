@@ -22,6 +22,7 @@ Instruction()
     echo "          Syntax: star <OPTION>"
     echo "                   "			
     echo "          ------------------------------------- List of available options --------------------------------"
+    echo "          config             : Create required directories"
     echo "          clean              : Delete schedular files"
     echo "          cancel-job         : Cancel all jobs submitted"
     echo "          file-list          : Print file list"
@@ -69,6 +70,26 @@ case $OPTION in
     -h | -help | help | --help)
 	Instruction
 	exit
+	;;
+    config)
+	if ! [ -d "jobOutput" ]
+	then
+	    mkdir -p /gpfs/mnt/gpfs01/star/pwg/$USER/jobOutput
+	    ln -s /gpfs/mnt/gpfs01/star/pwg/$USER/jobOutput .
+	    echo "Done creating the directory jobOutput"
+	fi
+	if ! [ -d "jobResults" ]
+	then
+	    mkdir -p /gpfs/mnt/gpfs01/star/pwg/$USER/jobResults
+	    ln -s /gpfs/mnt/gpfs01/star/pwg/$USER/jobResults .
+	    echo "Done creating the directory jobResults"
+	fi
+	if ! [ -d "dst" ]
+	then
+	    mkdir -p /gpfs/mnt/gpfs01/star/pwg/$USER/dst
+	    ln -s /gpfs/mnt/gpfs01/star/pwg/$USER/dst .
+	    echo "Done creating the directory dst"
+	fi
 	;;
     cancel-job)
 	condor_rm $USER

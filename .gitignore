@@ -19,6 +19,9 @@ sched*.dataset
 temp_gccflags.c
 temp/
 results/
+dst/
+jobOutput/
+jobResults/
 .root_history
 .consign
 .project

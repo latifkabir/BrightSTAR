@@ -3,6 +3,30 @@ Bright STAR
 
 Analysis framework (with brightness) for the STAR data at RHIC.
 
+Quick Start
+--------------
+
+- Download or clone this repositiory on STAR RCF computer
+
+- From the top level directory do:
+```
+star config
+```
+This will create some directories required.
+
+- Compile the library:
+```
+source setup.[c]sh
+make -j
+```
+
+- Start root and type `help()`
+```
+root -l
+[0] help()
+```
+
+
 Directory structure
 --------------------
 
