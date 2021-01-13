@@ -1,4 +1,4 @@
-Bright STAR
+BrightSTAR
 ============
 
 Analysis framework (with brightness) for the STAR data at RHIC.
@@ -27,7 +27,7 @@ root -l
 ```
 
 
-Directory structure
+Directory Structure
 --------------------
 
 - `libBrStar`: Main Bright STAR classes. Functionality added on top on `StRoot`. Class name starts with `TSt`.

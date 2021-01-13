@@ -31,8 +31,7 @@ export SOURCE=${STARHOME}/.sl73_gcc485
 export ROOTSETUP=${STARHOME}/rootlogon.C
 export MACRO=${STARHOME}/jobs/$JOBNAME/jobMacro.C
 export SETUPFILE=${STARHOME}/setup.csh
-export LIBBRIGHT=${STARHOME}/libBrStar/lib/libBrStar.so
-export LIBANA=${STARHOME}/analysis/lib/libStAnalysis.so
-export LIBMACROS=${STARHOME}/runMacros/lib/libRunMacros.so
-export LIBDIFFANA=${STARHOME}/diffAnalysis/lib/libDiffAnalysis.so
+export LIBBRIGHT=${STARHOME}/lib
+export CONFIG=${STARHOME}/config
+export DATABASE=${STARHOME}/database
 #---------------------------------------------------------------------------

@@ -11,8 +11,23 @@ STAR Unified Meta Scheduler (SUMS) in BrightSTAR
 
 - Since library resources are copied to execution host and executed from there, so if you use `stardev` in your job xml command, make sure your library is also compiled with the same library.
 
+- If you change the directory names under this directory, you will have to update the files inside `sums_template`.
 
 
+How to submit sums jobs
+--------------------------
 
+- From the top level directory, update the function name inside jobMacro.C file.
+- Submit jobs: `star-submit sumsJobs.xml`
+
+
+How to submit sums template jobs
+------------------------------------
+
+- Update `sums/sums_template/sumsConfig.sh` for your desired production, trigger and dataset.
+- Create a run list for the same dataset using STAR runLog browser.
+- Submit job from root prompt using `TStScheduler::SubmitSumsJob(TString function, TString runList, TString outNamePrefix = "", TString jobName = "sums")`
+
+The above job submission assumes you are generating analysis DST from MuDst i.e. your function just taks two arguments `inFileName` and `outFilename`.
 
 

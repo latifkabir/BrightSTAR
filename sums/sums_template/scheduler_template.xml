@@ -25,9 +25,8 @@
 		<File>file:&SETUPFILE;</File>
 		<File>file:&ROOTSETUP;</File>
 		<File>file:&LIBBRIGHT;</File>
-		<File>file:&LIBANA;</File>
-		<File>file:&LIBMACROS;</File>
-		<File>file:&LIBDIFFANA;</File>
+		<File>file:&CONFIG;</File>
+		<File>file:&DATABASE;</File>
 	</Package>
 	</SandBox>
 
