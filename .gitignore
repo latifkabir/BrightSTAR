@@ -22,6 +22,7 @@ results/
 dst
 jobOutput
 jobResults
+scratch
 .root_history
 .consign
 .project

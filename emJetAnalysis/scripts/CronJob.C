@@ -9,10 +9,17 @@ void CronJob()
     TStScheduler *sc = new TStScheduler();
 
     //Optimal setup for FMS stream
-    sc->SetJobThreshold(1000); // Number of threshold jobs that will trigger new submission
-    sc->SetInterval(10);      // Wait time in minutes
+    // sc->SetJobThreshold(1000); // Number of threshold jobs that will trigger new submission
+    // sc->SetInterval(10);      // Wait time in minutes
+    // sc->SetRunIncrement(80);  // Number of runs to be incremented
+    // sc->SetMaxFilesPerJob(1); //Maximum number of files per job
+
+    sc->SetJobThreshold(3000); // Number of threshold jobs that will trigger new submission
+    sc->SetInterval(30);      // Wait time in minutes
     sc->SetRunIncrement(80);  // Number of runs to be incremented
     sc->SetMaxFilesPerJob(1); //Maximum number of files per job
+
+
     
     //sc->CronJob("AnRunNanoDstMaker", gFirstRun, gFirstRun); // For Test
     //sc->CronJob("AnRunNanoDstMaker", 16093018, 16093018);
@@ -20,8 +27,8 @@ void CronJob()
     
     //sc->CronJob("RunFmsHotChQaMaker");
     
-    sc->CronJob("EjRunEmJetTreeMaker", 16079016, 16081024); 
-    //sc->CronJob("EjRunEmJetTreeMaker", 16081025, gLastRun); // For partial dataset
+    //sc->CronJob("EjRunEmJetTreeMaker", 16079016, 16081024); 
+    sc->CronJob("EjRunEmJetTreeMaker", 16079013, gLastRun); // For partial dataset
     //sc->CronJob("RunFmsHotChQaMaker", 16071023, gLastRun); // For partial dataset
 
     

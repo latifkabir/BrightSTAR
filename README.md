@@ -17,7 +17,7 @@ This will create some directories required.
 - Compile the library:
 ```
 source setup.[c]sh
-make -j
+make
 ```
 
 - Start root and type `help()`
@@ -32,10 +32,10 @@ Directory Structure
 
 - `libBrStar`: Main Bright STAR classes. Functionality added on top on `StRoot`. Class name starts with `TSt`.
 - `StRoot`: StRoot classes. Based on StMaker design. Used to generate user defined pico DST.
-- `analysis`: Prototype analysis example for each detector.
-- `diffAnalysis`: Main analysis scripts for the physics analysis. A_N specific scripts starts with `An`. Detector specific scripts start with the acronym of the detector.
+- `analysis`: Prototype analysis example for each detector. Detector specific scripts start with the acronym of the detector.
+- `diffAnalysis`: Main analysis scripts for the physics analysis. A_N specific scripts starts with `An`. 
 - `runMacros`: Compilable macros to run the Makers from StRoot.
-- `emJetAna`: EM Jet Ananlysis with FMS and EEMC
+- `emJetAnalysis`: EM Jet Ananlysis with FMS and EEMC
 - `starSim`: Simulation work for STAR
 
 Bright STAR Maker
@@ -58,34 +58,51 @@ Environment Variables
 Bright Scheduler
 -------------------
 
+The BrisgtSTAR framework provides multiple approaches for batch farm job submission.
+
 **Condor**
 - Run build-in scheduler from root prompt as:
 ```
 TStScheduler::SubmitJob(TString functionName, Int_t firstRun, Int_t lastRunOrNfiles)
 ```
+Use this approach for generating DST from MuDst.
+
+- Submit generic job for any function or script:
+```
+TStScheduler::SubmitJob(vector<string> jobList, TString jobName)
+```
+Where `jobList` is function list in `FunctionName(int arg1, ...)` format or script list in `.x Script.C(int arg1, ...)` format. 
+
 For more options type `help()`.
 
 - Run condor scheduler from terminal:
 
-Modify `condor.job` and `jobMacro.C` accordingly and submit job as:
+Modify `condor.job` and `jobMacro.C` inside the directory `condor/` accordingly to need and submit job as:
 ```
 condor_submit condor.job
 ```
+This approach is convenient for simulation jobs for example.
 
 **Sums**
-- Submit job using SUMS from root prompt:
+- Submit job using SUMS (template) from root prompt:
 
 ```
 TStScheduler::SubmitSumsJob(TString function, TString runList, TString outName)
 ```
 For more options type `help()`
 
-- Submit job using SUMS from terminal:
-Modify `jobMacro.C` and `sumsConfig.sh` accordingly and submit the job as:
+- Submit job using SUMS (template) from terminal:
+  - Go to `sums/sums_template` directory.
+  - Modify `jobMacro.C` and `sumsConfig.sh` accordingly and submit the job as:
 
 ```
 ./submitSumsJob.sh <function name>  <runList>  <outName>. 
 ```
+
+- Submit jobs using SUMS (non template approach):
+  - From the top level directory, update the function name inside jobMacro.C file, modify sumsJobs.xml to update dataset.
+  - Submit jobs: `star-submit sumsJobs.xml`
+
 
 **Check Job Status**
 From root prompt do:

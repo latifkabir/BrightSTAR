@@ -19,13 +19,16 @@
       <File>file:setup.csh</File>           
       <File>file:config</File>              
       <File>file:database</File>        
+      <File>file:sums</File>        
     </Package>
   </SandBox>
 
   <!-- Get input files from get_file_lis.pl -->
-  <input
-      URL="catalog:star.bnl.gov?production=P15ik,trgsetupname=production_pp200trans_2015,filename~st_rp,runnumber[]16079001-16079013,storage!=HPSS" preferStorage="local" singleCopy="true"  nFiles="1" />
+  <!-- <input URL="catalog:star.bnl.gov?production=P15ik,trgsetupname=production_pp200trans_2015,filename~st_rp,runnumber[]16079001-16079013,storage!=HPSS" preferStorage="local" singleCopy="true"  nFiles="1" /> -->
+  <!--<input URL="filelist:/star/u/iupsal/JuniorsDay/Example_MuDst/19mu.list" nFiles="500" />--> 
+  <input URL="catalog:star.bnl.gov?production=P16id,filetype=daq_reco_MuDst,trgsetupname=production_pp200long_2015,tpx=1,filename~st_physics,sanity=1,storage!=HPSS" preferStorage="local" singleCopy="true" nFiles="3" /> <!-- set production_pp200long_2015 to production_pp200long2_2015 for the other longatudinal production. -->
 
+  
   <stdout URL="file:/star/u/kabir/GIT/BrightSTAR/jobOutput/stdout-$JOBID.out" />
   <stderr URL="file:/star/u/kabir/GIT/BrightSTAR/jobOutput/err_$JOBID.out" />
   <output fromScratch="*.root" toURL="file:/star/u/kabir/GIT/BrightSTAR/jobResults/"/>

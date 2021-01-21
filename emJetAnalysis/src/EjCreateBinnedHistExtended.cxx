@@ -263,8 +263,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    	if(skimEvent->GetTrigFlag(5))
 	    	    continue;
 
-	    	if(skimEvent->GetTrigFlag(8))
-	    	    continue;
+	    	// if(skimEvent->GetTrigFlag(8)) //Lg-bs3
+	    	//     continue;
 		
 		// if(!(skimEvent->GetBbcMult() > 0 && skimEvent->GetTofTrayMult() > 2))
 		//     continue;
