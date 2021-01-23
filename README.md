@@ -6,7 +6,10 @@ Analysis framework (with brightness) for the STAR data at RHIC.
 Quick Start
 --------------
 
-- Download or clone this repositiory on STAR RCF computer: `git clone https://github.com/latifkabir/BrightSTAR.git`
+- Download or clone this repositiory on STAR RCF computer:
+
+```git clone https://github.com/latifkabir/BrightSTAR.git
+```
 
 - From the top level directory do:
 ```
