@@ -58,7 +58,7 @@ Environment Variables
 Bright Scheduler
 -------------------
 
-The BrisgtSTAR framework provides multiple approaches for batch farm job submission.
+The BrightSTAR framework provides multiple approaches for batch farm job submission.
 
 **Condor**
 - Run build-in scheduler from root prompt as:

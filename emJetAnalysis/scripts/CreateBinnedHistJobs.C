@@ -54,7 +54,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += run;
 	argList += ",";
 	argList += run;
-	argList += ")";
+	argList += ", 3)"; //<--------------- Update Here, min number of photon 
 	
 	//---------------------------------------------------------------------
 	
