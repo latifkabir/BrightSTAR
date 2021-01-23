@@ -348,77 +348,22 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    if(p_b == -1 || p_y == -1)
 		continue;
 	    
-	    dT = (evtTime - gmt2etCorr - startTime) / 3600.0; // gmt2etCorr is subtracted to correct event time in GMT. This is not required for startTime from spin group table
+	    dT = (evtTime - gmt2etCorr - startTime) / 3600.0; // gmt2etCorr is subtracted to correct event time in GMT. This is not required for startTime from spin group table. This is NOT necessary for new DSTs 
 	    pol_b = p_b + dpdt_b*dT;
 	    pol_y = p_y + dpdt_y*dT;
-
-	    ePol_b = sqrt( pow(dp_b, 2) + pow(dT*edpdt_b, 2) );
-	    ePol_y = sqrt( pow(dp_y, 2) + pow(dT*edpdt_y, 2) );
-	    
-	    grPolRun_b->SetPoint(nPoints, nPoints*dT, pol_b);
-	    grPolRun_b->SetPointError(nPoints, 0, ePol_b);
-	    
-	    grPolRun_y->SetPoint(nPoints, nPoints*dT, pol_y);
-	    grPolRun_y->SetPointError(nPoints, 0, ePol_y);
-
-	    pol_ave_b += pol_b;
-	    pol_ave_y += pol_b;
-	    ePol_ave_b += pow(ePol_b, 2);
-	    ePol_ave_y += pow(ePol_y, 2);
 
 	    hPolB->Fill(pol_b);
 	    hPolY->Fill(pol_y);
 	    
 	    ++nPoints;
 	}
-	grPolRun_b->Fit(fnc_b, "Q");
-	grPolRun_y->Fit(fnc_y, "Q");
-
-	pol_ave_b /= nPoints;
-	pol_ave_y /= nPoints;
-
-	//!!!! Error Propagation/Calculation is NOT final and to be revisited !!!!!!!!!
-	// Various attempts are implemented here and deemed unnecessary. Just use the average from the filled histogram.
-	
-	ePol_ave_b = sqrt(ePol_ave_b / nPoints);
-	ePol_ave_y = sqrt(ePol_ave_y / nPoints);
-	
-	grPol_b->SetPoint(nRuns, nRuns + 1, fnc_b->GetParameter(0));
-	grPol_b->SetPointError(nRuns, 0.0, fnc_b->GetParError(0));
-
-	grPol_y->SetPoint(nRuns, nRuns + 1, fnc_y->GetParameter(0));
-	grPol_y->SetPointError(nRuns, 0.0, fnc_y->GetParError(0));
-
-	// grPol_b->SetPoint(nRuns, nRuns + 1, pol_ave_b);
-	// grPol_b->SetPointError(nRuns, 0.0, ePol_ave_b);
-
-	// grPol_y->SetPoint(nRuns, nRuns + 1, pol_ave_y);
-	// grPol_y->SetPointError(nRuns, 0.0, ePol_ave_y);
-		
-	if(nRuns == 0)
-	{
-	    grPolRunEx_b = (TGraphErrors*)grPolRun_b->Clone();
-	    grPolRunEx_y = (TGraphErrors*)grPolRun_y->Clone();
-	}
 
 	++nRuns;
 	
 	tFile->Close();
 	delete tFile;
-	delete grPolRun_b;
-	delete grPolRun_y;
-	delete fnc_b;
-	delete fnc_y;
     }
 
-    grPolRunEx_b->SetName("RunPolEx_b");
-    grPolRunEx_y->SetName("RunPolEx_y");
-    
-    // file->cd(); //Saving Tgraph is incovenient for jobs and merging files
-    // grPolRunEx_b->Write();
-    // grPolRunEx_y->Write();
-    // grPol_b->Write();
-    // grPol_y->Write();
     file->Write();    
 }
 

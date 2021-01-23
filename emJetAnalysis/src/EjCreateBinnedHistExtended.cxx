@@ -28,8 +28,6 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     const Int_t kPhiBins = 16;
     const Int_t kXfBins = 10;
     
-    TH2D *bHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
-    TH2D *yHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
     Double_t xfBins[] = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7};
@@ -37,32 +35,18 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     
     Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
-    for(Int_t i = 0; i < kSpinBins; ++i)
-    {
-	for(Int_t j = 0; j < kEnergyBins; ++j)
-	{
-	    for(Int_t k = 0; k < kPhotonBins; ++k)
-	    {
-		TString bTitle = Form("bHist_%i_%i_%i", i, j, k);
-		TString yTitle = Form("yHist_%i_%i_%i", i, j, k);
-		bHist[i][j][k] = new TH2D(bTitle, bTitle, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), nPtBins, ptBins);
-		yHist[i][j][k] = new TH2D(yTitle, yTitle, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), nPtBins, ptBins);       
-	    }
-	}
-    }
-
-    TH2D *bHist3p[kSpinBins]; //3 pthotons or more or any number of photons
+    TH2D *bHistNp[kSpinBins]; //At least N number of photons
     TH2D *bHist2p[kSpinBins]; //Just 2 photons
-    TH2D *bHistPtVsXf3p;
+    TH2D *bHistPtVsXfNp;
     TH2D *bHistPtVsXf2p;
     for(Int_t i = 0; i < kSpinBins; ++i)
     {
-	TString title = Form("bHist3p_%i", i);
-	bHist3p[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+	TString title = Form("bHistNp_%i", i);
+	bHistNp[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
 	title = Form("bHist2p_%i", i);
 	bHist2p[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
     }
-    bHistPtVsXf3p = new TH2D("PtVsXf3p", "PtVsXf3p; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
+    bHistPtVsXfNp = new TH2D("PtVsXfNp", "PtVsXfNp; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
     bHistPtVsXf2p = new TH2D("PtVsXf2p", "PtVsXf2p; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
     
     Int_t bSpin_i;
@@ -179,10 +163,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     Double_t dpdt_y;
     Double_t edpdt_y;
     
-    //for(Int_t r = 0; r < runList.size(); ++r)
     for(Int_t r = 0; r < runList->GetN(); ++r)
     {
-	//runNumber = runList[r];
 	runNumber = runList->GetEntry(r);
 	fileName = fileNamePrefix + to_string(runNumber) + ".root";
 	if(gSystem->AccessPathName(fileName))
@@ -226,15 +208,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    gmt2etCorr = 5*3600; //GMT to EST
 	else
 	    gmt2etCorr = 4*3600; //GMT to EDT
-	TGraphErrors *grPolRun_b = new TGraphErrors(); 
-	TGraphErrors *grPolRun_y = new TGraphErrors();
-	TF1 *fnc_b = new TF1("fnc_b", "pol0");
-	TF1 *fnc_y = new TF1("fnc_y", "pol0");
+
 	nPoints = 0;
-	pol_ave_b = 0;
-	pol_ave_y = 0;
-	ePol_ave_b = 0;
-	ePol_ave_y = 0;
 	
 	Int_t nEntries = tree->GetEntries();
 	cout << "Processing run number: "<< runNumber <<endl;
@@ -262,11 +237,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    {
 	    	if(skimEvent->GetTrigFlag(5))
 	    	    continue;
-
-	    	// if(skimEvent->GetTrigFlag(8)) //Lg-bs3
-	    	//     continue;
 		
-		// if(!(skimEvent->GetBbcMult() > 0 && skimEvent->GetTofTrayMult() > 2))
+		// if(!(skimEvent->GetBbcMult() > 0 && skimEvent->GetTofTrayMult() > 2)) //Ring of fire cut
 		//     continue;
 	    }
 	    
@@ -368,13 +340,10 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    phi_y = -1.0*TMath::Pi() - phi;		
 		}
 		
-		bHist[bSpin_i][eng_i][nPhotons_i]->Fill(phi_b, pt);
-		yHist[ySpin_i][eng_i][nPhotons_i]->Fill(phi_y, pt);
-
 		if(nPhotons >= minNphotons)
 		{
-		    bHist3p[bSpin_i]->Fill(phi_b, xf);
-		    bHistPtVsXf3p->Fill(xf, pt);
+		    bHistNp[bSpin_i]->Fill(phi_b, xf);
+		    bHistPtVsXfNp->Fill(xf, pt);
 		}
 		
 		if(nPhotons == 2)
@@ -411,77 +380,22 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    if(p_b == -1 || p_y == -1)
 		continue;
 	    
-	    dT = (evtTime - gmt2etCorr - startTime) / 3600.0; 
+	    dT = (evtTime - gmt2etCorr - startTime) / 3600.0; //gmt2etCorr is not required for most recent tag or dst
 	    pol_b = p_b + dpdt_b*dT;
 	    pol_y = p_y + dpdt_y*dT;
-
-	    ePol_b = sqrt( pow(dp_b, 2) + pow(dT*edpdt_b, 2) );
-	    ePol_y = sqrt( pow(dp_y, 2) + pow(dT*edpdt_y, 2) );
-	    
-	    grPolRun_b->SetPoint(nPoints, nPoints*dT, pol_b);
-	    grPolRun_b->SetPointError(nPoints, 0, ePol_b);
-	    
-	    grPolRun_y->SetPoint(nPoints, nPoints*dT, pol_y);
-	    grPolRun_y->SetPointError(nPoints, 0, ePol_y);
-
-	    pol_ave_b += pol_b;
-	    pol_ave_y += pol_b;
-	    ePol_ave_b += pow(ePol_b, 2);
-	    ePol_ave_y += pow(ePol_y, 2);
 
 	    hPolB->Fill(pol_b);
 	    hPolY->Fill(pol_y);
 	    
 	    ++nPoints;
 	}
-	grPolRun_b->Fit(fnc_b, "Q");
-	grPolRun_y->Fit(fnc_y, "Q");
-
-	pol_ave_b /= nPoints;
-	pol_ave_y /= nPoints;
-
-	//!!!! Error Propagation/Calculation is NOT final and to be revisited !!!!!!!!!
-	// Various attempts are implemented here and deemed unnecessary. Just use the average from the filled histogram.
-	
-	ePol_ave_b = sqrt(ePol_ave_b / nPoints);
-	ePol_ave_y = sqrt(ePol_ave_y / nPoints);
-	
-	grPol_b->SetPoint(nRuns, nRuns + 1, fnc_b->GetParameter(0));
-	grPol_b->SetPointError(nRuns, 0.0, fnc_b->GetParError(0));
-
-	grPol_y->SetPoint(nRuns, nRuns + 1, fnc_y->GetParameter(0));
-	grPol_y->SetPointError(nRuns, 0.0, fnc_y->GetParError(0));
-
-	// grPol_b->SetPoint(nRuns, nRuns + 1, pol_ave_b);
-	// grPol_b->SetPointError(nRuns, 0.0, ePol_ave_b);
-
-	// grPol_y->SetPoint(nRuns, nRuns + 1, pol_ave_y);
-	// grPol_y->SetPointError(nRuns, 0.0, ePol_ave_y);
-		
-	if(nRuns == 0)
-	{
-	    grPolRunEx_b = (TGraphErrors*)grPolRun_b->Clone();
-	    grPolRunEx_y = (TGraphErrors*)grPolRun_y->Clone();
-	}
 
 	++nRuns;
 	
 	tFile->Close();
 	delete tFile;
-	delete grPolRun_b;
-	delete grPolRun_y;
-	delete fnc_b;
-	delete fnc_y;
     }
-
-    grPolRunEx_b->SetName("RunPolEx_b");
-    grPolRunEx_y->SetName("RunPolEx_y");
     
-    // file->cd(); //Saving Tgraph is incovenient for jobs and merging files
-    // grPolRunEx_b->Write();
-    // grPolRunEx_y->Write();
-    // grPol_b->Write();
-    // grPol_y->Write();
     file->Write();    
 }
 

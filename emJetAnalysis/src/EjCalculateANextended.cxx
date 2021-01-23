@@ -31,8 +31,6 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     const Int_t kPhotonBins = 6;
     const Int_t kXfBins = 10;
     
-    TH2D *bHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
-    TH2D *yHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0}; //For info only
     Double_t xfBins[] = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
@@ -40,35 +38,22 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     
     //Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
-    for(Int_t i = 0; i < kSpinBins; ++i)
-    {
-	for(Int_t j = 0; j < kEnergyBins; ++j)
-	{
-	    for(Int_t k = 0; k < kPhotonBins; ++k)
-	    {
-		TString bTitle = Form("bHist_%i_%i_%i", i, j, k);
-		TString yTitle = Form("yHist_%i_%i_%i", i, j, k);
-		bHist[i][j][k] = (TH2D*)file->Get(bTitle);
-		yHist[i][j][k] = (TH2D*)file->Get(yTitle);
-	    }
-	}
-    }
-    TH2D *bHist3p[kSpinBins]; //3 pthotons or more
+    TH2D *bHistNp[kSpinBins]; //N pthotons or more
     TH2D *bHist2p[kSpinBins]; //Just 2 photons
-    TH2D *bHistPtVsXf3p;
+    TH2D *bHistPtVsXfNp;
     TH2D *bHistPtVsXf2p;
     for(Int_t i = 0; i < kSpinBins; ++i)
     {
-	TString title = Form("bHist3p_%i", i);
-	bHist3p[i] = (TH2D*)file->Get(title);
+	TString title = Form("bHistNp_%i", i);
+	bHistNp[i] = (TH2D*)file->Get(title);
 	title = Form("bHist2p_%i", i);
 	bHist2p[i] = (TH2D*)file->Get(title);
     }
-    bHistPtVsXf3p = (TH2D*)file->Get("PtVsXf3p");
+    bHistPtVsXfNp = (TH2D*)file->Get("PtVsXfNp");
     bHistPtVsXf2p = (TH2D*)file->Get("PtVsXf2p");
     
-    const Int_t nHalfPhiBins = bHist[0][0][0]->GetNbinsX() / 2; //Phi bins per hemisphere
-    const Int_t nPtBins = bHist[0][0][0]->GetNbinsY();
+    const Int_t nHalfPhiBins = bHist2p[0]->GetNbinsX() / 2; //Phi bins per hemisphere
+    const Int_t nPtBins = bHist2p[0]->GetNbinsY();
 
     //Note: left-right is with respect to the beam (here blue beam)
 
@@ -96,7 +81,7 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     Double_t bNd_l;
     Double_t bNd_r;
 
-    Double_t yNu_l;  //y prefix for 3 or more photons case here
+    Double_t yNu_l;  //y prefix forat least N photons case here
     Double_t yNu_r;
     Double_t yNd_l;
     Double_t yNd_r;
@@ -119,11 +104,11 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	    bNd_r = bHist2p[0]->GetBinContent((phiBins_right[k]), l + 1);
 	    bNu_r = bHist2p[1]->GetBinContent((phiBins_right[k]), l + 1);
 		    
-	    yNd_l = bHist3p[0]->GetBinContent(phiBins_left[k], l + 1);
-	    yNu_l = bHist3p[1]->GetBinContent(phiBins_left[k], l + 1);
+	    yNd_l = bHistNp[0]->GetBinContent(phiBins_left[k], l + 1);
+	    yNu_l = bHistNp[1]->GetBinContent(phiBins_left[k], l + 1);
 		    
-	    yNd_r = bHist3p[0]->GetBinContent((phiBins_right[k]), l + 1);
-	    yNu_r = bHist3p[1]->GetBinContent((phiBins_right[k]), l + 1);
+	    yNd_r = bHistNp[0]->GetBinContent((phiBins_right[k]), l + 1);
+	    yNu_r = bHistNp[1]->GetBinContent((phiBins_right[k]), l + 1);
       		    
 	    //You need to ensure that the Left-Right pairing is done exactly as in the formula
 	    //----- Blue beam measured asymmetry ------------
@@ -330,49 +315,4 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     c1->Write();
     c2->Write();
     
-    /*
-    //This area is just for plotting final physics result ----------------
-    //--- For Fms ---
-    //only consider energy ranges 20 -40, 40 - 60, 60 - 80 i.e. bin index 1, 2, 3  and nPhotons = 1 - 5
-    TCanvas* c2 = new TCanvas("asym_fms","Asymmetries",1000,600);
-    float varMins[5] = { 1.8, 1.8, 1.8, 1.8, 1.8};
-    float varMaxs[5] = { 8.2, 8.2, 8.2, 8.2, 8.2};
-    const char* xTitles[3] = { "p_{T} [GeV/c]","p_{T} [GeV/c]","p_{T} [GeV/c]" };
-    const char* yTitles[5] = { "A_{N}", "A_{N}", "A_{N}", "A_{N}", "A_{N}" };
-
-    PanelPlot* asymPlot = new PanelPlot(c2, 3, 5, 2, "asym_fms", xTitles, yTitles);
-
-    for (int i = 0; i < 5; i++)
-    {
-	for (int j = 0; j < 3; j++)
-	{
-	    asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-	    asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
-
-	    // if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
-	    // {
-	    //     asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
-	    //     asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
-	    // }
-	    // else
-	    {
-		asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
-		asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
-	    }
-	    if(i == 0 && j == 0)
-		asymPlot->GetPlot(j,i)->AddText(2.5, -0.04, "Preliminary", 0.10);       
-	}
-    }
-    asymPlot->Draw();
-    
-    c2->Write();   
-    */    
-    
-    /*
-      Plot the saved fitted graphs as:
-      gStyle->SetOptFit(1)
-      bEbin1_PhotonBin0_PtBin0->Draw("AP*")
-    */
-    
-    //outFile->Write();
 }
