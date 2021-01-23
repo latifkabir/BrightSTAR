@@ -105,7 +105,7 @@ void TStScheduler::SubmitJob(vector <string> jobList, TString jobName)
     cout << "====================== Reading fileList and writing to Condor Job Description File ... ... ================" <<endl;
     TString resultDir;
     TString rootCommand;
-    resultDir = TStar::Config->GetJobResultsPath() + "condor" + (TString)"/";
+    resultDir = TStar::Config->GetJobResultsPath() + jobName + (TString)"/";
     gROOT->ProcessLine((TString)".! mkdir -p " + resultDir);
     condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
     condorConfig_out << "Executable       =  /bin/bash" << endl;

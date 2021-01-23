@@ -11,7 +11,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
     TString funcName = "EjCreateBinnedHistExtended";
-    TString jobName = "EjCreateBinnedHistExtended";
+    TString jobName = "EjCreateBinnedHistExtendedTest";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -54,7 +54,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += run;
 	argList += ",";
 	argList += run;
-	argList += ", 3)"; //<--------------- Update Here, min number of photon 
+	argList += ", 1)"; //<--------------- Update Here, min number of photon 
 	
 	//---------------------------------------------------------------------
 	

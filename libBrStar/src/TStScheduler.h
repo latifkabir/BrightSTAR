@@ -29,7 +29,7 @@ public:
     virtual ~TStScheduler();
 
     static void JobStatus(Int_t level = 0);                                                                                                        // Check Job Status
-    static void SubmitJob(vector<string> jobList, TString jobName);
+    static void SubmitJob(vector<string> jobList, TString jobName = "condor");
     static void SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor");    // Submit job using condor
     static void SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t firstRun,  Int_t lastRunOrNfiles = -1, TString outName = "", TString jobName = "condor"); 
     static void SubmitJob(Int_t maxFilesPerJob, TString functionName, TEntryList *runList); 

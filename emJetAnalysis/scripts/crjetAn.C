@@ -152,7 +152,7 @@ using namespace std;
 	h1ydphi = new TH1F(hydtitle,hydtitle,nphibin,-TMath::Pi(),TMath::Pi());
 
 //all jets
-    sprintf(cutbup,  "%s>%.1f&&TMath::Abs(%s-%.1f)<%f&&fjeta>%.1f&&fjeta<%.1f&&%s&&%s",ptnew,ptcut,eNew,ene,enew,fjetalow,fjetahigh,bup,trigselect);
+	sprintf(cutbup,  "%s>%.1f&&TMath::Abs(%s-%.1f)<%f&&fjeta>%.1f&&fjeta<%.1f&&%s&&%s",ptnew,ptcut,eNew,ene,enew,fjetalow,fjetahigh,bup,trigselect);
 	sprintf(cutbdown,"%s>%.1f&&TMath::Abs(%s-%.1f)<%f&&fjeta>%.1f&&fjeta<%.1f&&%s&&%s",ptnew,ptcut,eNew,ene,enew,fjetalow,fjetahigh,bdown,trigselect);
 	sprintf(cutyup,  "%s>%.1f&&TMath::Abs(%s-%.1f)<%f&&fjeta>%.1f&&fjeta<%.1f&&%s&&%s",ptnew,ptcut,eNew,ene,enew,fjetalow,fjetahigh,yup,trigselect);
 	sprintf(cutydown,"%s>%.1f&&TMath::Abs(%s-%.1f)<%f&&fjeta>%.1f&&fjeta<%.1f&&%s&&%s",ptnew,ptcut,eNew,ene,enew,fjetalow,fjetahigh,ydown,trigselect);
