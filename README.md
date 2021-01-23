@@ -8,7 +8,8 @@ Quick Start
 
 - Download or clone this repositiory on STAR RCF computer:
 
-```git clone https://github.com/latifkabir/BrightSTAR.git
+```
+git clone https://github.com/latifkabir/BrightSTAR.git
 ```
 
 - From the top level directory do:
