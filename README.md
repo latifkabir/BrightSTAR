@@ -23,6 +23,7 @@ This will create some directories required.
 source setup.[c]sh
 make
 ```
+Choose either `setup.sh` or `setup.csh` depending your terminal preference.
 
 - Start root and type `help()`
 ```
@@ -77,7 +78,7 @@ Use this approach for generating DST from MuDst.
 ```
 TStScheduler::SubmitJob(vector<string> jobList, TString jobName)
 ```
-Where `jobList` is function list in `FunctionName(int arg1, ...)` format or script list in `.x Script.C(int arg1, ...)` format. 
+Where `jobList` is function list in `FunctionName(arg1, ...)` format or script list in `.x Script.C(arg1, ...)` format. 
 
 For more options type `help()`.
 
