@@ -7,22 +7,17 @@ EM-jet A_N Analysis
 
 
 - Step-1: Generate DST files (EM-jet Trees)
-
-The corresponding script is: `emJetAnalysis/src/EjRunEmJetTreeMaker.cxx`
-
-It relies on two makers named `StJetMaker2015.cxx` and `TStNanoJetTreeMaker.cxx` under `StRoot` to produce Nano jet trees.
+  - The corresponding script is: `emJetAnalysis/src/EjRunEmJetTreeMaker.cxx`
+  - It relies on two makers named `StJetMaker2015.cxx` and `TStNanoJetTreeMaker.cxx` under `StRoot` to produce Nano jet trees.
 
 
 - Step-2: Generate Binned Histograms Required for `A_N` calculation
-
-The corresponding script is: `emJetAnalysis/src/EjCreateBinnedHistExtended.cxx`
-
-The name `extended` indicates that I have extended my original analysis to Zhanwen's to reproduce his result.
+  - The corresponding script is: `emJetAnalysis/src/EjCreateBinnedHistExtended.cxx`
+  - The name `extended` indicates that I have extended my original analysis to Zhanwen's to reproduce his result.
 
 
 - Step-3: Calculate A_N and plot them
-
-The corresponding script is: `emJetAnalysis/src/EjCalculateANextended.cxx`
+  - The corresponding script is: `emJetAnalysis/src/EjCalculateANextended.cxx`
 
 
 - Nano Jet Tree file location: `/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet`
