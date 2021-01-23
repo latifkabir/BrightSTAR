@@ -6,7 +6,7 @@ Analysis framework (with brightness) for the STAR data at RHIC.
 Quick Start
 --------------
 
-- Download or clone this repositiory on STAR RCF computer
+- Download or clone this repositiory on STAR RCF computer: `git clone https://github.com/latifkabir/BrightSTAR.git`
 
 - From the top level directory do:
 ```
@@ -25,6 +25,8 @@ make
 root -l
 [0] help()
 ```
+
+- To take full advantage of the framework, update the configuration file `config/config.cfg` accordingly.
 
 
 Directory Structure
@@ -116,7 +118,6 @@ Directory Tree
 .
 ├── analysis
 ├── bin
-├── cepAnalysis
 ├── condor
 ├── config
 ├── database
@@ -141,6 +142,7 @@ Directory Tree
 ├── star
 ├── starSim
 ├── StRoot
+├── studentsAna
 ├── sums
 ```
 
