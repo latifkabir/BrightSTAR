@@ -16,7 +16,8 @@ RunList=$1
 FolderName=$2
 FilePrefix=$3
 InputDir=$STARHOME/scratch/${FolderName}
-OutDir=$STARHOME/dst/${FolderName}
+#OutDir=$STARHOME/dst/${FolderName}
+OutDir=$STARHOME/scratch/${FolderName}Merged
 TIME=`date "+%Y%m%d%I"`
 
 mkdir -p $OutDir

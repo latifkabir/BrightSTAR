@@ -98,7 +98,7 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	h1nJets_all->Fill(jetEvent->GetNumberOfJets());
 	vtxZ = skimEvent->GetVertexZ();
 	
-	// for(Int_t t = 0; t < 9; ++t) //Moved to the end of envet loop
+	// for(Int_t t = 0; t < 9; ++t) //Moved to the end of event loop
 	// {
 	//     if(skimEvent->GetTrigFlag(t))
 	// 	h1TrigType->Fill(t);

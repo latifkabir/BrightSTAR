@@ -280,7 +280,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		h1Eng->Fill(eng);
 		
 		//Trigger dependent Pt cuts: See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22.
-		for(Int_t t = 0; t < 3; ++t) // <----- Only FMS JP0, JP1 and JP3 considered
+		for(Int_t t = 0; t < 3; ++t) // <----- Only FMS JP0, JP1 and JP2 considered
 		{
 		    if(det == "fms")
 		    {

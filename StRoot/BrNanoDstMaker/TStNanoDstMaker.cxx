@@ -243,9 +243,9 @@ Int_t TStNanoDstMaker::Make()
     }
     mMuEvent = mMuDst->event();
 
-    // Event filtering has been moved to TStFmsRpFilterMaker class.
-    // if(!AcceptEvent())
-    // 	return kStSkip;
+    // Event filtering based on trigger has been moved to TStFilterMaker class.
+    if(!AcceptEvent())
+    	return kStSkip;
 
     //------ Reset Buffer --------
     Reset();
@@ -296,29 +296,12 @@ Int_t TStNanoDstMaker::Make()
 //_____________________________________________________________________________
 Bool_t TStNanoDstMaker::AcceptEvent()
 {
-    /*
-    //Trigger flag
-    mTrigFlag = 0;
-    for(mIt = mTrigIDs.begin(); mIt != mTrigIDs.end(); ++mIt)
-    {
-	mTrigFlag = mMuEvent->triggerIdCollection().nominal().isTrigger(*mIt);
-	if(mTrigFlag)
-	    break;
-    }
-    if(mTrigFlag == 0)
-	return kFALSE;
-    mRpsMuColl = mMuDst->RpsCollection();
-    if(!mRpsMuColl)
-    {
-	cout<<"No RP data for this event"<<endl;
-	return kFALSE;
-    }    
-    if(mRpsMuColl->numberOfTracks() < 1)
-	return kFALSE;
-
     //Skip LED trigger events here
     //Skip abort gap events here
-    */
+    
+    if ((mMuEvent->triggerData()->bunchId7Bit() > 30 && mMuEvent->triggerData()->bunchId7Bit() < 40) || (mMuEvent->triggerData()->bunchId7Bit() > 110 && mMuEvent->triggerData()->bunchId7Bit() < 120))
+	    return kFALSE;
+    
     return kTRUE;
 }
 //_____________________________________________________________________________

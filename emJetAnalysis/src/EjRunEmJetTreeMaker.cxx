@@ -131,6 +131,8 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     StFmsHitMaker*   fmshitMk = new StFmsHitMaker();
     StFmsPointMaker* fmsptMk  = new StFmsPointMaker();
 
+    //Note that the default is already: fmsptMk->SetReadMuDst(0); fmshitMk->SetReadMuDst(0); fmsptMk->setMergeSmallToLarge(1);
+    
     if(isMC)
 	fmshitMk->SetReadMuDst(1);                //for simu set to 1
     //-------------------------------------------

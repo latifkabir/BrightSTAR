@@ -49,8 +49,8 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     //======================================================== Trigger Filter ==============================================
     if(evtTrig || vetoTrig)
     {    
-	TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker"); // Filter/Skip Events if no RP or FMS BS/JP Trigger
-	//StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
+	//TStRpFilterMaker* filterMaker = new TStRpFilterMaker("TStRpFilterMaker"); // Filter/Skip Events if no RP or FMS BS/JP Trigger
+	StTriggerFilterMaker* filterMaker = new StTriggerFilterMaker;
 	if(evtTrig)
 	{
 	    for(Int_t i = 0; i < evtTrig->size(); ++i)
@@ -61,7 +61,7 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
 	    for(Int_t i = 0; i < vetoTrig->size(); ++i)
 		filterMaker->addVetoTrigger(vetoTrig->at(i));
 	}
-	filterMaker->SetHist1d(hEvtCount);
+	//filterMaker->SetHist1d(hEvtCount);
     }
 
     Int_t nEvents = muDstMaker->chain()->GetEntries();
@@ -193,6 +193,7 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     //======================================================== Nano DST Maker ==============================================
     TStNanoDstMaker *nanoDstMaker = new TStNanoDstMaker("TStNanoDstMaker");
     //nanoDstMaker->SetTree(tree);
+    nanoDstMaker->SetTrigIDs(*evtTrig);
     nanoDstMaker->SetOutFileName(outFile);
     nanoDstMaker->SetMuDstMaker(muDstMaker);
     nanoDstMaker->SetBeamMomentum(100.0);           //----> To be moved to configuration file

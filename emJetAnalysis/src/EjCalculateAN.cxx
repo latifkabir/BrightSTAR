@@ -320,7 +320,8 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	    for (int j = 0; j < 3; j++)
 	    {
 		asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-		asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
+		//asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
+		asymPlot->GetPlot(j,i)->SetYRange( -0.1, 0.1);
 
 		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
 		// {
@@ -375,7 +376,8 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	    for(int j = 0; j < 1; j++)
 	    {
 		asymPlot_e->GetPlot(j,i)->SetXRange( varMins_e[j], varMaxs_e[j]);
-		asymPlot_e->GetPlot(j,i)->SetYRange( -0.005, 0.005);
+		//asymPlot_e->GetPlot(j,i)->SetYRange( -0.005, 0.005);
+		asymPlot_e->GetPlot(j,i)->SetYRange( -0.02, 0.02);
 
 		// if(i == 4 && j == 0)
 		// {

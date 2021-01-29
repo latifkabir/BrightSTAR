@@ -32,7 +32,7 @@
 
 #pragma link C++ function AnRunDiffJetTreeMaker;                 // Diffractive Jet Tree Maker
 #pragma link C++ function AnDiffJetCreateBinnedHist;             // Create Binned Histograms for Diffractive Jets 
-
+#pragma link C++ function AnIncPion;                             // Create binned histogram for inclusive pion A_N
 
 
 #endif
