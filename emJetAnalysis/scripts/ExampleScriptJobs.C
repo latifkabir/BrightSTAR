@@ -84,7 +84,7 @@ void ExampleScriptJobs()
 	    // if(!gSystem->AccessPathName(txtName))
 	    // 	continue;
 	    
-	    TString job = ".x /star/u/kabir/GIT/BrightSTAR/emJetAnalysis/scripts/crjetAn.C(";
+	    TString job = ".x /star/u/kabir/GIT/BrightSTAR/emJetAnalysis/scripts/crjetAn_new.C(";
 	    job += ebinlows[j];
 	    job += ",";
 	    job += ebinhighs[j];

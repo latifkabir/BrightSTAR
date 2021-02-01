@@ -14,6 +14,7 @@
 #pragma link C++ class StjFMS+;
 #pragma link C++ class StjFMSNull+;
 #pragma link C++ class StjFMSTree+;
+#pragma link C++ class StjEEmcSMD+;
 
 #pragma link C++ class StjTowerEnergyCorrectionForTracks+;
 #pragma link C++ class StjTowerEnergyCut+;

@@ -41,24 +41,24 @@ StFmsCollection* StjFMSMuDst::findFmsCollection()
 
 StjTowerEnergyList StjFMSMuDst::getEnergyList()
 {
-	StjTowerEnergyList fmsEnergyList;
-	mFmsColl = findFmsCollection();
-	if (!mFmsColl)
-	{
-		LOG_ERROR  << "StjFMSMuDst::getEnergyList cannot find the StFmsCollection" << endm;
-		return fmsEnergyList;
-	}
-	StjTowerEnergy energyDeposit;
+    StjTowerEnergyList fmsEnergyList;
+    mFmsColl = findFmsCollection();
+    if (!mFmsColl)
+    {
+	LOG_ERROR  << "StjFMSMuDst::getEnergyList cannot find the StFmsCollection" << endm;
+	return fmsEnergyList;
+    }
+    StjTowerEnergy energyDeposit;
 
-	if (_useFmsHit == true)
-	{
+    if (_useFmsHit == true)
+    {
         const int nHits = mFmsColl->numberOfHits();
         StSPtrVecFmsHit& hits = mFmsColl->hits();
         for (int i=0; i<nHits; i++)
         {
             const int detId = hits[i]->detectorId();
-			if (detId<8 || detId>11) continue;
-			const int chId = hits[i]->channel();
+	    if (detId<8 || detId>11) continue;
+	    const int chId = hits[i]->channel();
             const double energy = hits[i]->energy();
 
             const int col = mFmsDbMaker->getColumnNumber(detId, chId);
@@ -91,47 +91,47 @@ StjTowerEnergyList StjFMSMuDst::getEnergyList()
                 energyDeposit.vertexZ = vertex.z();
             }
             if (energy > _minEnergy) fmsEnergyList.push_back(energyDeposit);
-		}//i, loop over hits
-	}//Use FMS hit
-	else //Default, use FMS points
+	}//i, loop over hits
+    }//Use FMS hit
+    else //Default, use FMS points
+    {
+	const int nPoints = mFmsColl->numberOfPoints();
+	StSPtrVecFmsPoint& points = mFmsColl->points();
+	for (int i=0; i<nPoints; i++)
 	{
-		const int nPoints = mFmsColl->numberOfPoints();
-		StSPtrVecFmsPoint& points = mFmsColl->points();
-		for (int i=0; i<nPoints; i++)
-		{
-			const int detId = points[i]->detectorId();
-			if (detId<8 || detId>11) continue;
-			const double x = points[i]->XYZ().x();
-			const double y = points[i]->XYZ().y();
-			const double energy = points[i]->energy();
-			StLorentzVectorF v1 = points[i]->fourMomentum();
+	    const int detId = points[i]->detectorId();
+	    if (detId<8 || detId>11) continue;
+	    const double x = points[i]->XYZ().x();
+	    const double y = points[i]->XYZ().y();
+	    const double energy = points[i]->energy();
+	    StLorentzVectorF v1 = points[i]->fourMomentum();
 
-			energyDeposit.adc        = 0;
-			energyDeposit.detectorId = 100 + detId; //FMS detId is distributed from 8 - 11 -> 108 - 111
-			energyDeposit.energy     = energy;
-			energyDeposit.pedestal   = 0;
-			energyDeposit.rms        = 0;
-			energyDeposit.status     = 1;
-			energyDeposit.towerId    = points[i]->id();
-			energyDeposit.towerEta   = v1.pseudoRapidity();
-			energyDeposit.towerPhi   = v1.phi();
-			energyDeposit.towerR     = TMath::Sqrt(x*x + y*y);
-			if (_setVertex == true)
-			{
-				energyDeposit.vertexX = _vx;
-				energyDeposit.vertexY = _vy;
-				energyDeposit.vertexZ = _vz;
-			}
-			else 
-			{
-				StThreeVectorF vertex = StMuDst::event()->primaryVertexPosition();
-				energyDeposit.vertexX = vertex.x();
-				energyDeposit.vertexY = vertex.y();
-				energyDeposit.vertexZ = vertex.z();
-			}
-			if (energy > _minEnergy) fmsEnergyList.push_back(energyDeposit);
-		}//i, loop over points
-	}//Use FMS points
+	    energyDeposit.adc        = 0;
+	    energyDeposit.detectorId = 100 + detId; //FMS detId is distributed from 8 - 11 -> 108 - 111
+	    energyDeposit.energy     = energy;
+	    energyDeposit.pedestal   = 0;
+	    energyDeposit.rms        = 0;
+	    energyDeposit.status     = 1;
+	    energyDeposit.towerId    = points[i]->id();
+	    energyDeposit.towerEta   = v1.pseudoRapidity();
+	    energyDeposit.towerPhi   = v1.phi();
+	    energyDeposit.towerR     = TMath::Sqrt(x*x + y*y);
+	    if (_setVertex == true)
+	    {
+		energyDeposit.vertexX = _vx;
+		energyDeposit.vertexY = _vy;
+		energyDeposit.vertexZ = _vz;
+	    }
+	    else 
+	    {
+		StThreeVectorF vertex = StMuDst::event()->primaryVertexPosition();
+		energyDeposit.vertexX = vertex.x();
+		energyDeposit.vertexY = vertex.y();
+		energyDeposit.vertexZ = vertex.z();
+	    }
+	    if (energy > _minEnergy) fmsEnergyList.push_back(energyDeposit);
+	}//i, loop over points
+    }//Use FMS points
 
-	return fmsEnergyList;
+    return fmsEnergyList;
 }//getEnergyList

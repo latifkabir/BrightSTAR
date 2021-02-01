@@ -160,11 +160,6 @@ Int_t StJetMaker2015::Make()
 		    eemcEnergyList = jetbranch->anapars->eemcCuts()(eemcEnergyList);
 		}
 
-		//Merge BEMC and EEMC towers
-		StjTowerEnergyList energyList;
-		copy(bemcEnergyList.begin(),bemcEnergyList.end(),back_inserter(energyList));
-		copy(eemcEnergyList.begin(),eemcEnergyList.end(),back_inserter(energyList));
-
 		//Get FMS towers (update at Dec. 2019, by ckim) - now it uses TPC vertex like BEMC/EEMC
 		StjTowerEnergyList fmsEnergyList;
 		if (jetbranch->anapars->useFms)
@@ -175,6 +170,11 @@ Int_t StJetMaker2015::Make()
 		    fmsEnergyList = jetbranch->anapars->fmsCuts()(fms.getEnergyList());
 		    //fmsEnergyList = fms.getEnergyList();
 		}
+		
+		//Merge BEMC, EEMC and FMS towers
+		StjTowerEnergyList energyList;
+		copy(bemcEnergyList.begin(),bemcEnergyList.end(),back_inserter(energyList));
+		copy(eemcEnergyList.begin(),eemcEnergyList.end(),back_inserter(energyList));
 		copy(fmsEnergyList.begin(),fmsEnergyList.end(),back_inserter(energyList));
 
 		//Apply hadronic correction to towers
@@ -300,7 +300,7 @@ Int_t StJetMaker2015::Make()
 		    fmsEnergyList = jetbranch->anapars->fmsCuts()(fms.getEnergyList());
 		}
 
-		//Merge BEMC and EEMC towers
+		//Merge BEMC, EEMC and FMS towers
 		StjTowerEnergyList energyList;
 		copy(bemcEnergyList.begin(),bemcEnergyList.end(),back_inserter(energyList));
 		copy(eemcEnergyList.begin(),eemcEnergyList.end(),back_inserter(energyList));

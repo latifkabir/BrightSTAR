@@ -20,6 +20,7 @@
 #pragma link C++ function RunEEmcIUPi0;                          // Pi0 reconsntruction in EEMC  using IU algorithm
 #pragma link C++ function RunEEmcTreeMakerPart1;                 // EEMC reconstruction using TSIU algorithm. This is step no. 1 out of 3 of the process. This is the algorithm followed for the analysis. To be run with local StRoot copy.
 #pragma link C++ function RunEEmcTreeMakerPart2and3;             // EEMC reconstruction using TSIU algorithm. This is step no. 2 and 3 out of 3 of the process. This is the algorithm followed for the analysis.
+#pragma link C++ function RunEEmcTreeMakerCombined;              // EEMC reconstruction using TSIU algorithm. Attempt to combine all parts
 
 //FMS
 #pragma link C++ function RunFmsQAMaker;                         // FMS QA Maker from StMuEvent (from MuDst file)
