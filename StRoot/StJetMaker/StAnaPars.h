@@ -27,8 +27,10 @@ public:
     , useTpc(false)
     , useBemc(false)
     , useEemc(false)
+    , useEemcSmd(false)
+    , useEmJetMode(false)
     , useFms(false)
-	, useFmsHit(false) //CKim
+    , useFmsHit(false) //CKim
     , useMonteCarlo(false)
     , randomSelectorProb(1.0)
     , randomSelectorAt(false)
@@ -73,6 +75,7 @@ public:
   void addTpcCut(StjTrackCut* c) { mTpcCuts.addCut(c); }
   void addBemcCut(StjTowerEnergyCut* c) { mBemcCuts.addCut(c); }
   void addEemcCut(StjTowerEnergyCut* c) { mEemcCuts.addCut(c); }
+  void addEemcSmdCut(StjTowerEnergyCut* c) { mEemcSmdCuts.addCut(c); }
   void addFmsCut(StjTowerEnergyCut* c) { mFmsCuts.addCut(c); } //CKim
   void addMcCut(StjMCParticleCut* c) { mMcCuts.addCut(c); }
   void addJetCut(StProtoJetCut* c) { mJetCuts.addCut(c); }
@@ -86,6 +89,7 @@ public:
   StjTrackListCut& tpcCuts() { return mTpcCuts; }
   StjTowerEnergyListCut& bemcCuts() { return mBemcCuts; }
   StjTowerEnergyListCut& eemcCuts() { return mEemcCuts; }
+  StjTowerEnergyListCut& eemcSmdCuts() { return mEemcSmdCuts; } // Latif
   StjTowerEnergyListCut& fmsCuts() { return mFmsCuts; } //CKim
   StjMCParticleListCut& mcCuts() { return mMcCuts; }
   StProtoJetListCut& jetCuts() { return mJetCuts; }
@@ -100,6 +104,7 @@ private:
   StjTrackListCut mTpcCuts;
   StjTowerEnergyListCut mBemcCuts;
   StjTowerEnergyListCut mEemcCuts;
+  StjTowerEnergyListCut mEemcSmdCuts; //Latif
   StjTowerEnergyListCut mFmsCuts; //CKim
   StjMCParticleListCut mMcCuts;
   StProtoJetListCut mJetCuts;
@@ -108,9 +113,11 @@ public:
   bool useTpc;
   bool useBemc;
   bool useEemc;
+  bool useEemcSmd; //Latif
   bool useFms;
   bool useFmsHit; //CKim
   bool useMonteCarlo;
+  bool useEmJetMode; //Latif  
   double randomSelectorProb;
   double randomSelectorAt;
   unsigned int randomSelectorSeed;

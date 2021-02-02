@@ -21,9 +21,10 @@ void CronJob()
     //sc->CronJob("RunFmsHotChQaMaker");
     
     //sc->CronJob("EjRunEmJetTreeMaker", 16079016, 16081024); 
-    sc->CronJob("EjRunEmJetTreeMaker", 16079013, gLastRun); // For partial dataset
+    //sc->CronJob("EjRunEmJetTreeMaker", 16079013, gLastRun); // For partial dataset
     //sc->CronJob("RunFmsHotChQaMaker", 16071023, gLastRun); // For partial dataset
 
+    sc->CronJob("EjRunEmJetTreeMakerEEmcSmd", gFirstRun, gLastRun -1);
     
     //sc->CronJob("EjRunEmJetTreeMaker"); // For full dataset    
     //sc->CronJob("RunFmsHotChQaMaker"); // For full dataset    

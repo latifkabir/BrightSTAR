@@ -1,4 +1,4 @@
-// Filename: StjEEmcSMD.h
+// Filename: StjEEmcSmd.h
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sun Jan 31 22:52:39 2021 (-0500)
@@ -11,17 +11,17 @@
 
 #include "StjTowerEnergyList.h"
 
-class StjEEmcSMD : public TObject {
+class StjEEmcSmd : public TObject {
 
 public:
-  StjEEmcSMD() { }
-  virtual ~StjEEmcSMD() { }
+  StjEEmcSmd() { }
+  virtual ~StjEEmcSmd() { }
 
   virtual void Init() { }
 
   virtual StjTowerEnergyList getEnergyList() = 0;
 
-  ClassDef(StjEEmcSMD, 1)
+  ClassDef(StjEEmcSmd, 1)
 
 };
 

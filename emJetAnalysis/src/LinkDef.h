@@ -10,6 +10,7 @@
 
 #pragma link C++ function EjMakeAnalysisTree;           // Generate skimmed analysis tree for A_N calculation from big jet trees (without the Maker chain)
 #pragma link C++ function EjRunEmJetTreeMaker;          // Run Em Jet Tree maker. Skimmed analysis Nano jet tree from big jet tree (inside the maker). This is the integrated version of the EjMakerAnalysisTree
+#pragma link C++ function EjRunEmJetTreeMakerEEmcSmd;   // Run Em Jet Tree maker. Skimmed analysis Nano jet tree from big jet tree (inside the maker). This is the integrated version of the EjMakerAnalysisTree
 #pragma link C++ function EjReadAnalysisTree;           // Example of how to read analysis tree
 #pragma link C++ function EjAnalysisTreeQa;             // Analysis Tree QA
 #pragma link C++ function EjCreateBinnedHist;           // Create binned histograms in pt, E, phi, #photons, spin to be used to extract yield

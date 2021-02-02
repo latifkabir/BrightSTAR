@@ -2,6 +2,7 @@
   2015 version of JetMaker:
   - Derivated from 2012 version by Jilong
   - Minor updates applied, mainly for FMS
+  - Enable using EEMC SMD photon candidates instead of EEMC towers by Latif
 */
 
 #include "TFile.h"
@@ -26,6 +27,7 @@
 #include "StjBEMCMuDst.h"
 #include "StjEEMCNull.h"
 #include "StjEEMCMuDst.h"
+#include "StjEEmcSmdMuDst.h"
 #include "StjFMSNull.h"
 #include "StjFMSMuDst.h"
 #include "StjMCParticleToStMuTrackFourVec.h"
@@ -159,6 +161,13 @@ Int_t StJetMaker2015::Make()
 		    if (jetbranch->anapars->changeTowers) (*jetbranch->anapars->changeTowers)(eemcEnergyList);
 		    eemcEnergyList = jetbranch->anapars->eemcCuts()(eemcEnergyList);
 		}
+		else if(!jetbranch->anapars->useEemc && jetbranch->anapars->useEemcSmd)
+		{
+		    StjEEmcSmdMuDst eemcSmd;
+		    eemcEnergyList = eemcSmd.getEnergyList();
+		    if (jetbranch->anapars->changeTowers) (*jetbranch->anapars->changeTowers)(eemcEnergyList);
+		    eemcEnergyList = jetbranch->anapars->eemcSmdCuts()(eemcEnergyList);
+		}
 
 		//Get FMS towers (update at Dec. 2019, by ckim) - now it uses TPC vertex like BEMC/EEMC
 		StjTowerEnergyList fmsEnergyList;
@@ -186,7 +195,8 @@ Int_t StJetMaker2015::Make()
 
 		//Merge tracks and towers
 		StProtoJet::FourVecList particles; //vector<const AbstractFourVec*>
-		copy(tpc4pList.begin(),tpc4pList.end(),back_inserter(particles));
+		if (!jetbranch->anapars->useEmJetMode)
+		    copy(tpc4pList.begin(),tpc4pList.end(),back_inserter(particles));
 		copy(energy4pList.begin(),energy4pList.end(),back_inserter(particles));
 
 		//Run jet finder
@@ -288,7 +298,15 @@ Int_t StJetMaker2015::Make()
 		    if (jetbranch->anapars->changeTowers) (*jetbranch->anapars->changeTowers)(eemcEnergyList);
 		    eemcEnergyList = jetbranch->anapars->eemcCuts()(eemcEnergyList);
 		}
-
+		else if(!jetbranch->anapars->useEemc && jetbranch->anapars->useEemcSmd)
+		{
+		    StjEEmcSmdMuDst eemcSmd;
+		    eemcSmd.setVertex(0, 0, zVtx);
+		    eemcEnergyList = eemcSmd.getEnergyList();
+		    if (jetbranch->anapars->changeTowers) (*jetbranch->anapars->changeTowers)(eemcEnergyList);
+		    eemcEnergyList = jetbranch->anapars->eemcSmdCuts()(eemcEnergyList);
+		}
+		
 		//Get FMS towers
 		StjTowerEnergyList fmsEnergyList;
 		if (jetbranch->anapars->useFms)
