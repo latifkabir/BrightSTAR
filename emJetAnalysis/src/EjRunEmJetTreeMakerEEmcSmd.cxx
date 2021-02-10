@@ -343,7 +343,7 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
 
     StAnaPars* anapars12 = new StAnaPars;
     anapars12->useTpc  = true;
-    anapars12->useBemc = true;
+    anapars12->useBemc = false;  //Do not use BEMC, otherwise it will leak to EEMC -- Latif
     anapars12->useEemc = false;
     anapars12->useEemcSmd = true;
     anapars12->useFms  = true;

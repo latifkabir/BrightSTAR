@@ -10,6 +10,16 @@
 
 using namespace std;
 
+/*
+This script is under DEBUG mode. Remove this comment once the following are reversed:
+
+- Hot channel list
+- Jet Pt cut
+- Photon energy cut
+- Number of events to be processed
+
+*/
+
 void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t isMC)
 {
     TStopwatch sw;
@@ -147,7 +157,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 
     StAnaPars* anapars12 = new StAnaPars;
     anapars12->useTpc  = true;
-    anapars12->useBemc = true;
+    anapars12->useBemc = false;
     anapars12->useEemc = true;
     anapars12->useFms  = true;
     //anapars12->useFmsHit = true; //CKim
@@ -171,8 +181,8 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 
     //FMS cuts, CKim
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong
-    //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.5, 200)); //!!!!!!!!!! For Comparing With Zhanwen's Result Only !!!!!!
-    anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //!!!!!!!!!! Updated based on Simulation !!!!!!
+    anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.5, 200)); //!!!!!!!!!! For Comparing With Zhanwen's Result Only !!!!!!
+    //anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //!!!!!!!!!! Updated based on Simulation !!!!!!
     //* 3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
 
     //Jet cuts

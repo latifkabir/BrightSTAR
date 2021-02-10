@@ -33,7 +33,7 @@ TStFmsHotChDB::~TStFmsHotChDB()
 }
 
 void TStFmsHotChDB::GetHotChList(Int_t runNo, Bool_t isHotCh[][571])
-{
+{/*
     TStFillNoDB db;
     Int_t fillNo = db.GetFillNo(runNo);
 
@@ -87,6 +87,7 @@ void TStFmsHotChDB::GetHotChList(Int_t runNo, Bool_t isHotCh[][571])
   
     
     i.close();    
+ */
 }
 
 

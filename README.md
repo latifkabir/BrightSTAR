@@ -1,7 +1,12 @@
 BrightSTAR
 ============
 
-Analysis framework (with brightness) for the STAR data at RHIC.
+Analysis framework (with brightness) for the STAR data at RHIC. The main features include:
+
+- Many new modules (Maker classes) for different types of analyses
+- New scheduler workflow based on `HTCondor` which is itself integrated in `root`
+- Configurable using the `config` file for each user
+- Built-in help or instructions 
 
 Quick Start
 --------------
@@ -84,7 +89,7 @@ For more options type `help()`.
 
 - Run condor scheduler from terminal:
 
-Modify `condor.job` and `jobMacro.C` inside the directory `condor/` accordingly to need and submit job as:
+Modify `condor.job` and `jobMacro.C` inside the directory `condor/` according to your need and submit job as:
 ```
 condor_submit condor.job
 ```

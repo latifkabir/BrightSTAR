@@ -11,7 +11,9 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
     TString funcName = "EjCreateBinnedHist";
-    TString jobName = "EjCreateBinnedHistEEmc";
+    //TString funcName = "EjCreateBinnedHistExtended";
+    TString jobName = "EjCreateBinnedHistEEmcSmd";
+    //TString jobName = "EjCreateBinnedHistExDebugLatif";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -23,8 +25,9 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 
     //------- 2.Change Here the path and file prefix ---------------
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJetFmsPass3_partial/NanoJetTree_EjRunEmJetTreeMaker_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/DST_ZhanwenComparison/NanoJetTree_EjRunEmJetTreeMaker_";
     //----------
     

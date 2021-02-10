@@ -23,4 +23,6 @@
 #pragma link C++ function EjCalculateBeamAsymmetry;     // Calculate beam asymmetry
 #pragma link C++ function EjCalculateANdirectMethod;    // Calculate A_N from binned histograms using usual asymmetry formula
 
+#pragma link C++ function EjCreateBinnedHistZn;         // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (with extended options)
+
 #endif

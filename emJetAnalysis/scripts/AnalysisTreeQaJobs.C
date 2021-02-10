@@ -11,7 +11,7 @@ void AnalysisTreeQaJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
     TString funcName = "EjAnalysisTreeQa";
-    TString jobName = "EjAnalysisTreeQa";
+    TString jobName = "EjAnalysisTreeQaPass2EEmc";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -22,8 +22,8 @@ void AnalysisTreeQaJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
     TString outName;
     //------- 2.Change Here the path and file prefix ---------------
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
-    // TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
+     TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
     //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
@@ -55,7 +55,7 @@ void AnalysisTreeQaJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += ",\"";
 	argList += outName;
 	argList += "\"";
-	argList += ",\"fms\"";
+	argList += ",\"eemc\"";
 	argList += ")";	
 	//---------------------------------------------------------------------
 	

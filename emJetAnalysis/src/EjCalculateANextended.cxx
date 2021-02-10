@@ -187,17 +187,17 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     yGrPhy = new TGraphErrors(); // y for 3 or more photons case
     bGrPhy->SetName("An2Photons");
     bGrPhy->SetTitle("No. of Photons = 2; x_{F}; A_{N}");
-    yGrPhy->SetName("An3OrMorePhotons");
+    yGrPhy->SetName("AnNphotons");
     yGrPhy->SetTitle("No. of Photons >= 3; x_{F}; A_{N}");
     bGrPhy->SetMarkerColor(kBlack);
     bGrPhy->SetLineColor(kBlack);
     bGrPhy->SetMarkerStyle(kFullCircle);
 	    
-    bGrPhy->SetMaximum(0.5);
-    bGrPhy->SetMinimum(-0.5);
+    bGrPhy->SetMaximum(0.1);
+    bGrPhy->SetMinimum(-0.1);
 
-    yGrPhy->SetMaximum(0.5);
-    yGrPhy->SetMinimum(-0.5);
+    yGrPhy->SetMaximum(0.1);
+    yGrPhy->SetMinimum(-0.1);
 	    
     yGrPhy->SetMarkerColor(kRed);
     yGrPhy->SetLineColor(kRed);
@@ -212,8 +212,8 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	yGr[k] = new TGraphErrors();
 	bGr[k]->SetName(Form("An2_Photons_XfBin%i", k));
 	bGr[k]->SetTitle(Form("No. of Photons = 2, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
-	yGr[k]->SetName(Form("An3nPhotons_XfBin%i", k));
-	yGr[k]->SetTitle(Form("No. of Photons >= 3, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
+	yGr[k]->SetName(Form("AnNphotons_XfBin%i", k));
+	yGr[k]->SetTitle(Form("No. of Photons >= n, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
 
 	bGr[k]->SetMaximum(0.1);
 	bGr[k]->SetMinimum(-0.1);
@@ -271,48 +271,35 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     yGrPhy->Write();
     
     //------------------ Plot physics A_N --------------------
-    Int_t canvasCount = 1;
-
     //------------- For FMS --------------------
-
-    TCanvas *c1 = new TCanvas("EMjet_A_N_fms2", "EM Jet A_{N}");
-    bGrPhy->Draw("AP");
-    
-    TCanvas *c2 = new TCanvas("EMjet_A_N_fms3", "EM Jet A_{N}", 600, 400);
-    TMultiGraph *mg = new TMultiGraph("mg", "mg");
-       
-    //yGrPhy->Draw("AP");
-    // TLine* L1Temp = new TLine(1.5, 0, 9.5, 0);
-    // L1Temp->Draw("same");
-    
+           
     //Zhanwen's values for 3 or more photons (Data taken from HepData):
-    Double_t x_z3[] = {0.2213, 0.2571, 0.3038, 0.3529, 0.4029, 0.4531, 0.5033, 0.5536, 0.6123}; 
-    Double_t y_z3[] = {0.0008, 0.0023, 0.0032, 0.0051, 0.0056, 0.0078, 0.0084, 0.0125, 0.0135}; 
-    Double_t y_z3err[] = {0.0013, 0.0005, 0.0005, 0.0007, 0.0009, 0.0011, 0.0014, 0.0017, 0.0018};
+    Double_t x_z3[] = {0.2213, 0.2571, 0.3038, 0.3529, 0.4029, 0.4531, 0.5033, 0.5536, 0.6123};    //xf
+    Double_t y_z3[] = {0.0008, 0.0023, 0.0032, 0.0051, 0.0056, 0.0078, 0.0084, 0.0125, 0.0135};    //A_N
+    Double_t y_z3err[] = {0.0013, 0.0005, 0.0005, 0.0007, 0.0009, 0.0011, 0.0014, 0.0017, 0.0018}; // err in A_N
 
     //Zhanwen's values for all photons (Data taken from HepData):
     Double_t x_z[] = {0.22116, 0.25683, 0.30373, 0.35284, 0.40294, 0.45320, 0.50343, 0.55365, 0.61238}; 
     Double_t y_z[] = {0.0044, 0.0053, 0.0066, 0.0079, 0.0074, 0.0099, 0.0096, 0.0141, 0.0161}; 
     Double_t y_zerr[] = {0.0011, 0.0005, 0.0005, 0.0006, 0.0008, 0.0010, 0.0012, 0.0015, 0.0015}; 
+
+    //Zhanwen's values for  2 photons
+    Double_t x_z2[] = {0.221274, 0.257051, 0.303834, 0.352904, 0.402909, 0.45313, 0.503341, 0.553565, 0.612303};
+    Double_t y_z2[] = {0.0192133, 0.0302699, 0.0359699, 0.0448542, 0.0403864, 0.0373283, 0.0316632, 0.0340015, 0.0314325};
+    Double_t y_z2err[] = {0.00307504, 0.00152359, 0.00179363, 0.00248168, 0.00322774, 0.00391079, 0.00464554, 0.00532485, 0.00536946};
+    
     
     TGraphErrors *znGr3 = new TGraphErrors(9, x_z3, y_z3, 0, y_z3err);
     znGr3->SetName("znGr3");
 
+    TGraphErrors *znGr2 = new TGraphErrors(9, x_z2, y_z2, 0, y_z2err);
+    znGr2->SetName("znGr2");
+    
     TGraphErrors *znGr = new TGraphErrors(9, x_z, y_z, 0, y_zerr);
     znGr->SetName("znGrAll");
     
-    //znGr->Draw("sameAP");
 
- 
-    mg->Add(yGrPhy);
-    mg->Add(znGr3);
-    mg->Draw("P");
-
+    znGr2->Write();
     znGr3->Write();
     znGr->Write();
-
-    mg->Write();
-    c1->Write();
-    c2->Write();
-    
 }
