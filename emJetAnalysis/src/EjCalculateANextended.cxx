@@ -188,7 +188,7 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     bGrPhy->SetName("An2Photons");
     bGrPhy->SetTitle("No. of Photons = 2; x_{F}; A_{N}");
     yGrPhy->SetName("AnNphotons");
-    yGrPhy->SetTitle("No. of Photons >= 3; x_{F}; A_{N}");
+    yGrPhy->SetTitle("No. of Photons >= n; x_{F}; A_{N}");
     bGrPhy->SetMarkerColor(kBlack);
     bGrPhy->SetLineColor(kBlack);
     bGrPhy->SetMarkerStyle(kFullCircle);

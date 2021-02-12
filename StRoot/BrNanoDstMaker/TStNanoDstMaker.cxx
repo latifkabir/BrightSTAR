@@ -59,6 +59,10 @@ TStNanoDstMaker::TStNanoDstMaker(const char *name):StMaker(name)
     //EMC Buffer
     mEmcArray = new TClonesArray("TStEmcPointData");
 
+    //EEMC Buffer
+    mEEmcParticleArrPh = new TClonesArray("EEmcParticleCandidate_t");
+    mEEmcParticleArrPi = new TClonesArray("EEmc2ParticleCandidate_t");
+    
     mUseEvent = kFALSE;
     mUseTpc = kFALSE;
     mUseEmc = kFALSE;
@@ -92,6 +96,10 @@ TStNanoDstMaker::~TStNanoDstMaker()
 
     //EMC Buffer    
     delete mEmcArray;
+
+    //EEMC Buffer    
+    delete mEEmcParticleArrPh;
+    delete mEEmcParticleArrPi;
 }
 
 
@@ -113,13 +121,14 @@ Int_t TStNanoDstMaker::Init()
     if(!mTree)
     {
 	mFile = new TFile(mOutName, "RECREATE");
-	mTree = new TTree("T", "An Tree");
+	mTree = new TTree("T", "Nano DST Tree");
 	mSaveFile = kTRUE;
     }
     else
 	mSaveFile = kFALSE;
     SetBranches();
-    InitHist();
+    if(mUseTpc)
+	InitHist();
     mEmcRadius = (Double_t)StEmcGeom::instance("bemc")->Radius();
 
     //mMuDstMaker = (StMuDstMaker*)GetInputDS("MuDst");
@@ -176,7 +185,11 @@ void TStNanoDstMaker::SetBranches()
 
     //EEMC Flag
     if(mUseEEmc)
+    {
 	mTree->Branch("eemcStatus", &mHasEEmcEvent, "eemcStatus/I");
+	mTree->Branch("eemcPhoton", &mEEmcParticleArrPh, 256000, 99);	
+	mTree->Branch("eemcPion",   &mEEmcParticleArrPi, 256000, 99);	
+    }
     
     cout << "Done setting branches..." <<endl;
 }
@@ -206,28 +219,41 @@ void TStNanoDstMaker::InitHist()
 //_____________________________________________________________________________
 void TStNanoDstMaker::Reset()
 {
-    mEventData->Reset();
+    if(mUseEvent)
+	mEventData->Reset();
     
-    mTrackArray->Clear();
+    if(mUseTpc)
+    {
+	mTrackArray->Clear();
+	
+	mElArray->Clear();
+	mPiArray->Clear();
+	mPrArray->Clear();
+	mMuArray->Clear();
+	mKaArray->Clear();
+	mUkArray->Clear();    
+	mNpi = 0;
+	mNe = 0;
+	mNpr = 0;
+	mNmu = 0;
+	mNka = 0;
+	mNuk = 0;
+    }
 
-    mElArray->Clear();
-    mPiArray->Clear();
-    mPrArray->Clear();
-    mMuArray->Clear();
-    mKaArray->Clear();
-    mUkArray->Clear();
-    mNpi = 0;
-    mNe = 0;
-    mNpr = 0;
-    mNmu = 0;
-    mNka = 0;
-    mNuk = 0;
-    
-    mFmsArray->Clear();
-    
-    mRpsArray->Clear();    
+    if(mUseFms)
+	mFmsArray->Clear();
 
-    mEmcArray->Clear();    
+    if(mUseRps)
+	mRpsArray->Clear();    
+
+    if(mUseEmc)
+	mEmcArray->Clear();
+
+    if(mUseEEmc)
+    {
+	mEEmcParticleArrPh->Clear();
+	mEEmcParticleArrPi->Clear();
+    }
 }
     
 //_____________________________________________________________________________
@@ -250,28 +276,6 @@ Int_t TStNanoDstMaker::Make()
     //------ Reset Buffer --------
     Reset();
 
-    //------- EEmc tree is separate.  But it can be synchronized here. If synced, it keeps event only if there is a valid. If not synced, it has a flag indicating if corresponding EEMC event is available. Trees will have different number of entries in the later case and you need to use the flag to synchronize. 
-    //EEMC event
-    if(mUseEEmc)
-    {
-	mEEmcTreeMaker = (StEEmcTreeMaker_t*)GetMaker("EEmcTreeMaker");
-	if(!mEEmcTreeMaker)
-	{
-	    cout << "TStNanoDstMaker::Make !StEEmcTreeMaker_t" <<endl;
-	    return kStErr;
-	}
-	//Synchronize RP tree with EEMC part1 tree. This will keep event only if EEMC tree has an entry for this event.
-	if(mSyncOnEEmc)
-	{
-	    if(mEEmcTreeMaker->getNumPart1EventsWritten() != (mEventCount + 1))
-		return kStSkip;
-	}
-	if(mEEmcTreeMaker->getNumPart1EventsWritten() != (mEventCount + 1))
-	    mHasEEmcEvent = 1;
-	else
-	    mHasEEmcEvent = 0;
-    }
-    
     if(mUseEvent)
 	MakeEvent();
     if(mUseFms)
@@ -283,6 +287,8 @@ Int_t TStNanoDstMaker::Make()
 	MakeChargedPid();
     if(mUseEmc)
 	MakeEmc();
+    if(mUseEEmc)
+	MakeEEmc();
     
     mTree->Fill();
     ++mEventCount;
@@ -299,8 +305,16 @@ Bool_t TStNanoDstMaker::AcceptEvent()
     //Skip LED trigger events here
     //Skip abort gap events here
     
-    if ((mMuEvent->triggerData()->bunchId7Bit() > 30 && mMuEvent->triggerData()->bunchId7Bit() < 40) || (mMuEvent->triggerData()->bunchId7Bit() > 110 && mMuEvent->triggerData()->bunchId7Bit() < 120))
+    // if ((mMuEvent->triggerData()->bunchId7Bit() > 30 && mMuEvent->triggerData()->bunchId7Bit() < 40) || (mMuEvent->triggerData()->bunchId7Bit() > 110 && mMuEvent->triggerData()->bunchId7Bit() < 120))
+    // 	    return kFALSE;
+
+    //Synchronize Nano tree with EEMC part1 tree. This will keep event only if EEMC tree has an entry for this event. Use this if only using EEMC detector alone.
+    if(mUseEEmc && mSyncOnEEmc)
+    {
+	mEEmcTreePart1 = (StEEmcTreeMaker_t*)GetMaker("EEmcTreeMaker");
+	if(mEEmcTreePart1->getNumPart1EventsWritten() != (mEventCount + 1))
 	    return kFALSE;
+    }
     
     return kTRUE;
 }
@@ -311,6 +325,7 @@ Int_t TStNanoDstMaker::MakeEvent()
     mEventData->SetRunNumber(mMuEvent->runNumber());
     mEventData->SetFillNumber(mMuEvent->runInfo().beamFillNumber(StBeamDirection::east)); //For yellow beam
     mEventData->SetEventId(mMuEvent->eventId());
+    mEventData->SetBunchId(mMuEvent->triggerData()->bunchId7Bit());    
     mEventData->SetTime(mMuEvent->eventInfo().time());
 
     //Trigger ids
@@ -765,6 +780,73 @@ Int_t TStNanoDstMaker::MakeEmc()
     return kStOK;
 }
 
+//EEMC event
+//_________________________________________________________________________________
+Int_t TStNanoDstMaker::MakeEEmc()
+{
+   //------- EEmc tree is separately generated using TSIU algorithm. But it can be merged and synchronized here. If synced, it keeps event only if there is a valid. If not synced, it has a flag indicating if corresponding EEMC event is available. Trees will have different number of entries in the later case and you need to use the flag to synchronize. 
+
+    mEEmcTreePart1 = (StEEmcTreeMaker_t*)GetMaker("EEmcTreeMaker");
+    if(!mEEmcTreePart1)
+    {
+	cout << "TStNanoDstMaker::Make !StEEmcTreeMaker_t" <<endl;
+	return kStErr;
+    }
+
+    //Synchronize Nano tree with EEMC part1 tree. This will keep event only if EEMC tree has an entry for this event. ---> Moved to AcceptEvent() call
+    
+    if(mEEmcTreePart1->getNumPart1EventsWritten() != (mEventCount + 1))
+	mHasEEmcEvent = 1;
+    else
+	mHasEEmcEvent = 0;
+    
+    mEEmcTreePart3 = (StEEmcTreeMaker_t*)GetMaker("EEmcTreeWriter");
+    if (!mEEmcTreePart3)
+    {
+	cout <<"TSTNanoDstMaker::MakeEEmc - !StEEmcTreeMaker. Returning empty photon/pion list" <<endl;
+	return kStErr;
+    }
+
+    //--- Fill EEMC Photons ----
+    TIter arrItr = mEEmcTreePart3->getEEmcParticleCandidateIter1(); // Iterator for TClonesArray of EEmcParticleCandidate_t    
+    Int_t nPoints = 0;
+    while ((mInPoint = (EEmcParticleCandidate_t*)arrItr.Next()))
+    {
+	mOutPoint =  new((*mEEmcParticleArrPh)[nPoints])EEmcParticleCandidate_t();
+
+	mOutPoint->PID = mInPoint->PID;
+	mOutPoint->hitIdx1 = mInPoint->hitIdx1;
+	mOutPoint->E = mInPoint->E;
+	mOutPoint->M = mInPoint->M;
+	mOutPoint->PT = mInPoint->PT;
+	mOutPoint->position = mInPoint->position;
+	mOutPoint->momentum = mInPoint->momentum;
+	
+	++nPoints;	
+    }
+    
+    //--- Fill EEMC Pions ----
+    arrItr = mEEmcTreePart3->getEEmcParticleCandidateIter2(); // Iterator for TClonesArray of EEmc2ParticleCandidate_t    
+    Int_t nPions = 0;
+    while ((mInPion = (EEmc2ParticleCandidate_t*)arrItr.Next()))
+    {
+	mOutPion =  new((*mEEmcParticleArrPi)[nPions])EEmc2ParticleCandidate_t();
+
+	mOutPion->PID = mInPion->PID;
+	mOutPion->hitIdx1 = mInPion->hitIdx1;
+	mOutPion->hitIdx2 = mInPion->hitIdx2;
+	mOutPion->E = mInPion->E;
+	mOutPion->M = mInPion->M;
+	mOutPion->PT = mInPion->PT;
+	mOutPion->position = mInPion->position;
+	mOutPion->momentum = mInPion->momentum;
+	mOutPion->Z = mInPion->Z;
+	mOutPion->D = mInPion->D;
+	
+	++nPions;	
+    }
+    return kStOK;
+}
 
 //_____________________________________________________________________________
 Int_t TStNanoDstMaker::Finish()

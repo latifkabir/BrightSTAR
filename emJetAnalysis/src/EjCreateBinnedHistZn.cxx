@@ -294,7 +294,6 @@ void EjCreateBinnedHistZn(TString fileNamePrefix, TString det, Int_t minNphotons
 	    else
 		continue;
 
-
 	    didPassPtCut = kFALSE;
 	       	
 	    eta = fjeta;

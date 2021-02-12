@@ -80,7 +80,8 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     }
     else if(det == "eemc")
     {
-	etaMin = 1.0; //0.8;
+	//etaMin = 1.0; //0.8;
+	etaMin = 1.2; // <------------ This is temporary, for PASS 2 ONLY. Pass 2 has leak from BEMC.
 	etaMax = 2.0; //2.5;
     }
     else
@@ -88,6 +89,18 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	cout << "Invalid detector" <<endl;
 	return;
     }
+
+    //---------- QA Histograms for events that enter in A_N Calculation i.e after all event selection cuts ------------
+    TH1D *h1nJets  = new TH1D("h1nJets ", "Number of Jets [FMS or EEMC] after cuts", 10, 0, 10);
+    TH1D *h1spinB = new TH1D("h1spinB", "Blue beam spin after all cuts; jet spin", 5, -2, 2);
+    TH1D *h1spinY = new TH1D("h1spinY", "Yellow beam spin after all cuts; jet spin", 5, -2, 2);
+    TH1D *h1Eta = new TH1D ("h1Eta", "EM Jet Eta after all cuts; Jet #eta", 100, 1.0, 5.0);
+    TH1D *h1Phi = new TH1D ("h1Phi", "EM Jet Phi after all cuts; Jet #phi [rad]", 100, -3.3, 3.3);
+    TH1D *h1E = new TH1D ("h1E", "EM Jet E after all cuts; Jet E [GeV]", 100, 0.0, 70.0);
+    TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
+    TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets after all cuts; Number of Photons", 20, 0, 20);
+    TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 100, -200, 200);
+
     
     //Event buffer
     TStJetEvent *jetEvent = 0;
@@ -256,6 +269,8 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    else
 		continue;
 
+	    h1nJets->Fill(jetEvent->GetNumberOfJets());
+	    h1vtxZ->Fill(vtxZ);
 	    for(Int_t j = 0; j < jetEvent->GetNumberOfJets(); ++j)
 	    {
 		didPassPtCut = kFALSE;
@@ -329,6 +344,15 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		h1PhiY->Fill(phi_y);
 
 		eventAccepted = kTRUE;
+
+		//--- QA plots after all cuts ----------
+		h1spinB->Fill(spinB);  //note: per jet
+		h1spinY->Fill(spinY);  //note: per jet
+		h1Eta->Fill(eta);
+		h1Phi->Fill(phi);
+		h1E->Fill(eng);
+		h1Pt->Fill(pt);
+		h1nPhotons->Fill(nPhotons);
 	    }
 
 	    //------------ Calculate Average Polarization -----------------------------------
@@ -342,7 +366,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		fillDb.GetFillPolarization(fillNoFmData, energy, startTime, stopTime, p_b, dp_b, dpdt_b, edpdt_b, p_y, dp_y, dpdt_y, edpdt_y);
 		
 		cout << fillNoFmData << "\t"<< energy << "\t"<< startTime << "\t"<< stopTime << "\t"<< p_b << "\t"<< dp_b << "\t"<< dpdt_b << "\t"<< edpdt_b << "\t"<< p_y << "\t"<< dp_y << "\t"<< dpdt_y << "\t"<< edpdt_y <<endl;
-		cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - 4.0*3600 - startTime) / 3600.0 <<endl;
+		cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - gmt2etCorr - startTime) / 3600.0 <<endl;
 	    }
 
 	    if(p_b == -1 || p_y == -1)

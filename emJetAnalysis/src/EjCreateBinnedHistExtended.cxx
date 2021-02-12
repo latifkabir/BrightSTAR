@@ -13,6 +13,12 @@
 #include "BrJetMaker/TStJetSkimEvent.h"
 using namespace std;
 
+/*
+
+The cuts in this script are configured to match Zhanwen for comparison purpose only.
+
+*/
+
 void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString det, Int_t firstRun, Int_t lastRun, Int_t minNphotons)
 {
     /*
@@ -233,13 +239,14 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    spinY = skimEvent->GetSpinY();
 	    evtTime = skimEvent->GetUnixTime();
 	    eventAccepted = kFALSE;
-	    
+
+	    //!!!!------------> Disabled for comparison with Zhanwen <--------------!!!	    
 	    //Exclude FMS small-bs3 trigger that gives ring of fire issue.
 	    //The ring of fire is a real problem. It gives lots of unphysical jets i.e. jets with E > s /2 or X_F > 1.0. It must be removed for any reliable analysis.
 	    if(det == "fms")
 	    {
-	    	if(skimEvent->GetTrigFlag(5))
-	    	    continue;
+	    	// if(skimEvent->GetTrigFlag(5))
+	    	//     continue;
 		
 		// if(!(skimEvent->GetBbcMult() > 0 && skimEvent->GetTofTrayMult() > 2)) //Ring of fire cut
 		//     continue;
@@ -303,18 +310,19 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    }
 		}
 
-		if(!didPassPtCut)
-		    continue;
+		//!!! ---------> For comparing with Zhanwen. He did not use trigger dependent Pt cut !!!! <-----------
+		// if(!didPassPtCut)
+		//     continue;
 
 		//!!!!!!----> For comparing with Zhanwen's em-jet result only. Consider FMS JP0, JP1 and JP2 Triggers only <---------------------------
 		if(skimEvent->GetTrigFlag(0) != 1 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
 		    continue;
 
 		//Seems Zhanwen did not include trigger 480810 for FMS-JP0 from period 1
-		//This probably does not matter as this triiger id has very low pt (lower than jet pt threshold)
+		//This probably does not matter as this trigger id has very low pt (lower than jet pt threshold)
 		if(skimEvent->GetTrigFlag(0) == 1 && runNumber <= 16073040 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
 		    continue;
-		//----------- > End of Trigger Selection<----------------------
+		//-- End of Trigger Selection --
 		
 
 		xf_i = int(fabs(xf)*10.0);
@@ -385,7 +393,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		fillDb.GetFillPolarization(fillNoFmData, energy, startTime, stopTime, p_b, dp_b, dpdt_b, edpdt_b, p_y, dp_y, dpdt_y, edpdt_y);
 		
 		cout << fillNoFmData << "\t"<< energy << "\t"<< startTime << "\t"<< stopTime << "\t"<< p_b << "\t"<< dp_b << "\t"<< dpdt_b << "\t"<< edpdt_b << "\t"<< p_y << "\t"<< dp_y << "\t"<< dpdt_y << "\t"<< edpdt_y <<endl;
-		cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - startTime) / 3600.0 <<endl;
+		cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - gmt2etCorr - startTime) / 3600.0 <<endl;
 	    }
 
 	    if(p_b == -1 || p_y == -1)

@@ -818,6 +818,9 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
 	inFile.close();
 	cout << "Currently number of active jobs: "<< activeJobs <<endl;
 
+	if(activeJobs == 0 && iteration > 0)
+	    activeJobs = 100000; //Arbitrary big number
+	
 	if(activeJobs < jobThreshold)
 	{
 	    startRun = runList->GetEntry(index);

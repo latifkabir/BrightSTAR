@@ -19,10 +19,10 @@ public:
     Int_t mRunNumber;			//
     Float_t mFillNumber;		// Yellow Fill Number 
     Int_t mEventId;			//
+    Int_t mBunchId;			//
     Int_t mTime;                        //
     Short_t mBspin;			//
     Short_t mYspin;			//
-    Int_t mTrigFlag;			//
     static const Int_t mMaxTrigs = 30;	//
     Int_t mNtrig;			//
     Int_t mTriggers[mMaxTrigs];		//
@@ -51,10 +51,10 @@ public:
     Int_t GetRunNumber(){return mRunNumber;}							//
     Float_t GetFillNumber(){return mFillNumber;}						// Yellow Fill Number
     Int_t GetEventId(){return mEventId;}							//
+    Int_t GetBunchId(){return mBunchId;}							//
     Int_t GetTime(){return mTime;}
     Short_t GetBlueSpin(){return mBspin;}							//
     Short_t GetYellowSpin(){return mYspin;}							//
-    Int_t GetTrigFlag(){return mTrigFlag;}							//
     Int_t GetNtrigs(){return mNtrig;}								//
     Int_t GetTrigger(Int_t index){if(index < mNtrig) return mTriggers[index]; return -1;}	//
     Bool_t IsTrigBitSet(Int_t bit){return (mTrigBits & (1 << bit));}
@@ -80,10 +80,10 @@ public:
     void SetRunNumber( Int_t run){mRunNumber = run;}						//
     void SetFillNumber( Float_t yellow_fill_number){mFillNumber = yellow_fill_number;}		//
     void SetEventId(Int_t id){mEventId = id;}							//
+    void SetBunchId(Int_t id){mBunchId = id;}							//
     void SetTime(Int_t time){ mTime = time;}							//
     void SetBlueSpin(Short_t spin){mBspin = spin;}						//
     void SetYellowSPin(Short_t spin){mYspin = spin;}						//
-    void SetTrigFlag(Int_t flag){mTrigFlag = flag;}						//
     void SetNtrigs(Int_t ntrig){mNtrig = ntrig;}						//
     void SetTrigger(Int_t index, Int_t trig){if(index < mMaxTrigs) mTriggers[index] = trig;}	//
     void SetTrigBit(Int_t bit){mTrigBits = mTrigBits | 1 << bit;}
@@ -118,7 +118,6 @@ public:
 	mEventId = -1;
 	mBspin = 0;
 	mYspin = 0;
-	mTrigFlag = -1;
 	mNtrig = 0;
 	for(Int_t i = 0; i < mMaxTrigs; ++i)
 	    mTriggers[i] = 0;
@@ -160,7 +159,7 @@ public:
     // 	this->mPrimaryVertex_mX3 = z;
     // }
 
-    ClassDef( TStEventData, 5 )
+    ClassDef( TStEventData, 6 )
 };
 
 

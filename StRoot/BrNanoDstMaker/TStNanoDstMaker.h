@@ -19,6 +19,8 @@
 #include "StMuDSTMaker/COMMON/StMuPrimaryVertex.h"
 #include "StEEmcUtil/EEmcGeom/EEmcGeomDefs.h"
 #include "StEEmcPool/StEEmcTreeMaker/StEEmcTreeMaker.h"
+#include "StEEmcPool/EEmcTreeContainers/EEmcParticleCandidate.h"
+#include "StEEmcPool/EEmcTreeContainers/EEmc2ParticleCandidate.h"
 #include "StJetMaker/mudst/StMuEmcPosition.h"
 #include "StEmcUtil/geometry/StEmcGeom.h"
 
@@ -182,9 +184,18 @@ private:
     StThreeVectorF mVertex;
     Float_t mEmcPointEng;
     Int_t mEmcNpoints;
+    
     //--------- EEMC -------------
-    StEEmcTreeMaker_t *mEEmcTreeMaker;
+    StEEmcTreeMaker_t *mEEmcTreePart1;
+    StEEmcTreeMaker_t *mEEmcTreePart3;
+    TClonesArray *mEEmcParticleArrPh;
+    TClonesArray *mEEmcParticleArrPi;
     Int_t mHasEEmcEvent;
+
+    EEmcParticleCandidate_t *mInPoint;
+    EEmcParticleCandidate_t *mOutPoint;
+    EEmc2ParticleCandidate_t *mInPion;
+    EEmc2ParticleCandidate_t *mOutPion;
     
 protected:
     void SetBranches();
@@ -197,6 +208,7 @@ public:
     virtual Int_t Init();
     virtual Int_t Make();
     Int_t MakeEmc();
+    Int_t MakeEEmc();
     Int_t MakeFms();
     Int_t MakeRps();
     Int_t MakeEvent();
@@ -205,8 +217,8 @@ public:
     void ProjectTrack();
     void FillHist(Int_t particleId);
     virtual Int_t Finish();
-    virtual Int_t InitRun  (int runumber); 
-    virtual Int_t FinishRun(int runumber){return 0;}; // Overload empty StMaker::FinishRun
+    virtual Int_t InitRun  (Int_t runumber); 
+    virtual Int_t FinishRun(Int_t runumber){return 0;}; // Overload empty StMaker::FinishRun
     void Set1dHist(TH1D *h1d){ mHist1d = h1d;}
     void Set2dHist(TH2D *h2d){ mHist2d = h2d;}
     void SetTrigIDs(vector<Int_t> trigIDs){ mTrigIDs = trigIDs;}

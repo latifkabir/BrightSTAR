@@ -144,7 +144,8 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
 
 	// Initialize EEMC database
 	eemcDbMaker = new StEEmcDbMaker("eemcDb");
-
+	
+	//~~ PART 1 ~~~
 	// Energy to ADC maker
 	a2EMakerPtr = new StEEmcA2EMaker("EEmcA2EMaker");
 	a2EMakerPtr->database("eemcDb");          // sets db connection
@@ -175,7 +176,7 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
 	//
 	// Tree Maker
 	//
-	TString outputFileName = (TString)"EEmc_Part1_" + outFile;
+	TString outputFileName = (TString)"eemcTreeP1_" + outFile;
 	treeMakerPtr = new StEEmcTreeMaker_t( "EEmcTreeMaker" );
 	treeMakerPtr->setTreeStatus( StEEmcTreeMaker_t::PART_1, StEEmcTreeMaker_t::WRITE,  outputFileName );
 	treeMakerPtr->setTreeStatus( StEEmcTreeMaker_t::PART_2, StEEmcTreeMaker_t::IGNORE, "" );
@@ -189,11 +190,106 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
 	if( !isMC )
 	    treeMakerPtr->setSpinInfoMkr( spinInfoMakerPtr );
 
+	//~~~ PART 2 and 3 ~~
+	TString str1 = (TString)"eemcTreeP2_" + outFile;
+	TString str2 = (TString)"eemcTreeP3_" + outFile;
+	const Char_t *eemcTreePart2FileName = str1.Data();
+	const Char_t *eemcTreePart3FileName = str2.Data();
+
+	std::cout << "***** Instanciating all the classes *****" << endl;
+
+	//
+	// some variables that tend to be made global
+	//
+	StEEmcTowerClusterFinder_t              *towerClusterFinderPtr = 0;
+	StEEmcStripClusterFinderTSIU_t          *stripClusterFinderPtr = 0;
+	StEEmcPointFinderIU_t                   *pointFinderPtr        = 0;
+	StEEmcEnergyApportionerIU_t             *energyApportionerPtr  = 0;
+	StEEmcHitMakerSimple_t                  *hitMakerPtr           = 0;
+	StEEmcTreeMaker_t                       *treeReaderPtr         = 0;
+	StEEmcTreeMaker_t                       *treeWriterPtr         = 0;
+   
+
+	//
+	// TREE MAKER FOR READING
+	//
+	treeReaderPtr = new StEEmcTreeMaker_t( "EEmcTreeReader" );
+	//treeReaderPtr->setTreeStatus( StEEmcTreeMaker_t::PART_1, StEEmcTreeMaker_t::READ,   eemcTreePart1FileName );
+	treeReaderPtr->setTreeStatus( StEEmcTreeMaker_t::PART_1, StEEmcTreeMaker_t::IGNORE, "" );
+	treeReaderPtr->setTreeStatus( StEEmcTreeMaker_t::PART_2, StEEmcTreeMaker_t::IGNORE, "" );
+	treeReaderPtr->setTreeStatus( StEEmcTreeMaker_t::PART_3, StEEmcTreeMaker_t::IGNORE, "" );
+	treeReaderPtr->doSpinInfoIO( !isMC );
+	treeReaderPtr->doEvtHddrIO( 1 );
+	treeReaderPtr->setMaxNumEvents( muDstMaker->chain()->GetEntries() );
+	treeReaderPtr->setEEmcTreeReader( treeMakerPtr );
+
+	//
+	// CREATE ALL THE FINDERS AND THE HIT MAKER
+	//
+
+	// tower cluster finder
+	//    towerClusterFinderPtr = new StEEmcTowerClusterFinderMinesweeper_t();
+	//    towerClusterFinderPtr->setSeedEnergyThreshold( 2.0 );
+
+	// strip cluster finder
+	stripClusterFinderPtr = new StEEmcStripClusterFinderTSIU_t();
+
+	// parameter set d
+
+	stripClusterFinderPtr->setNumSmoothIters( 10 );
+	stripClusterFinderPtr->setNumStripsPerSide( 3 );
+	stripClusterFinderPtr->setMinStripsPerCluster( 5 );
+	stripClusterFinderPtr->setSeedAbsThres( 0.002 );
+	stripClusterFinderPtr->setSeedRelThres( 0.0 );
+	stripClusterFinderPtr->setMinEnergyPerCluster( 0.003 );
+
+	// point finder
+	pointFinderPtr = new StEEmcPointFinderIU_t();
+
+	// energy apportioner
+	energyApportionerPtr = new StEEmcEnergyApportionerIU_t();
+	energyApportionerPtr->setCheckTowerBits(0);
+
+	// Hit maker
+	hitMakerPtr = new StEEmcHitMakerSimple_t ( "hitMaker",
+						   "EEmcTreeReader",
+						   towerClusterFinderPtr,
+						   stripClusterFinderPtr,
+						   pointFinderPtr,
+						   energyApportionerPtr
+	    );
+	hitMakerPtr->doClusterTowers( 0 );
+	hitMakerPtr->doClusterPreShower1( 0 );
+	hitMakerPtr->doClusterPreShower2( 0 );
+	hitMakerPtr->doClusterPostShower( 0 );
+	hitMakerPtr->doClusterSMDStrips( 1 );
+
+	//
+	// Extra things if MC
+	//
+
+	// Associate hits with tracks, if it is MC data
+	//    if( isMC )
+	//       mcHitMakerPtr = new StMcEEmcHitMakerStrips_t( "mcHitMaker", "responseTreeReader", "hitMaker" );
+
+	//
+	// TREE MAKER FOR WRITING
+	//
+	treeWriterPtr = new StEEmcTreeMaker_t( "EEmcTreeWriter" );
+	treeWriterPtr->setTreeStatus( StEEmcTreeMaker_t::PART_1, StEEmcTreeMaker_t::IGNORE, "" );
+	treeWriterPtr->setTreeStatus( StEEmcTreeMaker_t::PART_2, StEEmcTreeMaker_t::WRITE,  eemcTreePart2FileName );
+	treeWriterPtr->setTreeStatus( StEEmcTreeMaker_t::PART_3, StEEmcTreeMaker_t::WRITE,  eemcTreePart3FileName );
+	treeWriterPtr->doSpinInfoIO( 0 );
+	treeWriterPtr->doEvtHddrIO( 0 );
+	treeWriterPtr->doMakePairs( 1 );
+	treeWriterPtr->setEEmcTreeReader( treeReaderPtr );
+	treeWriterPtr->setEEmcHitMkr( hitMakerPtr );	
     }
     //======================================================== Nano DST Maker ==============================================
     TStNanoDstMaker *nanoDstMaker = new TStNanoDstMaker("TStNanoDstMaker");
     //nanoDstMaker->SetTree(tree);
-    nanoDstMaker->SetTrigIDs(*evtTrig);
+    if(evtTrig)
+	nanoDstMaker->SetTrigIDs(*evtTrig);
     nanoDstMaker->SetOutFileName(outFile);
     nanoDstMaker->SetMuDstMaker(muDstMaker);
     nanoDstMaker->SetBeamMomentum(100.0);           //----> To be moved to configuration file
@@ -214,7 +310,7 @@ void RunNanoDstMaker(TString fileList, TString outFile, Bool_t showMsg, vector <
     if(TStar::gConfig->EnableEEmc())
     {
 	nanoDstMaker->EnableEEmc(true);
-	nanoDstMaker->SyncOnEEmc(true);
+	nanoDstMaker->SyncOnEEmc(true); //true only if using EEMC detector alone
     }
 	
     cout << "----------->Total Events to be processed: "<< nEvents <<" <----------------"<<endl;

@@ -1,4 +1,4 @@
-// Filename: CepNanoDstMaker.cxx
+// Filename: RunCepNanoDstMaker.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Nov 13 17:25:43 2019 (-0500)
@@ -15,7 +15,7 @@
 #include <iostream>
 using namespace std;
 
-void CepNanoDstMaker(TString fileList, TString outFile)
+void RunCepNanoDstMaker(TString fileList, TString outFile)
 {
     //------ Print Current Config ----------------
     cout << "Current Configuration:"<<endl;
