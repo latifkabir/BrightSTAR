@@ -345,8 +345,10 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
     anapars12->useTpc  = true;
     anapars12->useBemc = false;  //Do not use BEMC, otherwise it will leak to EEMC -- Latif
     anapars12->useEemc = false;
-    anapars12->useEemcSmd = true;
-    anapars12->useFms  = true;
+    if(det == "fms")
+	anapars12->useFms  = true;
+    else if(det == "eemc")
+	anapars12->useEemcSmd = true;
     anapars12->useEmJetMode = true; //Exclude TPC tracks
     //anapars12->useFmsHit = true; //CKim
     anapars12->addTpcCut(new StjTrackCutFlag(0));
@@ -411,7 +413,7 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
 	TStScheduler::DeleteTempFiles(inFile);
 
     cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
-    gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root eemcTree*.root");
+    //gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root eemcTree*.root");
     
     std::cout <<"Done!" <<endl;
     

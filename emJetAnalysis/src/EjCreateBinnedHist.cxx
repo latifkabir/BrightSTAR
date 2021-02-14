@@ -80,8 +80,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     }
     else if(det == "eemc")
     {
-	//etaMin = 1.0; //0.8;
-	etaMin = 1.2; // <------------ This is temporary, for PASS 2 ONLY. Pass 2 has leak from BEMC.
+	etaMin = 1.0; //0.8;	
 	etaMax = 2.0; //2.5;
     }
     else

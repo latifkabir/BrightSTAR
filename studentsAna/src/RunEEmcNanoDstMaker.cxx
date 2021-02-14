@@ -56,7 +56,7 @@ void RunEEmcNanoDstMaker(TString inFile, TString outFile)
 	TStScheduler::DeleteTempFiles(inFile);
 
     cout << "-----------> Deleting EEMC Trees parts 1-3 !!! <--------------------" <<endl;
-    gROOT->ProcessLine(".! rm eempTreeP1.root eempTreeP2.root eempTreeP3.root");
+    gROOT->ProcessLine(".! rm eemcTreeP1*.root eemcTreeP2*.root eemcTreeP3*.root");
     
     cout <<"Done!" <<endl;    
 }

@@ -113,6 +113,12 @@ Int_t TStNanoJetTreeMaker::Make()
     Double_t theta;
     Double_t rt;
 
+    Double_t towEta;
+    Double_t towPhi;
+    Double_t dR;
+    Double_t dPhi;
+    Double_t dEta;
+
     if ((mInSkimEvent->bx7() > 30 && mInSkimEvent->bx7() < 40) || (mInSkimEvent->bx7() > 110 && mInSkimEvent->bx7() < 120))
 	    return kStOK;
     
@@ -225,15 +231,14 @@ Int_t TStNanoJetTreeMaker::Make()
 	phi = mInVertex->jet(i)->phi();
 	eng = mInVertex->jet(i)->E();
 	pt = mInVertex->jet(i)->pt();
-	nPhotons = mInVertex->jet(i)->numberOfTowers();
 	rt = mInVertex->jet(i)->rt();
+	nPhotons = 0;
 	    
 	theta =  2 * atan( exp(-eta) );
 	jetX = (mZdist - vtxZ) * tan(theta) * cos(phi);
 	jetY = (mZdist - vtxZ) * tan(theta) * sin(phi);
 
 	mOutJet = mOutJetEvent->NewJet();	    
-	mOutJet->SetNphotons(nPhotons);
 	mOutJet->SetEta(eta);
 	mOutJet->SetPhi(phi);
 	mOutJet->SetE(eng);
@@ -241,7 +246,9 @@ Int_t TStNanoJetTreeMaker::Make()
 	mOutJet->SetX(jetX);
 	mOutJet->SetY(jetY);
 	mOutJet->SetRt(rt);
-
+	//mOutJet->SetUeDesity(mInVertex->jet(i)->uedensity()*mInVertex->jet(i)->area());
+	//mOutJet->SetUeMult(mInVertex->jet(i)->ueMul());
+    
 	//Add Tower info
 	for(Int_t j = 0; j < mInVertex->jet(i)->numberOfTowers(); ++j)
 	{
@@ -249,7 +256,20 @@ Int_t TStNanoJetTreeMaker::Make()
 	    mOutTower = mOutJetEvent->NewTower();
 	    mOutJetEvent->CopyTower(mInTower, mOutTower);		    
 	    mOutJet->AddTower(mOutTower);
+
+	    towEta = mOutTower->GetEta();
+	    towPhi = mOutTower->GetPhi();
+	    dEta = (eta - towEta);
+	    dPhi = (phi - towPhi);
+	    
+	    if(dPhi > TMath::Pi()) dPhi = -2*TMath::Pi() + dPhi;
+	    if(dPhi < -TMath::Pi()) dPhi =  2*TMath::Pi() + dPhi;
+	    
+	    dR = sqrt(pow(dEta, 2) + pow(dPhi, 2));
+	    if(dR < mR)
+		++nPhotons;	    
 	}
+	mOutJet->SetNphotons(nPhotons);
 
 	//Add particle info
 	for(Int_t j = 0; j < mInVertex->jet(i)->numberOfParticles(); ++j)

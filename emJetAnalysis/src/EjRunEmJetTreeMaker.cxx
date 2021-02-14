@@ -158,8 +158,11 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     StAnaPars* anapars12 = new StAnaPars;
     anapars12->useTpc  = true;
     anapars12->useBemc = false;
-    anapars12->useEemc = true;
-    anapars12->useFms  = true;
+    if(det == "eemc")	    
+	anapars12->useEemc = true;
+    else if(det == "fms")
+	anapars12->useFms  = true;
+    anapars12->useEmJetMode = true; //Exclude TPC tracks
     //anapars12->useFmsHit = true; //CKim
     anapars12->addTpcCut(new StjTrackCutFlag(0));
     anapars12->addTpcCut(new StjTrackCutNHits(12));

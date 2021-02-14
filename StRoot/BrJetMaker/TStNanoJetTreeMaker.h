@@ -60,6 +60,7 @@ private:
     Double_t mEtaMax;
     Double_t mEtaMin;
     Double_t mZdist;
+    Double_t mR = 0.7;
         
 public: 
     TStNanoJetTreeMaker(StJetMaker2015* jetMaker, StJetSkimEventMaker* skimMaker, const char *name  = "NanoJetTreeMaker");
@@ -74,6 +75,7 @@ public:
     void SetEtaMin(Double_t etaMin){mEtaMin = etaMin;}
     void SetDetZdist(Double_t z){mZdist = z;}
     void SetTrigIds(Int_t *trigIds);
+    void SetR(Double_t R){mR = R;};
 
     ClassDef(TStNanoJetTreeMaker,1) 
 };

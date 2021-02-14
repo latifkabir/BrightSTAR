@@ -12,7 +12,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //------- 1.Change Here Function Name ------------
     //TString funcName = "EjCreateBinnedHist";
     TString funcName = "EjCreateBinnedHistExtended";
-    TString jobName = "EjCreateBinnedHistExFmsHotUnMasked";
+    TString jobName = "EjCreateBinnedHistExFmsHotUnMasked3Ph";
     //TString jobName = "EjCreateBinnedHistEEmcSmdEta1p2Starting";
     //--------------------------------------
     
@@ -58,7 +58,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += ",";
 	argList += run;
 	//argList += ")"; //<--------------- Update Here, min number of photon 
-        argList += ", 1)"; //<--------------- Update Here, min number of photon 
+        argList += ", 3)"; //<--------------- Update Here, min number of photon 
 	
 	//---------------------------------------------------------------------
 	
