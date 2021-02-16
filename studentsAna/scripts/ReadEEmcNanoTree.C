@@ -1,37 +1,24 @@
-// Filename: AnEEmcRpChain.C
+// Filename: ReadEEmcNanoTree.C
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Wed Dec  4 13:09:18 2019 (-0500)
 // URL: jlab.org/~latif
 
-void AnEEmcRpChain()
+void ReadEEmcNanoTree()
 {
-    TString filePath_eemc = "/star/u/kabir/GIT/BrightSTAR/dst/R15EEmcRpTree/eemcTreeP3_EEmcRpTree_160900*.root";
-    TChain *ch_eemc = new TChain("tree");
+    TString filePath_eemc = "/gpfs/mnt/gpfs01/star/pwg/kabir/dst/EEmcNanoDst/Run15trans/RunEEmcNanoDstMaker_*.root";
+    TChain *ch_eemc = new TChain("T");
     ch_eemc->Add(filePath_eemc);
-    // //ch_eemc->MakeClass("AnEEmcRpChainReader");
     cout <<"EEmc Chain Entries: "<< ch_eemc->GetEntries()<<endl;
 
-    // TString filePath_rp = "/star/u/kabir/GIT/BrightSTAR/dst/R15EEmcRpTree/RpTree_*.root";
-    // TChain *ch_rp = new TChain("T");
-    // ch_rp->Add(filePath_rp);
-    // cout <<"RpChain Entries: "<< ch_rp->GetEntries()<<endl;
 
-    // ch_eemc->AddFriend(ch_rp);
-
-    // ch_eemc->MakeClass("AnEEmcRpChainReader");
-
-    // TString fName = "/star/u/kabir/GIT/BrightSTAR/dst/R15EEmcRpTree/eemcTreeP1_EEmcRpTree_16093017.root";
-    // TChain *chain =  new TChain("tree");
-    // chain->Add(fName);
-    // chain->MakeClass("AnEEmcTreePart1Reader");
-
-    TFile *file = new TFile("EEmcQA.root", "RECREATE");
+    TFile *file = new TFile("EEmcNanoTreeQA.root", "RECREATE");
+    TStEventData *event = new TStEventData;
     TClonesArray *array_ph = new TClonesArray("EEmcParticleCandidate_t");
     TClonesArray *array_pi = new TClonesArray("EEmc2ParticleCandidate_t");
-    //TBranch *brPion = ch_eemc->GetBranch("pi0");
-    ch_eemc->SetBranchAddress("photon", &array_ph);
-    ch_eemc->SetBranchAddress("pi0", &array_pi);
+    ch_eemc->SetBranchAddress("event", &event);
+    ch_eemc->SetBranchAddress("eemcPhoton", &array_ph);
+    ch_eemc->SetBranchAddress("eemcPion", &array_pi);
 
     TH1F *phE = new TH1F("phE","phE", 100, 0, 100.0);
     TH1F *pi0M = new TH1F("pi0M","pi0M", 100, 0, 1.0);
@@ -42,9 +29,14 @@ void AnEEmcRpChain()
     
     for(Int_t iEvent= 0; iEvent < ch_eemc->GetEntries(); ++iEvent)
     {
-	// brPion->GetEntry(iEvent);
+	if(iEvent % 1000 == 0)
+	    cout << "Events processed: "<< iEvent <<endl;
+
 	 ch_eemc->GetEntry(iEvent);
-	 //cout << "Entry:" << iEvent <<endl;
+
+	 //Access Event information
+	 // cout << "Run number: " << event->GetRunNumber() <<endl;
+	 //cout << "Fill number: " << event->GetFillNumber() <<endl;
 
 	 
 	int nPhotons = array_ph->GetEntriesFast();
@@ -59,11 +51,9 @@ void AnEEmcRpChain()
 
 	for(int i = 0; i < nPions; i++)
 	{
-	    //EEmc2ParticleCandidate_t is a derived class of EEmcarticleCandidate_t
 	    EEmc2ParticleCandidate_t *pion = (EEmc2ParticleCandidate_t*) array_pi->At(i);
 
 	    pi0M->Fill(pion->M);
-	    //pi0E->Fill(pion->momentum.X());
 	    pi0E->Fill(pion->E);
 	    pi0Z->Fill(pion->Z);
 	    pi0D->Fill(pion->D);
