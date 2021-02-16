@@ -243,9 +243,9 @@
     gStyle->SetNumberContours(NCont);
     
 
-    gStyle->SetPadGridX(kFALSE);
-    gStyle->SetPadGridY(kFALSE);
-    gStyle->SetOptStat(0);
+    //gStyle->SetPadGridX(kFALSE);
+    //gStyle->SetPadGridY(kFALSE);
+    //gStyle->SetOptStat(0);
     
     using namespace TStar;
     

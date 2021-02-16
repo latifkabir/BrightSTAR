@@ -413,7 +413,7 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
 	TStScheduler::DeleteTempFiles(inFile);
 
     cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
-    //gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root eemcTree*.root");
+    gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root eemcTree*.root");
     
     std::cout <<"Done!" <<endl;
     

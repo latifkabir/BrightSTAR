@@ -6,7 +6,7 @@ FMS EM Jet Simulation
 The work-flow:
 ---------------
 
-- **Step-1:** Generate events using your desired event generators including either pythia 6 or pythia 8. STAR framework an array of generators to choose from. The output is a `.fzd` file.
+- **Step-1:** Generate events using your desired event generators including either pythia 6 or pythia 8. STAR framework has an array of generators to choose from. The output is a `.fzd` file.
 
 - **Step-2:** Use the generated events to get detector hits using the `bfc.C` script. The output is a MuDst root file.
 
@@ -71,9 +71,6 @@ Available on the github repo STAR-CVS [here](https://github.com/star-bnl/star-cv
 - `StRoot/StSpinPool/StFmsTriggerMaker`: For Jet reconstruction level trigger (FMS-JP1, JP2 etc) simulation.
 This module is available from early tag. It (`StFmsTriggerMaker`) is still availale under CVS or github [here](https://github.com/star-bnl/star-cvs/tree/master/StRoot/StSpinPool/StFmsTriggerMaker). But it is not included in the release and hence also missing in the doxygen class references. It has been downloaded from star-cvs github commit `7e89155618e7363f6b2987e3a1d43536b64fe6e8`, download date Sep 1, 2020.
 
-- The above StFmsTriggerMaker has issue at Line `writeDsmData()` causing crash that looks like DB issue. Just comment out that line and it would work fine. 
-
-
 
 The Synchronization Issue: Pythia vs MuDst/Jet Tree
 ------------------------------------------------
@@ -81,12 +78,12 @@ The Synchronization Issue: Pythia vs MuDst/Jet Tree
 Because we use event filter, only events passing the filter will end up in the MuDst file and jet files. However, the pythia branch is still unfiltered. This will cause synchronizaton issue if you want to compare generated vs reconstructed quantities. A separate script has been written for the synchronization purpose. In the jet trees, the particle branch will not be filtered and will definitely have event-by-event synchronization issue.
 
 
-Improvement compared to Run 11 analysis effort
+Improvements compared to Run 11 analysis effort
 -------------------------------------------------
 
 - starsim bug has been fixed (the problem reported by Minghui)
 - The FMS trigger simulator has been fixed to give correct phi distibution
-- The FMS event filter big has been fixed to use six phi bins instead of eight. Also one phi bin was implemented incorrectly. E sum has been replaced by E_T sum.
+- The FMS event filter bug has been fixed to use six phi bins instead of eight. Also one phi bin was implemented incorrectly. E sum has been replaced by E_T sum.
 - Previous analysis probably had the synchronization issue between Pythia and MuDst/Jet trees.
 
 

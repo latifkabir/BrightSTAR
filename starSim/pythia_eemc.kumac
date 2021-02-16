@@ -1,0 +1,164 @@
+MACRO geom tag=y2015a  NEVENTS=5000 PTmin=2 PTmax=80 RUN=1 CYCLE=0 CONFIG=QCD FILE=pythiaOut.fzd VERTEXFILE=vertex.txt FIELD=-5.0  rndmnum=85
+
+   DETP GEOM [tag] field=[FIELD]  
+
+   GEXE $STAR_LIB/StarAgmlUtil.so
+
+*   GEXE .$STAR_HOST_SYS/lib/xgeometry.so
+   GEXE $STAR_LIB/xgeometry.so
+
+   ** Load in LHApdf ** Note: need to set environment variable LHAPDF_DATA_PATH
+   ** to point to directory containing the files...
+   **
+   ** e.g. setenv LHAPDF_DATA_PATH /afs/cern.ch/sw/lcg/external/lhapdfsets/current/
+   ** 
+   ** BUT BEWARE!  Do not run 1000's of jobs like this on batch.  Instead, copy the
+   ** pdf files you need into your submission directory.  THEN COPY TO EACH JOB,
+   ** and set the path to pick it up.
+   **
+   gexe /opt/star/$STAR_HOST_SYS/lib/libLHAPDF.so
+*   gexe /opt/star/Xsl64_gcc482/lib/libLHAPDF.so
+
+
+   LIBRARY =                    $STAR_LIB	   
+   PYTHIA  =           libPythia6_4_28s.so   
+   MYTUNE  =                          370
+   ROOTS   =                        200.0
+   ETAmin  =                        +1.0 
+   ETAmax  =                        +2.0
+   LHAPDF_DATA_PATH = ./lhapdf/
+   
+   gfile o [FILE]
+
+     ranlux [RUN]*[PTmin]+[CYCLE] 3
+       rung [RUN] 1000
+
+  *  ranlux [RUN]+[CYCLE] 3
+   * rung [CYCLE] 1
+  *  echo [RUN]+[CYCLE]
+*	rndm 576375713  1343222742
+*  exec  /star/data01/pwg/mriganka/simSL17d/StRoot/StMCFilter/loadlibs.kumac
+   exec /star/u/kabir/GIT/BrightSTAR/starSim/loadlibs.kumac	
+   
+*   GFILTER  exampleFmsJet
+*   GFILTER  exampleFmsPi0
+   gclose  all
+
+
+   exec select_pythia [PYTHIA] [LIBRARY]                        ** select pythia version 
+   TFM = "http://projects.hepforge.org/pythia6/"                ** RTFM for more information
+                                                 
+                                                                ** setup the collision kinematics for pythia
+   frame CMS
+   beam  p p
+   ener  [ROOTS]                       
+                                                                ** set the pythia tune
+   CALL PyTUNE([MYTUNE])
+
+                                                                ** setup histograms w/ title
+   title [file] geom [tag] config [config]
+*   gstat time size mult stak
+
+                                                                ** setup the requested interaction
+   ckin 0=[PTmin]
+   ckin 8=[PTmax]
+
+*    MSTP(5) = 0
+    PARP(90) = 0.213
+*     call pygive(' PARP(90) = 0.21300')
+
+*   ckin 25=0.0005      ! Lower Value of xF
+
+
+	echo random numbrt is set at [rndmnum]
+*	call pygive('MRPY(1)=9999')
+*	call pygive('MRPY(2)=0')
+
+
+
+   echo [RUN]+[CYCLE]
+    PARP (91) = 1  !default in 6.4 == 2.0 
+
+
+    MDCY (102,1)=1  ! PI0 111
+*   MDCY (106,1)=1  ! PI+ 211
+    MDCY (109,1)=1  ! ETA 221
+*   MDCY (116,1)=1  ! K+ 321
+*   MDCY (112,1)=1  ! K_SHORT 310
+*   MDCY (105,1)=1  ! K_LONG 130
+*   MDCY (164,1)=1  ! LAMBDA0 3122
+*   MDCY (167,1)=1  ! SIGMA0 3212
+*   MDCY (162,1)=1  ! SIGMA- 3112
+*   MDCY (169,1)=1  ! SIGMA+ 3222
+*   MDCY (172,1)=1  ! Xi- 3312
+*   MDCY (174,1)=1  ! Xi0 3322
+*   MDCY (176,1)=1  ! OMEGA- 3334
+
+
+*   ve/read  xvertex,yvertex,zvertex [VERTEXFILE]
+*   exec [config]
+ 	MSEL 1                                                       
+
+*   gvertex 0.321083 -0.091320 0.
+ *  gspread 0.0003 0.0003 60.
+ *  gslope 0.00134567 6.487e-05
+*   nevents = $vdim(zvertex)
+
+ DO i=1,[nevents]
+
+*  gvertex   xvertex([i]) yvertex([i]) zvertex([i])
+
+ TRIG 1
+ 
+    if [i]< 2000 then
+*        CALL PyLIST(1)                                
+*        gprint hits calb 
+*       gprint vert
+     endif	
+	
+   ENDDO
+
+CALL PySTAT(1) 
+
+
+ EXIT
+
+
+RETURN
+
+****************************************************************************************************
+** MACRO select_pythia
+**
+** Selects the pythia library and loads the interactive pythia command definitions.  Additionally,
+** it flags several decay modes as stable so that geant will handle them.
+**
+MACRO select_pythia pythia=libpythia_6410t.so path=$STAR_LIB
+
+*   GExec [path]/[pythia]
+   GExec $STAR_LIB/[pythia]
+   GExec [path]/bpythia.so
+
+
+
+   ****************************************************************
+   ** These particles will be decayed by geant instead of pythia **
+   ****************************************************************
+
+Return
+
+****************************************************************************************************
+
+
+
+****************************************************************************************************
+** MACRO QCD
+**
+** Configure the physics for QCD jets
+**
+MACRO QCD
+
+   msel 1
+*   msel 2
+
+RETURN 
+
