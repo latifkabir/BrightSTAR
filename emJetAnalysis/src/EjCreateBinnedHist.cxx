@@ -99,7 +99,6 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
     TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets after all cuts; Number of Photons", 20, 0, 20);
     TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 100, -200, 200);
-
     
     //Event buffer
     TStJetEvent *jetEvent = 0;

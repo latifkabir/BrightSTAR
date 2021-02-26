@@ -4,18 +4,20 @@
 // Created: Sat Feb 29 23:54:14 2020 (-0500)
 // URL: jlab.org/~latif
 
-void CronJob()
+void CronJob2()
 {
     TStScheduler *sc = new TStScheduler();
 
     //Optimal setup for FMS stream
-    sc->SetJobThreshold(1000); // Number of threshold jobs that will trigger new submission
+    //sc->SetJobThreshold(1000); // Number of threshold jobs that will trigger new submission
     //sc->SetJobThreshold(1500); // Number of threshold jobs that will trigger new submission
-    sc->SetInterval(20);      // Wait time in minutes
-    sc->SetRunIncrement(50);  // Number of runs to be incremented
+    sc->SetJobThreshold(5500); // Number of threshold jobs that will trigger new submission
+    sc->SetInterval(10);      // Wait time in minutes
+    //sc->SetRunIncrement(50);  // Number of runs to be incremented
+    sc->SetRunIncrement(20);  // Number of runs to be incremented
     //sc->SetRunIncrement(80);  // Number of runs to be incremented
     //sc->SetRunIncrement(160);  // aggresive Number of runs to be incremented
-    sc->SetMaxFilesPerJob(1); //Maximum number of files per job
+    sc->SetMaxFilesPerJob(10); //Maximum number of files per job
     
     //sc->CronJob("AnRunNanoDstMaker", gFirstRun, gFirstRun); // For Test
     //sc->CronJob("AnRunNanoDstMaker", 16093018, 16093018);
@@ -27,8 +29,8 @@ void CronJob()
     //sc->CronJob("EjRunEmJetTreeMaker", 16079013, gLastRun); // For partial dataset
     //sc->CronJob("RunFmsHotChQaMaker", 16071023, gLastRun); // For partial dataset
 
-    //sc->CronJob("EjRunEmJetTreeMakerEEmcSmd", 16064083, gLastRun);
+    sc->CronJob("EjRunEmJetTreeMakerEEmcSmd", 16089001, gLastRun);
     
-    sc->CronJob("EjRunEmJetTreeMaker"); // For full dataset    
+    //sc->CronJob("EjRunEmJetTreeMaker"); // For full dataset    
     //sc->CronJob("RunFmsHotChQaMaker"); // For full dataset    
 }

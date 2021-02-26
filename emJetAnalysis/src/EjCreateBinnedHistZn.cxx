@@ -301,7 +301,7 @@ void EjCreateBinnedHistZn(TString fileNamePrefix, TString det, Int_t minNphotons
 	    theta =  2 * atan( exp(-eta) );
 	    eng = fjE;
 	    pt = fjpT;
-	    nPhotons = fjnph;
+	    nPhotons = fjetntow;//fjnph;
 	    LV.SetPtEtaPhiE(pt, eta, phi, eng);
 	    xf = 2.0*(LV.Pz()) / sqrt_s;
 				

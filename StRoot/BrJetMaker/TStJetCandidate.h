@@ -243,7 +243,7 @@ public:
 	mParticles.Clear();
     }
     
-    ClassDef(TStJetCandidate, 3)
+    ClassDef(TStJetCandidate, 4)
 };
 
 #endif

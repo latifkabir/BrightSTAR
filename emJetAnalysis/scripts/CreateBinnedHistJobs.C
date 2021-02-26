@@ -10,10 +10,10 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 {
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
-    //TString funcName = "EjCreateBinnedHist";
-    TString funcName = "EjCreateBinnedHistExtended";
-    TString jobName = "EjCreateBinnedHistExFmsHotUnMasked3Ph";
-    //TString jobName = "EjCreateBinnedHistEEmcSmdEta1p2Starting";
+    TString funcName = "EjCreateBinnedHist";
+    //TString funcName = "EjCreateBinnedHistExtended";
+    //TString jobName = "EjCreateBinnedHistExFmsHotUnMasked3Ph";
+    TString jobName = "EjCreateBinnedHistEEmcSmdP2Resub";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -24,8 +24,9 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
 
     //------- 2.Change Here the path and file prefix ---------------
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmasking_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmasking_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetEEmsSmdP2ResubmitMerged/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/DST_ZhanwenComparison/NanoJetTree_EjRunEmJetTreeMaker_";
@@ -53,12 +54,12 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += run;
 	argList += ",\"";
 	argList += filePrefix;
-	argList += "\",\"fms\","; //<------ Change detector
+	argList += "\",\"eemc\","; //<------ Change detector
 	argList += run;
 	argList += ",";
 	argList += run;
-	//argList += ")"; //<--------------- Update Here, min number of photon 
-        argList += ", 3)"; //<--------------- Update Here, min number of photon 
+	argList += ")"; //<--------------- Update Here, min number of photon 
+        //argList += ", 3)"; //<--------------- Update Here, min number of photon 
 	
 	//---------------------------------------------------------------------
 	

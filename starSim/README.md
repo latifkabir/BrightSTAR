@@ -3,7 +3,7 @@ FMS EM Jet Simulation
 ===================================
 
 
-The work-flow:
+The Workflow:
 ---------------
 
 - **Step-1:** Generate events using your desired event generators including either pythia 6 or pythia 8. STAR framework has an array of generators to choose from. The output is a `.fzd` file.

@@ -115,8 +115,8 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	    numer = sqrt(bNu_l*bNd_r) - sqrt(bNd_l*bNu_r);
 	    denom = sqrt(bNu_l*bNd_r) + sqrt(bNd_l*bNu_r);
 
-	    numerErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
-	    denomErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
+	    numerErrSq = bNu_l * bNd_r * (bNd_l + bNu_r) + bNd_l * bNu_r * (bNu_l + bNd_r);
+	    denomErrSq = pow(denom, 4);
 		    
 	    if(denom == 0)
 	    {
@@ -126,7 +126,7 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	    else
 	    {
 		bAnRaw[k][l] = numer / denom;
-		bAnRawError[k][l] = fabs( bAnRaw[k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+		bAnRawError[k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
 	    }
 
 	    //cout << "Raw Asym:"<< bAnRaw[i][j][k][l] << " +- "<< bAnRawError[i][j][k][l]  <<endl;
@@ -136,8 +136,8 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	    numer = sqrt(yNu_l*yNd_r) - sqrt(yNd_l*yNu_r);
 	    denom = sqrt(yNu_l*yNd_r) + sqrt(yNd_l*yNu_r);
 
-	    numerErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
-	    denomErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
+	    numerErrSq = yNu_l * yNd_r * (yNd_l + yNu_r) + yNd_l * yNu_r * (yNu_l + yNd_r);
+	    denomErrSq =  pow(denom, 4);
 		    
 	    if(denom == 0)
 	    {
@@ -147,7 +147,7 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	    else
 	    {
 		yAnRaw[k][l] = numer / denom;
-		yAnRawError[k][l] = fabs(yAnRaw[k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+		yAnRawError[k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
 	    }
 	}
     }
@@ -283,12 +283,15 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     Double_t y_z[] = {0.0044, 0.0053, 0.0066, 0.0079, 0.0074, 0.0099, 0.0096, 0.0141, 0.0161}; 
     Double_t y_zerr[] = {0.0011, 0.0005, 0.0005, 0.0006, 0.0008, 0.0010, 0.0012, 0.0015, 0.0015}; 
 
-    //Zhanwen's values for  2 photons
-    Double_t x_z2[] = {0.221274, 0.257051, 0.303834, 0.352904, 0.402909, 0.45313, 0.503341, 0.553565, 0.612303};
-    Double_t y_z2[] = {0.0192133, 0.0302699, 0.0359699, 0.0448542, 0.0403864, 0.0373283, 0.0316632, 0.0340015, 0.0314325};
-    Double_t y_z2err[] = {0.00307504, 0.00152359, 0.00179363, 0.00248168, 0.00322774, 0.00391079, 0.00464554, 0.00532485, 0.00536946};
-    
-    
+    //Zhanwen's values for  2 photons (emailed by Zhanwen)
+    // Double_t x_z2[] = {0.221274, 0.257051, 0.303834, 0.352904, 0.402909, 0.45313, 0.503341, 0.553565, 0.612303}; //Old
+    // Double_t y_z2[] = {0.0192133, 0.0302699, 0.0359699, 0.0448542, 0.0403864, 0.0373283, 0.0316632, 0.0340015, 0.0314325}; //Old
+    // Double_t y_z2err[] = {0.00307504, 0.00152359, 0.00179363, 0.00248168, 0.00322774, 0.00391079, 0.00464554, 0.00532485, 0.00536946}; //Old
+
+    Double_t x_z2[] = {0.221159, 0.256825, 0.303733, 0.352844, 0.402939, 0.453195, 0.503432, 0.553647, 0.612384};
+    Double_t y_z2[] = {0.00576532, 0.0156546, 0.0223887, 0.0303075, 0.0328763, 0.0324299, 0.0283983, 0.0296894, 0.0345104}; 
+    Double_t y_z2err[] = {0.00226046, 0.0012449, 0.00120598, 0.00142995, 0.00182607, 0.00231696, 0.00283444, 0.00340224, 0.00355821};
+        
     TGraphErrors *znGr3 = new TGraphErrors(9, x_z3, y_z3, 0, y_z3err);
     znGr3->SetName("znGr3");
 

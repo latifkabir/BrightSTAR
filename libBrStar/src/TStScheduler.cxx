@@ -904,7 +904,15 @@ void TStScheduler::AnalyzeJobResults(TString dirPath, TString filePrefix, Int_t 
 	    delete tFile;
 	    continue;
 	}
-	    
+
+	if(threshold == 0)
+	{
+	    tFile->Close();
+	    delete tFile;
+	    ++nFiles;
+	    continue;
+	}
+	
 	nEntries_out = t->GetEntries();
 	if(nEntries_muDst != 0)
 	    frac = (100.0*nEntries_out) / nEntries_muDst;

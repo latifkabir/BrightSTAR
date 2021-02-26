@@ -2,6 +2,7 @@
 #include <fstream>
 #include "RootInclude.h"
 #include "StJetMaker/towers/StjTowerEnergyCutFMS.h"
+#include "StJetMaker/towers/StjTowerEnergyCutEnergy.h"
 #include "StJetMaker/StAnaPars.h"
 #include "StRootInclude.h"
 #include "StJetMaker/StJetMaker2015.h"
@@ -30,7 +31,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     //isMC = kFALSE;
     //isMC = kTRUE;
 
-    //det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
+    det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
 
     if(gROOT->IsBatch() && !inFile.Contains(".list"))
 	inFile = TStScheduler::CopyInputFiles(inFile);
@@ -180,7 +181,8 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     //EEMC cuts
     anapars12->addEemcCut(new StjTowerEnergyCutBemcStatus(1));
     anapars12->addEemcCut(new StjTowerEnergyCutAdc(4,3)); //ADC-ped>4 AND ADC-ped>3*RMS
-    anapars12->addEemcCut(new StjTowerEnergyCutEt(0.2));
+    //anapars12->addEemcCut(new StjTowerEnergyCutEt(0.2));  //<--- Default
+    anapars12->addEemcCut(new StjTowerEnergyCutEnergy(1.0));  // <-------- !!!!!! TESTING!!!
 
     //FMS cuts, CKim
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong

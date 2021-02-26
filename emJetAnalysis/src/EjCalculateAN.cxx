@@ -119,8 +119,8 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 		    numer = sqrt(bNu_l*bNd_r) - sqrt(bNd_l*bNu_r);
 		    denom = sqrt(bNu_l*bNd_r) + sqrt(bNd_l*bNu_r);
 
-		    numerErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
-		    denomErrSq = (bNd_l + bNu_r + bNu_l + bNd_r) / 4.0;
+		    numerErrSq = bNu_l * bNd_r * (bNd_l + bNu_r) + bNd_l * bNu_r * (bNu_l + bNd_r);
+		    denomErrSq = pow(denom, 4);
 		    
 		    if(denom == 0)
 		    {
@@ -130,18 +130,17 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 		    else
 		    {
 			bAnRaw[i][j][k][l] = numer / denom;
-			bAnRawError[i][j][k][l] = fabs( bAnRaw[i][j][k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+			bAnRawError[i][j][k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
 		    }
 
 		    //cout << "Raw Asym:"<< bAnRaw[i][j][k][l] << " +- "<< bAnRawError[i][j][k][l]  <<endl;
-
 		    
 		    //----- Yellow beam measured asymmetry ------------
 		    numer = sqrt(yNu_l*yNd_r) - sqrt(yNd_l*yNu_r);
 		    denom = sqrt(yNu_l*yNd_r) + sqrt(yNd_l*yNu_r);
 
-		    numerErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
-		    denomErrSq = (yNd_l + yNu_r + yNu_l + yNd_r) / 4.0;
+		    numerErrSq = yNu_l * yNd_r * (yNd_l + yNu_r) + yNd_l * yNu_r * (yNu_l + yNd_r);
+		    denomErrSq =  pow(denom, 4);
 		    
 		    if(denom == 0)
 		    {
@@ -151,7 +150,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 		    else
 		    {
 			yAnRaw[i][j][k][l] = numer / denom;
-			yAnRawError[i][j][k][l] = fabs(yAnRaw[i][j][k][l]) * sqrt( numerErrSq / pow(numer, 2) + denomErrSq / pow(denom, 2)); //See error propagation in the analysis note
+			yAnRawError[i][j][k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
 		    }
 		}
 	    }
