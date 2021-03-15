@@ -29,7 +29,7 @@ void AnRunDiffJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t 
 
     //det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
 
-    if(gROOT->IsBatch() && !inFile.Contains(".list"))
+    if(gROOT->IsBatch())
 	inFile = TStScheduler::CopyInputFiles(inFile);
         
     if(!(det == "fms" || det == "eemc"))

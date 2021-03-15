@@ -484,3 +484,29 @@ string TStRunList::GetFileNoFromFileName(string fileName)
     return runNumberStr;
 }
 
+
+Int_t TStRunList::GetEntries(Int_t runNumber)
+{
+    TStar::ExitIfInvalid((TString)TStar::Config->GetRunListDB());
+    std::ifstream i(TStar::Config->GetRunListDB());
+    json j;
+    i >> j;
+
+    Int_t nFiles = 0;
+    Int_t nEntries = 0;
+
+    for(int k = 0; k < j.size(); ++k)
+    {
+	if(j[k]["run"] ==  runNumber)
+	{
+	    nEntries += (int)j[k]["data"]["events"];
+	    ++nFiles;
+	}
+	if(j[k]["run"] >  runNumber)
+	    break;	
+    }
+    cout << "Number of files: "<<nFiles<< " Number of Events: "<< nEntries << endl;
+    i.close();
+
+    return nEntries;
+}

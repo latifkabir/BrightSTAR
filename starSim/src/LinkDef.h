@@ -20,5 +20,8 @@
 #pragma link C++ function FmsSimGenVsRecPion;                    // Compare FMS simulation and data for pion mass
 
 
+#pragma link C++ function EEmcSimRunStarsimAndBfc;                // Run Pythia + Geant3 (starsim) + BFC for EEMC Jet Simulation
+#pragma link C++ function RunEEmcJetFinderPro;                    // Run EEMC Jet Finder for Simulated Data (used for analysis)
+
 #endif
 

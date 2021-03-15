@@ -282,7 +282,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 	    condorConfig_out << "Queue\n" << endl;
 	    
 	    ++fileCount;
-	    if(limit == fileCount)
+	    if(limit > 0 && limit <= fileCount)
 		break;
         }
     }
@@ -501,8 +501,8 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	    condorConfig_out <<"Log             = "<<logFile<<endl;
 	    condorConfig_out << "Queue\n" << endl;
 	    
-	    ++fileCount;
-	    if(limit == fileCount)
+	    fileCount = fileCount + jobFileCount;
+	    if(limit > 0 && limit <= fileCount)
 		break;
         }
 	else
@@ -933,8 +933,47 @@ void TStScheduler::AnalyzeJobResults(TString dirPath, TString filePrefix, Int_t 
 }
 
 //_______________________________________________________________________
+TString TStScheduler::CopyInputFilesFromList(TString in_file_list)
+{
+    gROOT->ProcessLine(".! mkdir -p " + (TString)TStar::gConfig->GetTempPath());
+    TString outFileListName;
+    outFileListName = TStar::gConfig->GetTempPath() + "fileList.list";
+    ofstream outFileList(outFileListName);
+    ifstream inFileList(in_file_list);
+    TString outFileName;
+    TString inFileName;
+    TString copyCmd;
+    
+    while(!inFileList.eof())
+    {
+	inFileList >> inFileName;
+	outFileName = inFileName;
+	outFileName.ReplaceAll("root://xrdstar.rcf.bnl.gov:1095/","");
+	outFileName.ReplaceAll(TStar::gConfig->GetProdPath(), "");
+	outFileName.ReplaceAll("/", "_");
+	outFileName = TStar::gConfig->GetTempPath() + outFileName;    
+	copyCmd = ".! xrdcp --retry 3 " + inFileName + " " + outFileName;
+
+	if(gSystem->AccessPathName(outFileName))	
+	    gROOT->ProcessLine(copyCmd);
+	
+	if(!gSystem->AccessPathName(outFileName))
+	    outFileList << outFileName << endl;			
+    }
+    cout << "Done copying xrootd files from a filelist" <<endl;
+    
+    inFileList.close();
+    outFileList.close();
+    
+    return outFileListName;
+}
+
+//_______________________________________________________________________
 TString TStScheduler::CopyInputFiles(TString inFileName)
 {
+    if(inFileName.Contains(".list"))
+	return CopyInputFilesFromList(inFileName);
+    
     TString outName = inFileName;
     outName.ReplaceAll("root://xrdstar.rcf.bnl.gov:1095/","");
     outName.ReplaceAll(TStar::gConfig->GetProdPath(), "");
@@ -961,9 +1000,34 @@ TString TStScheduler::CopyInputFiles(TString inFileName)
 //_______________________________________________________________________
 void TStScheduler::DeleteTempFiles(TString inFileName)
 {
-    if(!gSystem->AccessPathName(inFileName))
+    if(inFileName.Contains(".list"))
+	DeleteTempFilesFromList(inFileName);
+    else if(inFileName.Contains("/tmp/") && !gSystem->AccessPathName(inFileName))
     {
 	cout << "Deleting input files from tmp ..." <<endl;
 	gROOT->ProcessLine(".! rm " + inFileName);
     }
+}
+
+//_______________________________________________________________________
+void TStScheduler::DeleteTempFilesFromList(TString in_file_list)
+{
+    ifstream inFileList(in_file_list);
+    TString inFile;
+    if(!inFileList)
+    {
+	cout << "Unable to locate filelist" <<endl;
+	return;
+    }
+    
+    while(!inFileList.eof())
+    {
+	inFileList >> inFile;
+	if(inFile.Contains("/tmp/") && !gSystem->AccessPathName(inFile))
+	    gROOT->ProcessLine(".! rm " + inFile);
+    }
+    inFileList.close();
+    if(in_file_list.Contains("/tmp/"))
+	gROOT->ProcessLine(".! rm " + in_file_list);
+    cout << "Done deleting all temporary files copied" <<endl;    
 }

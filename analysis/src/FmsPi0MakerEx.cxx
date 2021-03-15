@@ -24,6 +24,7 @@ class FmsPi0Maker: public StMaker
     TH1D *hist1d;
     TH2D *hist2d;
     vector<StFmsPointPair*> pointPairs;
+    Int_t evtCount = 0;
 public:
     FmsPi0Maker(TString name): StMaker(name)
     {	
@@ -68,6 +69,10 @@ public:
 	    return kStSkip;
 	}
 
+	++evtCount;
+	if(evtCount % 1000 == 0)
+	    cout << "Events processed: "<< evtCount <<endl;
+	
         pointPairs = fmsColl->pointPairs();
         nPairs = fmsColl->numberOfPointPairs();
 	for (Int_t i = 0; i < nPairs; ++i)
@@ -97,6 +102,13 @@ void FmsPi0MakerEx(TString fileList)
     // TStRunList::MakeFileList(16072057, 1);
     // TString fileList = TStar::Config->GetFileList();
 
+    if(!TStar::gBrDebug)
+    {
+	gMessMgr->SetLimit("I", 0);
+	gMessMgr->SetLimit("Q", 0);
+	gMessMgr->SetLimit("W", 0);
+    }
+    
     TFile *f = new TFile("FmsPi0Reconst.root", "RECREATE");
     TH1D *massDist = new TH1D("massDist","#pi_{0} invariant mass [GeV]; M_{#pi_{0}} [GeV]",200,0.0,1.0);
     TH2D *xyDist = new TH2D("xyDist", "xyDist", 200, -100.0, 100.0, 200, -100.0, 100.0);
@@ -119,9 +131,13 @@ void FmsPi0MakerEx(TString fileList)
     FmsPi0Maker *pi0Mkr = new FmsPi0Maker("Pi0Maker");
     pi0Mkr->Set1dHist(massDist);
     pi0Mkr->Set2dHist(xyDist);
+    Int_t nEvents = muDstMaker->chain()->GetEntries();
+
     
     chain->Init();    
-    chain->EventLoop(1000);  // Run specified number of events
+    chain->EventLoop(0, nEvents); 
+    //chain->EventLoop(); 
+    //chain->EventLoop(5000);  // Run specified number of events
     chain->Finish();
 
     TCanvas *c1 = new TCanvas();

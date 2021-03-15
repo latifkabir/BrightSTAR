@@ -23,7 +23,7 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
 
     det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
 
-    if(gROOT->IsBatch() && !inFile.Contains(".list"))
+    if(gROOT->IsBatch())
 	inFile = TStScheduler::CopyInputFiles(inFile);
         
     if(!(det == "fms" || det == "eemc"))

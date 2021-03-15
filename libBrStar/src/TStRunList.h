@@ -38,6 +38,7 @@ public:
     Int_t GetRunIndex(Int_t runNumber);
     static Int_t GetRunFromFileName(string fileName);
     static string GetFileNoFromFileName(string fileName);
+    static Int_t GetEntries(Int_t runNumber);
     ClassDef(TStRunList,1)
 };
 #endif

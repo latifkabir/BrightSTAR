@@ -31,9 +31,9 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     //isMC = kFALSE;
     //isMC = kTRUE;
 
-    det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
+    //det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
 
-    if(gROOT->IsBatch() && !inFile.Contains(".list"))
+    if(gROOT->IsBatch())
 	inFile = TStScheduler::CopyInputFiles(inFile);
         
     if(!(det == "fms" || det == "eemc"))
@@ -211,9 +211,12 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     nanoMaker->SetOutFileName((TString)"NanoJetTree_" + outFile);
     nanoMaker->SetEtaMax(etaMax);
     nanoMaker->SetEtaMin(etaMin);
+
+    Int_t nEvents = muDstMaker->chain()->GetEntries();
+    cout << "------------> Number of entries to be processed: "<< nEvents <<endl;
     
     chain->Init();
-    chain->EventLoop();
+    chain->EventLoop(0, nEvents);
     chain->Finish();
     delete chain;
 

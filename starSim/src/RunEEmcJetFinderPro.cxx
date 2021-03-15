@@ -9,11 +9,11 @@
 #include "StJetMaker/StJetMaker2015.h"
 #include "StJetMaker/towers/StjTowerEnergyCutFMS.h"
 
-#include "RunFmsJetFinderPro.h"
+#include "RunEEmcJetFinderPro.h"
 
 using namespace std;
 
-void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
+void RunEEmcJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
 {
     TString orgName = inMuDstFile;
     TString pythiaFile = orgName.ReplaceAll("MuDst", "pythia");
@@ -118,9 +118,10 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
 
     StAnaPars* anapars12 = new StAnaPars;
     anapars12->useTpc  = true;
-    anapars12->useBemc = true;
+    anapars12->useBemc = false;
     anapars12->useEemc = true;
-    anapars12->useFms  = true;
+    anapars12->useFms  = false;
+    anapars12->useEmJetMode = true;
     //anapars12->useFmsHit = true; //CKim
         
     anapars12->addTpcCut(new StjTrackCutFlag(0));
@@ -183,16 +184,16 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
   
 }
 
-void RunFmsJetFinderPro(Int_t cycle, Int_t nEntries)
+void RunEEmcJetFinderPro(Int_t cycle, Int_t nEntries)
 {
-    TString inMuDstFile = Form("FmsSim_Run15_%i_evt%i.MuDst.root", cycle, nEntries);
-    TString outJetFile = Form("FmsJet_Run15_%i_evt%i.root", cycle, nEntries);
+    TString inMuDstFile = Form("EEmcSim_Run15_%i_evt%i.MuDst.root", cycle, nEntries);
+    TString outJetFile = Form("EEmcJet_Run15_%i_evt%i.root", cycle, nEntries);
     if(gSystem->AccessPathName(inMuDstFile))
     {
 	cout << "No MuDSt Created" <<endl;
 	return;
     }
-    RunFmsJetFinderPro(inMuDstFile, outJetFile);
+    RunEEmcJetFinderPro(inMuDstFile, outJetFile);
     cout << "Deleting geant file ...." <<endl;
     gROOT->ProcessLine(".! rm *.geant.root");
 }

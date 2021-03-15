@@ -13,4 +13,18 @@ void JobPrototype(TString inFile, TString outFile)
     TFile *f = new TFile(outFile, "RECREATE");
     gROOT->ProcessLine(".! ls -ltra");
     f->Close();
+    
+    inFile = TStScheduler::CopyInputFiles(inFile);
+    gROOT->ProcessLine(".! ls -ltra " + (TString)TStar::gConfig->GetTempPath());
+    if(inFile.Contains(".list"))
+	gROOT->ProcessLine(".! cat " + inFile);
+
+    Int_t run = TStRunList::GetRunFromFileName((string)inFile);
+    cout << "File name: "<< inFile << " , Found run number: "<< run <<endl;
+   
+    TStScheduler::DeleteTempFiles(inFile);    
+    gROOT->ProcessLine(".! cd " + (TString)TStar::gConfig->GetTempPath() + " && pwd -P" );
+    // gROOT->ProcessLine(".! du " + (TString)TStar::gConfig->GetTempPath());
+    // gROOT->ProcessLine(".! pwd -P");
+    gROOT->ProcessLine(".! ls -ltra " + (TString)TStar::gConfig->GetTempPath());
 }

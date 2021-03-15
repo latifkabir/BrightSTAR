@@ -40,7 +40,7 @@ Replace $1 to $3 by appropriate armuments.
 ```
 root4star
 [0] .L runBfcFms.C
-[1] runBfcFms(-1, "pyhtiaOut.fzd")
+[1] runBfcFms(-1, "pythiaOut.fzd")
 ```
 
 3. Run Jet Reconstruction:

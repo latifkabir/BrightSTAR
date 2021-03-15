@@ -40,7 +40,9 @@ public:
     static void AnalyzeJobResults(TString dirPath, TString filePrefix, Int_t threshold = 50, TString treeName ="T");
 
     static TString CopyInputFiles(TString inFileName);
+    static TString CopyInputFilesFromList(TString in_file_list);
     static void DeleteTempFiles(TString inFileName);
+    static void DeleteTempFilesFromList(TString in_file_list);
     
     void SetJobThreshold(Int_t threshold){mJobThreshold = threshold;}
     void SetInterval(Int_t interval){mSleepTime = interval;}
