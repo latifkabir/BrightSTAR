@@ -6,7 +6,7 @@
 
 void EEmcSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 12) 
 {
-    const char* chainopt = "DbV20150923 y2015 MakeEvent ITTF NoSsdIt NoSvtIt Idst BAna l0 Tree logger Sti VFPPVnoCTB beamLine tpcDB TpcHitMover TpxClu fmsDb fmsSim fmspoint  tags emcY2 EEfs eess evout -dstout IdTruth geantout big fzin MiniMcMk clearmem  sdt20150417.193427"; //Mriganka
+    const char* chainopt = "DbV20150923 y2015 MakeEvent ITTF NoSsdIt NoSvtIt Idst BAna l0 Tree logger Sti VFPPVnoCTB beamLine tpcDB TpcHitMover TpxClu fmsDb fmsSim fmspoint  tags emcY2 EEfs evout -dstout IdTruth geantout big fzin MiniMcMk clearmem  sdt20150417.193427"; //Mriganka
 
     //const char* chainopt = "ry2015a agml usexgeom MakeEvent McEvent vfmce Idst BAna l0 l3 Tree logger fmsSim fmspoint evout -dstout IdTruth bigbig fzin geantout clearmem sdt20150417.193427"; //MMM's jobs
     
