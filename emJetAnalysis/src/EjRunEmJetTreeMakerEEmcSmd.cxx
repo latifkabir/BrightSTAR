@@ -370,7 +370,7 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
     // anapars12->addEemcCut(new StjTowerEnergyCutEt(0.2));
 
     // EEMC SMD Cut
-    anapars12->addEemcSmdCut(new StjTowerEnergyCutEEmcSmd(2.0, 200)); //!!!!!!!!!! <------------ To be updated 
+    anapars12->addEemcSmdCut(new StjTowerEnergyCutEEmcSmd(2.0, 200)); //!!!!!!!!!! <------------ To be updated. 2 GeV cut gives too little statistics to get decent result 
     
     //FMS cuts, CKim
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong

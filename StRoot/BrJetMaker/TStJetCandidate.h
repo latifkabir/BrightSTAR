@@ -176,8 +176,7 @@ protected:
     Double_t mX;		//
     Double_t mY;		//
     Double_t mRt;		//   
-    Double_t mUeDensity;	//   
-    Double_t mUeMult;	        //   
+    Double_t mUedPt;	//   
     TRefArray mTowers;		//
     TRefArray mParticles;	// Used for embedding only
     //TRefArray mTracks;	//  Currently Not used
@@ -191,8 +190,7 @@ public:
     Double_t GetX(){return mX;}
     Double_t GetY(){return mY;}
     Double_t GetRt(){return mRt;}
-    Double_t GetUeDensity(){return mUeDensity;}
-    Double_t GetUeMult(){return mUeMult;}
+    Double_t GetUedPt(){return mUedPt;}
 
     void SetNphotons(Int_t nPhotons){mNphotons = nPhotons;}
     void SetEta(Double_t eta){mEta = eta;}
@@ -202,8 +200,7 @@ public:
     void SetX(Double_t x){mX = x;}
     void SetY(Double_t y){mY = y;}
     void SetRt(Double_t rt){mRt = rt;} 
-    void SetUeDesity(Double_t d){mUeDensity = d;} 
-    void SetUeMult(Double_t m){mUeMult = m;} 
+    void SetUedPt(Double_t dpt){mUedPt = dpt;} 
 
     //TStJetTrack* AddTrack(TStJetTrack* track) { mTracks.Add((TObject*)track); return (TStJetTrack*)mTracks.Last(); }
     TStJetTower* AddTower(TStJetTower* tower) { mTowers.Add((TObject*)tower); return (TStJetTower*)mTowers.Last(); }
@@ -236,14 +233,13 @@ public:
 	mX		= -999;		//
 	mY		= -999;		//
 	mRt		= -999;		//
-	mUeDensity	= -999;		//
-	mUeMult	        = -999;		//
+	mUedPt	        = -999;		//
 
 	mTowers.Clear();
 	mParticles.Clear();
     }
     
-    ClassDef(TStJetCandidate, 4)
+    ClassDef(TStJetCandidate, 5)
 };
 
 #endif

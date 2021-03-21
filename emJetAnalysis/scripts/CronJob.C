@@ -9,13 +9,14 @@ void CronJob()
     TStScheduler *sc = new TStScheduler();
 
     //Optimal setup for FMS stream
-    sc->SetJobThreshold(1500); // Number of threshold jobs that will trigger new submission
+    sc->SetJobThreshold(1000); // Number of threshold jobs that will trigger new submission
     //sc->SetJobThreshold(1500); // Number of threshold jobs that will trigger new submission
     sc->SetInterval(20);      // Wait time in minutes
-    sc->SetRunIncrement(20);  // Number of runs to be incremented
-    //sc->SetRunIncrement(80);  // Number of runs to be incremented
+    //sc->SetRunIncrement(20);  // Number of runs to be incremented (physics stream)
+    sc->SetRunIncrement(100);  // Number of runs to be incremented (Fms stream)
     //sc->SetRunIncrement(160);  // aggresive Number of runs to be incremented
-    sc->SetMaxFilesPerJob(5); //Maximum number of files per job
+    //sc->SetMaxFilesPerJob(5); //Maximum number of files per job (physics stream)
+    sc->SetMaxFilesPerJob(1); //Maximum number of files per job (Fms stream)
     
     //sc->CronJob("AnRunNanoDstMaker", gFirstRun, gFirstRun); // For Test
     //sc->CronJob("AnRunNanoDstMaker", 16093018, 16093018);

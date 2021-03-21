@@ -31,7 +31,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     //isMC = kFALSE;
     //isMC = kTRUE;
 
-    det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
+    //det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
 
     if(gROOT->IsBatch())
 	inFile = TStScheduler::CopyInputFiles(inFile);
@@ -187,7 +187,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     //FMS cuts, CKim
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.5, 200)); //!!!!!!!!!! For Comparing With Zhanwen's Result Only !!!!!!
-    anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //!!!!!!!!!! Updated based on Simulation !!!!!!
+    anapars12->addFmsCut(new StjTowerEnergyCutFMS(1.0, 200)); //!!!!!!!!!! Updated based on Simulation !!!!!!
     //* 3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
 
     //Jet cuts

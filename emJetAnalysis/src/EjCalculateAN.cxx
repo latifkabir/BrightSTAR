@@ -376,7 +376,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	    {
 		asymPlot_e->GetPlot(j,i)->SetXRange( varMins_e[j], varMaxs_e[j]);
 		//asymPlot_e->GetPlot(j,i)->SetYRange( -0.005, 0.005);
-		asymPlot_e->GetPlot(j,i)->SetYRange( -0.02, 0.02);
+		asymPlot_e->GetPlot(j,i)->SetYRange( -0.03, 0.03);
 
 		// if(i == 4 && j == 0)
 		// {
