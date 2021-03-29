@@ -59,7 +59,7 @@ void EjCreateBinnedHistZn(TString fileNamePrefix, TString det, Int_t minNphotons
     TH1D *h1bSpinI = new TH1D("h1bSpinI", "Blue Spin index", 10, -1, 4);
     TH1D *h1ySpinI = new TH1D("h1ySpinI", "Yellow Spin index", 10, -1, 4);
     TH1D *h1nPhotonsI = new TH1D("h1nPhotonsI", "Number of photons index", 11, -1, 10);
-    TH1D *h1nPhotons = new TH1D("h1nPhotons", "Number of photons", 11, -1, 10);    
+    TH1D *h1nPhotons = new TH1D("h1nPhotons", "Number of photons", 20, 0, 20);    
     TH2D *h2nPhotonsVsPt = new TH2D("h2nPhotonsVsPt", "Number of photons vs Pt", 10, 2, 7, 11, -1, 10);    
     TH2D *h2nPhotonsVsXf = new TH2D("h2nPhotonsVsXf", "Number of photons vs Xf", 10, 0, 1.0, 11, -1, 10);        
     TH1D *h1EngI = new TH1D("h1EngI", "Energy bin index", 7, -1, 6);
@@ -68,7 +68,17 @@ void EjCreateBinnedHistZn(TString fileNamePrefix, TString det, Int_t minNphotons
     TH1D *h1Xf = new TH1D("h1Xf", "X_{F}", 50, 0, 2.0);
     TH1D *h1PhiB = new TH1D("h1PhiB", "Phi [Blue beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
     TH1D *h1PhiY = new TH1D("h1PhiY", "Phi [Yellow beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
-
+    TH1D *h1Trig = new TH1D("h1Trig", "Trigger Distribution (Without any cut)", 10, 0, 10);
+    h1Trig->GetXaxis()->SetBinLabel(1,"FMS JP0");
+    h1Trig->GetXaxis()->SetBinLabel(2,"FMS JP1");
+    h1Trig->GetXaxis()->SetBinLabel(3,"FMS JP2");
+    h1Trig->GetXaxis()->SetBinLabel(4,"Small BS1");
+    h1Trig->GetXaxis()->SetBinLabel(5,"Small BS2");
+    h1Trig->GetXaxis()->SetBinLabel(6,"Small BS3");
+    h1Trig->GetXaxis()->SetBinLabel(7,"Large BS1");
+    h1Trig->GetXaxis()->SetBinLabel(8,"Large BS2");
+    h1Trig->GetXaxis()->SetBinLabel(9,"Large BS3");
+    
     TGraphErrors *grPol_b = new TGraphErrors();
     grPol_b->SetName("grPol_blue");
     grPol_b->SetTitle("Polarization [blue beam]");
@@ -268,12 +278,31 @@ void EjCreateBinnedHistZn(TString fileNamePrefix, TString det, Int_t minNphotons
 		spinY = 1;
 	    else
 		spinY = 0;
+
+	    if(TrigBits & 1<<8)
+		h1Trig->Fill(0);
+	    if(TrigBits & 1<<9)
+		h1Trig->Fill(1);
+	    if(TrigBits & 1<<10)
+		h1Trig->Fill(2);
+	    if(TrigBits & 1<<2)
+		h1Trig->Fill(3);
+	    if(TrigBits & 1<<3)
+		h1Trig->Fill(4);
+	    if((TrigBits & 1<<4) ||  (TrigBits & 1<<1))
+		h1Trig->Fill(5);
+	    if(TrigBits & 1<<5)
+		h1Trig->Fill(6);
+	    if(TrigBits & 1<<6)
+		h1Trig->Fill(7);
+	    if(TrigBits & 1<<7)
+		h1Trig->Fill(8);
 	    
 	    //Exclude FMS small-bs3 trigger that gives ring of fire issue.
 	    //The ring of fire is a real problem. It gives lots of unphysical jets i.e. jets with E > s /2 or X_F > 1.0. It must be removed for any reliable analysis.
 	    if(det == "fms")
 	    {
-	    	if(TrigBits == ((0x01)<<4))
+	    	if(TrigBits & ((0x01)<<4))
 	    	    continue;		
 	    }
 	    

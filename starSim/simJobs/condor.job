@@ -12,12 +12,12 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 +Experiment     = "star"
 +Job_Type       = "cas"
 transfer_input_files =   /star/u/kabir/GIT/BrightSTAR/.sl73_gcc485, /star/u/kabir/GIT/BrightSTAR/lib, /star/u/kabir/GIT/BrightSTAR/rootlogon.C, /star/u/kabir/GIT/BrightSTAR/setup.sh, /star/u/kabir/GIT/BrightSTAR/setup.csh, /star/u/kabir/GIT/BrightSTAR/config, /star/u/kabir/GIT/BrightSTAR/database
-Executable      = /star/u/kabir/GIT/BrightSTAR/starSim/simJobs/condor2.sh
+Executable      = /star/u/kabir/GIT/BrightSTAR/starSim/simJobs/condor.sh
 Initialdir      = /star/u/kabir/GIT/BrightSTAR/scratch/condor/
 Output          = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).out
 Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).err
 Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).log
 
-Arguments       = $(Process) 5000 	
-Queue 500
+Arguments       = $(Process) 1000 	
+Queue 3000
 

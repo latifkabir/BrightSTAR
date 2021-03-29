@@ -24,6 +24,7 @@ public:
     static Int_t mMaxFilesPerJob;
     static Int_t mCopyToExeHost;
     static Int_t mJobCounter;
+    static Int_t mInitCounter;
     
     TStScheduler();
     virtual ~TStScheduler();
@@ -48,6 +49,7 @@ public:
     void SetInterval(Int_t interval){mSleepTime = interval;}
     void SetRunIncrement(Int_t increment){mRunIncrement = increment;}
     void SetMaxFilesPerJob(Int_t nFiles){mMaxFilesPerJob = nFiles;}
+    void SetInitCounter(Int_t init_counter){mInitCounter = init_counter;}
     
     ClassDef(TStScheduler,1)
 };

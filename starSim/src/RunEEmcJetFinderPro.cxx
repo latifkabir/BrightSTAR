@@ -194,6 +194,6 @@ void RunEEmcJetFinderPro(Int_t cycle, Int_t nEntries)
 	return;
     }
     RunEEmcJetFinderPro(inMuDstFile, outJetFile);
-    cout << "Deleting geant file ...." <<endl;
-    gROOT->ProcessLine(".! rm *.geant.root");
+    //cout << "Deleting geant file ...." <<endl;
+    //gROOT->ProcessLine(".! rm *.geant.root");
 }

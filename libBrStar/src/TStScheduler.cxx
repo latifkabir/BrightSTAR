@@ -46,6 +46,7 @@ Int_t TStScheduler::mRunIncrement = 20;
 Int_t TStScheduler::mMaxFilesPerJob = 5;
 Int_t TStScheduler::mCopyToExeHost = 1;
 Int_t TStScheduler::mJobCounter = 0;
+Int_t TStScheduler::mInitCounter = 0;
 
 //___________________________________________________________________________________________
 void TStScheduler::JobStatus(Int_t level)
@@ -830,7 +831,7 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
 		endRun = lastRun;      
 	    if(startRun == -1)
 		break;
-	    iteration = (index_e / runIncrement);
+	    iteration = (index_e / runIncrement) + mInitCounter;
 	    TString jobName = functionName + to_string(iteration);
 	    cout << "Submitting jobs for run range: "<< startRun << " to "<< endRun <<endl;
 	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement) + (TString)" Active jobs: " + to_string(activeJobs);

@@ -108,7 +108,6 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     pythia->SetFile(pythiaFile);
     // Pythia4pMaker
     StPythiaFourPMaker* pythia4pMaker = new StPythiaFourPMaker;
-
     
     //StJetSkimEventMaker* skimEventMaker = new StJetSkimEventMaker("StJetSkimEventMaker", muDstMaker, skimFileName);   //Giving problem with SL20a. Try to incorporate EEMC sim part to fix it                                               
     StJetMaker2015* jetmaker = new StJetMaker2015;
@@ -118,11 +117,12 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
 
     StAnaPars* anapars12 = new StAnaPars;
     anapars12->useTpc  = true;
-    anapars12->useBemc = true;
-    anapars12->useEemc = true;
+    anapars12->useBemc = false;
+    anapars12->useEemc = false;
     anapars12->useFms  = true;
     //anapars12->useFmsHit = true; //CKim
-        
+    anapars12->useEmJetMode = true;
+    
     anapars12->addTpcCut(new StjTrackCutFlag(0));
     anapars12->addTpcCut(new StjTrackCutNHits(12));
     anapars12->addTpcCut(new StjTrackCutPossibleHitRatio(0.51));
@@ -143,7 +143,7 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
 
     //FMS cuts, CKim
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong
-    anapars12->addFmsCut(new StjTowerEnergyCutFMS(2.0, 200)); //min, max //Latif: Photon energy cut allows to reject low energy photons / hadronic contribitions and match a lot better with data
+    anapars12->addFmsCut(new StjTowerEnergyCutFMS(1.0, 200)); //min, max //Latif: Photon energy cut allows to reject low energy photons / hadronic contribitions and match a lot better with data
     //* 3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
 
     //Jet cuts
@@ -152,13 +152,15 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     anapars12->addJetCut(new StProtoJetCutEta(1,5)); //CKim, extend to FMS acceptance
 
     //-------------- Add MC particle and it's jet branch here -------------
-    //StAnaPars* anaparsPart = new StAnaPars;
-    //anaparsPart->useMonteCarlo = true; //<-------- This should not be use simultaneously with detertors enabled. //Latif. If not set, particles branch will not be filled. Note: By default the pythia tree is not synchronized if you used filter. Need to reproduce separate pythia tree that has only triggered events. Use that pythia tree to populate particle branch and jet from pythia particles. Check if used geant file whether that would still have synchronization issue. Seems geant file also have pythia particle info can can be used instead of pythia root file.
+    StAnaPars* anaparsPart = new StAnaPars;
+    anaparsPart->useMonteCarlo = true; //<-------- This should be for separate (MC) branch. If not set, particles branch will not be filled. Note: By default the pythia tree is not synchronized if you used filter (check?). Need to reproduce separate pythia tree that has only triggered events. Use that pythia tree to populate particle branch and jet from pythia particles. Check if used geant file whether that would still have synchronization issue. Seems geant file also have pythia particle info which can be used instead of pythia root file.
     
     // MC cuts  
-    // anaparsPart->addMcCut(new StjMCParticleCutStatus(1)); // final state particles
-    // anaparsPart->addJetCut(new StProtoJetCutPt(0.001,200));
-    // anaparsPart->addMcCut(new StjMCParticleCutEta(2.4,4.3)); // final state particles 
+    anaparsPart->addMcCut(new StjMCParticleCutStatus(1)); // final state particles
+    anaparsPart->addJetCut(new StProtoJetCutPt(0.01,200));
+    anaparsPart->addMcCut(new StjMCParticleCutEta(1,5)); // final state particles
+    anaparsPart->useEmJetMode = true;
+    //How to apply MC particle energy cut to match FMS photons??
     
     //Set anti-kt R=0.7 parameters
     StFastJetPars* AntiKtR070Pars = new StFastJetPars;
@@ -168,8 +170,9 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     AntiKtR070Pars->setStrategy(StFastJetPars::Best);
     AntiKtR070Pars->setPtMin(2);
 
-    jetmaker->addBranch("AntiKtR070NHits12",anapars12,AntiKtR070Pars);
-    //Add MC particle branch here
+    jetmaker->addBranch("AntiKtR070NHits12", anapars12, AntiKtR070Pars);
+    jetmaker->addBranch("AntiKtR070Particle", anaparsPart, AntiKtR070Pars);
+    //Add other branches here as desired
     
     chain->Init();
     if(nEvents == -1)
@@ -179,8 +182,7 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     chain->Finish();
   
     cout<<"SUCCESS!!"<<endl;
-    delete chain;
-  
+    delete chain;  
 }
 
 void RunFmsJetFinderPro(Int_t cycle, Int_t nEntries)

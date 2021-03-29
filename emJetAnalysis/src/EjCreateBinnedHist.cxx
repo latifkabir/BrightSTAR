@@ -99,6 +99,32 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
     TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets after all cuts; Number of Photons", 20, 0, 20);
     TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 100, -200, 200);
+    TH1D *h1Trig = new TH1D("h1Trig", "Trigger Distribution (Without any cut)", 10, 0, 10);
+
+    if(det == "fms")
+    {
+	h1Trig->GetXaxis()->SetBinLabel(1,"FMS JP0");
+	h1Trig->GetXaxis()->SetBinLabel(2,"FMS JP1");
+	h1Trig->GetXaxis()->SetBinLabel(3,"FMS JP2");
+	h1Trig->GetXaxis()->SetBinLabel(4,"Small BS1");
+	h1Trig->GetXaxis()->SetBinLabel(5,"Small BS2");
+	h1Trig->GetXaxis()->SetBinLabel(6,"Small BS3");
+	h1Trig->GetXaxis()->SetBinLabel(7,"Large BS1");
+	h1Trig->GetXaxis()->SetBinLabel(8,"Large BS2");
+	h1Trig->GetXaxis()->SetBinLabel(9,"Large BS3");
+    }
+    else if(det == "eemc")
+    {
+	h1Trig->GetXaxis()->SetBinLabel(1,"EHT0");
+	h1Trig->GetXaxis()->SetBinLabel(2,"JP1");
+	h1Trig->GetXaxis()->SetBinLabel(3,"JP2");
+	h1Trig->GetXaxis()->SetBinLabel(4,"EHT0*EJP1*L2Egamma");
+	h1Trig->GetXaxis()->SetBinLabel(5,"JP2*L2JetHigh");
+	h1Trig->GetXaxis()->SetBinLabel(6,"BHT1*VPDMB-30");
+	h1Trig->GetXaxis()->SetBinLabel(7,"BHT0*BBCMB");
+	h1Trig->GetXaxis()->SetBinLabel(8,"BHT1*BBCMB");
+	h1Trig->GetXaxis()->SetBinLabel(9,"BHT2*BBCMB");
+    }
     
     //Event buffer
     TStJetEvent *jetEvent = 0;
@@ -241,6 +267,26 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    spinY = skimEvent->GetSpinY();
 	    evtTime = skimEvent->GetUnixTime();
 	    eventAccepted = kFALSE;
+
+	    //Trigger distribution without cuts
+	    if(skimEvent->GetTrigFlag(0)) //Alternatively use: if(skimEvent->IsTrigBitSet(0)) etc
+		h1Trig->Fill(0);
+	    if(skimEvent->GetTrigFlag(1))
+		h1Trig->Fill(1);
+	    if(skimEvent->GetTrigFlag(2))
+		h1Trig->Fill(2);
+	    if(skimEvent->GetTrigFlag(3))
+		h1Trig->Fill(3);
+	    if(skimEvent->GetTrigFlag(4))
+		h1Trig->Fill(4);
+	    if(skimEvent->GetTrigFlag(5))
+		h1Trig->Fill(5);
+	    if(skimEvent->GetTrigFlag(6))
+		h1Trig->Fill(6);
+	    if(skimEvent->GetTrigFlag(7))
+		h1Trig->Fill(7);
+	    if(skimEvent->GetTrigFlag(8))
+		h1Trig->Fill(8);
 	    
 	    //Exclude FMS small-bs3 trigger that gives ring of fire issue.
 	    //The ring of fire is a real problem. It gives lots of unphysical jets i.e. jets with E > s /2 or X_F > 1.0. It must be removed for any reliable analysis.

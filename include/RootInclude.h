@@ -13,6 +13,7 @@
 #include <TH1.h>
 #include <TH2.h>
 #include <TH3.h>
+#include <TProfile.h>
 #include <TF1.h>
 #include <THStack.h>
 #include <TMath.h>

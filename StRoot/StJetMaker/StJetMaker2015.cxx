@@ -2,7 +2,10 @@
   2015 version of JetMaker:
   - Derivated from 2012 version by Jilong
   - Minor updates applied, mainly for FMS
-  - Enable using EEMC SMD photon candidates instead of EEMC towers by Latif
+
+  //Following are by Latif
+  - Enable using EEMC SMD photon candidates instead of EEMC towers
+  - In EM-jet mode, do not merge charged particles from TPC 
 */
 
 #include "TFile.h"
@@ -70,7 +73,6 @@ Int_t StJetMaker2015::Make()
 	StFmsTriggerMaker* fmstrig = (StFmsTriggerMaker*)GetMakerInheritsFrom("StFmsTriggerMaker");
 	assert(fmstrig);
 
-
 	Int_t trg1 = 0; 
 	Int_t trg2 = 0 ; 
 	Int_t trg3 = 0; 
@@ -102,7 +104,6 @@ Int_t StJetMaker2015::Make()
 
 	cout<<" TRIGGER : SmBS 1 2 LgBS 1 2 JP 1 2   : "<<trg1<<"  "<<trg2<<"  "<<trg3<<"  "<<trg4<<"  "<<trg5<<"  "<<trg6<<"  "<<trg7<<"  "<<trg8<<"  "<<trg9<<"  "<<triggerBit<<endl;
     }
-
     
     //Loop over jet branches
     for (size_t iBranch = 0; iBranch < mJetBranches.size(); ++iBranch)
@@ -243,7 +244,6 @@ Int_t StJetMaker2015::Make()
 	    }//End vertex loop
 
 	    //-------------------------------------------------------------------------------------
-
 	    //No good TPC vertex was found
 	    if (!nvertices)
 	    {
@@ -383,7 +383,7 @@ Int_t StJetMaker2015::Make()
         {
             StjMCMuDst mc(this);
             StjPrimaryVertex mcvertex = mc.getMCVertex();
-            StjMCParticleList mcparticles = jetbranch->anapars->mcCuts()(mc.getMCParticleList());
+            StjMCParticleList mcparticles = (jetbranch->anapars->useEmJetMode) ? jetbranch->anapars->mcCuts()(mc.getMCPhotonList()) : jetbranch->anapars->mcCuts()(mc.getMCParticleList()); //For EM-jet only allow photons -- Latif
             StProtoJet::FourVecList particles; //vector<const AbstractFourVec*>
             transform(mcparticles.begin(), mcparticles.end(), back_inserter(particles),
 		      StjMCParticleToStMuTrackFourVec());

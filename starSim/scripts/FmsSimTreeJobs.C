@@ -8,12 +8,14 @@ void FmsSimTreeJobs(TString filePrefix, Int_t first, Int_t last)
 {
     TString inFile;
     TString outFile;
+    vector <string> jobs;
 
-    for(Int_t i = first; i < last; ++i)
+    for(Int_t i = first; i <= last; ++i)
     {
 	inFile = filePrefix;
 	inFile += i;
-	inFile += "_evt5000.MuDst.root";
+	//inFile += "_evt5000.MuDst.root";
+	inFile += "_evt1000.MuDst.root";
 
 	outFile = "FmsSimTreeTriggered_";
 	outFile += i;
@@ -24,8 +26,11 @@ void FmsSimTreeJobs(TString filePrefix, Int_t first, Int_t last)
 	    cout << "infile NOT found. Skipped ...:"<< inFile <<endl;
 	    continue;
 	}
-	TStScheduler::SubmitJob("FmsSimTreeMaker", inFile, outFile);
-	//break;	
+	string job;
+	job = "FmsSimTreeMaker(\"" + inFile + "\",\"" + outFile + "\")";
+	cout << job <<endl;
+	jobs.push_back(job);
     }
     
+    TStScheduler::SubmitJob(jobs, "FmsSimTree");
 }

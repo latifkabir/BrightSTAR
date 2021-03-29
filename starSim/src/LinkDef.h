@@ -18,7 +18,7 @@
 #pragma link C++ function FmsSimJetQA;                           // Make QA plots for the FMS Jet from simulated data
 #pragma link C++ function FmsSimCompareDataVsSim;                // Compare FMS simulation and data
 #pragma link C++ function FmsSimGenVsRecPion;                    // Compare FMS simulation and data for pion mass
-
+#pragma link C++ function FmsSimMakeResponseMatrix;              // Generate Response Matrix or 2D hist for particle vs detector level quantities
 
 #pragma link C++ function EEmcSimRunStarsimAndBfc;                // Run Pythia + Geant3 (starsim) + BFC for EEMC Jet Simulation
 #pragma link C++ function RunEEmcJetFinderPro;                    // Run EEMC Jet Finder for Simulated Data (used for analysis)

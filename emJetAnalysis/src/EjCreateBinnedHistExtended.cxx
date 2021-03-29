@@ -65,7 +65,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     TH1D *h1bSpinI = new TH1D("h1bSpinI", "Blue Spin index", 10, -1, 4);
     TH1D *h1ySpinI = new TH1D("h1ySpinI", "Yellow Spin index", 10, -1, 4);
     TH1D *h1nPhotonsI = new TH1D("h1nPhotonsI", "Number of photons index", 11, -1, 10);    
-    TH1D *h1nPhotons = new TH1D("h1nPhotons", "Number of photons", 11, -1, 10);    
+    TH1D *h1nPhotons = new TH1D("h1nPhotons", "Number of photons", 20, 0, 20);    
     TH2D *h2nPhotonsVsPt = new TH2D("h2nPhotonsVsPt", "Number of photons vs Pt", 10, 2, 7, 11, -1, 10);    
     TH2D *h2nPhotonsVsXf = new TH2D("h2nPhotonsVsXf", "Number of photons vs Xf", 10, 0, 1.0, 11, -1, 10);    
     TH1D *h1EngI = new TH1D("h1EngI", "Energy bin index", 7, -1, 6);

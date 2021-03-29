@@ -17,6 +17,7 @@ public:
 
   StjPrimaryVertex getMCVertex() const;
   StjMCParticleList getMCParticleList();
+  StjMCParticleList getMCPhotonList();
 
 private:
 
