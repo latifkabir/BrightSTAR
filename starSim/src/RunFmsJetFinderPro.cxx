@@ -151,6 +151,14 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     //anapars12->addJetCut(new StProtoJetCutEta(-1,5)); //CKim, extend to FMS acceptance
     anapars12->addJetCut(new StProtoJetCutEta(1,5)); //CKim, extend to FMS acceptance
 
+    //Set anti-kt R=0.7 parameters
+    StFastJetPars* AntiKtR070Pars = new StFastJetPars;
+    AntiKtR070Pars->setJetAlgorithm(StFastJetPars::antikt_algorithm);
+    AntiKtR070Pars->setRparam(0.7);
+    AntiKtR070Pars->setRecombinationScheme(StFastJetPars::E_scheme);
+    AntiKtR070Pars->setStrategy(StFastJetPars::Best);
+    AntiKtR070Pars->setPtMin(2);
+    
     //-------------- Add MC particle and it's jet branch here -------------
     StAnaPars* anaparsPart = new StAnaPars;
     anaparsPart->useMonteCarlo = true; //<-------- This should be for separate (MC) branch. If not set, particles branch will not be filled. Note: By default the pythia tree is not synchronized if you used filter (check?). Need to reproduce separate pythia tree that has only triggered events. Use that pythia tree to populate particle branch and jet from pythia particles. Check if used geant file whether that would still have synchronization issue. Seems geant file also have pythia particle info which can be used instead of pythia root file.
@@ -163,15 +171,15 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     //How to apply MC particle energy cut to match FMS photons??
     
     //Set anti-kt R=0.7 parameters
-    StFastJetPars* AntiKtR070Pars = new StFastJetPars;
-    AntiKtR070Pars->setJetAlgorithm(StFastJetPars::antikt_algorithm);
-    AntiKtR070Pars->setRparam(0.7);
-    AntiKtR070Pars->setRecombinationScheme(StFastJetPars::E_scheme);
-    AntiKtR070Pars->setStrategy(StFastJetPars::Best);
-    AntiKtR070Pars->setPtMin(2);
-
+    StFastJetPars* AntiKtR070ParsPart = new StFastJetPars;
+    AntiKtR070ParsPart->setJetAlgorithm(StFastJetPars::antikt_algorithm);
+    AntiKtR070ParsPart->setRparam(0.7);
+    AntiKtR070ParsPart->setRecombinationScheme(StFastJetPars::E_scheme);
+    AntiKtR070ParsPart->setStrategy(StFastJetPars::Best);
+    //There should not be any pt cut for particle branch
+    
     jetmaker->addBranch("AntiKtR070NHits12", anapars12, AntiKtR070Pars);
-    jetmaker->addBranch("AntiKtR070Particle", anaparsPart, AntiKtR070Pars);
+    jetmaker->addBranch("AntiKtR070Particle", anaparsPart, AntiKtR070ParsPart);
     //Add other branches here as desired
     
     chain->Init();

@@ -85,7 +85,7 @@ void FmsSimMakeResponseMatrix(
     //Particle level jets
     TH1D *h1JetEpart = new TH1D("h1JetEpart", "EM Jet E [Particle Level Jets]; Jet E [GeV]", 100, 0.0, 70.0);
     TH1D *h1JetPtPart = new TH1D("h1JetPtPart", "Jet Pt [Particle Level Jets]; Jet Pt [GeV/c]", 100, 0.0, 50.0);
-    TH1D *h1nPhotonsPart = new TH1D("h1nPhotons", "Number of photons in EM jets [Particle Level Jets]; Number of photons", 20, 0, 20);
+    TH1D *h1nPhotonsPart = new TH1D("h1nPhotonsPart", "Number of photons in EM jets [Particle Level Jets]; Number of photons", 20, 0, 20);
     
     //Response Matrix
     TH2D *h2EngResMat = new TH2D ("h2EngResMat", "Particle level vs Detector level jet E; E^{Det}_{jet} [GeV]; E^{Part}_{jet} [GeV]", 50, 0.0, 70.0, 100, 0.0, 70.0);

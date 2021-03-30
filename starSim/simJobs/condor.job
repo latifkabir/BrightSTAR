@@ -19,5 +19,5 @@ Error           = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).err
 Log             = /star/u/kabir/GIT/BrightSTAR/jobOutput/FmsSimPro$(Process).log
 
 Arguments       = $(Process) 1000 	
-Queue 3000
+Queue 1000
 
