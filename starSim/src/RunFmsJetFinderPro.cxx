@@ -176,7 +176,8 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     AntiKtR070ParsPart->setRparam(0.7);
     AntiKtR070ParsPart->setRecombinationScheme(StFastJetPars::E_scheme);
     AntiKtR070ParsPart->setStrategy(StFastJetPars::Best);
-    //There should not be any pt cut for particle branch
+    AntiKtR070ParsPart->setPtMin(1.0);
+    //There should not be same pt cut for particle branch
     
     jetmaker->addBranch("AntiKtR070NHits12", anapars12, AntiKtR070Pars);
     jetmaker->addBranch("AntiKtR070Particle", anaparsPart, AntiKtR070ParsPart);
