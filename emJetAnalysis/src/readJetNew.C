@@ -68,6 +68,9 @@ void readJetNew(void)
 	TH1F* histVtx1 = new TH1F("histVtx1", "Vtx Distribution",100, -200, 200);
 	TH1F* histVtx2 = new TH1F("histVtx2", "Vtx Distribution",100, -200, 200);
 	TH1F* histVtx3 = new TH1F("histVtx3", "Vtx Distribution",100, -200, 200);
+
+	TH1D* histUeDpt = new TH1D("histUeDpt", "histUeDpt", 200, -100, 100);
+	
 	for (int i=0; i<2; i++)
 	{
 		const float PI = TMath::Pi();
@@ -141,6 +144,9 @@ void readJetNew(void)
 			//Check # of towers (points)
 			const int nTowers = jetCand->numberOfTowers();
 
+			//UE correction
+			//histUeDpt->Fill(jetCand->ueDensity()["OffAxisConesR070"]*jetCand->area());
+			
 			//-----------------------------------
 
 			StUeOffAxisConesJet* ueCand = vtxUe->ueJet(b); //StUeOffAxisCOnesJet is inherited from StUeJet

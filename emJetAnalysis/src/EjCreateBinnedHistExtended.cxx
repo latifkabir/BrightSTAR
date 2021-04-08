@@ -11,7 +11,9 @@
 #include "BrJetMaker/TStJetCandidate.h"
 #include "BrJetMaker/TStJetEvent.h"
 #include "BrJetMaker/TStJetSkimEvent.h"
+#include "EjCreateBinnedHistExtended.h"
 using namespace std;
+
 
 /*
 
@@ -75,6 +77,12 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     TH1D *h1PhiB = new TH1D("h1PhiB", "Phi [Blue beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
     TH1D *h1PhiY = new TH1D("h1PhiY", "Phi [Yellow beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
 
+    TH1D *h1E = new TH1D ("h1E", "EM Jet E after all cuts; Jet E [GeV]", 100, 0.0, 70.0);
+    TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
+    TH1D *h1Enew = new TH1D ("h1Enew", "EM Jet E after all cuts; Jet E [GeV]", 100, 0.0, 70.0);
+    TH1D *h1PtNew = new TH1D ("h1PtNew", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
+
+    
     TGraphErrors *grPol_b = new TGraphErrors();
     grPol_b->SetName("grPol_blue");
     grPol_b->SetTitle("Polarization [blue beam]");
@@ -91,7 +99,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     if(det == "fms")
     {
 	//limit jet axis within 2.8 - 3.8 following Carl's suggestion in spin pwg  mailing list 2019-11-22 email.
-	etaMin = 2.8;  //2.4;
+	etaMin = 2.9;  //2.4; <--- matched to Zhanwen for comparison
 	etaMax = 3.8;  //4.5;
     }
     else if(det == "eemc")
@@ -248,8 +256,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    	// if(skimEvent->GetTrigFlag(5))
 	    	//     continue;
 		
-		// if(!(skimEvent->GetBbcMult() > 0 && skimEvent->GetTofTrayMult() > 2)) //Ring of fire cut
-		//     continue;
+		if(!(skimEvent->GetBbcMult() > 0.5 && skimEvent->GetTofTrayMult() > 2.5)) //Ring of fire cut, matched to Zhanwen's final paper cut
+		    continue;
 	    }
 	    
 	    if(fabs(vtxZ) > 80)
@@ -280,12 +288,26 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		eng = jet->GetE();
 		pt = jet->GetPt();
 		nPhotons = jet->GetNumberOfTowers();
-		LV.SetPtEtaPhiE(pt, eta, phi, eng);
-		xf = 2.0*(LV.Pz()) / sqrt_s;
-				
+
 		if(eta < etaMin || eta > etaMax) //Conside only EEMC and FMS coverage
 		    continue;
+		
+		//--- Jet energy and pt correction --- !!!!!!! WARNING: DO NOT USE FOR YOUR RESULT!!!! 
+		h1E->Fill(eng);
+		h1Pt->Fill(pt);
 
+		pt = EjJetPtCorr(pt, eng);
+		eng = EjJetEngCorr(eng);
+		h1Enew->Fill(eng);
+		h1PtNew->Fill(pt);
+
+		if(pt < 2)
+		    continue;
+		//------- end of jet eng/pt correction ----
+		
+		LV.SetPtEtaPhiE(pt, eta, phi, eng);
+		xf = 2.0*(LV.Pz()) / sqrt_s;
+		
 		h1Xf->Fill(xf);
 		h1Eng->Fill(eng);
 		
@@ -311,8 +333,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		}
 
 		//!!! ---------> For comparing with Zhanwen. He did not use trigger dependent Pt cut !!!! <-----------
-		// if(!didPassPtCut)
-		//     continue;
+		if(!didPassPtCut)
+		    continue;
 
 		//!!!!!!----> For comparing with Zhanwen's em-jet result only. Consider FMS JP0, JP1 and JP2 Triggers only <---------------------------
 		if(skimEvent->GetTrigFlag(0) != 1 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
@@ -327,11 +349,11 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 
 		xf_i = int(fabs(xf)*10.0);
 		
-		if(xf_i < 0 || xf_i > 9)
-		{
-		    cout << "Unphysical x_F value. Investigate ...."<< "X_F: "<<xf <<"\t Eng: "<< eng <<endl;
-		    continue;
-		}
+		// if(xf_i < 0 || xf_i > 9)
+		// {
+		//     cout << "Unphysical x_F value. Investigate ...."<< "X_F: "<<xf <<"\t Eng: "<< eng <<endl;
+		//     continue;
+		// }
 		
 		if(nPhotons > 0 && nPhotons < kPhotonBins)
 		    nPhotons_i = nPhotons - 1;
@@ -342,8 +364,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 
 		eng_i = (Int_t)(eng / 20.0); 
 
-		if(eng_i >= kEnergyBins)
-		    continue;
+		// if(eng_i >= kEnergyBins)
+		//     continue;
 
 		if(phi >= 0)
 		{
@@ -418,3 +440,57 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     file->Write();    
 }
 
+
+Double_t EjJetEngCorr(Double_t E)
+{
+    // //Zhanwen's jet E/pt correction that I do not agree
+    // double	e0	=	-20.5774;
+    // double	e1	=	-0.0262979;
+    // double	e2	=	0.00423014;
+    // double	e3	=	0.607798;
+
+    // double uee0   =       93.514; 
+    // double uee1   =   -0.0195701; 
+    // double uee2   =    0.0370517; 
+    // double uee3   =    -0.401819; 
+
+    // Double_t eNew = (e3 + e2*E + TMath::Exp((E-e0)*e1))*(E-(uee3+uee2*E + TMath::Exp((E - uee0)*uee1)));
+
+    Double_t p0 = 64.35;
+    Double_t p1 = -9.415;
+    Double_t p2 = 0.6934;
+    Double_t p3 = -0.02399;
+    Double_t p4 = 0.0004568;
+    Double_t p5 = -4.499*0.000001;
+    Double_t p6 = 1.777*0.00000001;
+    
+    Double_t eNew = p0 + p1*E + p2*pow(E, 2) + p3*pow(E, 3) + p4*pow(E, 4) + p5*pow(E, 5) + p6*pow(E, 6);
+    
+    return eNew;
+}
+
+
+Double_t EjJetPtCorr(Double_t pt, Double_t E)
+{
+    // //Zhanwen's jet E/pt correction that I do not agree
+    // double	e0	=	-20.5774;
+    // double	e1	=	-0.0262979;
+    // double	e2	=	0.00423014;
+    // double	e3	=	0.607798;
+
+    // double uept0   =     85.5409; 
+    // double uept1   =  -0.0124882; 
+    // double uept2   =   0.0165788; 
+    // double uept3   =    -2.12506; 
+
+    // Double_t ptNew = (e3 + e2*E + TMath::Exp((E - e0)*e1))*(pt - (uept3 + uept2*pt + TMath::Exp((pt - uept0)*uept1)));
+
+    Double_t p0 = 0.3181;
+    Double_t p1 = 0.9648;
+    Double_t p2 = -0.01855;
+    Double_t p3 = 0.005551;
+
+    Double_t ptNew = p0 + p1*pt + p2*pow(pt, 2) + p3*pow(pt, 3);
+    
+    return ptNew;
+}

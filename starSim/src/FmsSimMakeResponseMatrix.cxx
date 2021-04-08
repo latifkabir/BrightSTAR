@@ -24,7 +24,6 @@ void FmsSimMakeResponseMatrix(
     Int_t nFiles_jet;
     nFiles_jet = jetChain->Add(jetfile);
 
-
     Int_t nEvents = jetChain->GetEntries();
     if(nentries == -1 || nentries > nEvents)
 	nentries = nEvents;
@@ -71,9 +70,9 @@ void FmsSimMakeResponseMatrix(
     TH1D *h1JetE = new TH1D("h1JetE", "EM Jet E" + title + "; Jet E [GeV]", 100, 0.0, 70.0);
     TH1D *h1JetE_s = new TH1D("h1JetE_s", "EM Jet E [small cells]" + title + "; Jet E [GeV]", 100, 0.0, 85.0);
     TH1D *h1JetE_l = new TH1D("h1JetE_l", "EM Jet E [large cells]" + title + "; Jet E [GeV]", 100, 0.0, 70.0);
-    TH1D *h1JetPt = new TH1D("h1JetPt", "Jet Pt" + title + "; Jet Pt [GeV/c]", 100, 0.0, 50.0);
+    TH1D *h1JetPt = new TH1D("h1JetPt", "Jet Pt" + title + "; Jet Pt [GeV/c]", 90, 1.0, 10.0);
     TH1D *h1JetVtxZ = new TH1D("h1JetVtxZ", "Jet Vtx z" + title + "; Jet vtx z [cm]", 100, -200.0, 200.0);
-    TH1D *h1nPhotonsDet = new TH1D("h1nPhotonsDet", "number of photons in EM jets" + title + "; Number of photons", 20, 0, 20);
+    TH1D *h1nPhotonsDet = new TH1D("h1nPhotonsDet", "number of photons in EM jets" + title + "; Number of photons", 10, 0, 10);
     
     TH2D *h2Jetxy = new TH2D("h2Jetxy", "Jet Position [FMS]" + title + "; Jet X [cm]; Jet Y [cm]", 100, -100, 100, 100, -100, 100);
     TH2D *h2JetEP = new TH2D("h2Jetep_fms", "Jet Eta Phi [FMS]" + title + "; Jet #eta; Jet #phi", 100, 2.5, 4.5, 100, -3.2, 3.2);
@@ -84,17 +83,17 @@ void FmsSimMakeResponseMatrix(
 
     //Particle level jets
     TH1D *h1JetEpart = new TH1D("h1JetEpart", "EM Jet E [Particle Level Jets]; Jet E [GeV]", 100, 0.0, 70.0);
-    TH1D *h1JetPtPart = new TH1D("h1JetPtPart", "Jet Pt [Particle Level Jets]; Jet Pt [GeV/c]", 100, 0.0, 50.0);
-    TH1D *h1nPhotonsPart = new TH1D("h1nPhotonsPart", "Number of photons in EM jets [Particle Level Jets]; Number of photons", 20, 0, 20);
+    TH1D *h1JetPtPart = new TH1D("h1JetPtPart", "Jet Pt [Particle Level Jets]; Jet Pt [GeV/c]", 90, 1.0, 10.0);
+    TH1D *h1nPhotonsPart = new TH1D("h1nPhotonsPart", "Number of photons in EM jets [Particle Level Jets]; Number of photons", 10, 0, 10);
     
     //Response Matrix
-    TH2D *h2EngResMat = new TH2D ("h2EngResMat", "Particle level vs Detector level jet E; E^{Det}_{jet} [GeV]; E^{Part}_{jet} [GeV]", 50, 0.0, 70.0, 100, 0.0, 70.0);
-    TH2D *h2PtResMat = new TH2D ("h2PtResMat", "Particle level vs Detector level jet Pt; p_{T, jet}^{Det} [GeV]; p_{T, jet}^{Part} [GeV]", 50, 0.0, 10.0, 100, 0.0, 10.0);
-    TH2D *h2nPhResMat = new TH2D ("h2nPhResMat", "Particle level vs Detector level jet photon multiplicity; nPhotons_{jet}^{Det}; nPhotons_{jet}^{Part}", 20, 0.0, 20.0, 20, 0.0, 20.0);
+    TH2D *h2EngResMat = new TH2D ("h2EngResMat", "Particle level vs Detector level jet E; E^{Det}_{jet} [GeV]; E^{Part}_{jet} [GeV]", 50, 0.0, 70.0, 50, 0.0, 70.0);
+    TH2D *h2PtResMat = new TH2D ("h2PtResMat", "Particle level vs Detector level jet Pt; p_{T, jet}^{Det} [GeV]; p_{T, jet}^{Part} [GeV]", 40, 2.0, 6.0, 40, 2.0, 6.0);
+    TH2D *h2nPhResMat = new TH2D ("h2nPhResMat", "Particle level vs Detector level jet photon multiplicity; nPhotons_{jet}^{Det}; nPhotons_{jet}^{Part}", 10, 0.0, 10.0, 10, 0.0, 10.0);
 
     TProfile *h2EngResMatProf = new TProfile("h2EngResMatProf", "Particle level vs Detector level jet E; E^{Det}_{jet} [GeV]; E^{Part}_{jet} [GeV]", 50, 0.0, 70.0, 0.0, 70.0);
-    TProfile *h2PtResMatProf = new TProfile("h2PtResMatProf", "Particle level vs Detector level jet Pt; p_{T, jet}^{Det} [GeV]; p_{T, jet}^{Part} [GeV]", 50, 0.0, 10.0, 0.0, 10.0);
-    TProfile *h2nPhResMatProf = new TProfile("h2nPhResMatProf", "Particle level vs Detector level jet photon multiplicity; nPhotons_{jet}^{Det}; nPhotons_{jet}^{Part}", 20, 0.0, 20.0, 0.0, 20.0);
+    TProfile *h2PtResMatProf = new TProfile("h2PtResMatProf", "Particle level vs Detector level jet Pt; p_{T, jet}^{Det} [GeV]; p_{T, jet}^{Part} [GeV]", 40, 2.0, 6.0, 2.0, 6.0);
+    TProfile *h2nPhResMatProf = new TProfile("h2nPhResMatProf", "Particle level vs Detector level jet photon multiplicity; nPhotons_{jet}^{Det}; nPhotons_{jet}^{Part}", 10, 0.0, 10.0, 0.0, 10.0);
     
     TLorentzVector lv;
     TVector3 v3;
@@ -161,8 +160,7 @@ void FmsSimMakeResponseMatrix(
 	vtxType = -1;
 	vtxZ = vertex->position().z();
 	h1nVtx->Fill(jetEventDet->numberOfVertices());
-	
-	
+		
 	h1nJets->Fill(jetEventDet->numberOfJets());
 
 	//It seems most people loop over vertices. Find the justification.

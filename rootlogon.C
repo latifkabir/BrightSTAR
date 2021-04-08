@@ -171,7 +171,7 @@
     gStyle->SetMarkerSize(.4);      // larger than half a pixel ...
     gStyle->SetMarkerColor(kBlack);
     //gStyle->SetMarkerColor(kRed);
-                
+                    
     //------------- Plotting Style -----------------------------
     TStyle* dStyle = new TStyle("Bright_Star_Style", "Bright_Star_Style");
     dStyle->Reset("Modern");
@@ -227,7 +227,7 @@
     //dStyle->SetTitleSize(0.08, "xyz"); 
     dStyle->SetTitleSize(0.075, "t"); //"t": could be anything that is not "x" "y" or "z"
     dStyle->cd();
-
+    
     // gStyle->SetPadGridX(kFALSE);
     // gStyle->SetPadGridY(kFALSE);
     
@@ -243,9 +243,9 @@
     gStyle->SetNumberContours(NCont);
     
 
-    //gStyle->SetPadGridX(kFALSE);
-    //gStyle->SetPadGridY(kFALSE);
-    //gStyle->SetOptStat(0);
+    // gStyle->SetPadGridX(kFALSE);
+    // gStyle->SetPadGridY(kFALSE);
+    // gStyle->SetOptStat(0);
     
     using namespace TStar;
     

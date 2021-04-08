@@ -10,10 +10,10 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 {
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
-    TString funcName = "EjCreateBinnedHist";
-    //TString funcName = "EjCreateBinnedHistExtended";
+    //TString funcName = "EjCreateBinnedHist";
+    TString funcName = "EjCreateBinnedHistExtended";
     //TString jobName = "EjCreateBinnedHistExFmsHotUnMasked3Ph";
-    TString jobName = "EjCreateBinnedHistFmsP4";
+    TString jobName = "EjCreateBinnedHistEngCorr";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -28,9 +28,9 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetEEmsSmdP2ResubmitMerged/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass4/fms/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass4/fms/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/scratch/EmJetEEmcTowPass4Merged/NanoJetTree_EjRunEmJetTreeMaker_";
-    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/DST_ZhanwenComparison/NanoJetTree_EjRunEmJetTreeMaker_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmasking_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
     //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;
