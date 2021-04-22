@@ -136,6 +136,14 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     if(isMC)
 	fmshitMk->SetReadMuDst(1);                //for simu set to 1
     //-------------------------------------------
+    StTriggerSimuMaker* simuTrig = new StTriggerSimuMaker;
+    simuTrig->useOnlineDB();
+    simuTrig->setMC(isMC);
+
+    //simuTrig->useBbc();
+    simuTrig->useBemc();
+    simuTrig->useEemc();
+    simuTrig->bemc->setConfig(StBemcTriggerSimu::kOnline);
 
     StJetSkimEventMaker* skimEventMaker = new StJetSkimEventMaker("StJetSkimEventMaker", muDstMaker, Skimfile);
 
@@ -177,7 +185,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.2, 200)); //min, max //Latif: changed to 0.2, it was set to 3 by Chong
     //anapars12->addFmsCut(new StjTowerEnergyCutFMS(0.5, 200)); //!!!!!!!!!! For Comparing With Zhanwen's Result Only !!!!!!
     anapars12->addFmsCut(new StjTowerEnergyCutFMS(1.0, 200)); //!!!!!!!!!! Updated based on Simulation !!!!!!
-    //* 3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
+    //3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
 
     //Jet cuts
     anapars12->addJetCut(new StProtoJetCutPt(0.01,200));
@@ -185,11 +193,17 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 
     //Set anti-kt R=0.7 parameters
     StFastJetPars* AntiKtR070Pars = new StFastJetPars;
+
+    StFastJetAreaPars *JetAreaPars = new StFastJetAreaPars;
+    JetAreaPars->setGhostMaxRap(5.0);	//Needed to extend to forward rapidity
+    JetAreaPars->setGhostArea(0.04);    //0.04 was set for mid-rapidity. Find an optimal value for FMS / EEMC cell size
+    
     AntiKtR070Pars->setJetAlgorithm(StFastJetPars::antikt_algorithm);
     AntiKtR070Pars->setRparam(0.7);
     AntiKtR070Pars->setRecombinationScheme(StFastJetPars::E_scheme);
     AntiKtR070Pars->setStrategy(StFastJetPars::Best);
     AntiKtR070Pars->setPtMin(2);
+    AntiKtR070Pars->setJetArea(JetAreaPars);
 
     jetmaker->addBranch("AntiKtR070NHits12",anapars12,AntiKtR070Pars);
     StOffAxisConesPars *off070 = new StOffAxisConesPars(0.7);
@@ -203,7 +217,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 
     Int_t nEvents = muDstMaker->chain()->GetEntries();
     cout << "------------> Number of entries to be processed: "<< nEvents <<endl;
-    
+
     chain->Init();
     chain->EventLoop(0, nEvents);
     chain->Finish();
@@ -216,7 +230,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 	TStScheduler::DeleteTempFiles(inFile);
 
     //cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
-    //gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root");
+    gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root");
     
     std::cout <<"Done!" <<endl;
     

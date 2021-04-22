@@ -65,7 +65,7 @@
     //gSystem->Load("StEvent");
     gSystem->Load("StEventMaker");
     gSystem->Load("StDaqLib");
-    
+        
     //-------- EEMC Related ------------
     gSystem->Load("StEEmcDbMaker");
     gSystem->Load("StEEmcUtil");
@@ -117,7 +117,7 @@
     gSystem->Load("StUeEvent");
     gSystem->Load("StJetMaker");
     gSystem->Load("StTriggerFilterMaker");
-
+    
     //------------- RP ------------------
     gSystem->Load("StMuRpsUtil.so"); //RP Afterburner
 
@@ -230,6 +230,7 @@
     
     // gStyle->SetPadGridX(kFALSE);
     // gStyle->SetPadGridY(kFALSE);
+    // gStyle->SetOptStat(0);
     
     //-----------------------------------
     const Int_t NRGBs = 5;
@@ -241,12 +242,7 @@
     Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
     TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
     gStyle->SetNumberContours(NCont);
-    
-
-    // gStyle->SetPadGridX(kFALSE);
-    // gStyle->SetPadGridY(kFALSE);
-    // gStyle->SetOptStat(0);
-    
+        
     using namespace TStar;
     
 }

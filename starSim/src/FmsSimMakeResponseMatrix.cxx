@@ -229,7 +229,9 @@ void FmsSimMakeResponseMatrix(
 	    
 	    h2EngResMat->Fill(eng, engPart);
 	    h2PtResMat->Fill(pt, ptPart);
-	    h2nPhResMat->Fill(nPhotonsDet, nPhotonsPart);
+
+	    if(nPhotonsDet < 6 && nPhotonsPart < 6)
+		h2nPhResMat->Fill(nPhotonsDet, nPhotonsPart);
 
 	    h2EngResMatProf->Fill(eng, engPart);
 	    h2PtResMatProf->Fill(pt, ptPart);

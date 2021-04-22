@@ -77,4 +77,4 @@ cleansim:
 	$(MAKE) -C $(STARSIM_DIR) -f $(MAKE_FILE) clean
 
 cleancons:
-	rm -r .$STAR_HOST_SYS/*
+	rm -r .${STAR_HOST_SYS}/*
