@@ -48,6 +48,7 @@ private:
     TFile *mOutFile;
     TTree *mTree;
     TString mOutName = "NanoJetTree.root";
+    TString mBranchName = "AntiKtR070NHits12";
     TStJetEvent *mOutJetEvent;    
     TStJetSkimEvent *mOutSkimEvent;    
     TStJetCandidate *mOutJet;
@@ -75,8 +76,9 @@ public:
     void SetEtaMin(Double_t etaMin){mEtaMin = etaMin;}
     void SetDetZdist(Double_t z){mZdist = z;}
     void SetTrigIds(Int_t *trigIds);
-    void SetR(Double_t R){mR = R;};
-
+    void SetR(Double_t R){mR = R;}
+    void SetBranchName(TString branchName){mBranchName = branchName;} //Branch name in main jet tree (to be copied)
+    
     ClassDef(TStNanoJetTreeMaker,1) 
 };
 

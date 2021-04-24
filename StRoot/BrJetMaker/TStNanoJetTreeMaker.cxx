@@ -92,7 +92,7 @@ Int_t TStNanoJetTreeMaker::Make()
 	return kStFatal;	
     }
 
-    mInJetEvent = mJetMaker->event("AntiKtR070NHits12"); //Set the branch name from a Set function
+    mInJetEvent = mJetMaker->event(mBranchName); //Set the branch name from a Set function
     mInSkimEvent = mSkimEventMaker->event();
 
     assert(mInJetEvent && mInSkimEvent);
@@ -124,7 +124,8 @@ Int_t TStNanoJetTreeMaker::Make()
     
     if(mInJetEvent->numberOfJets() == 0)
 	return kStOK;
-	
+
+    //For EM jet we have mostly have one vertex from BBC/VPD/TPC. So we do not loop over vertices
     mInVertex = mInJetEvent->vertex(); //same as mInJetEvent->vertex(0), i.e. highest ranked vertex only
     if (!mInVertex)
 	return kStOK;
@@ -279,12 +280,9 @@ Int_t TStNanoJetTreeMaker::Make()
 	    mOutJetEvent->CopyParticle(mInParticle, mOutParticle);
 	    mOutJet->AddParticle(mOutParticle);		
 	}
-
 	//Add track info (if needed) in a similar fashion as tower and particles	    
     }
-
-    mTree->Fill();
-        
+    mTree->Fill();        
     return kStOK;
 }
 
