@@ -44,7 +44,9 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
     TH1D *h1E = new TH1D ("h1E", "EM Jet E; Jet E [GeV]", 200, 0.0, 70.0);
     TH1D *h1JetE_s = new TH1D ("h1JetE_s", "EM Jet E [small cells]; Jet E [GeV]", 200, 0.0, 85.0);
     TH1D *h1JetE_l = new TH1D ("h1JetE_l", "EM Jet E [large cells]; Jet E [GeV]", 200, 0.0, 70.0);    
-    TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt; Jet Pt [GeV/c]", 500, 0.0, 50.0);
+    TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt; Jet Pt [GeV/c]", 200, 0.0, 20.0);
+    TH1D *h1PtUE = new TH1D ("h1PtUE", "UE corrected Jet Pt; UE corrected Jet Pt [GeV/c]", 200, 0.0, 20.0);
+    TH1D *h1dPt = new TH1D ("h1dPt", "UE dPt; UE dPt [GeV/c]", 100, 0.0, 2.0);
     TH1D *h1nPhotonsTow = new TH1D("h1nPhotonsTow", "number of photons in EM jets from tower counts; Number of Photons", 20, 0, 20);
     TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets from mJets.mNphotons; Number of Photons", 20, 0, 20);
     TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 200, -200, 200);
@@ -158,6 +160,8 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	    h1Eta->Fill(eta);
 	    h1Phi->Fill(phi);
 	    h1Pt->Fill(pt);
+	    h1dPt->Fill(jet->GetUedPt());
+	    h1PtUE->Fill(pt - jet->GetUedPt());
 	    h1E->Fill(eng);
 	    
 	    h2EvsPt->Fill(pt, eng);

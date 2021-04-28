@@ -331,6 +331,18 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
     treeWriterPtr->setEEmcHitMkr( hitMakerPtr );
 
     //-------------------------------- END OF EEMC SMD MAKERS ---------------------------------------------
+    StTriggerSimuMaker* simuTrig = new StTriggerSimuMaker;
+    simuTrig->useOnlineDB();
+    simuTrig->setMC(isMC);
+
+    //simuTrig->useBbc();
+    simuTrig->useBemc();
+    simuTrig->useEemc();
+    simuTrig->bemc->setConfig(StBemcTriggerSimu::kOnline);
+
+    StEmVertexMaker *emVertexMkr = new StEmVertexMaker("StEmVertexMaker");
+    TString bbcSlewingData = TStar::gConfig->GetStarHome() + "/database/bbc_slewing_run15_pp200.dat"; 
+    emVertexMkr->ReadBbcSlewing(bbcSlewingData.Data()); //CKim
 
     //----------------- Jet Finder Configuration -------------------------
     StJetSkimEventMaker* skimEventMaker = new StJetSkimEventMaker("StJetSkimEventMaker", muDstMaker, Skimfile);
@@ -338,8 +350,6 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
     StJetMaker2015* jetmaker = new StJetMaker2015("StJetMaker2015");
     jetmaker->setJetFile(Jetfile);
     jetmaker->setJetFileUe(Uefile);
-    TString bbcSlewingData = TStar::gConfig->GetStarHome() + "/database/bbc_slewing_run15_pp200.dat"; 
-    jetmaker->ReadBbcSlewing(bbcSlewingData.Data()); //CKim
 
     StAnaPars* anapars12 = new StAnaPars;
     anapars12->useTpc  = true;
@@ -385,11 +395,17 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
 
     //Set anti-kt R=0.7 parameters
     StFastJetPars* AntiKtR070Pars = new StFastJetPars;
+
+    StFastJetAreaPars *JetAreaPars = new StFastJetAreaPars;
+    JetAreaPars->setGhostMaxRap(5.0);	//Needed to extend to forward rapidity
+    JetAreaPars->setGhostArea(0.04);    //0.04 was set for mid-rapidity. Find an optimal value for FMS / EEMC cell size
+    
     AntiKtR070Pars->setJetAlgorithm(StFastJetPars::antikt_algorithm);
     AntiKtR070Pars->setRparam(0.7);
     AntiKtR070Pars->setRecombinationScheme(StFastJetPars::E_scheme);
     AntiKtR070Pars->setStrategy(StFastJetPars::Best);
     AntiKtR070Pars->setPtMin(2);
+    AntiKtR070Pars->setJetArea(JetAreaPars);
 
     jetmaker->addBranch("AntiKtR070NHits12",anapars12,AntiKtR070Pars);
     StOffAxisConesPars *off070 = new StOffAxisConesPars(0.7);
@@ -398,6 +414,7 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
     TStNanoJetTreeMaker *nanoMaker = new TStNanoJetTreeMaker(jetmaker, skimEventMaker, "NanoJetTreeMaker");
     nanoMaker->SetTrigIds(trigIds);
     nanoMaker->SetOutFileName((TString)"NanoJetTree_" + outFile);
+    nanoMaker->SetBranchName("AntiKtR070NHits12");
     nanoMaker->SetEtaMax(etaMax);
     nanoMaker->SetEtaMin(etaMin);
     

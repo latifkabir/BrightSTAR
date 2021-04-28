@@ -58,13 +58,14 @@ private:
     static const Int_t mMaxTriggers = 9;
     StJetSkimTrig* mJetTrig[mMaxTriggers];
     Int_t mTrigIds[mMaxTriggers];
+    Bool_t mTrigFlag;
     Double_t mEtaMax;
     Double_t mEtaMin;
     Double_t mZdist;
     Double_t mR = 0.7;
         
 public: 
-    TStNanoJetTreeMaker(StJetMaker2015* jetMaker, StJetSkimEventMaker* skimMaker, const char *name  = "NanoJetTreeMaker");
+    TStNanoJetTreeMaker(const char *name  = "NanoJetTreeMaker");
     virtual ~TStNanoJetTreeMaker();
     virtual Int_t Init();
     virtual Int_t Make();

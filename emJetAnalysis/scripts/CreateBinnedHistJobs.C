@@ -13,7 +13,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //TString funcName = "EjCreateBinnedHist";
     TString funcName = "EjCreateBinnedHistExtended";
     //TString jobName = "EjCreateBinnedHistExFmsHotUnMasked3Ph";
-    TString jobName = "EjCreateBinnedHistEngCorr";
+    TString jobName = "EjCreateBinnedHistEngCorrUE";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -30,7 +30,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/fms/NanoJetTree_RunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass4/fms/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/scratch/EmJetEEmcTowPass4Merged/NanoJetTree_EjRunEmJetTreeMaker_";
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmasking_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmaskingUe_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
     //----------
     
     cout << "Total number of files to be processed: "<< maxRuns <<endl;

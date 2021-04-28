@@ -37,7 +37,7 @@ public:
     static void SubmitJob(TString functionName, TString inFileName, TString outName = "", TString jobName = "condor");                             // Submit Job using condor
     static void SubmitGenericJob(TString functionWithArg, TString jobName);                                                                        // Sumit Job for any function and an argument list
     static void SubmitSumsJob(TString function, TString runList, TString outNamePrefix = "", TString jobName = "sums");                            //Submit job using SUMS
-    static void CronJob(TString functionName, Int_t first_run = -1, Int_t last_run = -1);                                                          // Cron job for job-submission for full dataset
+    static void CronJob(TString functionName, Int_t first_run = -1, Int_t last_run = -1, TString passName = "");                                                          // Cron job for job-submission for full dataset
     static void AnalyzeJobResults(TString dirPath, TString filePrefix, Int_t threshold = 50, TString treeName ="T");
 
     static TString CopyInputFiles(TString inFileName);

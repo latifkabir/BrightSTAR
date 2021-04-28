@@ -765,7 +765,7 @@ void TStScheduler::SubmitSumsJob(TString function, TString runList, TString outN
 }
 
 
-void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_run)
+void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_run, TString passName)
 {
     string response;
     TStar::gConfig->Print();
@@ -832,7 +832,7 @@ void TStScheduler::CronJob(TString functionName,  Int_t first_run, Int_t last_ru
 	    if(startRun == -1)
 		break;
 	    iteration = (index_e / runIncrement) + mInitCounter;
-	    TString jobName = functionName + to_string(iteration);
+	    TString jobName = functionName + passName + to_string(iteration);
 	    cout << "Submitting jobs for run range: "<< startRun << " to "<< endRun <<endl;
 	    TString emailMessage = (TString)"Submitted jobs:: functionName: " + functionName + (TString)" Start Rrun: " + to_string(startRun) + (TString)" End Run: " + to_string(endRun) + (TString)" Iteration: " + to_string(index_e / runIncrement) + (TString)" Active jobs: " + to_string(activeJobs);
 	    TString emailCommand = (TString)".! echo \"" + emailMessage + (TString)"\" |  mail -s \"New Job Submission\" " + (TString)TStar::gConfig->GetUserEmail();

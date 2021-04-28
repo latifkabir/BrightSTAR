@@ -286,7 +286,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		phi = jet->GetPhi();
 		theta =  2 * atan( exp(-eta) );
 		eng = jet->GetE();
-		pt = jet->GetPt();
+		pt = jet->GetPt() - jet->GetUedPt();
 		nPhotons = jet->GetNumberOfTowers();
 
 		if(eta < etaMin || eta > etaMax) //Conside only EEMC and FMS coverage

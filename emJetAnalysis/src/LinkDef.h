@@ -2,6 +2,8 @@
 
 #ifdef __CINT__
 
+#pragma link C++ class EjAna;                           // EM Jet Analysis Configuration
+
 #pragma link C++ function EjJetQaPlots;                 // EM Jet QA Plots (original jet trees)
 
 #pragma link C++ function EjMakeSimpleAnalysisTree;     // Generate final skimmed tree for A_N calculation. The branches hold simple ordinary array

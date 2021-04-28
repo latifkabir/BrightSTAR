@@ -20,6 +20,7 @@
 #include "StJetMaker/StJetMaker2015.h"
 #include "StJetMaker/StJetSkimEventMaker.h"
 #include "StEvent/StTriggerData.h"
+#include "StEvent/StTriggerId.h"
 
 #include "TStJetEvent.h"
 #include "TStJetSkimEvent.h"
@@ -28,11 +29,12 @@
 ClassImp(TStNanoDiffJetTreeMaker)
 
 //_____________________________________________________________________________ 
-TStNanoDiffJetTreeMaker::TStNanoDiffJetTreeMaker(StJetMaker2015* jetMaker,  StJetSkimEventMaker* skimMaker, const char *name):StMaker(name)
+TStNanoDiffJetTreeMaker::TStNanoDiffJetTreeMaker(const char *name):StMaker(name)
 {
     mOutJetEvent = new TStJetEvent();
     mOutSkimEvent = mOutJetEvent->GetEvent();
-
+    mTrigFlag = kFALSE;
+    
     mJetMaker = 0;
     mSkimEventMaker = 0;
     mInJetEvent = 0;
@@ -41,9 +43,6 @@ TStNanoDiffJetTreeMaker::TStNanoDiffJetTreeMaker(StJetMaker2015* jetMaker,  StJe
     mEtaMax = 6.0;
     mEtaMin = -2.0;
     mZdist = 735.0;
-
-    mJetMaker = jetMaker;
-    mSkimEventMaker = skimMaker;
 
     //RP Buffer
     TStRpsTrackData::Class()->IgnoreTObjectStreamer();
@@ -64,7 +63,6 @@ TStNanoDiffJetTreeMaker::~TStNanoDiffJetTreeMaker()
 //_____________________________________________________________________________ 
 Int_t TStNanoDiffJetTreeMaker::Init()
 {
-
     mOutFile = new TFile(mOutName, "recreate");
     mTree = new TTree("T", "EM Jet Analysis Tree");
     TStJetEvent::Class()->IgnoreTObjectStreamer();
@@ -94,8 +92,8 @@ Int_t TStNanoDiffJetTreeMaker::Make()
     }
     mMuEvent = mMuDst->event();
     
-    //mJetMaker = (StJetMaker2015*)GetMaker("StJetMaker2015"); //This did not work --> bug fixed, try again
-    //mSkimEventMaker = (StJetSkimEventMaker*)GetMaker("StJetSkimEventMaker"); //Did not work --> bug fixed, try again
+    mJetMaker = (StJetMaker2015*)GetMaker("StJetMaker2015"); 
+    mSkimEventMaker = (StJetSkimEventMaker*)GetMaker("StJetSkimEventMaker"); 
     if(!mJetMaker || !mSkimEventMaker)
     {
 	LOG_ERROR << "TStNanoDiffJetTreeMaker::Make - No JetMaker or SkimEventMaker found" <<endm;
@@ -136,20 +134,16 @@ Int_t TStNanoDiffJetTreeMaker::Make()
     mRpsArray->Clear();    
     mOutJetEvent->Reset();
 
-    for(Int_t i = 0; i < mMaxTriggers; ++i)
-	mJetTrig[i] = mInSkimEvent->trigger(mTrigIds[i]);
-    
-    for(Int_t i = 0; i < mMaxTriggers; ++i)
+    mTrigFlag = kFALSE;
+    for(Int_t k = 0; k < mMaxTriggers; ++k)
     {
-	if(mJetTrig[i])
+	mTrigFlag = mMuEvent->triggerIdCollection().nominal().isTrigger(mTrigIds[k]);
+	if(mTrigFlag)
 	{
-	    if(mJetTrig[i]->didFire() && mJetTrig[i]->shouldFire())
-	    {
-		mOutSkimEvent->SetTrigFlag(i, 1);
-		mOutSkimEvent->SetTrigBit(i);
-	    }
+	    mOutSkimEvent->SetTrigFlag(k, 1);
+	    mOutSkimEvent->SetTrigBit(k);
 	}
-    }
+    }	
 
     vtxZ = mInVertex->position().z();
 

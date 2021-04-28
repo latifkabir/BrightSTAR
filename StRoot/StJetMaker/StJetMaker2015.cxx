@@ -248,34 +248,14 @@ Int_t StJetMaker2015::Make()
 	    if (!nvertices)
 	    {
 		//Priority: VPD -> BBC w/ slewing correction -> BBC w/o slewing correction
-		float zVtx = 0.;
-		float vpdZ = -999.;
-		float bbcZ = -999.;
+		Double_t zVtx = 0.;
 		if(!mIsMCmode)
 		{
-		    StMuDst* muDST = (StMuDst*)GetInputDS("MuDst");
-		    if (!muDST) { LOG_ERROR <<"StJetMaker2015::Make - cannot find MuDst!" <<endl; return kStErr; }
-
-		    //Check VPD zVtx
-		    if (muDST->btofHeader()) vpdZ = muDST->btofHeader()->vpdVz();
-
-		    //Assign zVtx
-		    if (vpdZ != -999.) zVtx = vpdZ; //Use vpdZ and be done with it, if it's valid
+		    mEmVertexMkr = (StEmVertexMaker*)GetMaker("StEmVertexMaker");
+		    if(mEmVertexMkr)
+			zVtx = mEmVertexMkr->GetEmVertexZ();
 		    else
-		    {
-			//No vpdZ or found vpdZ is NOT valid: go to BBC
-			if (mReadBbcSlewing == true) //BBCz w/ slewing
-			{
-			    const StTriggerData* triggerData = muDST->event()->triggerData();
-			    bbcZ = GetBbcZCorr(triggerData);
-			}
-			else
-			{
-			    const float bbcTdiff = muDST->event()->triggerData()->bbcTimeDifference();
-			    if (fabs(bbcTdiff) > 1.e-6) bbcZ = -0.3 * (bbcTdiff - 4096);
-			}
-			if (bbcZ != -999.) zVtx = bbcZ;
-		    }
+			LOG_ERROR << "StJetMaker2015::Make - No StEmVertexMaker found. Vertex z is set to zero !!!" <<endm; 	
 		}
 		//Get BEMC towers
 		StjTowerEnergyList bemcEnergyList;
@@ -437,92 +417,3 @@ Int_t StJetMaker2015::Make()
 
     return kStOk;
 }//Make
-
-//------------------------------------------------------------
-Int_t StJetMaker2015::ReadBbcSlewing(const char* filename_bbc) //Written by Oleg Eyser
-{
-    mReadBbcSlewing = true;
-
-    //reading parameters for BBC slewing correction
-    char s[100];
-    int iew, ipmt;
-    float ca, cb, cc;
-
-    FILE *pFile = fopen( filename_bbc, "read" );
-    fgets( s, 100, pFile );
-    for( int ew=0; ew<2; ew++ )
-	for( int p=0; p<16; p++ )
-	{
-	    fscanf( pFile, " %d %d %f %f %f \n", &iew, &ipmt, &ca, &cb, &cc);
-	    if ( ew==iew && p+1==ipmt )
-	    {
-		mBbcSlew[ew][p][0] = ca;
-		mBbcSlew[ew][p][1] = cb;
-		mBbcSlew[ew][p][2] = cc;
-	    }
-	    else return kError;
-	}
-    fclose( pFile );
-
-    cout << "\nBBC slewing: z(A+B/[C+adc])" << endl;
-    for( int ew=0; ew<2; ew++ )
-    {
-        if( ew==0 ) cout << " East" << endl;
-        if( ew==1 ) cout << " West" << endl;
-        for( int p=0; p<16; p++ )
-        {
-            cout << Form("PMT%2d - %7.2f %7.2f %7.2f ",
-			 p+1, mBbcSlew[ew][p][0], mBbcSlew[ew][p][1], mBbcSlew[ew][p][2]) << endl;
-        }
-    }
-    cout <<endl;
-
-    return kStOK;
-}//ReadBbcSlewing
-
-//-------------------------------------------------------------------
-Float_t StJetMaker2015::GetBbcZCorr(const StTriggerData* triggerData) //Written by Oleg Eyser, Modified by CKim
-{
-    //DO NOT use muDST->event()->bbcTriggerDetector() -- obsolete!!!
-    Float_t bbcZ     = -999.;
-    Float_t bbcTdiff = -999.;
-    UShort_t tdc1east, tdc1west;
-    UShort_t pmt1east, pmt1west;
-    UShort_t adc1east, adc1west;
-    unsigned int tdcMatchEast = 0;
-    unsigned int tdcMatchWest = 0;
-    bbcTdiff = (float)triggerData->bbcTimeDifference();
-    tdc1east = triggerData->bbcEarliestTDC(east);
-    tdc1west = triggerData->bbcEarliestTDC(west);
-
-    //Compare TDC values to find earliest PMT (east/west)
-    for ( int i=1; i<=16; i++ )
-    {
-        if ( tdc1east==triggerData->bbcTDC(east, i) )
-        {
-            adc1east = triggerData->bbcADC(east, i);
-            pmt1east = i-1;
-            ++tdcMatchEast;
-        }
-        if ( tdc1west==triggerData->bbcTDC(west, i) )
-        {
-            adc1west = triggerData->bbcADC(west, i);
-            pmt1west = i-1;
-            ++tdcMatchWest;
-        }
-    }
-
-    //BBC slewing correction (east/west)
-    if ( tdcMatchEast==1 && tdcMatchWest==1 )
-    {
-        Float_t zEast = -0.3 * (bbcTdiff
-				- mBbcSlew[0][pmt1east][0] - mBbcSlew[0][pmt1east][1]/(mBbcSlew[0][pmt1east][2] + adc1east)
-	    );
-        Float_t zWest = -0.3 * (bbcTdiff
-				- mBbcSlew[1][pmt1west][0] - mBbcSlew[1][pmt1west][1]/(mBbcSlew[1][pmt1west][2] + adc1west)
-	    );
-        bbcZ = (zEast + zWest)/2.0;
-    }
-
-    return bbcZ;
-}//GetBbcZCorr

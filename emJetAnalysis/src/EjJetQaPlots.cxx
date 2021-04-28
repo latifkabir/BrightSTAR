@@ -5,6 +5,8 @@
 
 #include "TStTrigDef.h"
 
+//#include "StSpinPool/StJetSkimEvent.h"
+
 //Use file name with wildcard to chain many files
 void EjJetQaPlots(
             Int_t nentries,
@@ -218,7 +220,19 @@ void EjJetQaPlots(
 	}
 	h1Vtxz->Fill(vtxZ);
 	h1VtxType->Fill(vtxType);
-	
+
+	//Access trigger ids explicitly
+	TClonesArray *skimTrigArr = skimEvent->triggers();
+	for(Int_t i = 0; i < skimTrigArr->GetEntriesFast(); ++i)
+	{
+	    StJetSkimTrig *skimTrig = (StJetSkimTrig*)skimTrigArr->At(i); 
+	    cout << "Trigger id: "<< skimTrig->trigId()  <<endl;
+	    cout << "Did Fire: "<< skimTrig->didFire()  <<endl;
+	    cout << "Should Fire: "<< skimTrig->shouldFire()  <<endl;
+	}
+	cout << "-------------------------------\n" <<endl;
+
+	/*Do not use didFire and shouldFire for EM jet Triggers	*/
 	didFireJP0 = didFireJP1 = didFireJP2 = kFALSE;
 	didFireSB1 = didFireSB2 = didFireSB3 = kFALSE;
 	didFireLB1 = didFireLB2 = didFireLB3 = kFALSE;

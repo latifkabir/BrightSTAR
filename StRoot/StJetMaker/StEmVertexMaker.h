@@ -19,7 +19,7 @@ private:
     Double_t mEmVertexZ;
 protected:
     bool mReadBbcSlewing = false; //Turn to true if ReadBbcSlewing is invoked
-    float mBbcSlew[2][16][3]; //Oleg, [east/west][pmt][parameter]
+    float mBbcSlew[2][16][3];     //Oleg, [east/west][pmt][parameter]
     
 public: 
     StEmVertexMaker(const char *name  = "StEmVertexMaker");
