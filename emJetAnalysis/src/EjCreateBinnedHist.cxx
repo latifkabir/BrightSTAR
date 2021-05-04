@@ -58,17 +58,10 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     TH1D *h1EngI = new TH1D("h1EngI", "Energy bin index", 7, -1, 6);
     TH1D *h1PhiB = new TH1D("h1PhiB", "Phi [Blue beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
     TH1D *h1PhiY = new TH1D("h1PhiY", "Phi [Yellow beam]", kPhiBins, -1.0*TMath::Pi(), TMath::Pi());
-
-    TGraphErrors *grPol_b = new TGraphErrors();
-    grPol_b->SetName("grPol_blue");
-    grPol_b->SetTitle("Polarization [blue beam]");
-    TGraphErrors *grPol_y = new TGraphErrors();
-    grPol_y->SetName("grPol_yellow");
-    grPol_y->SetTitle("Polarization [yellow beam]");
-    TGraphErrors *grPolRunEx_b;
-    TGraphErrors *grPolRunEx_y;
     TH1D *hPolB = new TH1D("hPolB", "Polarization [Blue Beam]", 400, 40, 80);
     TH1D *hPolY = new TH1D("hPolY", "Polarization [Yellow Beam]", 400, 40, 80);
+    TH1D *hPolBerr = new TH1D("hPolBerr", "Polarization Error[Blue Beam]", 500, 0, 10);
+    TH1D *hPolYerr = new TH1D("hPolYerr", "Polarization Error[Yellow Beam]", 500, 0, 10);
     
     Double_t etaMin;
     Double_t etaMax;
@@ -171,13 +164,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     Int_t nPoints = 0;
     Int_t nRuns = 0;
     Bool_t eventAccepted = kFALSE;
-    Int_t gmt2etCorr;
-    
-    Double_t pol_ave_b;
-    Double_t pol_ave_y;
-    Double_t ePol_ave_b;
-    Double_t ePol_ave_y;
-    
+        
     Int_t fillNoFmDb;
     Double_t energy;
     Int_t startTime;
@@ -233,20 +220,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 
 	Double_t eemcTrigPtTh[9] = {4.25, 5.405, 7.285, 4.25, 7.285, 0, 0, 0, 0}; //"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB";
 	
-	//For polarization
-	if(runNumber < 16067006)
-	    gmt2etCorr = 5*3600; //GMT to EST
-	else
-	    gmt2etCorr = 4*3600; //GMT to EDT
-	TGraphErrors *grPolRun_b = new TGraphErrors(); 
-	TGraphErrors *grPolRun_y = new TGraphErrors();
-	TF1 *fnc_b = new TF1("fnc_b", "pol0");
-	TF1 *fnc_y = new TF1("fnc_y", "pol0");
 	nPoints = 0;
-	pol_ave_b = 0;
-	pol_ave_y = 0;
-	ePol_ave_b = 0;
-	ePol_ave_y = 0;
 	    
 	Int_t nEntries = tree->GetEntries();
 	cout << "Processing run number: "<< runNumber <<endl;
@@ -410,18 +384,25 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		fillDb.GetFillPolarization(fillNoFmData, energy, startTime, stopTime, p_b, dp_b, dpdt_b, edpdt_b, p_y, dp_y, dpdt_y, edpdt_y);
 		
 		cout << fillNoFmData << "\t"<< energy << "\t"<< startTime << "\t"<< stopTime << "\t"<< p_b << "\t"<< dp_b << "\t"<< dpdt_b << "\t"<< edpdt_b << "\t"<< p_y << "\t"<< dp_y << "\t"<< dpdt_y << "\t"<< edpdt_y <<endl;
-		cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - gmt2etCorr - startTime) / 3600.0 <<endl;
+		cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - startTime) / 3600.0 <<endl;
 	    }
 
 	    if(p_b == -1 || p_y == -1)
 		continue;
+
+	    dT = (evtTime - startTime) / 3600.0;
 	    
-	    dT = (evtTime - gmt2etCorr - startTime) / 3600.0; // gmt2etCorr is subtracted to correct event time in GMT. This is not required for startTime from spin group table. This is NOT necessary for new DSTs 
 	    pol_b = p_b + dpdt_b*dT;
 	    pol_y = p_y + dpdt_y*dT;
 
+	    ePol_b = sqrt( pow(dp_b, 2) + pow(dT*edpdt_b, 2) );
+	    ePol_y = sqrt( pow(dp_y, 2) + pow(dT*edpdt_y, 2) );
+
 	    hPolB->Fill(pol_b);
 	    hPolY->Fill(pol_y);
+
+	    hPolBerr->Fill(ePol_b);
+	    hPolYerr->Fill(ePol_y);
 	    
 	    ++nPoints;
 	}

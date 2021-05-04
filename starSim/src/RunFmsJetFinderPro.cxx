@@ -127,8 +127,8 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     anapars12->addTpcCut(new StjTrackCutNHits(12));
     anapars12->addTpcCut(new StjTrackCutPossibleHitRatio(0.51));
     anapars12->addTpcCut(new StjTrackCutDca(3));
-    anapars12->addTpcCut(new StjTrackCutPt(0.2,200));
-    anapars12->addTpcCut(new StjTrackCutEta(-2.5,2.5));
+    anapars12->addTpcCut(new StjTrackCutPt(0.2, 200));
+    anapars12->addTpcCut(new StjTrackCutEta(-2.5, 2.5));
     anapars12->addTpcCut(new StjTrackCutLastPoint(125));
 
     //BEMC cuts
@@ -147,17 +147,23 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     //* 3 GeV cut was determined by RUN15 calibration condition: Zgg < 0.7 + pairE > 20 GeV
 
     //Jet cuts
-    anapars12->addJetCut(new StProtoJetCutPt(0.01,200));
+    anapars12->addJetCut(new StProtoJetCutPt(0.01, 200));
     //anapars12->addJetCut(new StProtoJetCutEta(-1,5)); //CKim, extend to FMS acceptance
     anapars12->addJetCut(new StProtoJetCutEta(1,5)); //CKim, extend to FMS acceptance
 
     //Set anti-kt R=0.7 parameters
     StFastJetPars* AntiKtR070Pars = new StFastJetPars;
+
+    StFastJetAreaPars *JetAreaPars = new StFastJetAreaPars;
+    JetAreaPars->setGhostMaxRap(5.0);	//Needed to extend to forward rapidity
+    JetAreaPars->setGhostArea(0.04);    //0.04 was set for mid-rapidity. Find an optimal value for FMS / EEMC cell size
+
     AntiKtR070Pars->setJetAlgorithm(StFastJetPars::antikt_algorithm);
     AntiKtR070Pars->setRparam(0.7);
     AntiKtR070Pars->setRecombinationScheme(StFastJetPars::E_scheme);
     AntiKtR070Pars->setStrategy(StFastJetPars::Best);
     AntiKtR070Pars->setPtMin(2);
+    AntiKtR070Pars->setJetArea(JetAreaPars);
     
     //-------------- Add MC particle and it's jet branch here -------------
     StAnaPars* anaparsPart = new StAnaPars;
@@ -165,22 +171,29 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     
     // MC cuts  
     anaparsPart->addMcCut(new StjMCParticleCutStatus(1)); // final state particles
-    anaparsPart->addJetCut(new StProtoJetCutPt(0.01,200));
-    anaparsPart->addMcCut(new StjMCParticleCutEta(1,5)); // final state particles
+    anaparsPart->addJetCut(new StProtoJetCutPt(0.01, 200));
+    anaparsPart->addMcCut(new StjMCParticleCutEta(1, 5)); // final state particles
     anaparsPart->useEmJetMode = true;
     //How to apply MC particle energy cut to match FMS photons??
     
     //Set anti-kt R=0.7 parameters
     StFastJetPars* AntiKtR070ParsPart = new StFastJetPars;
+
+    StFastJetAreaPars *JetAreaParsPart = new StFastJetAreaPars;
+    JetAreaParsPart->setGhostMaxRap(5.0);   //Needed to extend to forward rapidity
+    JetAreaParsPart->setGhostArea(0.04);    //0.04 was set for mid-rapidity. Find an optimal value for FMS / EEMC cell size
+    
     AntiKtR070ParsPart->setJetAlgorithm(StFastJetPars::antikt_algorithm);
     AntiKtR070ParsPart->setRparam(0.7);
     AntiKtR070ParsPart->setRecombinationScheme(StFastJetPars::E_scheme);
     AntiKtR070ParsPart->setStrategy(StFastJetPars::Best);
-    AntiKtR070ParsPart->setPtMin(1.0);
-    //There should not be same pt cut for particle branch
+    AntiKtR070ParsPart->setPtMin(1.0);     //There should not be same pt cut for particle branch
+    AntiKtR070ParsPart->setJetArea(JetAreaParsPart);
     
     jetmaker->addBranch("AntiKtR070NHits12", anapars12, AntiKtR070Pars);
     jetmaker->addBranch("AntiKtR070Particle", anaparsPart, AntiKtR070ParsPart);
+    StOffAxisConesPars *off070 = new StOffAxisConesPars(0.7);
+    jetmaker->addUeBranch("OffAxisConesR070", off070);
     //Add other branches here as desired
     
     chain->Init();

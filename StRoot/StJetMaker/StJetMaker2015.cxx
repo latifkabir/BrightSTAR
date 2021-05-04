@@ -249,13 +249,19 @@ Int_t StJetMaker2015::Make()
 	    {
 		//Priority: VPD -> BBC w/ slewing correction -> BBC w/o slewing correction
 		Double_t zVtx = 0.;
-		if(!mIsMCmode)
+		if(!mIsMCmode) //Data
 		{
 		    mEmVertexMkr = (StEmVertexMaker*)GetMaker("StEmVertexMaker");
 		    if(mEmVertexMkr)
 			zVtx = mEmVertexMkr->GetEmVertexZ();
 		    else
 			LOG_ERROR << "StJetMaker2015::Make - No StEmVertexMaker found. Vertex z is set to zero !!!" <<endm; 	
+		}
+		else //Simulation
+		{
+		    StjMCMuDst mc(this);
+		    StjPrimaryVertex mcvertex = mc.getMCVertex();
+		    zVtx = mcvertex.position().z();
 		}
 		//Get BEMC towers
 		StjTowerEnergyList bemcEnergyList;

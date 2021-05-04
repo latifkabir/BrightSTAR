@@ -95,18 +95,19 @@ MACRO geom tag=y2015a  NEVENTS=5000 PTmin=2 PTmax=80 RUN=1 CYCLE=0 CONFIG=QCD FI
 *   MDCY (176,1)=1  ! OMEGA- 3334
 
 
-*   ve/read  xvertex,yvertex,zvertex [VERTEXFILE]
-*   exec [config]
+   ve/read  xvertex,yvertex,zvertex [VERTEXFILE]
+   exec [config]
  	MSEL 1                                                       
 
 *   gvertex 0.321083 -0.091320 0.
  *  gspread 0.0003 0.0003 60.
  *  gslope 0.00134567 6.487e-05
 *   nevents = $vdim(zvertex)
+nevents = [NEVENTS]
 
  DO i=1,[nevents]
 
-*  gvertex   xvertex([i]) yvertex([i]) zvertex([i])
+  gvertex   xvertex([i]) yvertex([i]) zvertex([i])
 
  TRIG 1
  

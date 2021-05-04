@@ -125,7 +125,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     }
     cout << "Total manually masked bad / hot channels: "<< nHotCh <<endl;
 
-    fmsDb->maskChannels(isHotCh); 
+    fmsDb->maskChannels(isHotCh);
     
     StEmcADCtoEMaker* adc = new StEmcADCtoEMaker;
     adc->saveAllStEvent(true);

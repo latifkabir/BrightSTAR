@@ -30,6 +30,7 @@ void CronJob()
 
     //sc->CronJob("EjRunEmJetTreeMakerEEmcSmd", 16064083, gLastRun);
     
-    sc->CronJob("EjRunEmJetTreeMaker"); // For full dataset    
+    //sc->CronJob("EjRunEmJetTreeMaker"); // For full dataset    
+    sc->CronJob("EjRunEmJetTreeMaker", -1, -1, "_zn_"); // For full dataset    
     //sc->CronJob("RunFmsHotChQaMaker"); // For full dataset    
 }
