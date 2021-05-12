@@ -411,7 +411,7 @@ void EjRunEmJetTreeMakerEEmcSmd(TString inFile, TString outFile, TString det, Bo
     StOffAxisConesPars *off070 = new StOffAxisConesPars(0.7);
     jetmaker->addUeBranch("OffAxisConesR070", off070);
 
-    TStNanoJetTreeMaker *nanoMaker = new TStNanoJetTreeMaker(jetmaker, skimEventMaker, "NanoJetTreeMaker");
+    TStNanoJetTreeMaker *nanoMaker = new TStNanoJetTreeMaker("NanoJetTreeMaker");
     nanoMaker->SetTrigIds(trigIds);
     nanoMaker->SetOutFileName((TString)"NanoJetTree_" + outFile);
     nanoMaker->SetBranchName("AntiKtR070NHits12");

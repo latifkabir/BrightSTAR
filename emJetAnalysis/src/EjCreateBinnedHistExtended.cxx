@@ -124,7 +124,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     Int_t spinY;
     Int_t phiBin;
     Double_t eng;
-    Double_t pt;
+    Double_t pt;     // UE and detector smearing corrected pt
+    Double_t ptRaw;  // pt without any correction
     Double_t eta;
     Double_t phi;
     Double_t theta;
@@ -278,6 +279,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		phi = jet->GetPhi();
 		theta =  2 * atan( exp(-eta) );
 		eng = jet->GetE();
+		ptRaw = jet->GetPt();
 		pt = jet->GetPt() - jet->GetUedPt();
 		nPhotons = jet->GetNumberOfTowers();
 
@@ -289,7 +291,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		h1Pt->Fill(pt);
 
 		pt = EjJetPtCorr(pt, eng);
-		eng = EjJetEngCorr(eng);
+		eng = EjJetEngCorr(eng); 
+
 		h1Enew->Fill(eng);
 		h1PtNew->Fill(pt);
 
@@ -308,7 +311,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		{
 		    if(det == "fms")
 		    {
-			if(skimEvent->GetTrigFlag(t) && pt > fmsTrigPtTh[t])
+			if(skimEvent->GetTrigFlag(t) && ptRaw > fmsTrigPtTh[t])
 			{
 			    didPassPtCut = kTRUE;
 			    break;
@@ -316,7 +319,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    }
 		    else if(det == "eemc")
 		    {
-			if(skimEvent->GetTrigFlag(t) && pt >  eemcTrigPtTh[t])
+			if(skimEvent->GetTrigFlag(t) && ptRaw >  eemcTrigPtTh[t])
 			{
 			    didPassPtCut = kTRUE;
 			    break;
@@ -446,16 +449,21 @@ Double_t EjJetEngCorr(Double_t E)
     // double uee3   =    -0.401819; 
 
     // Double_t eNew = (e3 + e2*E + TMath::Exp((E-e0)*e1))*(E-(uee3+uee2*E + TMath::Exp((E - uee0)*uee1)));
-
-    Double_t p0 = 64.35;
-    Double_t p1 = -9.415;
-    Double_t p2 = 0.6934;
-    Double_t p3 = -0.02399;
-    Double_t p4 = 0.0004568;
-    Double_t p5 = -4.499*0.000001;
-    Double_t p6 = 1.777*0.00000001;
     
-    Double_t eNew = p0 + p1*E + p2*pow(E, 2) + p3*pow(E, 3) + p4*pow(E, 4) + p5*pow(E, 5) + p6*pow(E, 6);
+    Double_t p0 = -8.482;
+    Double_t p1 = 4.069;
+    Double_t p2 = -0.3063;
+    Double_t p3 = 0.01401;
+    Double_t p4 = -0.0003243;
+    Double_t p5 = 3.729*pow(10, -6);
+    Double_t p6 = -1.697*pow(10, -8);
+    
+    Double_t eNew;
+
+    if(E <= 60) //The fit function works only for fit range. Range can be extended with more simulated samples
+	eNew = p0 + p1*E + p2*pow(E, 2) + p3*pow(E, 3) + p4*pow(E, 4) + p5*pow(E, 5) + p6*pow(E, 6);
+    else
+	eNew = 8.248 + E*0.9365; //Linear fit at higher energy
     
     return eNew;
 }
@@ -475,13 +483,18 @@ Double_t EjJetPtCorr(Double_t pt, Double_t E)
     // double uept3   =    -2.12506; 
 
     // Double_t ptNew = (e3 + e2*E + TMath::Exp((E - e0)*e1))*(pt - (uept3 + uept2*pt + TMath::Exp((pt - uept0)*uept1)));
+    
+    Double_t p0 = 1.486;
+    Double_t p1 = 0.07337;
+    Double_t p2 = 0.215;
+    Double_t p3 = -0.01525;
 
-    Double_t p0 = 0.3181;
-    Double_t p1 = 0.9648;
-    Double_t p2 = -0.01855;
-    Double_t p3 = 0.005551;
+    Double_t ptNew;
 
-    Double_t ptNew = p0 + p1*pt + p2*pow(pt, 2) + p3*pow(pt, 3);
+    if(pt <= 5.8)  //Fit function does not work outside the fit range. You can extend once you have simulated sample for higher protected:      
+	ptNew = p0 + p1*pt + p2*pow(pt, 2) + p3*pow(pt, 3);
+    else
+	ptNew = (0.4478 + 0.9685*pt); //Linear fit at higher pt
     
     return ptNew;
 }

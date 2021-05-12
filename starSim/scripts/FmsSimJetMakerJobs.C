@@ -4,7 +4,7 @@
 // Created: Wed Jan 15 18:47:02 2020 (-0500)
 // URL: jlab.org/~latif
 
-// Make sure to change 3 places nummbered below
+// Make sure to change 3 places numbered below
 
 #include <iostream>
 #include "RootInclude.h"

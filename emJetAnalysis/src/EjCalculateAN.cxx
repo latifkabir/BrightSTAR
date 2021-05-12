@@ -55,8 +55,19 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
     const Int_t nHalfPhiBins = bHist[0][0][0]->GetNbinsX() / 2; //Phi bins per hemisphere
     const Int_t nPtBins = bHist[0][0][0]->GetNbinsY();
 
-    //Note: left-right is with respect to the beam (here blue beam)
+    TH1D *h1FoldedRes[3][9]; // max three energy bins and 9 pt bins   
+    for(Int_t i = 0; i < 9; ++i)
+    {
+	TString hName1 = Form("emJetPtBin1-%i", i);
+	TString hName2 = Form("emJetPtBin2-%i", i);
+	TString hName3 = Form("emJetPtBin3-%i", i);
 
+	h1FoldedRes[0][i] = new TH1D(hName1, hName1, kPhotonBins, 0,  kPhotonBins);       
+	h1FoldedRes[1][i] = new TH1D(hName2, hName2, kPhotonBins, 0,  kPhotonBins);
+	h1FoldedRes[2][i] = new TH1D(hName3, hName3, kPhotonBins, 0,  kPhotonBins);
+    }
+    
+    //Note: left-right is with respect to the beam (here blue beam)
     Int_t phiBins_left[] = {9, 10, 11, 12, 13, 14, 15, 16}; //<----------- Update here if nPhiBins changes
     Int_t phiBins_right[] = {1, 2, 3, 4, 5, 6, 7, 8}; //<----------- Update here if nPhiBins changes
     
@@ -261,7 +272,9 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 
 		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
-		    ++nPointsPhyB;		    
+		    ++nPointsPhyB;
+
+		    h1FoldedRes[i][k]->SetBinContent(j + 1, bAn[i][j][k]);
 		}
 
 		if(yGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)

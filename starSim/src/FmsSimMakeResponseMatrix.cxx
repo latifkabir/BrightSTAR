@@ -70,7 +70,8 @@ void FmsSimMakeResponseMatrix(
     TH1D *h1JetE = new TH1D("h1JetE", "EM Jet E" + title + "; Jet E [GeV]", 100, 0.0, 70.0);
     TH1D *h1JetE_s = new TH1D("h1JetE_s", "EM Jet E [small cells]" + title + "; Jet E [GeV]", 100, 0.0, 85.0);
     TH1D *h1JetE_l = new TH1D("h1JetE_l", "EM Jet E [large cells]" + title + "; Jet E [GeV]", 100, 0.0, 70.0);
-    TH1D *h1JetPt = new TH1D("h1JetPt", "Jet Pt" + title + "; Jet Pt [GeV/c]", 90, 1.0, 10.0);
+    TH1D *h1JetPt = new TH1D("h1JetPt", "Jet Pt" + title + "; Jet P_{T} [GeV/c]", 90, 1.0, 10.0);
+    TH1D *h1JetdPt = new TH1D("h1JetdPt", "UE dPt; UE dP_{T} [GeV/c]", 100, 0.0, 2.0);
     TH1D *h1JetVtxZ = new TH1D("h1JetVtxZ", "Jet Vtx z" + title + "; Jet vtx z [cm]", 100, -200.0, 200.0);
     TH1D *h1nPhotonsDet = new TH1D("h1nPhotonsDet", "number of photons in EM jets" + title + "; Number of photons", 10, 0, 10);
     
@@ -83,7 +84,8 @@ void FmsSimMakeResponseMatrix(
 
     //Particle level jets
     TH1D *h1JetEpart = new TH1D("h1JetEpart", "EM Jet E [Particle Level Jets]; Jet E [GeV]", 100, 0.0, 70.0);
-    TH1D *h1JetPtPart = new TH1D("h1JetPtPart", "Jet Pt [Particle Level Jets]; Jet Pt [GeV/c]", 90, 1.0, 10.0);
+    TH1D *h1JetPtPart = new TH1D("h1JetPtPart", "Jet Pt [Particle Level Jets]; Jet P_{T} [GeV/c]", 90, 1.0, 10.0);
+    TH1D *h1JetdPtPart = new TH1D("h1JetdPtPart", "UE dPt [Particle Level Jets]; UE dP_{T} [GeV/c]", 100, 0.0, 2.0);
     TH1D *h1nPhotonsPart = new TH1D("h1nPhotonsPart", "Number of photons in EM jets [Particle Level Jets]; Number of photons", 10, 0, 10);
     
     //Response Matrix
@@ -101,6 +103,7 @@ void FmsSimMakeResponseMatrix(
     Double_t phi;
     Double_t eng;
     Double_t pt;
+    Double_t dpt;
     Double_t z_vtx;
     Double_t jetX;
     Double_t jetY;
@@ -116,6 +119,7 @@ void FmsSimMakeResponseMatrix(
     Double_t phiPart;
     Double_t engPart;
     Double_t ptPart;
+    Double_t dptPart;
     Int_t nPhotonsPart;
     Int_t jc = -1; //Closest particle jet index
     Double_t dR;
@@ -163,7 +167,7 @@ void FmsSimMakeResponseMatrix(
 		
 	h1nJets->Fill(jetEventDet->numberOfJets());
 
-	//It seems most people loop over vertices. Find the justification.
+	//It seems most people loop over vertices. For EM jet we have mostly one vertex and can be done otherwise
 	//I am looping over number of jets
 	for(Int_t i = 0; i < jetEventDet->numberOfJets(); ++i) 
 	{
@@ -172,6 +176,7 @@ void FmsSimMakeResponseMatrix(
 	    phi = jetEventDet->jet(i)->phi();
 	    eng = jetEventDet->jet(i)->E();
 	    pt = jetEventDet->jet(i)->pt();
+	    dpt = jetEventDet->jet(i)->ueDensity()["OffAxisConesR070"]*jetEventDet->jet(i)->area();
 	    z_vtx = jetEventDet->jet(i)->vertex()->position().z();
 	    theta =  2 * atan( exp(-eta) );
 	    jetX = (735. - z_vtx) * tan(theta) * cos(phi);
@@ -183,6 +188,7 @@ void FmsSimMakeResponseMatrix(
 	    h1JetEta->Fill(eta);
 	    h1JetPhi->Fill(phi);
 	    h1JetPt->Fill(pt);
+	    h1JetdPt->Fill(dpt);
 	    h1JetVtxZ->Fill(z_vtx); // no vtx found case i.e. vtx = 0 will dominate if all types filled together
 	    h1JetE->Fill(eng);
 
@@ -199,7 +205,7 @@ void FmsSimMakeResponseMatrix(
 	    h2EvsPt->Fill(pt, eng);
 	    h2PtvsE->Fill(eng, pt);
 
-	    //---- Find the closest particle jet and take that as the corresponding particle jet for the given detector jet---
+	    //---- Find the closest particle jet and take that as the corresponding particle jet for the given detector jet ---
 	    dRc = 999;
 	    jc = -1;
 	    for(Int_t j = 0; j < jetEventPart->numberOfJets(); ++j) 
@@ -221,20 +227,22 @@ void FmsSimMakeResponseMatrix(
 	    
 	    engPart = jetEventPart->jet(jc)->E();
 	    ptPart = jetEventPart->jet(jc)->pt();
+	    dptPart = jetEventPart->jet(jc)->ueDensity()["OffAxisConesR070"]*jetEventPart->jet(jc)->area();
 	    nPhotonsPart = jetEventPart->jet(jc)->numberOfParticles();
 
 	    h1JetEpart->Fill(engPart);
 	    h1JetPtPart->Fill(ptPart);
+	    h1JetdPtPart->Fill(dptPart);
 	    h1nPhotonsPart->Fill(nPhotonsPart);
 	    
 	    h2EngResMat->Fill(eng, engPart);
-	    h2PtResMat->Fill(pt, ptPart);
+	    h2PtResMat->Fill(pt - dpt, ptPart - dptPart);
 
 	    if(nPhotonsDet < 6 && nPhotonsPart < 6)
 		h2nPhResMat->Fill(nPhotonsDet, nPhotonsPart);
 
 	    h2EngResMatProf->Fill(eng, engPart);
-	    h2PtResMatProf->Fill(pt, ptPart);
+	    h2PtResMatProf->Fill(pt - dpt, ptPart - dptPart);
 	    h2nPhResMatProf->Fill(nPhotonsDet, nPhotonsPart);	    
 	}	
     } // End event loop

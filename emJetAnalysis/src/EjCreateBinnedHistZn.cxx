@@ -1,5 +1,5 @@
 // Filename: EjCreateBinnedHistZn.C
-// Description: 
+// Description: Read Zhanwen's jet trees and create binned histogram to reproduce his A_N
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri May  8 15:08:25 2020 (-0400)
 // URL: jlab.org/~latif

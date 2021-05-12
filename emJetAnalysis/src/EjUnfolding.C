@@ -60,6 +60,8 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
    }
    
 
+   //<-------- Lets consider one particular energy and pt bin for now ---------------->
+   
    TH1D* foldedres = h1FoldedRes[0][0];
    Int_t nbins = foldedres->GetNbinsX();
    // Statistical covariance matrix
