@@ -74,7 +74,7 @@ void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 12)
 }
 
 
-void FmsSimRunBfc(int cycle, int nevents, int filterThreshold, int filterThreshold = 12)
+void FmsSimRunBfc(int cycle, int nevents, int filterThreshold = 12)
 {
     FmsSimRunBfc(-1, Form("FmsSim_Run15_%i_evt%i.fzd", cycle, nevents), filterThreshold);     
 }
