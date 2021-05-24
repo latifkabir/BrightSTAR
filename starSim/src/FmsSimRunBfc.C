@@ -4,7 +4,7 @@
 //
 
 
-void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 12) 
+void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 1) 
 {
     // const char* chainopt = "DbV20150923 y2015 MakeEvent ITTF NoSsdIt NoSvtIt Idst BAna l0 Tree logger Sti VFPPVnoCTB beamLine tpcDB TpcHitMover TpxClu fmsDb fmsSim fmspoint  tags emcY2 EEfs evout -dstout IdTruth geantout big fzin MiniMcMk clearmem  sdt20150417.193427"; //Mriganka
 
@@ -58,7 +58,7 @@ void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 12)
     //---------> Need to find out appropriate threshold <----------------
     //StFmsFilterMaker* fmsFilter = new StFmsFilterMaker("fmsFilter"); // Energy sum per quadrant or pie
     StFmsEtFilterMaker* fmsFilter = new StFmsEtFilterMaker("fmsFilter"); // Transverse Energy sum per quadrant or pie
-    fmsFilter->setEThres(filterThreshold); //Initial value was 30. It was too high to produce MuDst
+    fmsFilter->setEThres(filterThreshold); //Initial value was E = 30. It was too high to produce MuDst. Use 12 GeV in E or 1 GeV in E_T.
     cout << "-----------------> !!! The FMS Filter Maker Threshold is set to:  "<< filterThreshold << " !!!<----------------------------"<<endl;
     
     // Delay write until after filter
@@ -74,7 +74,7 @@ void FmsSimRunBfc(int nevents, const char* fzfile, int filterThreshold = 12)
 }
 
 
-void FmsSimRunBfc(int cycle, int nevents, int filterThreshold = 12)
+void FmsSimRunBfc(int cycle, int nevents, int filterThreshold = 1)
 {
     FmsSimRunBfc(-1, Form("FmsSim_Run15_%i_evt%i.fzd", cycle, nevents), filterThreshold);     
 }
