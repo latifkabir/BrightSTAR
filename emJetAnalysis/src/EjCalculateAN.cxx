@@ -26,6 +26,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
     }
     
     TFile *file = new TFile(inFile);
+    TFile *outFile = new TFile(outName, "recreate");
     const Int_t kSpinBins = 2;
     const Int_t kEnergyBins = 5;
     const Int_t kPhotonBins = 6;
@@ -58,13 +59,13 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
     TH1D *h1FoldedRes[3][9]; // max three energy bins and 9 pt bins   
     for(Int_t i = 0; i < 9; ++i)
     {
-	TString hName1 = Form("emJetPtBin1-%i", i);
-	TString hName2 = Form("emJetPtBin2-%i", i);
-	TString hName3 = Form("emJetPtBin3-%i", i);
+	TString hName1 = Form("emJetPtBin1_%i", i);
+	TString hName2 = Form("emJetPtBin2_%i", i);
+	TString hName3 = Form("emJetPtBin3_%i", i);
 
-	h1FoldedRes[0][i] = new TH1D(hName1, hName1, kPhotonBins, 0,  kPhotonBins);       
-	h1FoldedRes[1][i] = new TH1D(hName2, hName2, kPhotonBins, 0,  kPhotonBins);
-	h1FoldedRes[2][i] = new TH1D(hName3, hName3, kPhotonBins, 0,  kPhotonBins);
+	h1FoldedRes[0][i] = new TH1D(hName1, hName1, kPhotonBins - 1, 0,  kPhotonBins - 1);       
+	h1FoldedRes[1][i] = new TH1D(hName2, hName2, kPhotonBins - 1, 0,  kPhotonBins - 1);
+	h1FoldedRes[2][i] = new TH1D(hName3, hName3, kPhotonBins - 1, 0,  kPhotonBins - 1);
     }
     
     //Note: left-right is with respect to the beam (here blue beam)
@@ -169,7 +170,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
     }
 
     gROOT->SetBatch(kTRUE);
-    TFile *outFile = new TFile(outName, "recreate");
+    //TFile *outFile = new TFile(outName, "recreate");
     TGraphErrors *bGr[kEnergyBins][kPhotonBins][nPtBins];
     TGraphErrors *yGr[kEnergyBins][kPhotonBins][nPtBins];
     TF1 *bFitFnc[kEnergyBins][kPhotonBins][nPtBins];
@@ -274,7 +275,11 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
 		    ++nPointsPhyB;
 
-		    h1FoldedRes[i][k]->SetBinContent(j + 1, bAn[i][j][k]);
+		    if(i < 3 && j < 5)
+		    {
+			h1FoldedRes[i][k]->SetBinContent(j + 1, bAn[i][j][k]);
+			h1FoldedRes[i][k]->SetBinError(j + 1, bAnError[i][j][k]);
+		    }
 		}
 
 		if(yGr[i][j][k]->GetN() >= 0.5*nHalfPhiBins)
@@ -416,5 +421,5 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
       bEbin1_PhotonBin0_PtBin0->Draw("AP*")
     */
     
-    //outFile->Write();
+    outFile->Write();
 }

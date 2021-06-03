@@ -162,7 +162,7 @@ void RunFmsJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     AntiKtR070Pars->setRparam(0.7);
     AntiKtR070Pars->setRecombinationScheme(StFastJetPars::E_scheme);
     AntiKtR070Pars->setStrategy(StFastJetPars::Best);
-    AntiKtR070Pars->setPtMin(2);
+    AntiKtR070Pars->setPtMin(2.0); 
     AntiKtR070Pars->setJetArea(JetAreaPars);
     
     //-------------- Add MC particle and it's jet branch here -------------
