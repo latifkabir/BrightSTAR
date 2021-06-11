@@ -57,7 +57,10 @@ Int_t TStRpFilterMaker::Make()
 		return kStSkip;
 	    }    
 	    if(mRpsMuColl->numberOfTracks() < 1)
+	    {
+		LOG_INFO << "Zero RP track for this event. To be skipped ... " << endm;
 		return kStSkip;
+	    }
 	    hEvtCount->Fill(5);
 	    return kStOk;
 	}

@@ -29,9 +29,6 @@ void AnRunDiffJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t 
     //isMC = kTRUE;
 
     //det = "eemc"; //<------------------ Only for cron job. Should be commented in all other cases
-
-    if(gROOT->IsBatch())
-	inFile = TStScheduler::CopyInputFiles(inFile);
         
     if(!(det == "fms" || det == "eemc"))
     {
@@ -212,9 +209,6 @@ void AnRunDiffJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t 
 
     sw.Stop();
     sw.Print();
-
-    if(gROOT->IsBatch() && inFile.Contains("/tmp/"))
-	TStScheduler::DeleteTempFiles(inFile);
 
     cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
     gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root");
