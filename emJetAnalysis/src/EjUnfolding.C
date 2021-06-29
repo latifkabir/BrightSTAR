@@ -41,7 +41,7 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
    TH1D *h1nPhDet = (TH1D*)fRespMat->Get("h1nPhotonsDet");   //Detector level jet photon multiplicity
    TH2D *h2RespMat = (TH2D*)fRespMat->Get("h2nPhResMat"); // <------ Should be det along x and part along y
    // ---> should be normalized to 1 for all 
-   /*   
+   ///*   
    //Normalize all rows of the response matrix
    Double_t sumBinCont = 0;
    for(Int_t j = 1; j <= h2RespMat->GetNbinsY(); ++j) //along y-axis
@@ -58,7 +58,7 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
    }
    h1nPhPart->Scale(1.0 / h1nPhPart->Integral());
    h1nPhDet->Scale(1.0 / h1nPhDet->Integral());
-   */
+   //*/
    TH1D *h1FoldedRes[3][9]; // max three energy bins and 9 pt bins   
    TH1D *h1UnfoldedRes[3][9]; // max three energy bins and 9 pt bins   
    for(Int_t i = 0; i < 9; ++i)
@@ -99,7 +99,7 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
  
    // It is possible to normalise unfolded spectrum to unit area
    //tsvdunf->SetNormalize( kFALSE ); // no normalisation here
-   tsvdunf->SetNormalize( kTRUE );  //  normalisation here <------- TEST
+   //tsvdunf->SetNormalize( kTRUE );  //  normalisation here <------- TEST
  
    // Perform the unfolding with regularisation parameter kreg = 13
    // - the larger kreg, the finer grained the unfolding, but the more fluctuations occur

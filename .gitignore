@@ -35,4 +35,6 @@ temp*.txt
 *_cxx.d
 jobs/
 *.metafile
-resources/jobRunList/
+resources/
+jobRunList/
+RooUnfold/

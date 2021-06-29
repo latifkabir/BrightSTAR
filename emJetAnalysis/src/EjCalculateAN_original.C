@@ -63,9 +63,9 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	TString hName2 = Form("emJetPtBin2_%i", i);
 	TString hName3 = Form("emJetPtBin3_%i", i);
 
-	h1FoldedRes[0][i] = new TH1D(hName1, hName1, kPhotonBins - 1, 1,  kPhotonBins);       
-	h1FoldedRes[1][i] = new TH1D(hName2, hName2, kPhotonBins - 1, 1,  kPhotonBins);
-	h1FoldedRes[2][i] = new TH1D(hName3, hName3, kPhotonBins - 1, 1,  kPhotonBins);
+	h1FoldedRes[0][i] = new TH1D(hName1, hName1, kPhotonBins - 1, 0,  kPhotonBins - 1);       
+	h1FoldedRes[1][i] = new TH1D(hName2, hName2, kPhotonBins - 1, 0,  kPhotonBins - 1);
+	h1FoldedRes[2][i] = new TH1D(hName3, hName3, kPhotonBins - 1, 0,  kPhotonBins - 1);
     }
     
     //Note: left-right is with respect to the beam (here blue beam)
@@ -170,7 +170,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
     }
 
     gROOT->SetBatch(kTRUE);
-    
+    //TFile *outFile = new TFile(outName, "recreate");
     TGraphErrors *bGr[kEnergyBins][kPhotonBins][nPtBins];
     TGraphErrors *yGr[kEnergyBins][kPhotonBins][nPtBins];
     TF1 *bFitFnc[kEnergyBins][kPhotonBins][nPtBins];
@@ -199,10 +199,6 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	cout << "Invalid detector" <<endl;
 	return;
     }
-
-    //For systematic error bars: Duplicate all graphs
-    TGraphErrors *bGrPhy_sys[kEnergyBins][kPhotonBins];
-    TGraphErrors *yGrPhy_sys[kEnergyBins][kPhotonBins];
     
     for(Int_t i = 0; i < kEnergyBins; ++i)
     {
@@ -227,29 +223,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	    yGrPhy[i][j]->SetMarkerColor(kRed);
 	    yGrPhy[i][j]->SetLineColor(kRed);
 	    yGrPhy[i][j]->SetMarkerStyle(kOpenCircle);
-
-	    //For Systematic Error Bars: Duplicate all graphs
-	    bGrPhy_sys[i][j] = new TGraphErrors();
-	    yGrPhy_sys[i][j] = new TGraphErrors();
-	    bGrPhy_sys[i][j]->SetName(Form("Sys_bEbin%i_PhotonBin%i", i, j));
-	    bGrPhy_sys[i][j]->SetTitle(Form("%.1f GeV < E < %.1f GeV, No. of Photons %i; P_{T} [GeV/c]; A_{N}", engBins[i], engBins[i + 1], j + 1));
-	    yGrPhy_sys[i][j]->SetName(Form("Sys_yEbin%i_PhotonBin%i", i, j));
-	    yGrPhy_sys[i][j]->SetTitle(Form(" %.1f GeV < E < %.1f GeV, No. of Photons %i; P_{T} [GeV/c]; A_{N}", engBins[i], engBins[i + 1], j + 1));
-	    bGrPhy_sys[i][j]->SetMarkerColor(kBlack);
-	    bGrPhy_sys[i][j]->SetLineColor(kBlack);
-	    bGrPhy_sys[i][j]->SetMarkerStyle(kFullCircle);
-	    
-	    bGrPhy_sys[i][j]->SetMaximum(0.1);
-	    bGrPhy_sys[i][j]->SetMinimum(-0.1);
-
-	    yGrPhy_sys[i][j]->SetMaximum(0.1);
-	    yGrPhy_sys[i][j]->SetMinimum(-0.1);
-	    
-	    yGrPhy_sys[i][j]->SetMarkerColor(kRed);
-	    yGrPhy_sys[i][j]->SetLineColor(kRed);
-	    yGrPhy_sys[i][j]->SetMarkerStyle(kOpenCircle);
-
-	    
+	    	    
 	    nPointsPhyB = 0;
 	    nPointsPhyY = 0;
 	    
@@ -299,10 +273,6 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 
 		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
-
-		    bGrPhy_sys[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
-		    bGrPhy_sys[i][j]->SetPointError(nPointsPhyB, 0, 0.1*bAn[i][j][k]); // Assign 10% systematic error bars for physics asymmetry
-		    
 		    ++nPointsPhyB;
 
 		    if(i < 3 && j < 5)
@@ -319,10 +289,6 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 
 		    yGrPhy[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
 		    yGrPhy[i][j]->SetPointError(nPointsPhyY, 0, yAnError[i][j][k]);
-
-		    yGrPhy_sys[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
-		    yGrPhy_sys[i][j]->SetPointError(nPointsPhyY, 0, 0.1*yAn[i][j][k]);  // Assign 10% systematic error bars for physics asymmetry
-		    
 		    ++nPointsPhyY;		    
 		}
 		bGr[i][j][k]->Write();
@@ -364,7 +330,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	const char* xTitles[3] = { "p_{T} [GeV/c]","p_{T} [GeV/c]","p_{T} [GeV/c]" };
 	const char* yTitles[5] = { "A_{N}", "A_{N}", "A_{N}", "A_{N}", "A_{N}" };
 
-	PanelPlot* asymPlot = new PanelPlot(c2, 3, 5, 4, "asym_fms", xTitles, yTitles);
+	PanelPlot* asymPlot = new PanelPlot(c2, 3, 5, 2, "asym_fms", xTitles, yTitles);
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -383,9 +349,6 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 		{
 		    asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
 		    asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
-
-		    asymPlot->GetPlot(j,i)->Add(bGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 2);
-		    asymPlot->GetPlot(j,i)->Add(yGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 6);
 		}
 		if(i == 0 && j == 0)
 		    asymPlot->GetPlot(j,i)->AddText(2.5, -0.04, "Preliminary", 0.10);       
