@@ -41,7 +41,7 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
    TH1D *h1nPhDet = (TH1D*)fRespMat->Get("h1nPhotonsDet");   //Detector level jet photon multiplicity
    TH2D *h2RespMat = (TH2D*)fRespMat->Get("h2nPhResMat"); // <------ Should be det along x and part along y
    // ---> should be normalized to 1 for all 
-   ///*   
+   /*   
    //Normalize all rows of the response matrix
    Double_t sumBinCont = 0;
    for(Int_t j = 1; j <= h2RespMat->GetNbinsY(); ++j) //along y-axis
@@ -58,7 +58,7 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
    }
    h1nPhPart->Scale(1.0 / h1nPhPart->Integral());
    h1nPhDet->Scale(1.0 / h1nPhDet->Integral());
-   //*/
+   */
    TH1D *h1FoldedRes[3][9]; // max three energy bins and 9 pt bins   
    TH1D *h1UnfoldedRes[3][9]; // max three energy bins and 9 pt bins   
    for(Int_t i = 0; i < 9; ++i)
@@ -114,7 +114,7 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
    // Get the distribution of the singular values
    TH1D* svdist = tsvdunf->GetSV();
  
-   // Compute the error matrix for the unfolded spectrum using toy MC
+   // Compute the error matrix for the unfolded spectrum using toy MC (data)
    // using the measured covariance matrix as input to generate the toys
    // 100 toys should usually be enough
    // The same method can be used for different covariance matrices separately.
@@ -150,13 +150,13 @@ void EjUnfolding(TString respMatFile, TString  foldedResultFile)
    leg->AddEntry(unfres,"After Unfolding","p");
    leg->AddEntry(foldedres,"Before Unfolding","l");
  
-   TCanvas *c1 = new TCanvas( "c1", "Unfolding toy example with TSVDUnfold", 1000, 900 );
+   TCanvas *c1 = new TCanvas( "c1", "Unfolding example with TSVDUnfold", 1000, 900 );
  
    c1->Divide(1,2);
    TVirtualPad * c11 = c1->cd(1);
  
    TH1D* frame = new TH1D( *unfres );
-   frame->SetTitle( "Unfolding toy example with TSVDUnfold" );
+   frame->SetTitle( "Unfolding example with TSVDUnfold" );
    frame->GetXaxis()->SetTitle( "x variable" );
    frame->GetYaxis()->SetTitle( "Events" );
    frame->GetXaxis()->SetTitleOffset( 1.25 );
