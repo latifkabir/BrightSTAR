@@ -11,7 +11,7 @@
 #include "Hists.h"
 using namespace std;
 
-void EjCalculateAN(TString inFileName, TString outName, TString det)
+void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run = 15)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
@@ -238,6 +238,9 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	    bGrPhy_sys[i][j]->SetMarkerColor(kBlack);
 	    bGrPhy_sys[i][j]->SetLineColor(kBlack);
 	    bGrPhy_sys[i][j]->SetMarkerStyle(kFullCircle);
+
+	    // bGrPhy_sys[i][j]->SetFillColor(2);
+	    // bGrPhy_sys[i][j]->SetFillStyle(3001);
 	    
 	    bGrPhy_sys[i][j]->SetMaximum(0.1);
 	    bGrPhy_sys[i][j]->SetMinimum(-0.1);
@@ -371,8 +374,11 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 	    for (int j = 0; j < 3; j++)
 	    {
 		asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-		//asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);
-		asymPlot->GetPlot(j,i)->SetYRange( -0.1, 0.1);
+		if(run == 15)
+		    asymPlot->GetPlot(j,i)->SetYRange( -0.1, 0.1); // Run 15
+		else
+		    asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);  //Run 17
+
 
 		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
 		// {
@@ -384,8 +390,8 @@ void EjCalculateAN(TString inFileName, TString outName, TString det)
 		    asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
 		    asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
 
-		    asymPlot->GetPlot(j,i)->Add(bGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 2);
-		    asymPlot->GetPlot(j,i)->Add(yGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 6);
+		    // asymPlot->GetPlot(j,i)->Add(bGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 2);
+		    // asymPlot->GetPlot(j,i)->Add(yGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 6);
 		}
 		if(i == 0 && j == 0)
 		    asymPlot->GetPlot(j,i)->AddText(2.5, -0.04, "Preliminary", 0.10);       

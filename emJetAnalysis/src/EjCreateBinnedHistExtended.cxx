@@ -39,7 +39,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
     Double_t xfBins[] = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7};
-    Double_t sqrt_s = 200.0;
+    Double_t sqrt_s;
     
     Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
@@ -220,7 +220,11 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	//Confirm thresholds for convoluted triggers.
 	
 	nPoints = 0;
-	
+	if(runNumber < 18000000)
+	    sqrt_s = 200;        //Run 15
+	else
+	    sqrt_s = 510;        //Run 17
+	    		
 	Int_t nEntries = tree->GetEntries();
 	cout << "Processing run number: "<< runNumber <<endl;
 	cout << "Total events to be processed: "<< nEntries <<endl;
@@ -249,8 +253,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    	// if(skimEvent->GetTrigFlag(5))
 	    	//     continue;
 		
-		if(!(skimEvent->GetBbcMult() > 0.5 && skimEvent->GetTofTrayMult() > 2.5)) //Ring of fire cut, matched to Zhanwen's final paper cut
-		    continue;
+		// if(!(skimEvent->GetBbcMult() > 0.5 && skimEvent->GetTofTrayMult() > 2.5)) //Ring of fire cut, matched to Zhanwen's final paper cut
+		//     continue;
 	    }
 	    
 	    if(fabs(vtxZ) > 80)
@@ -287,17 +291,17 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    continue;
 		
 		//--- Jet energy and pt correction --- !!!!!!! WARNING: DO NOT USE FOR YOUR RESULT!!!! 
-		h1E->Fill(eng);
-		h1Pt->Fill(pt);
+		// h1E->Fill(eng);
+		// h1Pt->Fill(pt);
 
-		pt = EjJetPtCorr(pt, eng);
-		eng = EjJetEngCorr(eng); 
+		// pt = EjJetPtCorr(pt, eng);
+		// eng = EjJetEngCorr(eng); 
 
-		h1Enew->Fill(eng);
-		h1PtNew->Fill(pt);
+		// h1Enew->Fill(eng);
+		// h1PtNew->Fill(pt);
 
-		if(pt < 2)
-		    continue;
+		// if(pt < 2)
+		//     continue;
 		//------- end of jet eng/pt correction ----
 		
 		LV.SetPtEtaPhiE(pt, eta, phi, eng);
@@ -328,17 +332,19 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		}
 
 		//!!! ---------> For comparing with Zhanwen. He did not use trigger dependent Pt cut !!!! <-----------
-		if(!didPassPtCut)
-		    continue;
-
+		if(runNumber < 18000000) //Exclude Run 17 for now
+		{
+		    if(!didPassPtCut)
+			continue;
+		}
 		//!!!!!!----> For comparing with Zhanwen's em-jet result only. Consider FMS JP0, JP1 and JP2 Triggers only <---------------------------
 		if(skimEvent->GetTrigFlag(0) != 1 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
 		    continue;
 
 		//Seems Zhanwen did not include trigger 480810 for FMS-JP0 from period 1
 		//This probably does not matter as this trigger id has very low pt (lower than jet pt threshold)
-		if(skimEvent->GetTrigFlag(0) == 1 && runNumber <= 16073040 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
-		    continue;
+		//if(skimEvent->GetTrigFlag(0) == 1 && runNumber <= 16073040 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
+		//    continue;
 		//-- End of Trigger Selection --
 		
 

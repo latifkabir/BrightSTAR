@@ -204,7 +204,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 	condorConfig_out << str <<endl;
     }
     if(mCopyToExeHost)
-	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database, "<< starHome << "/FmsGainCorr.txt" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -378,7 +378,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	condorConfig_out << str <<endl;
     }
     if(mCopyToExeHost)
-	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << "/FmsGainCorr.txt" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 

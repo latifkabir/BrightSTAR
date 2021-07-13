@@ -105,27 +105,36 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 
     StEEmcDbMaker* eemcDb = new StEEmcDbMaker;
     StSpinDbMaker* spinDb = new StSpinDbMaker;
-    StFmsDbMaker*  fmsDb  = new StFmsDbMaker("fmsDb"); 
-    fmsDb->SetAttr("fmsGainCorr","fmsGainCorr-BNL-C");
-    Bool_t isHotCh[4][571] = {0};
-    Int_t nHotCh = 0;
-    TStFmsHotChDB *fmsHotChDb = new TStFmsHotChDB();
-    fmsHotChDb->GetHotChList(runNumber, isHotCh);
-    cout << "The following FMS cells are masked:" <<endl;
-    for(int i = 0; i < 4; ++i)
+    StFmsDbMaker*  fmsDb  = new StFmsDbMaker("fmsDb");
+
+    if(runNumber < 18000000) //Run 15 Setup
     {
-	for(int j = 0; j < 571; ++j)
+	fmsDb->SetAttr("fmsGainCorr","fmsGainCorr-BNL-C");
+	Bool_t isHotCh[4][571] = {0};
+	Int_t nHotCh = 0;
+	TStFmsHotChDB *fmsHotChDb = new TStFmsHotChDB();
+	fmsHotChDb->GetHotChList(runNumber, isHotCh);
+	cout << "The following FMS cells are masked:" <<endl;
+	for(int i = 0; i < 4; ++i)
 	{
-	    if(isHotCh[i][j])
+	    for(int j = 0; j < 571; ++j)
 	    {
-		cout << "det "<< (i + 1)<< " ch "<< (j+1) << " hot/bad status:"<< isHotCh[i][j] <<endl;
-		++nHotCh;
+		if(isHotCh[i][j])
+		{
+		    cout << "det "<< (i + 1)<< " ch "<< (j+1) << " hot/bad status:"<< isHotCh[i][j] <<endl;
+		    ++nHotCh;
+		}
 	    }
 	}
-    }
-    cout << "Total manually masked bad / hot channels: "<< nHotCh <<endl;
+	cout << "Total manually masked bad / hot channels: "<< nHotCh <<endl;
 
-    fmsDb->maskChannels(isHotCh);
+	fmsDb->maskChannels(isHotCh);
+    }
+    else //Run 17 Setup (temporary with local gain correction file)
+    {
+	cout << "Loading local Gain Corrections for FMS ... ... " << endl;
+	fmsDb->readGainCorrFromText(true); // File should be under current directory named FmsGainCorr.txt	
+    }
     
     StEmcADCtoEMaker* adc = new StEmcADCtoEMaker;
     adc->saveAllStEvent(true);
@@ -231,8 +240,8 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     if(gROOT->IsBatch() && inFile.Contains("/tmp/"))
 	TStScheduler::DeleteTempFiles(inFile);
 
-    //cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
-    //gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root");
+    cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
+    gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root");
     
     std::cout <<"Done!" <<endl;
     

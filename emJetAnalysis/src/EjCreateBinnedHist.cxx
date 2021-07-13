@@ -325,8 +325,11 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		    }
 		}
 
-		if(!didPassPtCut)
-		    continue;
+		if(runNumber < 18000000) //Exclude Run 17 for now
+		{
+		    if(!didPassPtCut)
+			continue;
+		}
 		
 		if(nPhotons > 0 && nPhotons < kPhotonBins)
 		    nPhotons_i = nPhotons - 1;

@@ -41,9 +41,9 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 
     TH1D *h1Eta = new TH1D ("h1Eta", "EM Jet Eta; Jet #eta", 200, 1.0, 5.0);
     TH1D *h1Phi = new TH1D ("h1Phi", "EM Jet Phi; Jet #phi [rad]", 200, -3.3, 3.3);
-    TH1D *h1E = new TH1D ("h1E", "EM Jet E; Jet E [GeV]", 200, 0.0, 70.0);
-    TH1D *h1JetE_s = new TH1D ("h1JetE_s", "EM Jet E [small cells]; Jet E [GeV]", 200, 0.0, 85.0);
-    TH1D *h1JetE_l = new TH1D ("h1JetE_l", "EM Jet E [large cells]; Jet E [GeV]", 200, 0.0, 70.0);    
+    TH1D *h1E = new TH1D ("h1E", "EM Jet E; Jet E [GeV]", 200, 0.0, 200.0);
+    TH1D *h1JetE_s = new TH1D ("h1JetE_s", "EM Jet E [small cells]; Jet E [GeV]", 200, 0.0, 200.0);
+    TH1D *h1JetE_l = new TH1D ("h1JetE_l", "EM Jet E [large cells]; Jet E [GeV]", 200, 0.0, 200.0);    
     TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt; Jet Pt [GeV/c]", 200, 0.0, 20.0);
     TH1D *h1PtUE = new TH1D ("h1PtUE", "UE corrected Jet Pt; UE corrected Jet Pt [GeV/c]", 200, 0.0, 20.0);
     TH1D *h1dPt = new TH1D ("h1dPt", "UE dPt; UE dPt [GeV/c]", 100, 0.0, 2.0);

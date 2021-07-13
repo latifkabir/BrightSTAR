@@ -1,10 +1,11 @@
 #!/bin/bash
 
-inlist="goodruns.dat" ##Input file should not have any additional line at the end
+inlist=$1 #"goodruns.dat" ##Input file should not have any additional line at the end
 outfile="trigid.dat"
 dbserver="db04.star.bnl.gov"
 #dbserver="dbbak.starp.bnl.gov"
-dbport=3414
+#dbport=3414  #For Run 15
+dbport=3416   #For Run 17
 
 > $outfile
 while read line; do
@@ -17,4 +18,6 @@ while read line; do
   | sed 's/\t/ /g' \
   >> $outfile
 done < $inlist
+
+
 

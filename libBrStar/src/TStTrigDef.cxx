@@ -121,7 +121,8 @@ Int_t TStTrigDef::GetNearestTrigId(Int_t runNumber, TString trigger_name)
 //____________________________________________________________________________
 void TStTrigDef::MakeTrigIdDB() 
 {
-    TSQLServer *db = TSQLServer::Connect("mysql://db04.star.bnl.gov:3414/Conditions_rts?timeout=60","", ""); //For run 15 only, change to read server from configuration file.
+    //TSQLServer *db = TSQLServer::Connect("mysql://db04.star.bnl.gov:3414/Conditions_rts?timeout=60","", ""); //For run 15 only, change to read server from configuration file.
+    TSQLServer *db = TSQLServer::Connect("mysql://db04.star.bnl.gov:3416/Conditions_rts?timeout=60","", ""); //For run 17.
  
     TSQLRow *row;
     TSQLResult *res;

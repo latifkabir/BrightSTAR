@@ -9,11 +9,13 @@ void CronJob()
     TStScheduler *sc = new TStScheduler();
 
     //Optimal setup for FMS stream
-    sc->SetJobThreshold(1000); // Number of threshold jobs that will trigger new submission
+    sc->SetJobThreshold(500); // Run 17, initial
+    //sc->SetJobThreshold(1000); // Number of threshold jobs that will trigger new submission
     //sc->SetJobThreshold(1500); // Number of threshold jobs that will trigger new submission
     sc->SetInterval(20);      // Wait time in minutes
     //sc->SetRunIncrement(20);  // Number of runs to be incremented (physics stream)
-    sc->SetRunIncrement(100);  // Number of runs to be incremented (Fms stream)
+    sc->SetRunIncrement(30);  // Number of runs to be incremented (Run 17 Fms stream, initial)
+    //sc->SetRunIncrement(100);  // Number of runs to be incremented (Fms stream)
     //sc->SetRunIncrement(160);  // aggresive Number of runs to be incremented
     //sc->SetMaxFilesPerJob(5); //Maximum number of files per job (physics stream)
     sc->SetMaxFilesPerJob(1); //Maximum number of files per job (Fms stream)
@@ -31,6 +33,8 @@ void CronJob()
     //sc->CronJob("EjRunEmJetTreeMakerEEmcSmd", 16064083, gLastRun);
     
     //sc->CronJob("EjRunEmJetTreeMaker"); // For full dataset    
-    sc->CronJob("EjRunEmJetTreeMaker", -1, -1, "_zn_"); // For full dataset    
-    //sc->CronJob("RunFmsHotChQaMaker"); // For full dataset    
+    //sc->CronJob("EjRunEmJetTreeMaker", -1, -1, "_zn_"); // For full dataset    
+    //sc->CronJob("RunFmsHotChQaMaker"); // For full dataset
+
+    sc->CronJob("EjRunEmJetTreeMaker", gFirstRun, 18081024); // Run 17 dataset
 }
