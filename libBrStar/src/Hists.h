@@ -172,6 +172,8 @@ class Plot
 		TH1* UnderlyingHist() { return hists[0]; }
 		// get individual histograms (for tuning)
 		TH1* GetHist(int i) { return hists[i+1]; }
+    
+		TGraphErrors* GetGraph(int i) { return graphs[i+1]; }
 };
 
 /******************************************************************************

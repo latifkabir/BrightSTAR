@@ -10,9 +10,9 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 {
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
-    TString funcName = "EjCreateBinnedHist";
-    //TString funcName = "EjCreateBinnedHistExtended";
-    TString jobName = "EjCreateBinnedHistR17G1Pass0";
+    //TString funcName = "EjCreateBinnedHist";
+    TString funcName = "EjCreateBinnedHistExtended";
+    TString jobName = "EjCreateBinnedHistExtendedR17G1Pass0";
     //TString jobName = "EjCreateBinnedHistPass5";
     //--------------------------------------
     

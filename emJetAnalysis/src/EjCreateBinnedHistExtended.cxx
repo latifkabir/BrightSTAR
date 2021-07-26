@@ -82,14 +82,6 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     TH1D *h1Enew = new TH1D ("h1Enew", "EM Jet E after all cuts; Jet E [GeV]", 100, 0.0, 70.0);
     TH1D *h1PtNew = new TH1D ("h1PtNew", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
     
-    TGraphErrors *grPol_b = new TGraphErrors();
-    grPol_b->SetName("grPol_blue");
-    grPol_b->SetTitle("Polarization [blue beam]");
-    TGraphErrors *grPol_y = new TGraphErrors();
-    grPol_y->SetName("grPol_yellow");
-    grPol_y->SetTitle("Polarization [yellow beam]");
-    TGraphErrors *grPolRunEx_b;
-    TGraphErrors *grPolRunEx_y;
     TH1D *hPolB = new TH1D("hPolB", "Polarization [Blue Beam]", 400, 40, 80);
     TH1D *hPolY = new TH1D("hPolY", "Polarization [Yellow Beam]", 400, 40, 80);
     
@@ -248,14 +240,14 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	    //!!!!------------> Disabled for comparison with Zhanwen <--------------!!!	    
 	    //Exclude FMS small-bs3 trigger that gives ring of fire issue.
 	    //The ring of fire is a real problem. It gives lots of unphysical jets i.e. jets with E > s /2 or X_F > 1.0. It must be removed for any reliable analysis.
-	    if(det == "fms")
-	    {
+	    // if(det == "fms")
+	    // {
 	    	// if(skimEvent->GetTrigFlag(5))
 	    	//     continue;
 		
 		// if(!(skimEvent->GetBbcMult() > 0.5 && skimEvent->GetTofTrayMult() > 2.5)) //Ring of fire cut, matched to Zhanwen's final paper cut
 		//     continue;
-	    }
+	    //}
 	    
 	    if(fabs(vtxZ) > 80)
 		continue;
@@ -291,8 +283,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    continue;
 		
 		//--- Jet energy and pt correction --- !!!!!!! WARNING: DO NOT USE FOR YOUR RESULT!!!! 
-		// h1E->Fill(eng);
-		// h1Pt->Fill(pt);
+		h1E->Fill(eng);
+		h1Pt->Fill(pt);
 
 		// pt = EjJetPtCorr(pt, eng);
 		// eng = EjJetEngCorr(eng); 
@@ -300,8 +292,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		// h1Enew->Fill(eng);
 		// h1PtNew->Fill(pt);
 
-		// if(pt < 2)
-		//     continue;
+		if(pt < 2)
+		    continue;
 		//------- end of jet eng/pt correction ----
 		
 		LV.SetPtEtaPhiE(pt, eta, phi, eng);
@@ -338,8 +330,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 			continue;
 		}
 		//!!!!!!----> For comparing with Zhanwen's em-jet result only. Consider FMS JP0, JP1 and JP2 Triggers only <---------------------------
-		if(skimEvent->GetTrigFlag(0) != 1 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
-		    continue;
+		// if(skimEvent->GetTrigFlag(0) != 1 && skimEvent->GetTrigFlag(1) != 1 && skimEvent->GetTrigFlag(2) != 1)
+		//     continue;
 
 		//Seems Zhanwen did not include trigger 480810 for FMS-JP0 from period 1
 		//This probably does not matter as this trigger id has very low pt (lower than jet pt threshold)
@@ -442,20 +434,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 
 
 Double_t EjJetEngCorr(Double_t E)
-{
-    // //Zhanwen's jet E/pt correction that I do not agree
-    // double	e0	=	-20.5774;
-    // double	e1	=	-0.0262979;
-    // double	e2	=	0.00423014;
-    // double	e3	=	0.607798;
-
-    // double uee0   =       93.514; 
-    // double uee1   =   -0.0195701; 
-    // double uee2   =    0.0370517; 
-    // double uee3   =    -0.401819; 
-
-    // Double_t eNew = (e3 + e2*E + TMath::Exp((E-e0)*e1))*(E-(uee3+uee2*E + TMath::Exp((E - uee0)*uee1)));
-    
+{    
     Double_t p0 = -8.482;
     Double_t p1 = 4.069;
     Double_t p2 = -0.3063;
@@ -476,20 +455,7 @@ Double_t EjJetEngCorr(Double_t E)
 
 
 Double_t EjJetPtCorr(Double_t pt, Double_t E)
-{
-    // //Zhanwen's jet E/pt correction that I do not agree
-    // double	e0	=	-20.5774;
-    // double	e1	=	-0.0262979;
-    // double	e2	=	0.00423014;
-    // double	e3	=	0.607798;
-
-    // double uept0   =     85.5409; 
-    // double uept1   =  -0.0124882; 
-    // double uept2   =   0.0165788; 
-    // double uept3   =    -2.12506; 
-
-    // Double_t ptNew = (e3 + e2*E + TMath::Exp((E - e0)*e1))*(pt - (uept3 + uept2*pt + TMath::Exp((pt - uept0)*uept1)));
-    
+{    
     Double_t p0 = 1.486;
     Double_t p1 = 0.07337;
     Double_t p2 = 0.215;

@@ -77,7 +77,7 @@ void AnFmsHotChFinder(Int_t fillNoFirst, Int_t fillNoLast, Int_t iteration)
     //--------------------------------------------------------------------------------
     TH2D *hist2d_before = new TH2D("hist2d_before", "FMS Cell Activity [Before Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
     TH2D *hist2d_odd = new TH2D("hist2d_odd", "FMS Cell Activity [Before Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
-    TH2D *hist2d_even = new TH2D("hist2d_odd", "FMS Cell Activity [Before Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
+    TH2D *hist2d_even = new TH2D("hist2d_even", "FMS Cell Activity [Before Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
     TH2D *hist2d_after = new TH2D("hist2d_after", "FMS Cell Activity [After Masking]; X [cm]; Y [cm]", 120,-100, 100, 120,-100, 100);
     
     for(Int_t fillNo = fillNoFirst; fillNo <= fillNoLast; ++fillNo)

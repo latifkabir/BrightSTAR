@@ -164,7 +164,7 @@
     gSystem->Load("libUcrAnalysis.so");
     
     cout << "attempt completed !!\n\n";
-               
+              
     //gInterpreter->AddIncludePath("src/");       
     //gStyle->SetMarkerStyle(7);    // Filled square
     gStyle->SetMarkerStyle(4);      // Circle
@@ -227,10 +227,10 @@
     //dStyle->SetTitleSize(0.08, "xyz"); 
     dStyle->SetTitleSize(0.075, "t"); //"t": could be anything that is not "x" "y" or "z"
     dStyle->cd();
-    
-    // gStyle->SetPadGridX(kFALSE);
-    // gStyle->SetPadGridY(kFALSE);
-    // gStyle->SetOptStat(0);
+        
+    gStyle->SetPadGridX(kFALSE);
+    gStyle->SetPadGridY(kFALSE);
+    gStyle->SetOptStat(0);
     
     //-----------------------------------
     const Int_t NRGBs = 5;

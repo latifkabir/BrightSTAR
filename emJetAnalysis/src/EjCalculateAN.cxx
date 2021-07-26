@@ -238,9 +238,6 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 	    bGrPhy_sys[i][j]->SetMarkerColor(kBlack);
 	    bGrPhy_sys[i][j]->SetLineColor(kBlack);
 	    bGrPhy_sys[i][j]->SetMarkerStyle(kFullCircle);
-
-	    // bGrPhy_sys[i][j]->SetFillColor(2);
-	    // bGrPhy_sys[i][j]->SetFillStyle(3001);
 	    
 	    bGrPhy_sys[i][j]->SetMaximum(0.1);
 	    bGrPhy_sys[i][j]->SetMinimum(-0.1);
@@ -251,7 +248,6 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 	    yGrPhy_sys[i][j]->SetMarkerColor(kRed);
 	    yGrPhy_sys[i][j]->SetLineColor(kRed);
 	    yGrPhy_sys[i][j]->SetMarkerStyle(kOpenCircle);
-
 	    
 	    nPointsPhyB = 0;
 	    nPointsPhyY = 0;
@@ -301,10 +297,10 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 		    bAnError[i][j][k] = bFitFnc[i][j][k]->GetParError(0) / polB;
 
 		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
-		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
+		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0.0, bAnError[i][j][k]); 
 
 		    bGrPhy_sys[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
-		    bGrPhy_sys[i][j]->SetPointError(nPointsPhyB, 0, 0.1*bAn[i][j][k]); // Assign 10% systematic error bars for physics asymmetry
+		    bGrPhy_sys[i][j]->SetPointError(nPointsPhyB, 0.3, 0.1*bAn[i][j][k]); // Assign 10% systematic error bars for physics asymmetry. x-error is a TEST for NOW!!!
 		    
 		    ++nPointsPhyB;
 
@@ -333,6 +329,9 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 	    }
 	    bGrPhy[i][j]->Write();
 	    yGrPhy[i][j]->Write();
+
+	    bGrPhy_sys[i][j]->Write();
+	    yGrPhy_sys[i][j]->Write();
 	}
     }
 
@@ -378,27 +377,19 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 		    asymPlot->GetPlot(j,i)->SetYRange( -0.1, 0.1); // Run 15
 		else
 		    asymPlot->GetPlot(j,i)->SetYRange( -0.05, 0.05);  //Run 17
-
-
-		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
-		// {
-		//     asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
-		//     asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
-		// }
-		// else
-		{
-		    asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
-		    asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
-
-		    // asymPlot->GetPlot(j,i)->Add(bGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 2);
-		    // asymPlot->GetPlot(j,i)->Add(yGrPhy_sys[j+1][4 - i], Plot::Point | Plot::Erry, 6);
-		}
+	
+		//if(i == 4 && j == 0) asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
+		//if(i == 4 && j == 0) asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
+		    
+		asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
+		asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
+	
 		if(i == 0 && j == 0)
 		    asymPlot->GetPlot(j,i)->AddText(2.5, -0.04, "Preliminary", 0.10);       
 	    }
-	}
+	}  
 	asymPlot->Draw();
-    
+	
 	c2->Write();   
     } 
     //---------- For EEMC Jet -----------------------
@@ -439,16 +430,9 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 		//asymPlot_e->GetPlot(j,i)->SetYRange( -0.005, 0.005);
 		asymPlot_e->GetPlot(j,i)->SetYRange( -0.03, 0.03);
 
-		// if(i == 4 && j == 0)
-		// {
-		//     asymPlot_e->GetPlot(j,i)->Add(bGrPhy[j][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
-		//     asymPlot_e->GetPlot(j,i)->Add(yGrPhy[j][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
-		// }
-		// else
-		{
-		    asymPlot_e->GetPlot(j,i)->Add(bGrPhy[j][4 - i], Plot::Point | Plot::Erry, 0);
-		    asymPlot_e->GetPlot(j,i)->Add(yGrPhy[j][4 - i], Plot::Point | Plot::Erry, 8);
-		}
+		asymPlot_e->GetPlot(j,i)->Add(bGrPhy[j][4 - i], Plot::Point | Plot::Erry, 0);
+		asymPlot_e->GetPlot(j,i)->Add(yGrPhy[j][4 - i], Plot::Point | Plot::Erry, 8);
+		
 		if(i == 0 && j == 0)
 		    asymPlot_e->GetPlot(j,i)->AddText(2.5, -0.004, "Preliminary", 0.10);       
 	    }
