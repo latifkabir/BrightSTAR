@@ -320,7 +320,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 		    yGrPhy[i][j]->SetPointError(nPointsPhyY, 0, yAnError[i][j][k]);
 
 		    yGrPhy_sys[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
-		    yGrPhy_sys[i][j]->SetPointError(nPointsPhyY, 0, 0.1*yAn[i][j][k]);  // Assign 10% systematic error bars for physics asymmetry
+		    yGrPhy_sys[i][j]->SetPointError(nPointsPhyY, 0.3, 0.1*yAn[i][j][k]);  // Assign 10% systematic error bars for physics asymmetry.  x-error is a TEST for NOW!!!
 		    
 		    ++nPointsPhyY;		    
 		}
