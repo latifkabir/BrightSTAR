@@ -1,0 +1,287 @@
+// Filename: EjRePlotAn.C
+// Description: 
+// Author: Latif Kabir < kabir@bnl.gov >
+// Created: Sat Jul 24 13:31:34 2021 (-0400)
+// URL: jlab.org/~latif
+
+// Based on the example: $ROOTSYS/tutorials/graphics/canvas2.C
+
+#include <iostream>
+#include "RootInclude.h"
+#include "cppInclude.h"
+#include "BrightStInclude.h"
+#include "EjRePlotAn.h"
+
+using namespace std;
+
+void EjRePlotAn(TString fileName)
+{
+    if(gSystem->AccessPathName(fileName))
+    {
+	cout << "Could not find the input file" <<endl;
+	return;
+    }
+    TFile *file = new TFile(fileName);
+
+    const Int_t kEnergyBins = 5;
+    const Int_t kPhotonBins = 6;
+
+    TGraphErrors *bGrPhy[kEnergyBins][kPhotonBins];
+    TGraphErrors *yGrPhy[kEnergyBins][kPhotonBins];
+    //For systematic error bars: Duplicate all graphs
+    TGraphErrors *bGrPhy_sys[kEnergyBins][kPhotonBins];
+    TGraphErrors *yGrPhy_sys[kEnergyBins][kPhotonBins];
+    
+    for(Int_t i = 0; i < kEnergyBins; ++i)
+    {
+	for(Int_t j = 0; j < kPhotonBins; ++j)
+	{
+	    TString name = Form("bEbin%i_PhotonBin%i", i, j);
+	    bGrPhy[i][j] = (TGraphErrors*)file->Get(name);
+	    name = Form("yEbin%i_PhotonBin%i", i, j);
+	    yGrPhy[i][j] = (TGraphErrors*)file->Get(name);
+
+	    
+	    name = Form("Sys_bEbin%i_PhotonBin%i", i, j);
+	    bGrPhy_sys[i][j] = (TGraphErrors*)file->Get(name);
+	    name = Form("Sys_yEbin%i_PhotonBin%i", i, j);
+	    yGrPhy_sys[i][j] = (TGraphErrors*)file->Get(name);
+
+	    bGrPhy[i][j]->SetTitle("");
+	    yGrPhy[i][j]->SetTitle("");
+	    bGrPhy_sys[i][j]->SetTitle("");
+	    yGrPhy_sys[i][j]->SetTitle("");
+	}
+    }
+    file->Close();
+
+    Int_t canvasCount = 1;
+    TCanvas *c1 = new TCanvas("EMjet_A_N_fms", "EM Jet A_{N}");
+    c1->Divide(kEnergyBins -1, kPhotonBins -1);
+    for(Int_t i = 0; i < kPhotonBins - 1; ++i)
+    {
+	for(Int_t j = 1; j < kEnergyBins; ++j)
+	{
+	    bGrPhy_sys[j][i]->SetFillColor(2);
+	    bGrPhy_sys[j][i]->SetFillStyle(3001);
+	    yGrPhy_sys[j][i]->SetFillColor(2);
+	    yGrPhy_sys[j][i]->SetFillStyle(3001);
+
+	    bGrPhy[j][i]->SetMaximum(0.05);
+	    bGrPhy[j][i]->SetMinimum(-0.05);
+	    bGrPhy_sys[j][i]->SetMaximum(0.05);
+	    bGrPhy_sys[j][i]->SetMinimum(-0.05);
+
+	    yGrPhy[j][i]->SetMaximum(0.05);
+	    yGrPhy[j][i]->SetMinimum(-0.05);
+	    yGrPhy_sys[j][i]->SetMaximum(0.05);
+	    yGrPhy_sys[j][i]->SetMinimum(-0.05);
+
+	    
+	    c1->cd(canvasCount);
+
+	    bGrPhy_sys[j][i]->Draw();
+	    bGrPhy[j][i]->Draw("same");
+	    yGrPhy_sys[j][i]->Draw("same");
+	    yGrPhy[j][i]->Draw("same");
+	   
+	    bGrPhy_sys[j][i]->SetDrawOption("a2");	    
+	    bGrPhy[j][i]->SetDrawOption("p same");
+
+	    yGrPhy_sys[j][i]->SetDrawOption("2 same");
+	    yGrPhy[j][i]->SetDrawOption("p same");
+	    	    
+	    TLine* L1Temp = new TLine(1.5, 0, 9.5, 0);
+	    L1Temp->Draw("same");
+	    ++canvasCount;
+	}
+    }
+
+
+   gStyle->SetOptStat(0);
+
+   TCanvas *C = (TCanvas*) gROOT->FindObject("C");
+   if (C) delete C;
+   C = new TCanvas("C","canvas",1024,640);
+   C->SetFillStyle(4000);
+
+   // Number of PADS
+   const Int_t Nx = 3;
+   const Int_t Ny = 5;
+
+   // Margins
+   Float_t lMargin = 0.12;
+   Float_t rMargin = 0.05;
+   Float_t bMargin = 0.15;
+   Float_t tMargin = 0.05;
+
+   // Canvas setup
+   CanvasPartition(C,Nx,Ny,lMargin,rMargin,bMargin,tMargin);
+
+   TPad *pad[Nx][Ny];
+   
+   for (Int_t j=0;j<Ny;j++)
+   {
+       for (Int_t i=0;i<Nx;i++)
+       {
+	   C->cd(0);
+
+	   // Get the pads previosly created.
+	   char pname[16];
+	   sprintf(pname,"pad_%i_%i",i,j);
+	   pad[i][j] = (TPad*) gROOT->FindObject(pname);
+	   pad[i][j]->Draw();
+	   pad[i][j]->SetFillStyle(4000);
+	   pad[i][j]->SetFrameFillStyle(4000);
+	   pad[i][j]->cd();
+	   
+	   // Size factors
+	   Float_t xFactor = pad[0][0]->GetAbsWNDC()/pad[i][j]->GetAbsWNDC();
+	   Float_t yFactor = pad[0][0]->GetAbsHNDC()/pad[i][j]->GetAbsHNDC();
+	   
+	   TGraphErrors *hFrame = bGrPhy_sys[i+1][4 - j];
+	  
+	   // Format for y axis
+	   hFrame->GetYaxis()->SetLabelFont(43);
+	   hFrame->GetYaxis()->SetLabelSize(26);
+	   hFrame->GetYaxis()->SetLabelOffset(0.02);
+	   hFrame->GetYaxis()->SetTitleFont(43);
+	   hFrame->GetYaxis()->SetTitleSize(16);
+	   hFrame->GetYaxis()->SetTitleOffset(5);
+
+	   hFrame->GetYaxis()->CenterTitle();
+	   hFrame->GetYaxis()->SetNdivisions(505);
+
+	   // TICKS Y Axis
+	   hFrame->GetYaxis()->SetTickLength(xFactor*0.08/yFactor);
+
+	   // Format for x axis
+	   hFrame->GetXaxis()->SetLabelFont(43);
+	   hFrame->GetXaxis()->SetLabelSize(36);
+	   hFrame->GetXaxis()->SetLabelOffset(0.02);
+	   hFrame->GetXaxis()->SetTitleFont(43);
+	   hFrame->GetXaxis()->SetTitleSize(16);
+	   hFrame->GetXaxis()->SetTitleOffset(5);
+	   hFrame->GetXaxis()->CenterTitle();
+	   hFrame->GetXaxis()->SetNdivisions(505);
+
+	   // TICKS X Axis
+	   hFrame->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
+	   
+	   //---------------------------------------------------------------
+	   bGrPhy_sys[i+1][4 - j]->SetFillColor(2);
+	   bGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
+	   yGrPhy_sys[i+1][4 - j]->SetFillColor(2);
+	   yGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
+
+	   bGrPhy[i+1][4 - j]->SetMaximum(0.05);
+	   bGrPhy[i+1][4 - j]->SetMinimum(-0.05);
+	   bGrPhy_sys[i+1][4 - j]->SetMaximum(0.05);
+	   bGrPhy_sys[i+1][4 - j]->SetMinimum(-0.05);
+
+	   yGrPhy[i+1][4 - j]->SetMaximum(0.05);
+	   yGrPhy[i+1][4 - j]->SetMinimum(-0.05);
+	   yGrPhy_sys[i+1][4 - j]->SetMaximum(0.05);
+	   yGrPhy_sys[i+1][4 - j]->SetMinimum(-0.05);
+
+	    
+	   bGrPhy_sys[i+1][4 - j]->Draw();
+	   bGrPhy[i+1][4 - j]->Draw("same");
+	   yGrPhy_sys[i+1][4 - j]->Draw("same");
+	   yGrPhy[i+1][4 - j]->Draw("same");
+	   
+	   bGrPhy_sys[i+1][4 - j]->SetDrawOption("a2");	    
+	   bGrPhy[i+1][4 - j]->SetDrawOption("p same");
+
+	   yGrPhy_sys[i+1][4 - j]->SetDrawOption("2 same");
+	   yGrPhy[i+1][4 - j]->SetDrawOption("p same");
+
+	   TLine* L1Temp = new TLine(1.8, 0, 10.0, 0);
+	   L1Temp->SetLineStyle(7);
+	    L1Temp->Draw("same");
+	   //------------------------------------------------	 
+       }
+   }
+   C->cd();        
+}
+
+void CanvasPartition(TCanvas *C,const Int_t Nx, const Int_t Ny,
+                     Float_t lMargin, Float_t rMargin,
+                     Float_t bMargin, Float_t tMargin)
+{
+   if (!C) return;
+
+   // Setup Pad layout:
+   Float_t vSpacing = 0.0;
+   Float_t vStep  = (1.- bMargin - tMargin - (Ny-1) * vSpacing) / Ny;
+
+   Float_t hSpacing = 0.0;
+   Float_t hStep  = (1.- lMargin - rMargin - (Nx-1) * hSpacing) / Nx;
+
+   Float_t vposd,vposu,vmard,vmaru,vfactor;
+   Float_t hposl,hposr,hmarl,hmarr,hfactor;
+
+   for (Int_t i=0;i<Nx;i++) {
+
+      if (i==0) {
+         hposl = 0.0;
+         hposr = lMargin + hStep;
+         hfactor = hposr-hposl;
+         hmarl = lMargin / hfactor;
+         hmarr = 0.0;
+      } else if (i == Nx-1) {
+         hposl = hposr + hSpacing;
+         hposr = hposl + hStep + rMargin;
+         hfactor = hposr-hposl;
+         hmarl = 0.0;
+         hmarr = rMargin / (hposr-hposl);
+      } else {
+         hposl = hposr + hSpacing;
+         hposr = hposl + hStep;
+         hfactor = hposr-hposl;
+         hmarl = 0.0;
+         hmarr = 0.0;
+      }
+
+      for (Int_t j=0;j<Ny;j++) {
+
+         if (j==0) {
+            vposd = 0.0;
+            vposu = bMargin + vStep;
+            vfactor = vposu-vposd;
+            vmard = bMargin / vfactor;
+            vmaru = 0.0;
+         } else if (j == Ny-1) {
+            vposd = vposu + vSpacing;
+            vposu = vposd + vStep + tMargin;
+            vfactor = vposu-vposd;
+            vmard = 0.0;
+            vmaru = tMargin / (vposu-vposd);
+         } else {
+            vposd = vposu + vSpacing;
+            vposu = vposd + vStep;
+            vfactor = vposu-vposd;
+            vmard = 0.0;
+            vmaru = 0.0;
+         }
+
+         C->cd(0);
+
+         char name[16];
+         sprintf(name,"pad_%i_%i",i,j);
+         TPad *pad = (TPad*) gROOT->FindObject(name);
+         if (pad) delete pad;
+         pad = new TPad(name,"",hposl,vposd,hposr,vposu);
+         pad->SetLeftMargin(hmarl);
+         pad->SetRightMargin(hmarr);
+         pad->SetBottomMargin(vmard);
+         pad->SetTopMargin(vmaru);
+
+         pad->SetFrameBorderMode(0);
+         pad->SetBorderMode(0);
+         pad->SetBorderSize(0);
+
+         pad->Draw();
+      }
+   }
+}

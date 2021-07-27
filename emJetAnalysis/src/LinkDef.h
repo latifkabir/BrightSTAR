@@ -28,4 +28,5 @@
 
 #pragma link C++ function EjCreateBinnedHistZn;         // Read Zhanwen's jet trees to create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (with extended options)
 
+#pragma link C++ function EjRePlotAn;                   // Re-plot Physics AN results with systematic errors
 #endif
