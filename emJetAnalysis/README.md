@@ -12,16 +12,16 @@ EM-jet A_N Analysis
 
 
 - Step-2: Generate Binned Histograms Required for `A_N` calculation
-  - The corresponding script is: `emJetAnalysis/src/EjCreateBinnedHistExtended.cxx`
-  - The name `extended` indicates that I have extended my original analysis to Zhanwen's to reproduce his result.
+  - The corresponding script is: `emJetAnalysis/src/EjCreateBinnedHist.cxx`
+  - There is also an extended version of the script thaty is used to extended my original analysis to compare with Zhanwen's result.
 
 
 - Step-3: Calculate A_N and plot them
-  - The corresponding script is: `emJetAnalysis/src/EjCalculateANextended.cxx`
+  - The corresponding script is: `emJetAnalysis/src/EjCalculateAN.cxx` 
 
 
 - Nano Jet Tree file location: `/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet`
 
-- I have a different way of running root ananlysis than most other people at STAR. In case you want to run it, the instruction can be found at the top level (of BrightSTAR) README  file titled "Quick Start".
+- Regarding how to run the root ananlysis, the instruction can be found at the top level (of BrightSTAR) README  file titled "Quick Start".
 
 

@@ -17,7 +17,9 @@ using std::endl;
 #include "/star/u/kabir/GIT/BrightSTAR/RooUnfold/src/RooUnfoldSvd.h"
 //#include "RooUnfoldTUnfold.h"
 //#include "RooUnfoldIds.h" 
-  
+
+//The TSVDUnfold documentation states that the response matrix should not be probabilities. So while in our case it's probability, we cannot normalize it to 1. The procedure will blow-up in that case.
+
 void EjRooUnfolding(TString respMatFile, TString  foldedResultFile)
 {
    gROOT->SetStyle("Plain");

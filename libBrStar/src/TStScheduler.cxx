@@ -1008,6 +1008,10 @@ void TStScheduler::DeleteTempFiles(TString inFileName)
 	cout << "Deleting input files from tmp ..." <<endl;
 	gROOT->ProcessLine(".! rm " + inFileName);
     }
+
+    if(gROOT->IsBatch())
+	gROOT->ProcessLine(".! rm -r  .sl73_gcc485 lib rootlogon.C setup.sh setup.csh config database FmsGainCorr.txt");
+    
 }
 
 //_______________________________________________________________________
@@ -1030,5 +1034,9 @@ void TStScheduler::DeleteTempFilesFromList(TString in_file_list)
     inFileList.close();
     if(in_file_list.Contains("/tmp/"))
 	gROOT->ProcessLine(".! rm " + in_file_list);
+
+    if(gROOT->IsBatch())
+	gROOT->ProcessLine(".! rm -r  .sl73_gcc485 lib rootlogon.C setup.sh setup.csh config database FmsGainCorr.txt");
+    
     cout << "Done deleting all temporary files copied" <<endl;    
 }

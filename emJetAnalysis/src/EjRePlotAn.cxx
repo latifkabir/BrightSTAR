@@ -55,6 +55,8 @@ void EjRePlotAn(TString fileName)
     }
     file->Close();
 
+
+    Double_t yMax = 0.1;	
     Int_t canvasCount = 1;
     TCanvas *c1 = new TCanvas("EMjet_A_N_fms", "EM Jet A_{N}");
     c1->Divide(kEnergyBins -1, kPhotonBins -1);
@@ -67,15 +69,15 @@ void EjRePlotAn(TString fileName)
 	    yGrPhy_sys[j][i]->SetFillColor(2);
 	    yGrPhy_sys[j][i]->SetFillStyle(3001);
 
-	    bGrPhy[j][i]->SetMaximum(0.05);
-	    bGrPhy[j][i]->SetMinimum(-0.05);
-	    bGrPhy_sys[j][i]->SetMaximum(0.05);
-	    bGrPhy_sys[j][i]->SetMinimum(-0.05);
+	    bGrPhy[j][i]->SetMaximum(yMax);
+	    bGrPhy[j][i]->SetMinimum(-1.0*yMax);
+	    bGrPhy_sys[j][i]->SetMaximum(yMax);
+	    bGrPhy_sys[j][i]->SetMinimum(-1.0*yMax);
 
-	    yGrPhy[j][i]->SetMaximum(0.05);
-	    yGrPhy[j][i]->SetMinimum(-0.05);
-	    yGrPhy_sys[j][i]->SetMaximum(0.05);
-	    yGrPhy_sys[j][i]->SetMinimum(-0.05);
+	    yGrPhy[j][i]->SetMaximum(yMax);
+	    yGrPhy[j][i]->SetMinimum(-1.0*yMax);
+	    yGrPhy_sys[j][i]->SetMaximum(yMax);
+	    yGrPhy_sys[j][i]->SetMinimum(-1.0*yMax);
 
 	    
 	    c1->cd(canvasCount);
@@ -116,7 +118,7 @@ void EjRePlotAn(TString fileName)
    Float_t tMargin = 0.05;
 
    // Canvas setup
-   CanvasPartition(C,Nx,Ny,lMargin,rMargin,bMargin,tMargin);
+   EjCanvasPartition(C,Nx,Ny,lMargin,rMargin,bMargin,tMargin);
 
    TPad *pad[Nx][Ny];
    
@@ -174,16 +176,15 @@ void EjRePlotAn(TString fileName)
 	   yGrPhy_sys[i+1][4 - j]->SetFillColor(2);
 	   yGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
 
-	   bGrPhy[i+1][4 - j]->SetMaximum(0.05);
-	   bGrPhy[i+1][4 - j]->SetMinimum(-0.05);
-	   bGrPhy_sys[i+1][4 - j]->SetMaximum(0.05);
-	   bGrPhy_sys[i+1][4 - j]->SetMinimum(-0.05);
+	   bGrPhy[i+1][4 - j]->SetMaximum(yMax);
+	   bGrPhy[i+1][4 - j]->SetMinimum(-1.0*yMax);
+	   bGrPhy_sys[i+1][4 - j]->SetMaximum(yMax);
+	   bGrPhy_sys[i+1][4 - j]->SetMinimum(-1.0*yMax);
 
-	   yGrPhy[i+1][4 - j]->SetMaximum(0.05);
-	   yGrPhy[i+1][4 - j]->SetMinimum(-0.05);
-	   yGrPhy_sys[i+1][4 - j]->SetMaximum(0.05);
-	   yGrPhy_sys[i+1][4 - j]->SetMinimum(-0.05);
-
+	   yGrPhy[i+1][4 - j]->SetMaximum(yMax);
+	   yGrPhy[i+1][4 - j]->SetMinimum(-1.0*yMax);
+	   yGrPhy_sys[i+1][4 - j]->SetMaximum(yMax);
+	   yGrPhy_sys[i+1][4 - j]->SetMinimum(-1.0*yMax);
 	    
 	   bGrPhy_sys[i+1][4 - j]->Draw();
 	   bGrPhy[i+1][4 - j]->Draw("same");
@@ -198,14 +199,14 @@ void EjRePlotAn(TString fileName)
 
 	   TLine* L1Temp = new TLine(1.8, 0, 10.0, 0);
 	   L1Temp->SetLineStyle(7);
-	    L1Temp->Draw("same");
+	   L1Temp->Draw("same");
 	   //------------------------------------------------	 
        }
    }
    C->cd();        
 }
 
-void CanvasPartition(TCanvas *C,const Int_t Nx, const Int_t Ny,
+void EjCanvasPartition(TCanvas *C,const Int_t Nx, const Int_t Ny,
                      Float_t lMargin, Float_t rMargin,
                      Float_t bMargin, Float_t tMargin)
 {

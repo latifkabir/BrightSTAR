@@ -20,6 +20,7 @@
 #pragma link C++ function EjCalculateAN;                // Calculate A_N from binned histograms
 #pragma link C++ function EjPlotAn;                     // Example A_N plots in many panels
 #pragma link C++ function EjCreateBinnedHistExtended;   // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (with extended options)
+#pragma link C++ function EjCreateBinnedHistToCompare;  // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield and asymmetry to compare with Zhanwen and MMM results
 #pragma link C++ function EjCalculateANextended;        // Calculate A_N from binned histograms
 #pragma link C++ function EjCalculateFalseAN;           // Calculate false asymmetry for A_N from binned histograms
 #pragma link C++ function EjCalculateBeamAsymmetry;     // Calculate beam asymmetry
@@ -29,4 +30,5 @@
 #pragma link C++ function EjCreateBinnedHistZn;         // Read Zhanwen's jet trees to create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (with extended options)
 
 #pragma link C++ function EjRePlotAn;                   // Re-plot Physics AN results with systematic errors
+#pragma link C++ function EjCompareAnWithRun11;         // Compare Run 17 results with run 11 results
 #endif

@@ -15,7 +15,7 @@ endif
 ROOTCINT  = rootcint
 ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
-CXXFLAGS  += -fPIC -m32 -std=c++11 -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker -L ${STARHOME}/libBrStar/lib -lBrStar
+CXXFLAGS  += -fPIC -m32 -std=c++11 -g -L ${STAR}/.sl73_gcc485/lib -lStMuDSTMaker -L ${STARHOME}/libBrStar/lib -lBrStar
 LIB_INCLUDE  = -I${STAR}/.${STAR_HOST_SYS}/include/ -I${STAR}/ -I${STAR}/StRoot/ -I${STARHOME}/libBrStar/src/ -I${STARHOME} -I${STARHOME}/include/ -I${STARHOME}/StRoot/ -I${STAR}/StRoot/StJetMaker/towers/ -I${STAR}/StRoot/StJetMaker/tracks/ -I${STAR}/StRoot/StJetMaker/mcparticles/
 
 all: libStAnalysis
