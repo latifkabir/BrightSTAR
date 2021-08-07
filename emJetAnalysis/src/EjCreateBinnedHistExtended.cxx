@@ -324,20 +324,11 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		if(nPhotons <= 0)
 		    continue;
 
-		if(eng > (sqrt_s / 2.0))
+		if(eng > (sqrt_s / 2.0) || eng < 20)
 		    continue;
 
-		if(phi >= 0)
-		{
-		    phi_b = phi;
-		    phi_y = TMath::Pi() - phi;
-		}
-		else
-		{
-		    phi_b = phi;
-		    phi_y = -1.0*TMath::Pi() - phi;		
-		}
-		
+		phi_b = phi;
+			
 		if(nPhotons >= minNphotons)
 		{
 		    bHistNp[bSpin_i]->Fill(phi_b, xf);

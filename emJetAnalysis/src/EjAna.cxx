@@ -27,6 +27,7 @@ Double_t EjAna::kRMax = 0.7;
 // Updated based on Simulation to 1.0 GeV
 // FMS Photon energy cut: 1.0 for my analysis, 0.5 to compare with Zhanwen.
 Double_t EjAna::kFmsEngMin = 1.0; 
+Double_t EjAna::kFmsEngMax = 250.0; 
 
 // EEmc Tower Et cut
 // 0.2 is the default in all other full jet analysis 
@@ -59,5 +60,6 @@ void EjAna::Print()
     cout << "jet Reconstruction Radius: "<< kRMax <<endl;
     cout << "jet Reconstruction Pt cut: "<< kPtMin <<endl;
     cout << "jet Reconstruction Fms Photon Energy cut: "<< kFmsEngMin <<endl;
+    cout << "jet Reconstruction Fms Photon Energy Max cut: "<< kFmsEngMax <<endl;
     cout << "jet Reconstruction EEmc tower Energy_t cut: "<< kEEmcEtMin <<endl;    
 }

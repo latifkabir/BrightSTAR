@@ -203,7 +203,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
     //For systematic error bars: Duplicate all graphs
     TGraphErrors *bGrPhy_sys[kEnergyBins][kPhotonBins];
     TGraphErrors *yGrPhy_sys[kEnergyBins][kPhotonBins];
-    Double_t sysErrs[5] = {0.4, 0.4, 0.30, 0.2, 0.2}; // Systematic error in percent due to event misidentification for 1 - 5 photon cases
+    Double_t sysErrs[5] = {0.35, 0.35, 0.25, 0.2, 0.2}; // Systematic error in percent due to event misidentification for 1 - 5 photon cases
     
     for(Int_t i = 0; i < kEnergyBins; ++i)
     {
@@ -301,7 +301,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0.0, bAnError[i][j][k]); 
 
 		    bGrPhy_sys[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
-		    bGrPhy_sys[i][j]->SetPointError(nPointsPhyB, 0.05, sysErrs[i]*bAn[i][j][k]); // Assign sysErrs[i]% systematic error bars for physics asymmetry. x-error (pt uncertainty is 5%)
+		    bGrPhy_sys[i][j]->SetPointError(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5*0.03, sysErrs[j]*bAn[i][j][k]); // Assign sysErrs[i]% systematic error bars for physics asymmetry. x-error (pt uncertainty is 3%)
 		    
 		    ++nPointsPhyB;
 
@@ -321,7 +321,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 		    yGrPhy[i][j]->SetPointError(nPointsPhyY, 0, yAnError[i][j][k]);
 
 		    yGrPhy_sys[i][j]->SetPoint(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5 , yAn[i][j][k]);
-		    yGrPhy_sys[i][j]->SetPointError(nPointsPhyY, 0.05, sysErrs[i]*yAn[i][j][k]);  // Assign sysErrs[i]% systematic error bars for physics asymmetry. x-error (pt uncertainty is 5%)
+		    yGrPhy_sys[i][j]->SetPointError(nPointsPhyY, (ptBins[k] + ptBins[k+1])*0.5*0.03, sysErrs[j]*yAn[i][j][k]);  // Assign sysErrs[i]% systematic error bars for physics asymmetry. x-error (pt uncertainty is 3%)
 		    
 		    ++nPointsPhyY;		    
 		}

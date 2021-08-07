@@ -1,3 +1,38 @@
+# How To Create Database Files
+
+## Run List/File List Database (JSON):
+- Use `bin/GenerateRunListDB.sh` to generate your RunList DB in JSON format for the given run period and trigger setup.
+
+## Run List (txt):
+- This could be text dump from JSON file or a QAed runlist in a text format. To dump from JSON dat5abase use `TStRunList::GetRunList->Print("all")`. The runlist in txt file is used to merge job files by run number.
+
+- Alternatively, you can get full runlist from the runLog browser by selecting run period and trigger setup.
+
+## Trigger Database (JSON):
+- You can just use `TStATrigDef::MakeTrigIdDB()` with appropriate DB port number. For a list of port numbers fro variuos runs see: `https://drupal.star.bnl.gov/STAR/comp/db/onlinedb/online-server-port-map`. 
+
+- Alternatively, check `binbin/TriggerIdMaker.sh` script to get trigger ids in a text file.
+
+
+## Fill Number Database:
+- Use the shell script `bin/getFillNumber.csh` to generate txt DB and use this function to generate JSON DB from text DB: void TStFillNoDB::GenerateFillDB(TString inFile)
+
+## Polarization By Fill:
+
+- Get the polarization by fill number for any run period from the RHIC Spin Group wiki page: `https://wiki.bnl.gov/rhicspin/Results_(Polarimetry)`. Now save it as text format and modify so that it can be read easuly from your script.
+
+
+## FMS Hot Channel List:
+
+- Use `RunFmsHotChQaMaker` to generate FMS energy distribution for every file using job submission. Use `BHT1*VPDMB-30` trigger for this. Use emJetAnalysis/scripts/cronJob.C to submit jobs for entire dataset.
+
+- Use the macro `diffAnalysis/scripts/assorted/MergeFmsHotChQaFiles.C` to merge output files by fill number.
+
+- Use `AnFmsHotChFinder` along with the generated FMS energy didtribution per fill to generate hot and highly bit shifted channel list for every fill.
+
+
+
+## QAed Run List
 
 - Run 15 FMS runlist is based on QAed runlist from Chong / Akio (see under resources directory)
 

@@ -56,7 +56,7 @@ void EjRePlotAn(TString fileName)
     file->Close();
 
 
-    Double_t yMax = 0.1;	
+    Double_t yMax = 0.08;	
     Int_t canvasCount = 1;
     TCanvas *c1 = new TCanvas("EMjet_A_N_fms", "EM Jet A_{N}");
     c1->Divide(kEnergyBins -1, kPhotonBins -1);
@@ -64,7 +64,7 @@ void EjRePlotAn(TString fileName)
     {
 	for(Int_t j = 1; j < kEnergyBins; ++j)
 	{
-	    bGrPhy_sys[j][i]->SetFillColor(2);
+	    bGrPhy_sys[j][i]->SetFillColor(1);
 	    bGrPhy_sys[j][i]->SetFillStyle(3001);
 	    yGrPhy_sys[j][i]->SetFillColor(2);
 	    yGrPhy_sys[j][i]->SetFillStyle(3001);
@@ -171,18 +171,22 @@ void EjRePlotAn(TString fileName)
 	   hFrame->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
 	   
 	   //---------------------------------------------------------------
-	   bGrPhy_sys[i+1][4 - j]->SetFillColor(2);
+	   bGrPhy_sys[i+1][4 - j]->SetFillColor(1);
 	   bGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
 	   yGrPhy_sys[i+1][4 - j]->SetFillColor(2);
 	   yGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
 
+	   bGrPhy[i+1][4 - j]->SetMarkerSize(1.3);
 	   bGrPhy[i+1][4 - j]->SetMaximum(yMax);
 	   bGrPhy[i+1][4 - j]->SetMinimum(-1.0*yMax);
+	   bGrPhy_sys[i+1][4 - j]->SetMarkerSize(1.3);
 	   bGrPhy_sys[i+1][4 - j]->SetMaximum(yMax);
 	   bGrPhy_sys[i+1][4 - j]->SetMinimum(-1.0*yMax);
 
+	   yGrPhy[i+1][4 - j]->SetMarkerSize(1.3);
 	   yGrPhy[i+1][4 - j]->SetMaximum(yMax);
 	   yGrPhy[i+1][4 - j]->SetMinimum(-1.0*yMax);
+	   bGrPhy_sys[i+1][4 - j]->SetMarkerSize(1.3);
 	   yGrPhy_sys[i+1][4 - j]->SetMaximum(yMax);
 	   yGrPhy_sys[i+1][4 - j]->SetMinimum(-1.0*yMax);
 	    
@@ -197,13 +201,14 @@ void EjRePlotAn(TString fileName)
 	   yGrPhy_sys[i+1][4 - j]->SetDrawOption("2 same");
 	   yGrPhy[i+1][4 - j]->SetDrawOption("p same");
 
-	   TLine* L1Temp = new TLine(1.8, 0, 10.0, 0);
+	   TLine* L1Temp = new TLine(1.95, 0, 9.7, 0);
 	   L1Temp->SetLineStyle(7);
 	   L1Temp->Draw("same");
 	   //------------------------------------------------	 
        }
    }
-   C->cd();        
+   
+   C->cd();
 }
 
 void EjCanvasPartition(TCanvas *C,const Int_t Nx, const Int_t Ny,

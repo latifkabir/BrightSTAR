@@ -194,11 +194,11 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     anapars12->addEemcCut(new StjTowerEnergyCutEt(EjAna::kEEmcEtMin));  
 
     //FMS cuts,
-    anapars12->addFmsCut(new StjTowerEnergyCutFMS(EjAna::kFmsEngMin, 200)); 
+    anapars12->addFmsCut(new StjTowerEnergyCutFMS(EjAna::kFmsEngMin, EjAna::kFmsEngMax)); 
   
 
     //Jet cuts
-    anapars12->addJetCut(new StProtoJetCutPt(0.01,200));
+    anapars12->addJetCut(new StProtoJetCutPt(0.01, EjAna::kFmsEngMax));
     anapars12->addJetCut(new StProtoJetCutEta(-1,5)); //CKim, extend to FMS acceptance
 
     //Set anti-kt R=0.7 parameters

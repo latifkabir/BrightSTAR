@@ -22,6 +22,7 @@ public:
     
     static Double_t kPtMin;
     static Double_t kFmsEngMin; // Fms Photon energy cut
+    static Double_t kFmsEngMax; // Fms Photon energy cut
     static Double_t kEEmcEtMin; // EEmc tower energy_t cut
     static Double_t kRMax;      // Anti kT radius
 
