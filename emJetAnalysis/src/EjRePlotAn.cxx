@@ -14,7 +14,7 @@
 
 using namespace std;
 
-void EjRePlotAn(TString fileName)
+void EjRePlotAn(TString fileName, TString det)
 {
     if(gSystem->AccessPathName(fileName))
     {
@@ -107,9 +107,29 @@ void EjRePlotAn(TString fileName)
    C = new TCanvas("C","canvas",1024,640);
    C->SetFillStyle(4000);
 
+   Int_t Kx;
+   Int_t Ky;
+   if(det == "fms")
+   {
+       Kx = 3;
+       Ky = 5;
+   }
+   else if(det == "eemc")
+   {
+       Kx = 1;
+       Ky = 5;
+       yMax = 0.05;
+   }
+   else
+   {
+       cout << "Invalid detector" <<endl;
+       return;
+   }
+
+   
    // Number of PADS
-   const Int_t Nx = 3;
-   const Int_t Ny = 5;
+   const Int_t Nx = Kx;
+   const Int_t Ny = Ky;
 
    // Margins
    Float_t lMargin = 0.12;
@@ -122,9 +142,9 @@ void EjRePlotAn(TString fileName)
 
    TPad *pad[Nx][Ny];
    
-   for (Int_t j=0;j<Ny;j++)
+   for (Int_t j = 0; j < Ny; j++)
    {
-       for (Int_t i=0;i<Nx;i++)
+       for (Int_t i = 0; i < Nx; i++)
        {
 	   C->cd(0);
 
@@ -171,6 +191,8 @@ void EjRePlotAn(TString fileName)
 	   hFrame->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
 	   
 	   //---------------------------------------------------------------
+	   if(det == "eemc" && i == 0) i = -1;
+	   
 	   bGrPhy_sys[i+1][4 - j]->SetFillColor(1);
 	   bGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
 	   yGrPhy_sys[i+1][4 - j]->SetFillColor(2);
@@ -204,7 +226,8 @@ void EjRePlotAn(TString fileName)
 	   TLine* L1Temp = new TLine(1.95, 0, 9.7, 0);
 	   L1Temp->SetLineStyle(7);
 	   L1Temp->Draw("same");
-	   //------------------------------------------------	 
+	   //------------------------------------------------
+	   if(det == "eemc" && i == -1) i = 0;
        }
    }
    

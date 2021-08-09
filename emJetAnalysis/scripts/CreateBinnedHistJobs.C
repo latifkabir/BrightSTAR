@@ -13,7 +13,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //TString funcName = "EjCreateBinnedHist";
     TString funcName = "EjCreateBinnedHistExtended";
     //TString jobName = "EjCreateBinnedHisR17G1_3Pass0";
-    TString jobName = "EjCreateBinnedHistExtPass5ThreeOrMorePh";
+    TString jobName = "EjCreateBinnedHistExtPass5_3PhTESTR15";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -59,12 +59,13 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += ",";
 	argList += run;
 	//argList += ")"; //<--------------- Update Here, min number of photon 
-        argList += ", 3)"; //<--------------- Update Here, min number of photon 
+	argList += ", 3)"; //<--------------- Update Here, min number of photon 
 	
 	//---------------------------------------------------------------------
 	
 	cout << (funcName + argList)<<endl;
 	jobList.push_back(string(funcName + argList));
     }
+    TStScheduler::mCopyToExeHost = 0;
     TStScheduler::SubmitJob(jobList, jobName);
 }

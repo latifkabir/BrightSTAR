@@ -8,6 +8,8 @@
 
 - Alternatively, you can get full runlist from the runLog browser by selecting run period and trigger setup.
 
+- The distinction of different runlists (fms, phys etc) within same run period comes from different data stream and the fact that physics trigger of any perticular stream (say fms) might not be evevated to physics yet, though other stream are already evevated to physics. For example the first day of data taking for FMS stream is always later than that for physics stream.
+
 ## Trigger Database (JSON):
 - You can just use `TStATrigDef::MakeTrigIdDB()` with appropriate DB port number. For a list of port numbers fro variuos runs see: `https://drupal.star.bnl.gov/STAR/comp/db/onlinedb/online-server-port-map`. 
 
