@@ -224,7 +224,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 
 	    //Exclude FMS small-bs3 trigger that gives ring of fire issue.
 	    //The ring of fire is a real problem. It gives lots of unphysical jets i.e. jets with E > s /2 or X_F > 1.0. It must be removed for any reliable analysis.
-	    // if(det == "fms") //!!!!! Disabled for Run 17
+	    // if(det == "fms") 
 	    // {
 	    	// if(skimEvent->GetTrigFlag(5)) 
 	    	//     continue;
@@ -317,14 +317,14 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 				
 		if(fabs(xf) < 0 || fabs(xf) > 1)
 		{
-		    cout << "Unphysical x_F value. Investigate ...."<< "X_F: "<<xf <<"\t Eng: "<< eng <<endl;
+		    //cout << "Unphysical x_F value. Investigate ...."<< "X_F: "<<xf <<"\t Eng: "<< eng <<endl;
 		    continue;
 		}
 		
 		if(nPhotons <= 0)
 		    continue;
 
-		if(eng > (sqrt_s / 2.0) || eng < 20)
+		if(eng > (sqrt_s / 2.0) || eng < 20 || eng > 100)
 		    continue;
 
 		phi_b = phi;
@@ -335,7 +335,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    bHistPtVsXfNp->Fill(xf, pt);
 		}
 		
-		if(nPhotons == 2)
+		if(nPhotons == 1) //!!!!!!!!!!! To AAccomodate PWG Request!!!!!!!!!!
 		{
 		    bHist2p[bSpin_i]->Fill(phi_b, xf);
 		    bHistPtVsXf2p->Fill(xf, pt);

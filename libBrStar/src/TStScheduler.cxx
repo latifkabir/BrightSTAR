@@ -44,7 +44,7 @@ Int_t TStScheduler::mJobThreshold = 100;
 Int_t TStScheduler::mSleepTime = 30; //In minutes
 Int_t TStScheduler::mRunIncrement = 20;
 Int_t TStScheduler::mMaxFilesPerJob = 5;
-Int_t TStScheduler::mCopyToExeHost = 1;
+Int_t TStScheduler::mCopyToExeHost = 0;
 Int_t TStScheduler::mJobCounter = 0;
 Int_t TStScheduler::mInitCounter = 0;
 
@@ -98,8 +98,8 @@ void TStScheduler::SubmitJob(vector <string> jobList, TString jobName)
     {
 	condorConfig_out << str <<endl;
     }
-  
-    condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+    if(mCopyToExeHost)
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_in.close();
 
     //======================= Get File Path and wtite to condor file descriptor ===================================
@@ -117,7 +117,10 @@ void TStScheduler::SubmitJob(vector <string> jobList, TString jobName)
     {
 	rootCommand = jobList[job];
 	rootCommand.ReplaceAll("\"", "\\\"\"");
-	condorConfig_out << "Arguments   =  \"-c '" << "echo \"\""<< rootCommand << "\"\" | root4star -l -b'\"" <<endl;
+	if(mCopyToExeHost)
+	    condorConfig_out << "Arguments   =  \"-c '" << "source setup.sh && echo \"\""<< rootCommand << "\"\" | root4star -l -b'\"" <<endl;
+	else
+	    condorConfig_out << "Arguments   =  \"-c '" << "source "<< starHome <<"/setup.sh && echo \"\""<< rootCommand << "\"\" | root4star -l -b "<< starHome<<"/rootlogon.C"<<" '\"" <<endl;
 	condorConfig_out << "Queue\n" << endl;
     }	    
     condorConfig_out.close();
@@ -175,7 +178,6 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    //shell_out<<"stardev"<<endl;
     if(mCopyToExeHost)
 	shell_out<<"source setup.sh"<<endl;
     else
@@ -348,7 +350,6 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    //shell_out<<"stardev"<<endl;
     if(mCopyToExeHost)
 	shell_out<<"source setup.sh"<<endl;
     else
@@ -588,7 +589,6 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    //shell_out<<"stardev"<<endl;
     if(mCopyToExeHost)
 	shell_out<<"source setup.sh"<<endl;
     else
@@ -684,7 +684,6 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
-    //shell_out<<"stardev"<<endl;
     if(mCopyToExeHost)
 	shell_out<<"source setup.sh"<<endl;
     else

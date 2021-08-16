@@ -13,7 +13,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //TString funcName = "EjCreateBinnedHist";
     TString funcName = "EjCreateBinnedHistExtended";
     //TString jobName = "EjCreateBinnedHisR17G1_3Pass0";
-    TString jobName = "EjCreateBinnedHistExtPass5_3PhTESTR15";
+    TString jobName = "R15EjCreateBinnedHistExtPass5_1PhAllPh";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -58,8 +58,8 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += run;
 	argList += ",";
 	argList += run;
-	//argList += ")"; //<--------------- Update Here, min number of photon 
-	argList += ", 3)"; //<--------------- Update Here, min number of photon 
+	argList += ")"; //<--------------- Update Here, min number of photon 
+	//argList += ", 3)"; //<--------------- Update Here, min number of photon 
 	
 	//---------------------------------------------------------------------
 	

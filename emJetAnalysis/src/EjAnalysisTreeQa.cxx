@@ -122,18 +122,12 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	h1nJets_all->Fill(jetEvent->GetNumberOfJets());
 	vtxZ = skimEvent->GetVertexZ();
 	
-	// for(Int_t t = 0; t < 9; ++t) //Moved to the end of event loop
-	// {
-	//     if(skimEvent->GetTrigFlag(t))
-	// 	h1TrigType->Fill(t);
-	// }
-
 	//Exclude FMS small-bs3 trigger that gives ring of fire issue. But this removes most of high energetic jets.
-	if(det == "fms")
-	{
-	    if(skimEvent->GetTrigFlag(5))
-		continue;
-	}
+	// if(det == "fms")
+	// {
+	//     if(skimEvent->GetTrigFlag(5))
+	// 	continue;
+	// }
 	//Alternative way to reduce ring of fire, require: BBCMult > 2 and TofMult > 2
 	
 	nJets = 0;	
@@ -151,9 +145,6 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	    ++nJets;
 	    eng = jet->GetE();
 	    pt = jet->GetPt();
-
-	    if(j == 0)
-		h1vtxZ->Fill(vtxZ);
 	    
 	    h1nPhotonsTow->Fill(jet->GetNumberOfTowers());
 	    h1nPhotons->Fill(jet->GetNphotons());
@@ -214,7 +205,8 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	    {
 		if(skimEvent->GetTrigFlag(t))
 		    h1TrigType->Fill(t);
-	    }
+	    }	    
+	    h1vtxZ->Fill(vtxZ);
 	}
     }
 
