@@ -251,7 +251,6 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	    bAnError[k] = bFitFnc[k]->GetParError(0) / polB;
 
 	    bGrPhy->SetPoint(nPointsPhyB, (xfBins[k] + xfBins[k+1])*0.5 , bAn[k]);
-	    //bGrPhy->SetPoint(nPointsPhyB, (xfBins[k] + xfBins[k+1])*0.5*255.0 , bAn[k]); //Test for Run 17
 	    bGrPhy->SetPointError(nPointsPhyB, 0, bAnError[k]);
 	    ++nPointsPhyB;		    
 	}
@@ -313,16 +312,11 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     TGraphErrors *znGr = new TGraphErrors(9, x_z, y_z, 0, y_zerr);
     znGr->SetName("znGrAll");
     
-
     znGr2->Write();
     znGr3->Write();
     znGr->Write();
 
-
     //Run 11 Mriganka's Result
     Double_t x_mm[] = {41.18, 45.96, 50.87, 55.78, 61.48, 69.17, 81.64};
-    Double_t y_mm[] = {0.0132, 0.0080, 0.0135, 0.0170, 0.0224, 0.0250, 0.0313};
-
-
-    
+    Double_t y_mm[] = {0.0132, 0.0080, 0.0135, 0.0170, 0.0224, 0.0250, 0.0313};    
 }

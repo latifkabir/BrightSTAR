@@ -414,6 +414,8 @@ void EjCreateBinnedHistToCompare(Int_t fillNo, TString fileNamePrefix, TString d
 
 	    if(p_b == -1 || p_y == -1)
 		continue;
+
+	    dT = (evtTime - startTime) / 3600.0;
 	    
 	    pol_b = p_b + dpdt_b*dT;
 	    pol_y = p_y + dpdt_y*dT;

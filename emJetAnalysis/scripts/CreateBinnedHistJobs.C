@@ -13,7 +13,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //TString funcName = "EjCreateBinnedHist";
     TString funcName = "EjCreateBinnedHistExtended";
     //TString jobName = "EjCreateBinnedHisR17G1_3Pass0";
-    TString jobName = "R15EjCreateBinnedHistExtPass5_1PhAllPh";
+    TString jobName = "R15EEmcEjCreateBinnedHistExtPass4_AllPh";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -26,7 +26,9 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //------- 2.Change Here the path and file prefix ---------------
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmasking_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/fms/nanoDst/NanoJetTree_EjRunEmJetTreeMaker_";
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/fms/nanoDst/NanoJetTree_EjRunEmJetTreeMaker_";
+
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/scratch/EmJetEEmcTowPass4Merged/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmaskingUe_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run17/pass0/Run17FmsEmJetGr1_3/NanoJetTree_EjRunEmJetTreeMaker_";
@@ -54,7 +56,8 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += run;
 	argList += ",\"";
 	argList += filePrefix;
-	argList += "\",\"fms\","; //<------ Change detector
+	//argList += "\",\"fms\","; //<------ Change detector
+	argList += "\",\"eemc\","; //<------ Change detector
 	argList += run;
 	argList += ",";
 	argList += run;
@@ -66,6 +69,5 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	cout << (funcName + argList)<<endl;
 	jobList.push_back(string(funcName + argList));
     }
-    TStScheduler::mCopyToExeHost = 0;
     TStScheduler::SubmitJob(jobList, jobName);
 }

@@ -72,16 +72,24 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     
     Double_t etaMin;
     Double_t etaMax;
+    Double_t engMin;
+    Double_t engMax;
     if(det == "fms")
     {
 	//limit jet axis within 2.8 - 3.8 following Carl's suggestion in spin pwg  mailing list 2019-11-22 email.
 	etaMin = 2.8;  //2.4;
 	etaMax = 3.8;  //4.5;
+
+	engMin = 20;
+	engMax = 100;
     }
     else if(det == "eemc")
     {
 	etaMin = 1.0; //0.8;
 	etaMax = 2.0; //2.5;
+
+	engMin = 0;
+	engMax = 20;	
     }
     else
     {
@@ -260,7 +268,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		theta =  2 * atan( exp(-eta) );
 		eng = jet->GetE();
 		ptRaw = jet->GetPt();
-		pt = jet->GetPt() - jet->GetUedPt();
+		pt = jet->GetPt();            // !!!!!!!!!!! Disabled UE correction for EEMC
+		//pt = jet->GetPt() - jet->GetUedPt();
 		nPhotons = jet->GetNumberOfTowers();
 
 		if(eta < etaMin || eta > etaMax) //Conside only EEMC and FMS coverage
@@ -270,7 +279,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		h1E->Fill(eng);
 		h1Pt->Fill(pt);
 
-		//!!!!!!! WARNING: DO NOT USE FOR YOUR RESULT!!!! 
+		//!!!!!!! WARNING: DO NOT USE FOR YOUR RESULT NOW!!!! 
 		// pt = EjJetPtCorr(pt, eng);
 		// eng = EjJetEngCorr(eng); 
 
@@ -284,7 +293,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		LV.SetPtEtaPhiE(pt, eta, phi, eng);
 		xf = 2.0*(LV.Pz()) / sqrt_s;
 		
-		h1Xf->Fill(xf);
+		//h1Xf->Fill(xf); //Moved to the event loop
 		h1Eng->Fill(eng);
 		
 		//Trigger dependent Pt cuts: See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22.
@@ -324,7 +333,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		if(nPhotons <= 0)
 		    continue;
 
-		if(eng > (sqrt_s / 2.0) || eng < 20 || eng > 100)
+		if(eng > (sqrt_s / 2.0) || eng < engMin || eng > engMax)
 		    continue;
 
 		phi_b = phi;
@@ -335,7 +344,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    bHistPtVsXfNp->Fill(xf, pt);
 		}
 		
-		if(nPhotons == 1) //!!!!!!!!!!! To AAccomodate PWG Request!!!!!!!!!!
+		if(nPhotons == 2) 
 		{
 		    bHist2p[bSpin_i]->Fill(phi_b, xf);
 		    bHistPtVsXf2p->Fill(xf, pt);
@@ -348,10 +357,11 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		h1nPhotons->Fill(nPhotons);
 		h2nPhotonsVsPt->Fill(pt, nPhotons);
 		h2nPhotonsVsXf->Fill(xf, nPhotons);
+
+		h1Xf->Fill(xf); //Moved here to calculate average Xf for EEMC plots for pwg group
 		
 		eventAccepted = kTRUE;
 	    }
-
 	    //------------ Calculate Average Polarization -----------------------------------
 	    if(!eventAccepted)
 		continue;
@@ -368,6 +378,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 
 	    if(p_b == -1 || p_y == -1)
 		continue;
+
+	    dT = (evtTime - startTime) / 3600.0;
 	    
 	    pol_b = p_b + dpdt_b*dT;
 	    pol_y = p_y + dpdt_y*dT;
