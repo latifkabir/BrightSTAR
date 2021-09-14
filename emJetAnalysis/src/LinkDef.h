@@ -32,4 +32,6 @@
 #pragma link C++ function EjRePlotAn;                   // Re-plot Physics AN results with systematic errors
 #pragma link C++ function EjRePlotAnExt;                // Re-plot Physics AN results with systematic errors for Extented case
 #pragma link C++ function EjCompareAnWithRun11;         // Compare Run 17 results with run 11 results
+#pragma link C++ function EjCompareROFeffect;           // Compare FMS AN with and without ROF causing trigger SM-BS3 
+
 #endif

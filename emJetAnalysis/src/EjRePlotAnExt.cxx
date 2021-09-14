@@ -6,7 +6,7 @@
 
 #include "RootInclude.h"
 
-void EjRePlotExt()
+void EjRePlotAnExt()
 {
     TFile *f1Ph = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Run15FmsEmJetAn_1Photon_And_All_photons_with_smbs3.root");
     TFile *f2And3Ph = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Run15FmsEmJetAn_3Ph_with_smbs3_20-100GeV.root");
@@ -60,21 +60,22 @@ void EjRePlotExt()
 	gr3PhOrMore_sys->SetPointError(i, x*0.03, y*0.20);
     }
     
-    gr1Ph_sys->Draw();
-    gr1Ph->Draw("same");
+    // gr1Ph_sys->Draw();
+    //gr1Ph->Draw("same");
+    gr1Ph->Draw("AP"); // Fow without Sys only
 
-    gr2Ph_sys->Draw("same");
+    // gr2Ph_sys->Draw("same");
     gr2Ph->Draw("same");
 
-    gr3PhOrMore_sys->Draw("same");
+    // gr3PhOrMore_sys->Draw("same");
     gr3PhOrMore->Draw("same");
 
-    gr1Ph_sys->SetDrawOption("a2");
-    gr1Ph->SetDrawOption("p same");
+    // gr1Ph_sys->SetDrawOption("a2");
+    // gr1Ph->SetDrawOption("p same");
 
-    gr2Ph_sys->SetDrawOption("2");
-    gr2Ph->SetDrawOption("p same");
+    // gr2Ph_sys->SetDrawOption("2");
+    // gr2Ph->SetDrawOption("p same");
 
-    gr3PhOrMore_sys->SetDrawOption("2");
-    gr3PhOrMore->SetDrawOption("p same");    
+    // gr3PhOrMore_sys->SetDrawOption("2");
+    // gr3PhOrMore->SetDrawOption("p same");    
 }

@@ -30,7 +30,7 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     TH2D *yHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
-    Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
+    const Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
     for(Int_t i = 0; i < kSpinBins; ++i)
     {
@@ -94,6 +94,13 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 100, -200, 200);
     TH1D *h1Trig = new TH1D("h1Trig", "Trigger Distribution (Without any cut)", 10, 0, 10);
 
+    TH1D *hAvgXf[kEnergyBins][nPtBins];
+    for(Int_t i = 0; i < kEnergyBins; ++i)
+    {
+	for(Int_t j = 0; j < nPtBins; ++j)
+	    hAvgXf[i][j] = new TH1D(Form("hAvgXf%i_%i", i, j), Form("hAvgXf%i_%i", i, j), 100, 0, 1.0);
+    }
+    
     if(det == "fms")
     {
 	h1Trig->GetXaxis()->SetBinLabel(1,"FMS JP0");
@@ -139,7 +146,10 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
     Double_t jetY;
     Double_t vtxZ;
     Double_t rt;
-
+    Double_t xf;
+    TLorentzVector LV; 
+    Double_t sqrt_s;
+    
     Double_t phi_y;
     Double_t phi_b;
 
@@ -242,6 +252,11 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    evtTime = skimEvent->GetUnixTime();
 	    eventAccepted = kFALSE;
 
+	    if(runNumber < 18000000)
+		sqrt_s = 200;        //Run 15
+	    else
+		sqrt_s = 510;        //Run 17
+	    
 	    //Trigger distribution without cuts
 	    if(skimEvent->GetTrigFlag(0)) //Alternatively use: if(skimEvent->IsTrigBitSet(0)) etc
 		h1Trig->Fill(0);
@@ -264,9 +279,10 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 	    
 	    //Exclude FMS small-bs3 trigger that gives ring of fire issue.
 	    //The ring of fire is a real problem. It gives lots of unphysical jets i.e. jets with E > s /2 or X_F > 1.0. It must be removed for any reliable analysis.
+	    
 	    // if(det == "fms")
 	    // {
-	    // 	if(skimEvent->GetTrigFlag(5)) //<---------------- !!!!!!!!!!!!!!!!!!!!!!!!!!! Disabled for Now !!!!!!!!!!!!!!!!!
+	    // 	if(skimEvent->GetTrigFlag(5)) 
 	    // 	    continue;
 	    // }
 	    
@@ -353,7 +369,11 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		    phi_b = phi;
 		    phi_y = -1.0*TMath::Pi() - phi;		
 		}
-	    
+
+		LV.SetPtEtaPhiE(pt, eta, phi, eng);
+		xf = 2.0*(LV.Pz()) / sqrt_s;
+		xf = fabs(xf);
+		
 		bHist[bSpin_i][eng_i][nPhotons_i]->Fill(phi_b, pt);
 		yHist[ySpin_i][eng_i][nPhotons_i]->Fill(phi_y, pt);
 
@@ -374,6 +394,15 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		h1E->Fill(eng);
 		h1Pt->Fill(pt);
 		h1nPhotons->Fill(nPhotons);
+
+		for(Int_t t = 0; t < nPtBins; ++t)
+		{
+		    if(pt >= ptBins[t] && pt < ptBins[t + 1])
+		    {
+			hAvgXf[eng_i][t]->Fill(xf);
+			break;
+		    }
+		}
 	    }
 
 	    //------------ Calculate Average Polarization -----------------------------------

@@ -47,14 +47,13 @@ void EjRePlotAn(TString fileName, TString det)
 	    name = Form("Sys_yEbin%i_PhotonBin%i", i, j);
 	    yGrPhy_sys[i][j] = (TGraphErrors*)file->Get(name);
 
-	    bGrPhy[i][j]->SetTitle("");
+	    bGrPhy[i][j]->SetTitle(""); //Remove title 
 	    yGrPhy[i][j]->SetTitle("");
 	    bGrPhy_sys[i][j]->SetTitle("");
 	    yGrPhy_sys[i][j]->SetTitle("");
 	}
     }
     file->Close();
-
 
     Double_t yMax = 0.08;	
     Int_t canvasCount = 1;
@@ -170,7 +169,6 @@ void EjRePlotAn(TString fileName, TString det)
 	   hFrame->GetYaxis()->SetTitleFont(43);
 	   hFrame->GetYaxis()->SetTitleSize(16);
 	   hFrame->GetYaxis()->SetTitleOffset(5);
-
 	   hFrame->GetYaxis()->CenterTitle();
 	   hFrame->GetYaxis()->SetNdivisions(505);
 
@@ -227,6 +225,19 @@ void EjRePlotAn(TString fileName, TString det)
 	   L1Temp->SetLineStyle(7);
 	   L1Temp->Draw("same");
 	   //------------------------------------------------
+	   if(det == "eemc" && i == -1 && j == 4) //xF scale on the top for eemc
+	   {
+	       TGaxis *axis = new TGaxis(1.5, yMax, 10, yMax, 1.5, 10.0, 510, "-L");
+	       axis->SetTitle("<|x_{F}|>");
+	       axis->SetTitleSize(0.1);
+	       axis->SetTitleOffset(1.0);
+	       axis->SetLabelSize(0.1);
+	       //axis->SetTextFont(72);
+	       axis->SetLabelOffset(0.025);
+	       axis->SetTickLength(0.06);
+	       
+	       axis->Draw();
+	   }
 	   if(det == "eemc" && i == -1) i = 0;
        }
    }

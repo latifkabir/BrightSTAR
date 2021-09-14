@@ -10,10 +10,10 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 {
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
-    //TString funcName = "EjCreateBinnedHist";
-    TString funcName = "EjCreateBinnedHistExtended";
+    TString funcName = "EjCreateBinnedHist";
+    //TString funcName = "EjCreateBinnedHistExtended";
     //TString jobName = "EjCreateBinnedHisR17G1_3Pass0";
-    TString jobName = "R15EEmcEjCreateBinnedHistExtPass4_AllPh";
+    TString jobName = "R15EEmcEjCreateBinnedHist4AvgXf";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -26,6 +26,7 @@ void CreateBinnedHistJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     //------- 2.Change Here the path and file prefix ---------------
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmasking_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
+
     TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/fms/nanoDst/NanoJetTree_EjRunEmJetTreeMaker_";
 

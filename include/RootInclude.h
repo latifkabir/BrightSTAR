@@ -72,6 +72,7 @@
 #include <TCutG.h>
 #include <TVector3.h>
 #include <TRefArray.h>
+#include <TGaxis.h>
 
 #include <TParticle.h>
 
