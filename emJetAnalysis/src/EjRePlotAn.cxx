@@ -98,7 +98,6 @@ void EjRePlotAn(TString fileName, TString det)
 	}
     }
 
-
    gStyle->SetOptStat(0);
 
    TCanvas *C = (TCanvas*) gROOT->FindObject("C");
@@ -124,7 +123,6 @@ void EjRePlotAn(TString fileName, TString det)
        cout << "Invalid detector" <<endl;
        return;
    }
-
    
    // Number of PADS
    const Int_t Nx = Kx;

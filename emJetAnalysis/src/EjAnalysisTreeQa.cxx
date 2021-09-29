@@ -29,7 +29,7 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
     
     TFile *outFile = new TFile(outName, "recreate");
     TH1D *h1nJets_all = new TH1D("h1nJets_all", "Number of Jets from All [TPC/BEMC + EEMC + FMS]", 10, 0, 10);
-    TH1D *h1nJets  = new TH1D("h1nJets ", "Number of Jets [FMS or EEMC]", 10, 0, 10);
+    TH1D *h1nJets  = new TH1D("h1nJets ", "Number of Jets [FMS or EEMC]; Number of EM-jets per event", 10, 0, 10);
     TH1D *h1spinB = new TH1D("h1spinB", "Blue beam spin; Blue beam spin", 5, -2, 2);
     TH1D *h1spinY = new TH1D("h1spinY", "Yellow beam spin; Yellow beam spin", 5, -2, 2);
     TH1D *h1UnixTime = new TH1D("h1UnixTime", "Event Unix Time; Event Unix Time", 1000000, 1426e6, 1427e6);
@@ -50,7 +50,13 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
     TH1D *h1nPhotonsTow = new TH1D("h1nPhotonsTow", "number of photons in EM jets from tower counts; Number of Photons", 20, 0, 20);
     TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets from mJets.mNphotons; Number of Photons", 20, 0, 20);
     TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 200, -200, 200);
-        
+
+    TH1D *h1EbyPhNo[5];
+    for(Int_t i = 0; i < 5; ++i)
+	h1EbyPhNo[i] = new TH1D (Form("h1EbyPhNo%i",i), "EM Jet E By Photon Number; Jet E [GeV]", 200, 0.0, 100.0);
+    TH1D *h1nJetsPerRun = new TH1D("h1nJetsPerRun", "Number of Jets per Run", 5, 0, 5);
+
+    
     TH2D *h2EvsPt = new TH2D("h2EvsPt", "Eng vs Pt; Pt [GeV/C]; E [GeV]", 100, 0, 20, 100, 0, 100);
     TH2D *h2PtvsE = new TH2D("h2PtvsE", "Pt vs E; E [GeV]; Pt [GeV/c]", 100,  0, 100, 100, 0, 20);
     TH2D *h2nPhVsEng = new TH2D("h2nPhVsEng", "Number of photons vs Eng; E [Gev]; No. of Photons", 100, 0, 100, 20, 0, 20);
@@ -104,6 +110,7 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
     
     Double_t jetX, jetY, eta, phi, theta, vtxZ, eng, pt;
     Int_t nJets = 0;
+    Int_t totJets = 0;
     
     cout << "Total Entries to be processed: "<< ch->GetEntries() <<endl;
 
@@ -195,10 +202,14 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	    // {
 	    // 	particle = jet->GetParticle(k);
 	
-	    // }	    
+	    // }
+
+	    if(jet->GetNphotons() >= 0 && jet->GetNphotons() < 5)
+		h1EbyPhNo[jet->GetNphotons()]->Fill(eng);
 	}
 	h1nJets->Fill(nJets);
-
+	totJets += nJets;
+	
 	if(nJets > 0)
 	{
 	    for(Int_t t = 0; t < 9; ++t)
@@ -210,6 +221,9 @@ void EjAnalysisTreeQa(TString inFileName, TString outName, TString det)
 	}
     }
 
+    h1nJetsPerRun->SetBinContent(1, ch->GetEntries());
+    h1nJetsPerRun->SetBinContent(2, totJets);
+    
     outFile->Write();
     outFile->Close();
     delete ch;

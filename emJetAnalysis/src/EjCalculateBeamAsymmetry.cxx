@@ -178,7 +178,7 @@ void EjCalculateBeamAsymmetry(TString inFileName, TString outName, TString det)
     TF1 *yFitFnc[kEnergyBins][kPhotonBins][nPtBins];
     TGraphErrors *bGrPhy[kEnergyBins][kPhotonBins];
     TGraphErrors *yGrPhy[kEnergyBins][kPhotonBins];
-    TH1D *hChiSq = new TH1D("hChiSq", "Chi Sq / NDF Distribution", 50, 0, 0);
+    TH1D *hChiSq = new TH1D("hChiSq", "Chi Sq / NDF Distribution; #chi^{2} / NDF", 50, 0, 0);
     Int_t nPointsB;
     Int_t nPointsY;
     Int_t nPointsPhyB;
@@ -335,7 +335,8 @@ void EjCalculateBeamAsymmetry(TString inFileName, TString outName, TString det)
 	    for (int j = 0; j < 3; j++)
 	    {
 		asymPlot->GetPlot(j,i)->SetXRange( varMins[i], varMaxs[i]);
-		asymPlot->GetPlot(j,i)->SetYRange( -0.02, 0.02);
+		//asymPlot->GetPlot(j,i)->SetYRange( -0.02, 0.02); //Run 15
+		asymPlot->GetPlot(j,i)->SetYRange( -0.01, 0.01);   //Run 17
 
 		// if(i == 4 && j == 0) // legend causes shift in x axis base for the panel
 		// {

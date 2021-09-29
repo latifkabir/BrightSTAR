@@ -17,6 +17,7 @@
 #pragma link C++ function RunFmsJetFinderPro;                    // Run FMS Jet Finder for Simulated Data (used for analysis)
 #pragma link C++ function FmsSimJetQA;                           // Make QA plots for the FMS Jet from simulated data
 #pragma link C++ function FmsSimCompareDataVsSim;                // Compare FMS simulation and data
+#pragma link C++ function FmsSimCompareDataVsSimMatchDataToSim;  // Compare FMS simulation and data by matching data #events to that of sim pt
 #pragma link C++ function FmsSimGenVsRecPion;                    // Compare FMS simulation and data for pion mass
 #pragma link C++ function FmsSimMakeResponseMatrix;              // Generate Response Matrix or 2D hist for particle vs detector level quantities
 

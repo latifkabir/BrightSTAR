@@ -204,7 +204,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
     TGraphErrors *bGrPhy_sys[kEnergyBins][kPhotonBins];
     TGraphErrors *yGrPhy_sys[kEnergyBins][kPhotonBins];
     Double_t sysErrs[5] = {0.35, 0.35, 0.25, 0.2, 0.2}; // Systematic error in percent due to event misidentification for 1 - 5 photon cases
-    
+    TH1D *hChiSq = new TH1D("hChiSq", "#chi^{2} Distribution; #chi^{2}", 50, 0, 0);    
     for(Int_t i = 0; i < kEnergyBins; ++i)
     {
 	for(Int_t j = 0; j < kPhotonBins; ++j)
@@ -305,6 +305,8 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 		    
 		    ++nPointsPhyB;
 
+		    //hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare() / bFitFnc[i][j][k]->GetNDF());
+		    hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare());
 		    if(i < 3 && j < 5)
 		    {
 			h1FoldedRes[i][k]->SetBinContent(j + 1, bAn[i][j][k]);

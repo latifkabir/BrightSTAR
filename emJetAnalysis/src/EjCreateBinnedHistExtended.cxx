@@ -16,8 +16,7 @@ using namespace std;
 
 
 void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString det, Int_t firstRun, Int_t lastRun, Int_t minNphotons)
-{
-   
+{   
     // We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
     
     TString outName = (TString)"BinnedHist_ext_" + to_string(fillNo) + (TString)".root";
@@ -80,16 +79,16 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	etaMin = 2.8;  //2.4;
 	etaMax = 3.8;  //4.5;
 
-	engMin = 20;
-	engMax = 100;
+	engMin = 20;  //Overwritten later
+	engMax = 100; //Overwritten later
     }
     else if(det == "eemc")
     {
 	etaMin = 1.0; //0.8;
 	etaMax = 2.0; //2.5;
 
-	engMin = 0;
-	engMax = 20;	
+	engMin = 0;   //Overwritten later
+	engMax = 20;  //Overwritten later	
     }
     else
     {
@@ -206,9 +205,17 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 	
 	nPoints = 0;
 	if(runNumber < 18000000)
+	{
 	    sqrt_s = 200;        //Run 15
+	    engMin = 20;
+	    engMax = 100;
+	}
 	else
+	{
 	    sqrt_s = 510;        //Run 17
+	    engMin = 20;
+	    engMax = 255;
+	}
 	    		
 	Int_t nEntries = tree->GetEntries();
 	cout << "Processing run number: "<< runNumber <<endl;
@@ -346,7 +353,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    bHistPtVsXfNp->Fill(xf, pt);
 		}
 		
-		if(nPhotons == 2)  
+		//if(nPhotons == 2)  
+		if(nPhotons == 2 || nPhotons == 1)  
 		{
 		    bHist2p[bSpin_i]->Fill(phi_b, xf);
 		    bHistPtVsXf2p->Fill(xf, pt);

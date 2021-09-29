@@ -22,8 +22,8 @@
 #pragma link C++ function EjCreateBinnedHistExtended;   // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (with extended options)
 #pragma link C++ function EjCreateBinnedHistToCompare;  // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield and asymmetry to compare with Zhanwen and MMM results
 #pragma link C++ function EjCalculateANextended;        // Calculate A_N from binned histograms
-#pragma link C++ function EjCalculateFalseAN;           // Calculate false asymmetry for A_N from binned histograms
-#pragma link C++ function EjCalculateBeamAsymmetry;     // Calculate beam asymmetry
+#pragma link C++ function EjCalculateFalseAN;           // Calculate false asymmetry (fit residual) for A_N using cross-ratio formula
+#pragma link C++ function EjCalculateBeamAsymmetry;     // Calculate beam asymmetry using sum method
 #pragma link C++ function EjCalculateANdirectMethod;    // Calculate A_N from binned histograms using usual asymmetry formula
 #pragma link C++ function EjANprojection;               // Make projection plot for FMS A_N
 

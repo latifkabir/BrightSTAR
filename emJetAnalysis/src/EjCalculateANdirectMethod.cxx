@@ -103,8 +103,7 @@ void EjCalculateANdirectMethod(TString inFileName, TString outName, TString det)
 		    		    
 		    yNd = yHist[0][i][j]->GetBinContent(k + 1, l + 1);
 		    yNu = yHist[1][i][j]->GetBinContent(k + 1, l + 1);
-		    
-      		    
+		        		    
 		    //You need to ensure that the Left-Right pairing is done exactly as in the formula
 		    //----- Blue beam measured asymmetry ------------
 		    numer = (bNu - bNd);
@@ -154,13 +153,13 @@ void EjCalculateANdirectMethod(TString inFileName, TString outName, TString det)
     TF1 *yFitFnc[kEnergyBins][kPhotonBins][nPtBins];
     TGraphErrors *bGrPhy[kEnergyBins][kPhotonBins];
     TGraphErrors *yGrPhy[kEnergyBins][kPhotonBins];
+    TH1D *hChiSq = new TH1D("hChiSq", "#chi^{2} Distribution; #chi^{2}", 50, 0, 0);    
     Int_t nPointsB;
     Int_t nPointsY;
     Int_t nPointsPhyB;
     Int_t nPointsPhyY;
     Double_t polB = 0.570;   // RMS: 0.0371 in fraction
     Double_t polY = 0.5795;  // RMS: 0.0366 
-
 
     if(det == "fms")
     {
@@ -251,7 +250,8 @@ void EjCalculateANdirectMethod(TString inFileName, TString outName, TString det)
 
 		    bGrPhy[i][j]->SetPoint(nPointsPhyB, (ptBins[k] + ptBins[k+1])*0.5 , bAn[i][j][k]);
 		    bGrPhy[i][j]->SetPointError(nPointsPhyB, 0, bAnError[i][j][k]);
-		    ++nPointsPhyB;		    
+		    ++nPointsPhyB;
+		    hChiSq->Fill(bFitFnc[i][j][k]->GetChisquare());
 		}
 
 		if(yGr[i][j][k]->GetN() >= 0.5*nPhiBins)
@@ -270,7 +270,7 @@ void EjCalculateANdirectMethod(TString inFileName, TString outName, TString det)
 	    yGrPhy[i][j]->Write();
 	}
     }
-
+    hChiSq->Write();
     //------------------ Plot physics A_N --------------------
     Int_t canvasCount = 1;
 
