@@ -14,7 +14,7 @@
 
 using namespace std;
 
-void EjRePlotAn(TString fileName, TString det)
+void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
 {
     if(gSystem->AccessPathName(fileName))
     {
@@ -77,7 +77,6 @@ void EjRePlotAn(TString fileName, TString det)
 	    yGrPhy[j][i]->SetMinimum(-1.0*yMax);
 	    yGrPhy_sys[j][i]->SetMaximum(yMax);
 	    yGrPhy_sys[j][i]->SetMinimum(-1.0*yMax);
-
 	    
 	    c1->cd(canvasCount);
 
@@ -105,18 +104,25 @@ void EjRePlotAn(TString fileName, TString det)
    C = new TCanvas("C","canvas",1024,640);
    C->SetFillStyle(4000);
 
+   TFile *xfFile;
+   
    Int_t Kx;
    Int_t Ky;
    if(det == "fms")
    {
        Kx = 3;
-       Ky = 5;
+       Ky = (isMerged)? 4 : 5;
+       yMax = 0.08;
+       if(gSystem->AccessPathName("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root")) return;
+       xfFile = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root");
    }
    else if(det == "eemc")
    {
        Kx = 1;
-       Ky = 5;
-       yMax = 0.05;
+       Ky = (isMerged)? 4 : 5;
+       yMax = (isMerged)? 0.03 : 0.05;
+       if(gSystem->AccessPathName("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/EEmc_PtVsAvgXf.root")) return;
+       xfFile = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/EEmc_PtVsAvgXf.root");
    }
    else
    {
@@ -124,10 +130,18 @@ void EjRePlotAn(TString fileName, TString det)
        return;
    }
    
+   TGraphErrors *grXf[3];
+   for(Int_t i = 0; i < Kx; ++i)
+   {
+       TString name = Form("grAvgXfVsPt%i", i);
+       grXf[i] = (TGraphErrors*)xfFile->Get(name);
+   }
+   Int_t s = (isMerged)? -1 : 0;
+   
    // Number of PADS
    const Int_t Nx = Kx;
    const Int_t Ny = Ky;
-
+   Int_t maxPhI = (isMerged)? 2 : 4; //Maximum photon multiplicity index
    // Margins
    Float_t lMargin = 0.12;
    Float_t rMargin = 0.05;
@@ -158,7 +172,14 @@ void EjRePlotAn(TString fileName, TString det)
 	   Float_t xFactor = pad[0][0]->GetAbsWNDC()/pad[i][j]->GetAbsWNDC();
 	   Float_t yFactor = pad[0][0]->GetAbsHNDC()/pad[i][j]->GetAbsHNDC();
 	   
-	   TGraphErrors *hFrame = bGrPhy_sys[i+1][4 - j];
+	   TGraphErrors *hFrame;
+	   if(j == 0 && isMerged)
+	       hFrame = grXf[i];
+	   else
+	   {
+	       if(det == "eemc" && i == 0) i = -1; //For EEMC, energy bin starts from 0, while for FMS it starts from 1.
+	       hFrame  = bGrPhy_sys[i+1][maxPhI - j - s];	    
+	   }
 	  
 	   // Format for y axis
 	   hFrame->GetYaxis()->SetLabelFont(43);
@@ -185,57 +206,61 @@ void EjRePlotAn(TString fileName, TString det)
 
 	   // TICKS X Axis
 	   hFrame->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
-	   
-	   //---------------------------------------------------------------
-	   if(det == "eemc" && i == 0) i = -1;
-	   
-	   bGrPhy_sys[i+1][4 - j]->SetFillColor(1);
-	   bGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
-	   yGrPhy_sys[i+1][4 - j]->SetFillColor(2);
-	   yGrPhy_sys[i+1][4 - j]->SetFillStyle(3001);
 
-	   bGrPhy[i+1][4 - j]->SetMarkerSize(1.3);
-	   bGrPhy[i+1][4 - j]->SetMaximum(yMax);
-	   bGrPhy[i+1][4 - j]->SetMinimum(-1.0*yMax);
-	   bGrPhy_sys[i+1][4 - j]->SetMarkerSize(1.3);
-	   bGrPhy_sys[i+1][4 - j]->SetMaximum(yMax);
-	   bGrPhy_sys[i+1][4 - j]->SetMinimum(-1.0*yMax);
+	   //-------------------------------------------------------------
+	   if(j == 0 && isMerged)
+	   {
+	       if(det == "fms")
+	       {
+		   grXf[i]->SetMaximum(0.85);
+		   grXf[i]->SetMinimum(0.2);
+	       }
+	       else if(det == "eemc")
+	       {
+		   grXf[i]->SetMaximum(0.16);
+		   grXf[i]->SetMinimum(0.04);
+	       }
+	       grXf[i]->GetYaxis()->SetNdivisions(505);
+	   
+	       grXf[i]->Draw("AP");	       
+	       continue;
+	   }
+	   //---------------------------------------------------------------	  
+	   //Note: The pad is filled from bottom to top. i.e. Higher photon multiplicity is plotted first.
+	   bGrPhy_sys[i+1][maxPhI - j - s]->SetFillColor(1);
+	   bGrPhy_sys[i+1][maxPhI - j - s]->SetFillStyle(3001);
+	   yGrPhy_sys[i+1][maxPhI - j - s]->SetFillColor(2);
+	   yGrPhy_sys[i+1][maxPhI - j - s]->SetFillStyle(3001);
 
-	   yGrPhy[i+1][4 - j]->SetMarkerSize(1.3);
-	   yGrPhy[i+1][4 - j]->SetMaximum(yMax);
-	   yGrPhy[i+1][4 - j]->SetMinimum(-1.0*yMax);
-	   bGrPhy_sys[i+1][4 - j]->SetMarkerSize(1.3);
-	   yGrPhy_sys[i+1][4 - j]->SetMaximum(yMax);
-	   yGrPhy_sys[i+1][4 - j]->SetMinimum(-1.0*yMax);
+	   bGrPhy[i+1][maxPhI - j - s]->SetMarkerSize(1.3);
+	   bGrPhy[i+1][maxPhI - j - s]->SetMaximum(yMax);
+	   bGrPhy[i+1][maxPhI - j - s]->SetMinimum(-1.0*yMax);
+	   bGrPhy_sys[i+1][maxPhI - j - s]->SetMarkerSize(1.3);
+	   bGrPhy_sys[i+1][maxPhI - j - s]->SetMaximum(yMax);
+	   bGrPhy_sys[i+1][maxPhI - j - s]->SetMinimum(-1.0*yMax);
+
+	   yGrPhy[i+1][maxPhI - j - s]->SetMarkerSize(1.3);
+	   yGrPhy[i+1][maxPhI - j - s]->SetMaximum(yMax);
+	   yGrPhy[i+1][maxPhI - j - s]->SetMinimum(-1.0*yMax);
+	   bGrPhy_sys[i+1][maxPhI - j - s]->SetMarkerSize(1.3);
+	   yGrPhy_sys[i+1][maxPhI - j - s]->SetMaximum(yMax);
+	   yGrPhy_sys[i+1][maxPhI - j - s]->SetMinimum(-1.0*yMax);
 	    
-	   bGrPhy_sys[i+1][4 - j]->Draw();
-	   bGrPhy[i+1][4 - j]->Draw("same");
-	   yGrPhy_sys[i+1][4 - j]->Draw("same");
-	   yGrPhy[i+1][4 - j]->Draw("same");
+	   bGrPhy_sys[i+1][maxPhI - j - s]->Draw();
+	   bGrPhy[i+1][maxPhI - j - s]->Draw("same");
+	   yGrPhy_sys[i+1][maxPhI - j - s]->Draw("same");
+	   yGrPhy[i+1][maxPhI - j - s]->Draw("same");
 	   
-	   bGrPhy_sys[i+1][4 - j]->SetDrawOption("a2");	    
-	   bGrPhy[i+1][4 - j]->SetDrawOption("p same");
+	   bGrPhy_sys[i+1][maxPhI - j - s]->SetDrawOption("a2");	    
+	   bGrPhy[i+1][maxPhI - j - s]->SetDrawOption("p same");
 
-	   yGrPhy_sys[i+1][4 - j]->SetDrawOption("2 same");
-	   yGrPhy[i+1][4 - j]->SetDrawOption("p same");
+	   yGrPhy_sys[i+1][maxPhI - j - s]->SetDrawOption("2 same");
+	   yGrPhy[i+1][maxPhI - j - s]->SetDrawOption("p same");
 
 	   TLine* L1Temp = new TLine(1.95, 0, 9.7, 0);
 	   L1Temp->SetLineStyle(7);
 	   L1Temp->Draw("same");
 	   //------------------------------------------------
-	   if(det == "eemc" && i == -1 && j == 4) //xF scale on the top for eemc
-	   {
-	       TGaxis *axis = new TGaxis(1.5, yMax, 10, yMax, 1.5, 10.0, 510, "-L");
-	       axis->SetTitle("<|x_{F}|>");
-	       axis->SetTitleSize(0.1);
-	       axis->SetTitleOffset(1.0);
-	       axis->SetLabelSize(0.1);
-	       //axis->SetTextFont(72);
-	       axis->SetLabelOffset(0.025);
-	       axis->SetTickLength(0.06);
-	       
-	       axis->Draw();
-	   }
 	   if(det == "eemc" && i == -1) i = 0;
        }
    }

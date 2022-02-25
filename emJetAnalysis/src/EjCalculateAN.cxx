@@ -203,7 +203,8 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
     //For systematic error bars: Duplicate all graphs
     TGraphErrors *bGrPhy_sys[kEnergyBins][kPhotonBins];
     TGraphErrors *yGrPhy_sys[kEnergyBins][kPhotonBins];
-    Double_t sysErrs[5] = {0.35, 0.35, 0.25, 0.2, 0.2}; // Systematic error in percent due to event misidentification for 1 - 5 photon cases
+    //Double_t sysErrs[5] = {0.35, 0.35, 0.25, 0.2, 0.2}; // Systematic error in percent due to event misidentification for 1 - 5 photon cases
+    Double_t sysErrs[5] = {0.15, 0.20, 0.20, 0.20, 0.20}; // Systematic error in percent due to event misidentification for 1 & 2, 3, 4 & 5 photon cases
     TH1D *hChiSq = new TH1D("hChiSq", "#chi^{2} Distribution; #chi^{2}", 50, 0, 0);    
     for(Int_t i = 0; i < kEnergyBins; ++i)
     {
@@ -383,7 +384,7 @@ void EjCalculateAN(TString inFileName, TString outName, TString det, Int_t run =
 	
 		//if(i == 4 && j == 0) asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  0, "x_{F} > 0");
 		//if(i == 4 && j == 0) asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry,  8, "x_{F} < 0");
-		    
+		//Note: The pad is filled from bottom to top. i.e. Higher photon multiplicity is plotted first.		  
 		asymPlot->GetPlot(j,i)->Add(bGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 0);
 		asymPlot->GetPlot(j,i)->Add(yGrPhy[j+1][4 - i], Plot::Point | Plot::Erry, 8);
 	

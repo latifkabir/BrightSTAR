@@ -7,7 +7,9 @@
 #include "RootInclude.h"
 #include "Hists.h"
 
-void GetAverageXf(TString fileName, TString det = "eemc")
+using namespace std;
+
+void EjGetAverageXf(TString fileName, TString det = "eemc")
 {
     if(gSystem->AccessPathName(fileName))
     {
@@ -44,11 +46,22 @@ void GetAverageXf(TString fileName, TString det = "eemc")
 	minEbin = 1;
 	maxEbin = 4;
     }
-    
-    TGraph *gr[3];
-    gr[0] = new TGraph();
-    gr[1] = new TGraph();
-    gr[2] = new TGraph();
+
+    //Fms
+    float varMins[3] = { 1.9, 1.7, 2.0};
+    float varMaxs[3] = { 5.2, 7.75, 10.0};
+    //EEMC
+    // float varMins[3] = { 1.45, 1.7, 2.0};
+    // float varMaxs[3] = { 10.0, 7.75, 10.0};    
+    TGraphErrors *gr[3];
+    for(Int_t i = 0; i < 3; ++i)
+    {
+	gr[i] = new TGraphErrors();
+	gr[i]->SetName(Form("grAvgXfVsPt%i", i));
+	gr[i]->SetMarkerColor(2);
+	gr[i]->SetMarkerStyle(20);
+	gr[i]->GetXaxis()->SetLimits(varMins[i], varMaxs[i]);
+    }
     Int_t nPoints;
     Double_t avgPt = 0;
     Int_t k;
@@ -60,6 +73,8 @@ void GetAverageXf(TString fileName, TString det = "eemc")
 	{
 	    TString name = Form("hAvgXf%i_%i", i, j);
 	    hAvgXf[i][j] = (TH1D*)f->Get(name);
+	    if(hAvgXf[i][j]->GetEntries() == 0)
+		continue;
 	    avgPt = (ptBins[j] + ptBins[j+1]) / 2.0;
 	    k = (det == "eemc")? i : i - 1; 
 	    gr[k]->SetPoint(nPoints, avgPt, hAvgXf[i][j]->GetMean());
@@ -73,18 +88,30 @@ void GetAverageXf(TString fileName, TString det = "eemc")
     if(det == "eemc")
     {
 	gr[0]->Draw("AP");
+	gr[0]->GetXaxis()->SetLimits(varMins[0], varMaxs[0]);
+	TFile *outFile = new TFile("PtVsAvgXf.root", "recreate");
+	gr[0]->Write();
+	outFile->Close();
 	return;
     }
 
-
-    PanelPlot* panelP = new PanelPlot(c3, 1,3,1, "xFVsPt");
-
+    TCanvas* c3 = new TCanvas("cavgXf","Average xF", 1000, 600);
+    PanelPlot* panelP = new PanelPlot(c3, 3, 1, 1, "xFVsPt");
+    
     for (int i = 0; i < 3; i++)
     {
-	// panelP->GetPlot(0,j)->SetXRange( varMins[i], varMaxs[i]);
-	panelP->GetPlot(i, 0)->SetYRange( 0, 1);
+	panelP->GetPlot(i, 0)->SetXRange(varMins[i], varMaxs[i]);
+	panelP->GetPlot(i, 0)->SetYRange(0.2, 0.8);
 	panelP->GetPlot(i, 0)->Add(gr[i], Plot::Point);
     }
 
     panelP->Draw();
+
+    TFile *outFile = new TFile("PtVsAvgXf.root", "recreate");
+    for(Int_t i = 0; i < 3; ++i)
+    {
+	gr[i]->GetXaxis()->SetLimits(varMins[i], varMaxs[i]);
+	gr[i]->Write();
+    }
+    outFile->Close();    
 }

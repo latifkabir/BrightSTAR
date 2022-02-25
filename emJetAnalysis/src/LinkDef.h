@@ -20,6 +20,7 @@
 #pragma link C++ function EjCalculateAN;                // Calculate A_N from binned histograms
 #pragma link C++ function EjPlotAn;                     // Example A_N plots in many panels
 #pragma link C++ function EjCreateBinnedHistExtended;   // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (with extended options)
+#pragma link C++ function EjCreateBinnedHistMerged;     // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (merge  number of Photons 1 & 2, 3, 4 &5)
 #pragma link C++ function EjCreateBinnedHistToCompare;  // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield and asymmetry to compare with Zhanwen and MMM results
 #pragma link C++ function EjCalculateANextended;        // Calculate A_N from binned histograms
 #pragma link C++ function EjCalculateFalseAN;           // Calculate false asymmetry (fit residual) for A_N using cross-ratio formula
@@ -33,5 +34,6 @@
 #pragma link C++ function EjRePlotAnExt;                // Re-plot Physics AN results with systematic errors for Extented case
 #pragma link C++ function EjCompareAnWithRun11;         // Compare Run 17 results with run 11 results
 #pragma link C++ function EjCompareROFeffect;           // Compare FMS AN with and without ROF causing trigger SM-BS3 
+#pragma link C++ function EjGetAverageXf;               // Calculate Average xF
 
 #endif
