@@ -23,7 +23,7 @@ Instruction()
     echo "                   "			
     echo "          ------------------------------------- List of available options --------------------------------"
     echo "          config             : Create required directories"
-    echo "          set-mode           : Set analysis mode: 15fms | 15phys | 17fms | 17phys"
+    echo "          set-mode           : Set analysis mode: 15fms | 15phy | 17fms | 17phy"
     echo "          clean              : Delete schedular files"
     echo "          cancel-job         : Cancel all jobs submitted"
     echo "          file-list          : Print file list"
@@ -155,21 +155,24 @@ case $OPTION in
     set-mode)
 	if [ $# -ne 2 ]
 	then
-	    echo "Syntax: $0 <set-mode> <15fms | 15phys | 17fms | 17phys>"
+	    echo "Syntax: $0 <set-mode> <15fms | 15phy | 17fms | 17phy>"
 	    exit
 	fi
-	if [ $2 -ne "15fms" ] || [ $2 -ne "15phys" ] || [ $2 -ne "17fms" ] || [ $2 -ne "17phys"]
+
+	if [ "$2" != "15fms" ] && [ "$2" != "15phy" ] && [ "$2" != "17fms" ] && [ "$2" != "17phy" ]
 	then
-	    echo "Syntax: $0 <set-mode> <15fms | 15phys | 17fms | 17phys>"
+	    echo "Syntax: $0 <set-mode> <15fms | 15phy | 17fms | 17phy>"
 	    echo "You entered: $2"
 	    exit
 	fi
-	cp $STAR_DIR/config/configRun$2.cfg cp $STAR_DIR/config/config.cfg
+	cp $BSTAR_DIR/config/configRun$2.cfg $BSTAR_DIR/config/config.cfg
 	if [ $? == 0 ]
 	then
 	   echo "Successfully set the analysis mode to: $2"
 	else
-	    echo "Unable to set the analysis mode to: $2"	    
+	    echo "Unable to set the analysis mode to: $2"
+	fi
+	;;
     *)
 	echo "                                       "	   
 	echo "              Invalid option or to be implemented        "
