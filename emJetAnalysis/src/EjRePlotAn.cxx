@@ -58,7 +58,7 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
     Double_t yMax = 0.08;	
     Int_t canvasCount = 1;
     TCanvas *c1 = new TCanvas("EMjet_A_N_fms", "EM Jet A_{N}");
-    c1->Divide(kEnergyBins -1, kPhotonBins -1);
+    c1->Divide(kEnergyBins - 1, kPhotonBins - 1);
     for(Int_t i = 0; i < kPhotonBins - 1; ++i)
     {
 	for(Int_t j = 1; j < kEnergyBins; ++j)
@@ -112,8 +112,9 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
    {
        Kx = 3;
        Ky = (isMerged)? 4 : 5;
-       yMax = 0.08;
-       if(gSystem->AccessPathName("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root")) return;
+       //yMax = 0.08; //Run 15
+       yMax = 0.05;   // Run 17
+       if(gSystem->AccessPathName("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root")) return; //!!!!!!!!!!! Update the file for Run 17 !!!!!!!!
        xfFile = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root");
    }
    else if(det == "eemc")

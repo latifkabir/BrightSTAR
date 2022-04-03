@@ -189,6 +189,16 @@ void TStConfig::LoadConfig()
 	    {
 		tokens = strtok(NULL, " :,");
 		fXrootdPrefix = tokens;
+	    }
+	    else if(s == "RUN")
+	    {
+		tokens = strtok(NULL, " :,");
+		fRun = atoi(tokens);
+	    }
+	    else if(s == "DETECTOR")
+	    {
+		tokens = strtok(NULL, " :,");
+		fDetector = tokens;
 	    }	   	    
 	    else if(s == "ENABLE_EVT")
 	    {
@@ -235,6 +245,8 @@ void TStConfig::Print()
     cout << "Bright Home: "<< GetBrightHome()<<"\n"<<endl;
     cout << "Star Home: "<< GetStarHome()<<"\n"<<endl;
     cout << "Config file: "<< GetConfigPath()<<"\n"<<endl;
+    cout << "\033[1;31mRun Being Analyzed: \033[0m"<< GetRun()<<"\n"<<endl;
+    cout << "\033[1;31mMain Detector Being Analyzed: \033[0m"<< GetDetector()<<"\n"<<endl;
     cout << "Data-file path: "<< GetDataPath()<<"\n"<<endl;
     cout << "Temp path: "<< GetTempPath()<<"\n"<<endl;
     cout << "Results path: "<< GetResultsPath()<<"\n"<<endl;

@@ -23,6 +23,7 @@ class TStConfig : public TObject
     string fConfigFile;
     string fBrightHome;
     string fDataPath;
+    string fDetector;
     string fTempPath;
     string fResultsPath;
     string fDSTpath;
@@ -46,6 +47,7 @@ class TStConfig : public TObject
     string fJobCounterTxt;
     string fXrootdPrefix;
     
+    int fRun;
     int fUseEvt;
     int fUseTpc;
     int fUseEmc;
@@ -88,7 +90,9 @@ public:
     const string & GetJobCounterSh(){return fJobCounterSh;}
     const string & GetJobCounterTxt(){return fJobCounterTxt;}
     //const string & GetXrootdPrefix(){return fXrootdPrefix;}
+    const string & GetDetector(){return fDetector;}
 
+    int GetRun(){return fRun;}
     
     bool EnableEvent(){return fUseEvt == 1;}
     bool EnableTpc(){return fUseTpc == 1;}

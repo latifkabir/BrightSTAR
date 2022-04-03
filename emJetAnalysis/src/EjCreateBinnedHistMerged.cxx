@@ -12,7 +12,7 @@
 #include "BrJetMaker/TStJetEvent.h"
 #include "BrJetMaker/TStJetSkimEvent.h"
 using namespace std;
-
+//fillNo is just the runNumber here since you are processing one run per job 
 void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det, Int_t firstRun, Int_t lastRun)
 {
     /*

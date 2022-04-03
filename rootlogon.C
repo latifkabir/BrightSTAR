@@ -244,6 +244,5 @@
     gStyle->SetNumberContours(NCont);
         
     using namespace TStar;
-    
 }
 

@@ -14,6 +14,7 @@ class EjAna
 public:
     static TString kDefaultDet;
         
+    static Double_t kBeamEnergy;
     static Double_t kFmsEtaMin;
     static Double_t kFmsEtaMax;
 

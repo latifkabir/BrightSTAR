@@ -7,13 +7,22 @@
 #
 # output is tee'd to $outputfile.*
 
-##------------------------- pp 2017 trans fms stream -----------------------------------------
-outputfile_=Run17FmsRunList.json
+##------------------------- pp 2017 trans physics stream -----------------------------------------
+outputfile_=Run17PhysRunList.json
 tempoutput_=temp.dat
-production_=P18ic
+#production_=P20ic
+production_=P20ia
 trgsetupname_=pp500_production_2017
 storage_=local
-filename_=st_fms
+filename_=st_physics
+
+##------------------------- pp 2017 trans fms stream -----------------------------------------
+#outputfile_=Run17FmsRunList.json
+#tempoutput_=temp.dat
+#production_=P18ic
+#trgsetupname_=pp500_production_2017
+#storage_=local
+#filename_=st_fms
 
 ##----------------------- pp 2015 trans physics stream-------------------------------------------
 # outputfile_=Run15PhysRunList.json

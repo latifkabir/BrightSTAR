@@ -101,7 +101,8 @@ void EjGetAverageXf(TString fileName, TString det = "eemc")
     for (int i = 0; i < 3; i++)
     {
 	panelP->GetPlot(i, 0)->SetXRange(varMins[i], varMaxs[i]);
-	panelP->GetPlot(i, 0)->SetYRange(0.2, 0.8);
+	// panelP->GetPlot(i, 0)->SetYRange(0.2, 0.8); // Run 15
+	panelP->GetPlot(i, 0)->SetYRange(0.1, 0.3);    // RUn 17
 	panelP->GetPlot(i, 0)->Add(gr[i], Plot::Point);
     }
 
