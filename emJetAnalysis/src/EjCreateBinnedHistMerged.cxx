@@ -28,8 +28,8 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
     const Int_t kPhiBins = 16;
     TH2D *bHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
     TH2D *yHist[kSpinBins][kEnergyBins][kPhotonBins]; // [spin][energy bin][#photons]
-    Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0};
-    Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
+    Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0}; // FIXIT: Update this for Run 17 and propagate in other scripts
+    Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; // For info only // FIXIT: Update this for Run 17
     const Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
     for(Int_t i = 0; i < kSpinBins; ++i)
@@ -226,6 +226,7 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 	    sm_bs3 = 2.53;
 	    lg_bs1 = 1.26;
 	}
+	// FIXIT: Update trigger threshold for Run 17
 	Double_t fmsTrigPtTh[9] = {1.84, 2.76, 3.68, sm_bs1, 1.84, sm_bs3, lg_bs1, 1.84, 2.76}; //"FMS-JP0", "FMS-JP1", "FMS-JP2", "FMS-sm-bs1", "FMS-sm-bs2", "FMS-sm-bs3", "FMS-lg-bs1", "FMS-lg-bs2", "FMS-lg-bs3"
 
 	Double_t eemcTrigPtTh[9] = {4.25, 5.405, 7.285, 4.25, 7.285, 0, 0, 0, 0}; //"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB";
@@ -341,7 +342,7 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 		    }
 		}
 
-		if(runNumber < 18000000) //Exclude Run 17 for now
+		if(runNumber < 18000000) // Exclude Run 17 for now. FIXIT
 		{
 		    if(!didPassPtCut)
 			continue;
@@ -358,7 +359,7 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 
 		eng_i = (Int_t)(eng / 20.0); 
 
-		if(eng_i >= kEnergyBins)
+		if(eng_i >= kEnergyBins) // !!!FIXIT: This will cap Run 17 em-jet eng to 100 GeV
 		    continue;
 
 		if(phi >= 0)

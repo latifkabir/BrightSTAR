@@ -34,6 +34,7 @@ Instruction()
     echo "          sout               : Open job std-out for corresponding root output"
     echo "          serr               : Open job err out for corresponding root output"
     echo "          hold-reason        : Print job hold reason"
+    echo "          touch              : Change access time of all important dst files to current time"
 
     echo "          ------------------------------------------------------------------------------------------------"
     echo "                    "    
@@ -172,6 +173,9 @@ case $OPTION in
 	else
 	    echo "Unable to set the analysis mode to: $2"
 	fi
+	;;
+    touch)
+	find /star/u/kabir/GIT/BrightSTAR/dst/ -print -exec touch -a {} +
 	;;
     *)
 	echo "                                       "	   

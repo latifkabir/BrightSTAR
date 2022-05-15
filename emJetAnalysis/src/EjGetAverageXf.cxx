@@ -6,6 +6,7 @@
 
 #include "RootInclude.h"
 #include "Hists.h"
+#include "TStar.h"
 
 using namespace std;
 
@@ -16,10 +17,12 @@ void EjGetAverageXf(TString fileName, TString det = "eemc")
 	cout << "File NOT found" <<endl;
 	return;
     }
+    const Int_t rhicRun = TStar::gConfig->GetRun();
     TFile *f = new TFile(fileName);
 
     const Int_t kEnergyBins = 5;
     const Int_t nPtBins = 9;
+    // FIXIT: Update this for Run 17
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
     
@@ -47,10 +50,11 @@ void EjGetAverageXf(TString fileName, TString det = "eemc")
 	maxEbin = 4;
     }
 
-    //Fms
+    // FIXIT: -------> This should be updated for Run 17 <-----------
+    // Fms 
     float varMins[3] = { 1.9, 1.7, 2.0};
     float varMaxs[3] = { 5.2, 7.75, 10.0};
-    //EEMC
+    // EEMC
     // float varMins[3] = { 1.45, 1.7, 2.0};
     // float varMaxs[3] = { 10.0, 7.75, 10.0};    
     TGraphErrors *gr[3];
@@ -101,8 +105,10 @@ void EjGetAverageXf(TString fileName, TString det = "eemc")
     for (int i = 0; i < 3; i++)
     {
 	panelP->GetPlot(i, 0)->SetXRange(varMins[i], varMaxs[i]);
-	// panelP->GetPlot(i, 0)->SetYRange(0.2, 0.8); // Run 15
-	panelP->GetPlot(i, 0)->SetYRange(0.1, 0.3);    // RUn 17
+	if (rhicRun == 15)
+	    panelP->GetPlot(i, 0)->SetYRange(0.2, 0.8);    // Run 15
+	else
+	    panelP->GetPlot(i, 0)->SetYRange(0.1, 0.3);    // RUn 17
 	panelP->GetPlot(i, 0)->Add(gr[i], Plot::Point);
     }
 

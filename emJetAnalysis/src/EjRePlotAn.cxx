@@ -11,9 +11,10 @@
 #include "cppInclude.h"
 #include "BrightStInclude.h"
 #include "EjRePlotAn.h"
+#include "TStar.h"
 
 using namespace std;
-
+// Update path to average xF graph plot iput file if you are using an updated pass.
 void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
 {
     if(gSystem->AccessPathName(fileName))
@@ -21,6 +22,23 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
 	cout << "Could not find the input file" <<endl;
 	return;
     }
+    const Int_t rhicRun = TStar::gConfig->GetRun();
+    
+    TString xFgraphPath;
+    TFile *xfFile;
+    if(rhicRun == 15 && det == "fms")
+	xFgraphPath = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root";
+    else if(rhicRun == 15 && det == "eemc")
+	xFgraphPath = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/EEmc_PtVsAvgXf.root";
+    else if(rhicRun == 17 && det == "fms")
+	xFgraphPath = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run17/pass0/Fms_PtVsAvgXf.root";
+    if(gSystem->AccessPathName(xFgraphPath))
+    {
+	cout << "Unable to fine required average xF graph input file" <<endl;
+	return;
+    }
+    xfFile = new TFile(xFgraphPath);
+    
     TFile *file = new TFile(fileName);
 
     const Int_t kEnergyBins = 5;
@@ -103,8 +121,6 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
    if (C) delete C;
    C = new TCanvas("C","canvas",1024,640);
    C->SetFillStyle(4000);
-
-   TFile *xfFile;
    
    Int_t Kx;
    Int_t Ky;
@@ -112,18 +128,17 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
    {
        Kx = 3;
        Ky = (isMerged)? 4 : 5;
-       //yMax = 0.08; //Run 15
-       yMax = 0.05;   // Run 17
-       if(gSystem->AccessPathName("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root")) return; //!!!!!!!!!!! Update the file for Run 17 !!!!!!!!
-       xfFile = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root");
+
+       if(rhicRun == 15)
+	   yMax = 0.08;   // Run 15
+       else
+	   yMax = 0.05;   // Run 17
    }
    else if(det == "eemc")
    {
        Kx = 1;
        Ky = (isMerged)? 4 : 5;
        yMax = (isMerged)? 0.03 : 0.05;
-       if(gSystem->AccessPathName("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/EEmc_PtVsAvgXf.root")) return;
-       xfFile = new TFile("/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/EEmc_PtVsAvgXf.root");
    }
    else
    {
@@ -135,7 +150,7 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
    for(Int_t i = 0; i < Kx; ++i)
    {
        TString name = Form("grAvgXfVsPt%i", i);
-       grXf[i] = (TGraphErrors*)xfFile->Get(name);
+       grXf[i] = (TGraphErrors*)xfFile->Get(name); //Note: Average Xf graph is saved from energy bin 20 GeV and above for FMS and only 0 - 20 GeV for EEMC.
    }
    Int_t s = (isMerged)? -1 : 0;
    
@@ -209,12 +224,16 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
 	   hFrame->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
 
 	   //-------------------------------------------------------------
+	   Double_t xFmin;
+	   Double_t xFmax;
 	   if(j == 0 && isMerged)
 	   {
 	       if(det == "fms")
 	       {
-		   grXf[i]->SetMaximum(0.85);
-		   grXf[i]->SetMinimum(0.2);
+		   xFmin = (rhicRun == 15)? 0.2 : 0.1;
+		   xFmax = (rhicRun == 15)? 0.85 : 0.32; 
+		   grXf[i]->SetMaximum(xFmax);
+		   grXf[i]->SetMinimum(xFmin);
 	       }
 	       else if(det == "eemc")
 	       {
