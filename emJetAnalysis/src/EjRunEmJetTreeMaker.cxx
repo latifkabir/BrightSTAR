@@ -21,11 +21,11 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     TStar::gConfig->Print();
     EjAna::Print();
     
-    if(gROOT->IsBatch())
-    {
-	inFile = TStScheduler::CopyInputFiles(inFile);
-	det = EjAna::kDefaultDet;
-    }
+    // if(gROOT->IsBatch())
+    // {
+    // 	inFile = TStScheduler::CopyInputFiles(inFile);
+    // 	det = EjAna::kDefaultDet;
+    // }
         
     if(!(det == "fms" || det == "eemc"))
     {
@@ -64,7 +64,8 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     const Int_t kMaxTriggers = 9;
     Int_t trigIds[kMaxTriggers];
     TString triggerNames_fms[kMaxTriggers] = {"FMS-JP0", "FMS-JP1", "FMS-JP2", "FMS-sm-bs1", "FMS-sm-bs2", "FMS-sm-bs3", "FMS-lg-bs1", "FMS-lg-bs2", "FMS-lg-bs3"};
-    TString triggerNames_eemc[kMaxTriggers] = {"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB"};
+    //TString triggerNames_eemc[kMaxTriggers] = {"EHT0", "JP1", "JP2", "EHT0*EJP1*L2Egamma", "JP2*L2JetHigh", "BHT1*VPDMB-30", "BHT0*BBCMB", "BHT1*BBCMB", "BHT2*BBCMB"}; //Run 15
+    TString triggerNames_eemc[kMaxTriggers] = {"EHT1", "JP2", "JP2*L2JetHigh", "JP0*VPDMB30", "JP1*VPDMB30", "JP2*L2JetHigh", "EHT0*BBCMB*L2Egamma", "EHT0*BBCMB", "BHT2*BBCMB"}; //Run 17
 
     //Consider FMS or EEMC EM Jets only. Note, bulk of the jets come from mid-rapidity.
     //Unless this cut is applied, file size will be large and no need to make separate nano Dst.

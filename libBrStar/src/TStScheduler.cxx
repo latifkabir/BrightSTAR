@@ -430,6 +430,8 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	    rNumber =  std::to_string((int)j[k]["run"]);
 	    fileName = (string)j[k]["data"]["file"];
 	    filePath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
+	    if(TStar::gConfig->GetRun() == 17 && TStar::gConfig->GetDetector() == "eemc")
+		filePath = TStar::Config->GetProdPath() + "/" + fileName;
 	    //cout << filePath <<endl;
 	    // if(!TStar::IsValid(filePath))
 	    // {
@@ -459,6 +461,8 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	    	    rNumber =  std::to_string((int)j[k]["run"]);
 	    	    fileName = (string)j[k]["data"]["file"];
 	    	    filePath = "root://xrdstar.rcf.bnl.gov:1095/" + TStar::Config->GetProdPath() + rNumber[2] + rNumber[3] + rNumber[4] + "/" + to_string(runNumber) + "/" + fileName;
+		    if(TStar::gConfig->GetRun() == 17 && TStar::gConfig->GetDetector() == "eemc")
+			filePath = TStar::Config->GetProdPath() + "/" + fileName;
 	    	    jobFileList << filePath <<endl;
 	    	    cout << filePath <<endl;
 

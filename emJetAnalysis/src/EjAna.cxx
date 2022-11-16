@@ -14,7 +14,8 @@ ClassImp(EjAna)
 Double_t EjAna::kBeamEnergy = 510; //For Run 17
 // Double_t EjAna::kBeamEnergy = 200; //For Run 15
 
-TString EjAna::kDefaultDet = "fms";
+//TString EjAna::kDefaultDet = "fms";
+TString EjAna::kDefaultDet = "eemc";
 
 Double_t EjAna:: kFmsEtaMin = 2.8;
 Double_t EjAna:: kFmsEtaMax = 3.8;

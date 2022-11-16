@@ -17,8 +17,8 @@ void CronJob()
     //sc->SetRunIncrement(30);  // Number of runs to be incremented (Run 17 Fms stream, initial)
     //sc->SetRunIncrement(100);  // Number of runs to be incremented (Fms stream)
     //sc->SetRunIncrement(160);  // aggresive Number of runs to be incremented
-    sc->SetMaxFilesPerJob(5); //Maximum number of files per job (physics stream)
-    //sc->SetMaxFilesPerJob(1); //Maximum number of files per job (Fms stream)
+    // sc->SetMaxFilesPerJob(5); //Maximum number of files per job (physics stream)
+    sc->SetMaxFilesPerJob(2); //Maximum number of files per job (Fms stream)
     
     //sc->CronJob("AnRunNanoDstMaker", gFirstRun, gFirstRun); // For Test
     //sc->CronJob("AnRunNanoDstMaker", 16093018, 16093018);
@@ -32,7 +32,7 @@ void CronJob()
 
     //sc->CronJob("EjRunEmJetTreeMakerEEmcSmd", 16064083, gLastRun);
     
-    sc->CronJob("EjRunEmJetTreeMaker"); // For full dataset    
+    sc->CronJob("EjRunEmJetTreeMaker", 18071019, 18071019); // For full dataset    
     //sc->CronJob("EjRunEmJetTreeMaker", -1, -1, "_zn_"); // For full dataset    
     //sc->CronJob("RunFmsHotChQaMaker"); // For full dataset
 
