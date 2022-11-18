@@ -11,11 +11,11 @@ using namespace std;
 
 ClassImp(EjAna)
 
-Double_t EjAna::kBeamEnergy = 510; //For Run 17
-// Double_t EjAna::kBeamEnergy = 200; //For Run 15
+// Double_t EjAna::kBeamEnergy = 510; //For Run 17
+Double_t EjAna::kBeamEnergy = 200; //For Run 15
 
-//TString EjAna::kDefaultDet = "fms";
-TString EjAna::kDefaultDet = "eemc";
+TString EjAna::kDefaultDet = "fms";
+// TString EjAna::kDefaultDet = "eemc";
 
 Double_t EjAna:: kFmsEtaMin = 2.8;
 Double_t EjAna:: kFmsEtaMax = 3.8;
@@ -23,7 +23,8 @@ Double_t EjAna:: kFmsEtaMax = 3.8;
 Double_t EjAna:: kEEmcEtaMin = 1.0;
 Double_t EjAna:: kEEmcEtaMax = 2.0;
 
-Double_t EjAna::kPtMin = 2.0;
+// Double_t EjAna::kPtMin = 2.0;
+Double_t EjAna::kPtMin = 1.0;
 Double_t EjAna::kRMax = 0.7; 
 
 // FMS Photon energy cut
@@ -31,7 +32,8 @@ Double_t EjAna::kRMax = 0.7;
 // Updated based on Simulation to 1.0 GeV
 // FMS Photon energy cut: 1.0 for my analysis, 0.5 to compare with Zhanwen.
 Double_t EjAna::kFmsEngMin = 1.0; 
-Double_t EjAna::kFmsEngMax = 250.0; 
+Double_t EjAna::kFmsEngMax = 100.0; 
+// Double_t EjAna::kFmsEngMax = 255.0; 
 
 // EEmc Tower Et cut
 // 0.2 is the default in all other full jet analysis 

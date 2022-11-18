@@ -37,6 +37,6 @@ jobs/
 *.metafile
 resources/
 jobRunList/
-RooUnfold
+RooUnfold/
 run17FmsGC/
 run17FmsGC_final/

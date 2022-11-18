@@ -21,11 +21,11 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     TStar::gConfig->Print();
     EjAna::Print();
     
-    // if(gROOT->IsBatch())
-    // {
-    // 	inFile = TStScheduler::CopyInputFiles(inFile);
-    // 	det = EjAna::kDefaultDet;
-    // }
+    if(gROOT->IsBatch())
+    {
+    	inFile = TStScheduler::CopyInputFiles(inFile);
+    	det = EjAna::kDefaultDet;
+    }
         
     if(!(det == "fms" || det == "eemc"))
     {
