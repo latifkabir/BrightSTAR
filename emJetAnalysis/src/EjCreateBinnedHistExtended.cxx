@@ -5,6 +5,7 @@
 // URL: jlab.org/~latif
 
 #include <iostream>
+#include "EjAna.h"
 #include "RootInclude.h"
 #include "cppInclude.h"
 #include "BrightStInclude.h"
@@ -34,19 +35,24 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
     
     Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
-    TH2D *bHistNp[kSpinBins]; //At least N number of photons
-    TH2D *bHist2p[kSpinBins]; //Just 2 photons
+    TH2D *bHistNp[kSpinBins]; //At least N (=4) number of photons
+    TH2D *bHist2p[kSpinBins]; //Just 1 or 2 photons
+    TH2D *bHist3p[kSpinBins]; //Just 3 photons
     TH2D *bHistPtVsXfNp;
     TH2D *bHistPtVsXf2p;
+    TH2D *bHistPtVsXf3p;
     for(Int_t i = 0; i < kSpinBins; ++i)
     {
 	TString title = Form("bHistNp_%i", i);
 	bHistNp[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
 	title = Form("bHist2p_%i", i);
 	bHist2p[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
+	title = Form("bHist3p_%i", i);
+	bHist3p[i] = new TH2D(title, title, kPhiBins, -1.0*TMath::Pi(), TMath::Pi(), kXfBins, xfBins);
     }
     bHistPtVsXfNp = new TH2D("PtVsXfNp", "PtVsXfNp; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
     bHistPtVsXf2p = new TH2D("PtVsXf2p", "PtVsXf2p; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
+    bHistPtVsXf3p = new TH2D("PtVsXf3p", "PtVsXf3p; x_{F}; p_{T}", kXfBins, xfBins, nPtBins, ptBins);
     
     Int_t bSpin_i;
     Int_t ySpin_i;
@@ -288,16 +294,14 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		h1E->Fill(eng);
 		h1Pt->Fill(pt);
 
-		//!!!!!!! DO NOT USE FOR YOUR RESULT NOW!!!! 
-		// pt = EjJetPtCorr(pt, eng);
-		// eng = EjJetEngCorr(eng); 
+		//--- Enabled since tag v2.2 for my results---
+		pt = EjJetPtCorr(pt, eng);
+		eng = EjJetEngCorr(eng); 
 
-		// h1Enew->Fill(eng);
-		// h1PtNew->Fill(pt);
-
-		if(pt < 2)
-		    continue;
 		//------- end of jet eng/pt correction ----
+		
+		if(pt < EjAna::kPtMin)
+		    continue;
 		
 		LV.SetPtEtaPhiE(pt, eta, phi, eng);
 		xf = 2.0*(LV.Pz()) / sqrt_s;
@@ -353,11 +357,16 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		    bHistPtVsXfNp->Fill(xf, pt);
 		}
 		
-		if(nPhotons == 3)  
-		// if(nPhotons == 2 || nPhotons == 1)  
+		if(nPhotons == 2 || nPhotons == 1)  
 		{
 		    bHist2p[bSpin_i]->Fill(phi_b, xf);
 		    bHistPtVsXf2p->Fill(xf, pt);
+		}
+
+		if(nPhotons == 3)  
+		{
+		    bHist3p[bSpin_i]->Fill(phi_b, xf);
+		    bHistPtVsXf3p->Fill(xf, pt);
 		}
 		
 		h1bSpinI->Fill(bSpin_i);
@@ -367,7 +376,8 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		h1nPhotons->Fill(nPhotons);
 		h2nPhotonsVsPt->Fill(pt, nPhotons);
 		h2nPhotonsVsXf->Fill(xf, nPhotons);
-
+		h1Enew->Fill(eng);
+		h1PtNew->Fill(pt);
 		h1Xf->Fill(xf); //Moved here to calculate average Xf for EEMC plots for pwg group
 		//if(xf < 0.2) cout <<xf<<"\t"<<eng<<"\t"<<eta<<"\t"<<pt<<"\t"<<phi<<"\t"<<LV.Pz() <<"\t"<< jet->GetUedPt() <<endl;		
 		eventAccepted = kTRUE;
@@ -440,7 +450,7 @@ Double_t EjJetPtCorr(Double_t pt, Double_t E)
 
     Double_t ptNew;
 
-    if(pt <= 5.8)  //Fit function does not work outside the fit range. You can extend once you have simulated sample for higher protected:      
+    if(pt <= 5.8)  //Fit function does not work outside the fit range. You can extend once you have simulated sample for higher pt values      
 	ptNew = p0 + p1*pt + p2*pow(pt, 2) + p3*pow(pt, 3);
     else
 	ptNew = (0.4478 + 0.9685*pt); //Linear fit at higher pt

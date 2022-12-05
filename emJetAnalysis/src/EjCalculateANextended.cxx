@@ -38,22 +38,27 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     
     //Int_t nPtBins = sizeof(ptBins) / sizeof(Double_t) - 1;
     
-    TH2D *bHistNp[kSpinBins]; //N pthotons or more
-    TH2D *bHist2p[kSpinBins]; //Just 2 photons
-    TH2D *bHistPtVsXfNp;
-    TH2D *bHistPtVsXf2p;
+    TH2D *hist4p[kSpinBins]; //N pthotons or more, by default N = 4
+    TH2D *hist1p[kSpinBins]; //Just 1 or 2 photons
+    TH2D *hist3p[kSpinBins]; //Just 3 photons
+    TH2D *histPtVsXf4p;
+    TH2D *histPtVsXf1p;
+    TH2D *histPtVsXf3p;
     for(Int_t i = 0; i < kSpinBins; ++i)
     {
-	TString title = Form("bHistNp_%i", i);
-	bHistNp[i] = (TH2D*)file->Get(title);
-	title = Form("bHist2p_%i", i);
-	bHist2p[i] = (TH2D*)file->Get(title);
+	TString title = Form("bHistNp_%i", i); // Np is really 4p
+	hist4p[i] = (TH2D*)file->Get(title);
+	title = Form("bHist2p_%i", i); // 2p is actually 1 or 2-photon. Kept for backward compatibility 
+	hist1p[i] = (TH2D*)file->Get(title);
+	title = Form("bHist3p_%i", i);
+	hist3p[i] = (TH2D*)file->Get(title);
     }
-    bHistPtVsXfNp = (TH2D*)file->Get("PtVsXfNp");
-    bHistPtVsXf2p = (TH2D*)file->Get("PtVsXf2p");
+    histPtVsXf4p = (TH2D*)file->Get("PtVsXfNp"); // Np is really 4p
+    histPtVsXf1p = (TH2D*)file->Get("PtVsXf2p");
+    histPtVsXf3p = (TH2D*)file->Get("PtVsXf3p");
     
-    const Int_t nHalfPhiBins = bHist2p[0]->GetNbinsX() / 2; //Phi bins per hemisphere
-    const Int_t nPtBins = bHist2p[0]->GetNbinsY();
+    const Int_t nHalfPhiBins = hist1p[0]->GetNbinsX() / 2; //Phi bins per hemisphere
+    const Int_t nPtBins = hist1p[0]->GetNbinsY();
 
     //Note: left-right is with respect to the beam (here blue beam)
 
@@ -62,30 +67,42 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     
     Double_t phiValues[nHalfPhiBins];
     
-    Double_t bAnRaw[nHalfPhiBins][kXfBins];
-    Double_t bAnRawError[nHalfPhiBins][kXfBins];
-    Double_t bAn[kXfBins];
-    Double_t bAnError[kXfBins];
-    memset(bAn, 0, sizeof(bAn));
-    memset(bAnError, 0, sizeof(bAnError));
+    Double_t AnRaw_1p[nHalfPhiBins][kXfBins];
+    Double_t AnRaw_1pError[nHalfPhiBins][kXfBins];
+    Double_t An_1p[kXfBins];
+    Double_t An_1pError[kXfBins];
+    memset(An_1p, 0, sizeof(An_1p));
+    memset(An_1pError, 0, sizeof(An_1pError));
     
-    Double_t yAnRaw[nHalfPhiBins][kXfBins];
-    Double_t yAnRawError[nHalfPhiBins][kXfBins];
-    Double_t yAn[kXfBins];      // A_N with polarization correction
-    Double_t yAnError[kXfBins]; // A_N error with polarization correction
-    memset(yAn, 0, sizeof(yAn));
-    memset(yAnError, 0, sizeof(yAnError));
+    Double_t AnRaw_4p[nHalfPhiBins][kXfBins];
+    Double_t AnRaw_4pError[nHalfPhiBins][kXfBins];
+    Double_t An_4p[kXfBins];      // A_N with polarization correction
+    Double_t An_4pError[kXfBins]; // A_N error with polarization correction
+    memset(An_4p, 0, sizeof(An_4p));
+    memset(An_4pError, 0, sizeof(An_4pError));
+
+    Double_t AnRaw_3p[nHalfPhiBins][kXfBins];
+    Double_t AnRaw_3pError[nHalfPhiBins][kXfBins];
+    Double_t An_3p[kXfBins];      // A_N with polarization correction
+    Double_t An_3pError[kXfBins]; // A_N error with polarization correction
+    memset(An_3p, 0, sizeof(An_3p));
+    memset(An_3pError, 0, sizeof(An_3pError));
     
-    Double_t bNu_l;  //b prefix for 2 photons case here
-    Double_t bNu_r;
-    Double_t bNd_l;
-    Double_t bNd_r;
+    Double_t p1Nu_l;  // for 1 or 2 photons case
+    Double_t p1Nu_r;
+    Double_t p1Nd_l;
+    Double_t p1Nd_r;
 
-    Double_t yNu_l;  //y prefix for at least N photons case here
-    Double_t yNu_r;
-    Double_t yNd_l;
-    Double_t yNd_r;
+    Double_t p4Nu_l;  // for at least 4 photons case 
+    Double_t p4Nu_r;
+    Double_t p4Nd_l;
+    Double_t p4Nd_r;
 
+    Double_t p3Nu_l;  // for 3 photons case 
+    Double_t p3Nu_r;
+    Double_t p3Nd_l;
+    Double_t p3Nd_r;
+    
     Double_t numer;
     Double_t denom;
     Double_t numerErrSq;
@@ -96,74 +113,103 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	for(Int_t l = 0; l < kXfBins; ++l)
 	{
 	    if(l == 0)
-		phiValues[k] = bHist2p[0]->GetXaxis()->GetBinCenter(phiBins_left[k]);
+		phiValues[k] = hist1p[0]->GetXaxis()->GetBinCenter(phiBins_left[k]);
 
-	    bNd_l = bHist2p[0]->GetBinContent(phiBins_left[k], l + 1);
-	    bNu_l = bHist2p[1]->GetBinContent(phiBins_left[k], l + 1);
+	    p1Nd_l = hist1p[0]->GetBinContent(phiBins_left[k], l + 1);
+	    p1Nu_l = hist1p[1]->GetBinContent(phiBins_left[k], l + 1);
 		    
-	    bNd_r = bHist2p[0]->GetBinContent((phiBins_right[k]), l + 1);
-	    bNu_r = bHist2p[1]->GetBinContent((phiBins_right[k]), l + 1);
+	    p1Nd_r = hist1p[0]->GetBinContent((phiBins_right[k]), l + 1);
+	    p1Nu_r = hist1p[1]->GetBinContent((phiBins_right[k]), l + 1);
 		    
-	    yNd_l = bHistNp[0]->GetBinContent(phiBins_left[k], l + 1);
-	    yNu_l = bHistNp[1]->GetBinContent(phiBins_left[k], l + 1);
+	    p4Nd_l = hist4p[0]->GetBinContent(phiBins_left[k], l + 1);
+	    p4Nu_l = hist4p[1]->GetBinContent(phiBins_left[k], l + 1);
 		    
-	    yNd_r = bHistNp[0]->GetBinContent((phiBins_right[k]), l + 1);
-	    yNu_r = bHistNp[1]->GetBinContent((phiBins_right[k]), l + 1);
+	    p4Nd_r = hist4p[0]->GetBinContent((phiBins_right[k]), l + 1);
+	    p4Nu_r = hist4p[1]->GetBinContent((phiBins_right[k]), l + 1);
+
+	    p3Nd_l = hist3p[0]->GetBinContent(phiBins_left[k], l + 1);
+	    p3Nu_l = hist3p[1]->GetBinContent(phiBins_left[k], l + 1);
+		    
+	    p3Nd_r = hist3p[0]->GetBinContent((phiBins_right[k]), l + 1);
+	    p3Nu_r = hist3p[1]->GetBinContent((phiBins_right[k]), l + 1);
       		    
 	    //You need to ensure that the Left-Right pairing is done exactly as in the formula
-	    //----- Blue beam measured asymmetry ------------
-	    numer = sqrt(bNu_l*bNd_r) - sqrt(bNd_l*bNu_r);
-	    denom = sqrt(bNu_l*bNd_r) + sqrt(bNd_l*bNu_r);
+	    //----- 1 0r 2-photon EM-jet measured asymmetry ------------
+	    numer = sqrt(p1Nu_l*p1Nd_r) - sqrt(p1Nd_l*p1Nu_r);
+	    denom = sqrt(p1Nu_l*p1Nd_r) + sqrt(p1Nd_l*p1Nu_r);
 
-	    numerErrSq = bNu_l * bNd_r * (bNd_l + bNu_r) + bNd_l * bNu_r * (bNu_l + bNd_r);
+	    numerErrSq = p1Nu_l * p1Nd_r * (p1Nd_l + p1Nu_r) + p1Nd_l * p1Nu_r * (p1Nu_l + p1Nd_r);
 	    denomErrSq = pow(denom, 4);
 		    
 	    if(denom == 0)
 	    {
-		bAnRaw[k][l] = -999;
-		bAnRawError[k][l] = -999;
+		AnRaw_1p[k][l] = -999;
+		AnRaw_1pError[k][l] = -999;
 	    }
 	    else
 	    {
-		bAnRaw[k][l] = numer / denom;
-		bAnRawError[k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
+		AnRaw_1p[k][l] = numer / denom;
+		AnRaw_1pError[k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
 	    }
 
-	    //cout << "Raw Asym:"<< bAnRaw[i][j][k][l] << " +- "<< bAnRawError[i][j][k][l]  <<endl;
+	    //cout << "Raw Asym:"<< AnRaw_1p[i][j][k][l] << " +- "<< AnRaw_1pError[i][j][k][l]  <<endl;
+	    
+	    //----- 3-photon EM-jet measured asymmetry ------------
+	    numer = sqrt(p3Nu_l*p3Nd_r) - sqrt(p3Nd_l*p3Nu_r);
+	    denom = sqrt(p3Nu_l*p3Nd_r) + sqrt(p3Nd_l*p3Nu_r);
+
+	    numerErrSq = p3Nu_l * p3Nd_r * (p3Nd_l + p3Nu_r) + p3Nd_l * p3Nu_r * (p3Nu_l + p3Nd_r);
+	    denomErrSq = pow(denom, 4);
+		    
+	    if(denom == 0)
+	    {
+		AnRaw_3p[k][l] = -999;
+		AnRaw_3pError[k][l] = -999;
+	    }
+	    else
+	    {
+		AnRaw_3p[k][l] = numer / denom;
+		AnRaw_3pError[k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
+	    }
 
 		    
-	    //----- Yellow beam measured asymmetry ------------
-	    numer = sqrt(yNu_l*yNd_r) - sqrt(yNd_l*yNu_r);
-	    denom = sqrt(yNu_l*yNd_r) + sqrt(yNd_l*yNu_r);
+	    //----- 4-photon EM-jet measured asymmetry ------------
+	    numer = sqrt(p4Nu_l*p4Nd_r) - sqrt(p4Nd_l*p4Nu_r);
+	    denom = sqrt(p4Nu_l*p4Nd_r) + sqrt(p4Nd_l*p4Nu_r);
 
-	    numerErrSq = yNu_l * yNd_r * (yNd_l + yNu_r) + yNd_l * yNu_r * (yNu_l + yNd_r);
+	    numerErrSq = p4Nu_l * p4Nd_r * (p4Nd_l + p4Nu_r) + p4Nd_l * p4Nu_r * (p4Nu_l + p4Nd_r);
 	    denomErrSq =  pow(denom, 4);
 		    
 	    if(denom == 0)
 	    {
-		yAnRaw[k][l] = -999;
-		yAnRawError[k][l] = -999;
+		AnRaw_4p[k][l] = -999;
+		AnRaw_4pError[k][l] = -999;
 	    }
 	    else
 	    {
-		yAnRaw[k][l] = numer / denom;
-		yAnRawError[k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
+		AnRaw_4p[k][l] = numer / denom;
+		AnRaw_4pError[k][l] = sqrt(numerErrSq / denomErrSq); //See error propagation in the analysis note
 	    }
 	}
     }
 
     gROOT->SetBatch(kTRUE);
     TFile *outFile = new TFile(outName, "recreate");
-    TGraphErrors *bGr[kXfBins];
-    TGraphErrors *yGr[kXfBins];
-    TF1 *bFitFnc[kXfBins];
-    TF1 *yFitFnc[kXfBins];
-    TGraphErrors *bGrPhy;
-    TGraphErrors *yGrPhy;
-    Int_t nPointsB;
-    Int_t nPointsY;
-    Int_t nPointsPhyB;
-    Int_t nPointsPhyY;
+    TGraphErrors *p1Gr[kXfBins];
+    TGraphErrors *p4Gr[kXfBins];
+    TGraphErrors *p3Gr[kXfBins];
+    TF1 *p1FitFnc[kXfBins];
+    TF1 *p4FitFnc[kXfBins];
+    TF1 *p3FitFnc[kXfBins];
+    TGraphErrors *p1GrPhy;
+    TGraphErrors *p4GrPhy;
+    TGraphErrors *p3GrPhy;
+    Int_t nPoints_p1;
+    Int_t nPoints_p4;
+    Int_t nPoints_p3;
+    Int_t nPointsPhy_p1;
+    Int_t nPointsPhy_p4;
+    Int_t nPointsPhy_p3;
     Double_t polB = 0.570;   // RMS: 0.0371 in fraction
     Double_t polY = 0.5795;  // RMS: 0.0366 
 
@@ -183,140 +229,131 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
 	return;
     }
     
-    bGrPhy = new TGraphErrors(); //b for 2 photons case
-    yGrPhy = new TGraphErrors(); // y for 3 or more photons case
-    bGrPhy->SetName("An2Photons");
-    bGrPhy->SetTitle("No. of Photons = 2; x_{F}; A_{N}");
-    yGrPhy->SetName("AnNphotons");
-    yGrPhy->SetTitle("No. of Photons >= n; x_{F}; A_{N}");
-    bGrPhy->SetMarkerColor(kBlack);
-    bGrPhy->SetLineColor(kBlack);
-    bGrPhy->SetMarkerStyle(kFullCircle);
+    p1GrPhy = new TGraphErrors(); //for 1 or 2 photons case
+    p4GrPhy = new TGraphErrors(); //for 4 or more photons case
+    p3GrPhy = new TGraphErrors(); //for 3-photon case
+    p1GrPhy->SetName("An1photons");
+    p1GrPhy->SetTitle("No. of Photons = 1 or 2; x_{F}; A_{N}");
+    p4GrPhy->SetName("An4photons");
+    p4GrPhy->SetTitle("No. of Photons >= 4; x_{F}; A_{N}");
+    p3GrPhy->SetName("An3photons");
+    p3GrPhy->SetTitle("No. of Photons = 3; x_{F}; A_{N}");
+    p1GrPhy->SetMarkerColor(kBlack);
+    p1GrPhy->SetLineColor(kBlack);
+    p1GrPhy->SetMarkerStyle(kFullCircle);
 	    
-    bGrPhy->SetMaximum(0.1);
-    bGrPhy->SetMinimum(-0.1);
+    p1GrPhy->SetMaximum(0.1);
+    p1GrPhy->SetMinimum(-0.1);
 
-    yGrPhy->SetMaximum(0.1);
-    yGrPhy->SetMinimum(-0.1);
+    p4GrPhy->SetMaximum(0.1);
+    p4GrPhy->SetMinimum(-0.1);
+
+    p3GrPhy->SetMaximum(0.1);
+    p3GrPhy->SetMinimum(-0.1);
 	    
-    yGrPhy->SetMarkerColor(kRed);
-    yGrPhy->SetLineColor(kRed);
-    yGrPhy->SetMarkerStyle(kOpenCircle);
-	    	    
-    nPointsPhyB = 0;
-    nPointsPhyY = 0;
+    p4GrPhy->SetMarkerColor(kRed);
+    p4GrPhy->SetLineColor(kRed);
+    p4GrPhy->SetMarkerStyle(kOpenCircle);
+
+    p3GrPhy->SetMarkerColor(kBlue);
+    p3GrPhy->SetLineColor(kBlue);
+    p3GrPhy->SetMarkerStyle(kOpenCircle);
+    
+    nPointsPhy_p1 = 0;
+    nPointsPhy_p4 = 0;
+    nPointsPhy_p3 = 0;
 	    
     for(Int_t k = 0; k < kXfBins; ++k)
     {
-	bGr[k] = new TGraphErrors();
-	yGr[k] = new TGraphErrors();
-	bGr[k]->SetName(Form("An2_Photons_XfBin%i", k));
-	bGr[k]->SetTitle(Form("No. of Photons = 2, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
-	yGr[k]->SetName(Form("AnNphotons_XfBin%i", k));
-	yGr[k]->SetTitle(Form("No. of Photons >= n, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
+	p1Gr[k] = new TGraphErrors();
+	p4Gr[k] = new TGraphErrors();
+	p3Gr[k] = new TGraphErrors();
+	
+	p1Gr[k]->SetName(Form("An1photon_XfBin%i", k));
+	p1Gr[k]->SetTitle(Form("No. of Photons = 1 or 2, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
+	p4Gr[k]->SetName(Form("An4photons_XfBin%i", k));
+	p4Gr[k]->SetTitle(Form("No. of Photons >= 4, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
+	p3Gr[k]->SetName(Form("An3photons_XfBin%i", k));
+	p3Gr[k]->SetTitle(Form("No. of Photons = 3, %.1f < x_{F} < %.1f ; #phi [rad]; A_{raw}", xfBins[k], xfBins[k + 1]));
+	
+	p1Gr[k]->SetMaximum(0.1);
+	p1Gr[k]->SetMinimum(-0.1);
+	p4Gr[k]->SetMaximum(0.01);
+	p4Gr[k]->SetMinimum(-0.01);
+	p3Gr[k]->SetMaximum(0.01);
+	p3Gr[k]->SetMinimum(-0.01);
+	
+ 	p1FitFnc[k] = new TF1(Form("p1FitFnc_%i", k), "[0]*cos(x) + [1]");
+	p4FitFnc[k] = new TF1(Form("p4FitFnc_%i", k), "[0]*cos(x) + [1]");
+	p3FitFnc[k] = new TF1(Form("p3FitFnc_%i", k), "[0]*cos(x) + [1]");
 
-	bGr[k]->SetMaximum(0.1);
-	bGr[k]->SetMinimum(-0.1);
-	yGr[k]->SetMaximum(0.01);
-	yGr[k]->SetMinimum(-0.01);
-		
-	bFitFnc[k] = new TF1(Form("bFitFnc_%i", k), "[0]*cos(x) + [1]");
-	yFitFnc[k] = new TF1(Form("yFitFnc_%i", k), "[0]*cos(x) + [1]");
-
-	nPointsB = 0;
-	nPointsY = 0;
+	nPoints_p1 = 0;
+	nPoints_p4 = 0;
+	nPoints_p3 = 0;
 	for(Int_t l = 0; l < nHalfPhiBins; ++l)
 	{
-	    if(bAnRaw[l][k] != -999)
+	    if(AnRaw_1p[l][k] != -999)
 	    {
-		bGr[k]->SetPoint(nPointsB, phiValues[l], bAnRaw[l][k]);
-		bGr[k]->SetPointError(nPointsB, 0, bAnRawError[l][k]);
-		++nPointsB;
+		p1Gr[k]->SetPoint(nPoints_p1, phiValues[l], AnRaw_1p[l][k]);
+		p1Gr[k]->SetPointError(nPoints_p1, 0, AnRaw_1pError[l][k]);
+		++nPoints_p1;
 	    }
 
-	    if(yAnRaw[l][k] != -999)
+	    if(AnRaw_4p[l][k] != -999)
 	    {
-		yGr[k]->SetPoint(nPointsY, phiValues[l], yAnRaw[l][k]);
-		yGr[k]->SetPointError(nPointsY, 0, yAnRawError[l][k]);
-		++nPointsY;
+		p4Gr[k]->SetPoint(nPoints_p4, phiValues[l], AnRaw_4p[l][k]);
+		p4Gr[k]->SetPointError(nPoints_p4, 0, AnRaw_4pError[l][k]);
+		++nPoints_p4;
+	    }
+
+	    if(AnRaw_3p[l][k] != -999)
+	    {
+		p3Gr[k]->SetPoint(nPoints_p3, phiValues[l], AnRaw_3p[l][k]);
+		p3Gr[k]->SetPointError(nPoints_p3, 0, AnRaw_3pError[l][k]);
+		++nPoints_p3;
 	    }
 	}
 		
-	bGr[k]->Fit(Form("bFitFnc_%i",k));
-	yGr[k]->Fit(Form("yFitFnc_%i",k));
+	p1Gr[k]->Fit(Form("p1FitFnc_%i",k));
+	p4Gr[k]->Fit(Form("p4FitFnc_%i",k));
+	p3Gr[k]->Fit(Form("p3FitFnc_%i",k));
 
-	if(bGr[k]->GetN() >= 0.5*nHalfPhiBins)
+	if(p1Gr[k]->GetN() >= 0.5*nHalfPhiBins)
 	{
-	    bAn[k] = bFitFnc[k]->GetParameter(0) / polB;
-	    bAnError[k] = bFitFnc[k]->GetParError(0) / polB;
+	    An_1p[k] = p1FitFnc[k]->GetParameter(0) / polB;
+	    An_1pError[k] = p1FitFnc[k]->GetParError(0) / polB;
 
-	    bGrPhy->SetPoint(nPointsPhyB, (xfBins[k] + xfBins[k+1])*0.5 , bAn[k]);
-	    bGrPhy->SetPointError(nPointsPhyB, 0, bAnError[k]);
-	    ++nPointsPhyB;		    
+	    p1GrPhy->SetPoint(nPointsPhy_p1, (xfBins[k] + xfBins[k+1])*0.5 , An_1p[k]);
+	    p1GrPhy->SetPointError(nPointsPhy_p1, 0, An_1pError[k]);
+	    ++nPointsPhy_p1;		    
 	}
 
-	if(yGr[k]->GetN() >= 0.5*nHalfPhiBins)
+	if(p4Gr[k]->GetN() >= 0.5*nHalfPhiBins)
 	{
-	    yAn[k] = yFitFnc[k]->GetParameter(0) / polB;
-	    yAnError[k] = yFitFnc[k]->GetParError(0) / polB;
+	    An_4p[k] = p4FitFnc[k]->GetParameter(0) / polB;
+	    An_4pError[k] = p4FitFnc[k]->GetParError(0) / polB;
 
-	    yGrPhy->SetPoint(nPointsPhyY, (xfBins[k] + xfBins[k+1])*0.5 , yAn[k]);
-	    yGrPhy->SetPointError(nPointsPhyY, 0, yAnError[k]);
-	    ++nPointsPhyY;		    
+	    p4GrPhy->SetPoint(nPointsPhy_p4, (xfBins[k] + xfBins[k+1])*0.5 , An_4p[k]);
+	    p4GrPhy->SetPointError(nPointsPhy_p4, 0, An_4pError[k]);
+	    ++nPointsPhy_p4;		    
 	}
-	bGr[k]->Write();
-	yGr[k]->Write();	
+
+	if(p3Gr[k]->GetN() >= 0.5*nHalfPhiBins)
+	{
+	    An_3p[k] = p3FitFnc[k]->GetParameter(0) / polB;
+	    An_3pError[k] = p3FitFnc[k]->GetParError(0) / polB;
+
+	    p3GrPhy->SetPoint(nPointsPhy_p3, (xfBins[k] + xfBins[k+1])*0.5 , An_3p[k]);
+	    p3GrPhy->SetPointError(nPointsPhy_p3, 0, An_3pError[k]);
+	    ++nPointsPhy_p3;		    
+	}
+	
+	p1Gr[k]->Write();
+	p4Gr[k]->Write();	
+	p3Gr[k]->Write();	
     }
-    bGrPhy->Write();
-    yGrPhy->Write();
+    p1GrPhy->Write();
+    p4GrPhy->Write();
+    p3GrPhy->Write();
     
-    //------------------ Plot physics A_N --------------------
-    //------------- For FMS --------------------
-    /*       
-    //Zhanwen's values for 3 or more photons (Data taken from HepData):
-    Double_t x_z3[] = {0.2213, 0.2571, 0.3038, 0.3529, 0.4029, 0.4531, 0.5033, 0.5536, 0.6123};    //xf
-    Double_t y_z3[] = {0.0008, 0.0023, 0.0032, 0.0051, 0.0056, 0.0078, 0.0084, 0.0125, 0.0135};    //A_N
-    Double_t y_z3err[] = {0.0013, 0.0005, 0.0005, 0.0007, 0.0009, 0.0011, 0.0014, 0.0017, 0.0018}; // err in A_N
-
-    //Zhanwen's values for all photons (Data taken from HepData):
-    Double_t x_z[] = {0.22116, 0.25683, 0.30373, 0.35284, 0.40294, 0.45320, 0.50343, 0.55365, 0.61238}; 
-    Double_t y_z[] = {0.0044, 0.0053, 0.0066, 0.0079, 0.0074, 0.0099, 0.0096, 0.0141, 0.0161}; 
-    Double_t y_zerr[] = {0.0011, 0.0005, 0.0005, 0.0006, 0.0008, 0.0010, 0.0012, 0.0015, 0.0015}; 
-    */
-    
-    //Latest values    
-    Double_t x_z3[] = {0.2237, 0.258415, 0.304992, 0.353548, 0.403034, 0.453047, 0.503198, 0.55341, 0.611883};    //xf
-    Double_t y_z3[] = {0.00469629, 0.00174649, 0.00192242, 0.00314788, 0.00508761, 0.00661611, 0.00795308, 0.0112758, 0.016373};    //A_N
-    Double_t y_z3err[] = {0.00206932, 0.000624128, 0.000539531, 0.00059362, 0.000739809, 0.000956352, 0.00122953, 0.00155974, 0.00171278}; // err in A_N
-
-    Double_t x_z[] = {0.223656, 0.258028, 0.30496, 0.353487, 0.403045, 0.453105, 0.503258, 0.553514, 0.612011}; 
-    Double_t y_z[] = {0.00643991, 0.00439442, 0.00409551, 0.00554648, 0.00717851, 0.00818287, 0.00990652, 0.0130281, 0.018355}; 
-    Double_t y_zerr[] = {0.00187145, 0.000588128, 0.000519767, 0.000574852, 0.000718697, 0.000923787, 0.00117898, 0.00148253, 0.00160871}; 
-    
-    
-    //Zhanwen's values for  2 photons (emailed by Zhanwen)
-    // Double_t x_z2[] = {0.221274, 0.257051, 0.303834, 0.352904, 0.402909, 0.45313, 0.503341, 0.553565, 0.612303}; //Old
-    // Double_t y_z2[] = {0.0192133, 0.0302699, 0.0359699, 0.0448542, 0.0403864, 0.0373283, 0.0316632, 0.0340015, 0.0314325}; //Old
-    // Double_t y_z2err[] = {0.00307504, 0.00152359, 0.00179363, 0.00248168, 0.00322774, 0.00391079, 0.00464554, 0.00532485, 0.00536946}; //Old
-
-    Double_t x_z2[] = {0.221159, 0.256825, 0.303733, 0.352844, 0.402939, 0.453195, 0.503432, 0.553647, 0.612384};
-    Double_t y_z2[] = {0.00576532, 0.0156546, 0.0223887, 0.0303075, 0.0328763, 0.0324299, 0.0283983, 0.0296894, 0.0345104}; 
-    Double_t y_z2err[] = {0.00226046, 0.0012449, 0.00120598, 0.00142995, 0.00182607, 0.00231696, 0.00283444, 0.00340224, 0.00355821};
-        
-    TGraphErrors *znGr3 = new TGraphErrors(9, x_z3, y_z3, 0, y_z3err);
-    znGr3->SetName("znGr3");
-
-    TGraphErrors *znGr2 = new TGraphErrors(9, x_z2, y_z2, 0, y_z2err);
-    znGr2->SetName("znGr2");
-    
-    TGraphErrors *znGr = new TGraphErrors(9, x_z, y_z, 0, y_zerr);
-    znGr->SetName("znGrAll");
-    
-    znGr2->Write();
-    znGr3->Write();
-    znGr->Write();
-
-    //Run 11 Mriganka's Result
-    Double_t x_mm[] = {41.18, 45.96, 50.87, 55.78, 61.48, 69.17, 81.64};
-    Double_t y_mm[] = {0.0132, 0.0080, 0.0135, 0.0170, 0.0224, 0.0250, 0.0313};    
 }

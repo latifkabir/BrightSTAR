@@ -5,12 +5,15 @@
 // URL: jlab.org/~latif
 
 #include <iostream>
+#include "EjAna.h"
 #include "RootInclude.h"
 #include "cppInclude.h"
 #include "BrightStInclude.h"
 #include "BrJetMaker/TStJetCandidate.h"
 #include "BrJetMaker/TStJetEvent.h"
 #include "BrJetMaker/TStJetSkimEvent.h"
+#include "EjCreateBinnedHistExtended.h"
+
 using namespace std;
 //fillNo is just the runNumber here since you are processing one run per job 
 void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det, Int_t firstRun, Int_t lastRun)
@@ -90,6 +93,8 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
     TH1D *h1Phi = new TH1D ("h1Phi", "EM Jet Phi after all cuts; Jet #phi [rad]", 100, -3.3, 3.3);
     TH1D *h1E = new TH1D ("h1E", "EM Jet E after all cuts; Jet E [GeV]", 100, 0.0, 70.0);
     TH1D *h1Pt = new TH1D ("h1Pt", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
+    TH1D *h1Enew = new TH1D ("h1Enew", "EM Jet E after all cuts; Jet E [GeV]", 100, 0.0, 70.0);
+    TH1D *h1PtNew = new TH1D ("h1PtNew", "Jet Pt after all cuts; Jet Pt [GeV/c]", 100, 0.0, 25.0);
     TH1D *h1nPhotons = new TH1D("h1nPhotons", "number of photons in EM jets after all cuts; Number of Photons", 20, 0, 20);
     TH1D *h1vtxZ = new TH1D("h1vtxZ", "Jet vetrex z; Jet vertex z [cm]", 100, -200, 200);
     TH1D *h1Trig = new TH1D("h1Trig", "Trigger Distribution (Without any cut)", 10, 0, 10);
@@ -318,8 +323,21 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 		pt = jet->GetPt();
 		nPhotons = jet->GetNumberOfTowers();
 
+		h1E->Fill(eng);
+		h1Pt->Fill(pt);
+		if(det == "fms")
+		{
+		    pt = jet->GetPt() - jet->GetUedPt();
+
+		    pt = EjJetPtCorr(pt, eng);
+		    eng = EjJetEngCorr(eng); 
+		}
+		
 		if(eta < etaMin || eta > etaMax) //Conside only EEMC and FMS coverage
 		    continue;
+
+		if(pt < EjAna::kPtMin)
+		   continue;
 
 		//Trigger dependent Pt cuts: See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22.
 		for(Int_t t = 0; t < 9; ++t)
@@ -394,10 +412,10 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 		h1spinY->Fill(spinY);  //note: per jet
 		h1Eta->Fill(eta);
 		h1Phi->Fill(phi);
-		h1E->Fill(eng);
-		h1Pt->Fill(pt);
 		h1nPhotons->Fill(nPhotons);
-
+		h1Enew->Fill(eng);
+		h1PtNew->Fill(pt);
+		
 		for(Int_t t = 0; t < nPtBins; ++t)
 		{
 		    if(pt >= ptBins[t] && pt < ptBins[t + 1])

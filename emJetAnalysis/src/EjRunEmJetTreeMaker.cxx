@@ -145,18 +145,19 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     //Note that the default is already: fmsptMk->SetReadMuDst(0); fmshitMk->SetReadMuDst(0); fmsptMk->setMergeSmallToLarge(1);
     
     if(isMC)
+    {
 	fmshitMk->SetReadMuDst(1);                //for simu set to 1
-    //-------------------------------------------
-    // // --> Do not use trigger simulator's result for FMS data or EM jet, no implementation for FMS trigger
-    StTriggerSimuMaker* simuTrig = new StTriggerSimuMaker;
-    simuTrig->useOnlineDB();
-    simuTrig->setMC(isMC);
+	//-------------------------------------------
+	// // --> Do not use trigger simulator's result for FMS data or EM jet, no implementation for FMS trigger
+	StTriggerSimuMaker* simuTrig = new StTriggerSimuMaker;
+	simuTrig->useOnlineDB();
+	simuTrig->setMC(isMC);
 
-    //simuTrig->useBbc();
-    simuTrig->useBemc();
-    simuTrig->useEemc();
-    simuTrig->bemc->setConfig(StBemcTriggerSimu::kOnline);
-
+	//simuTrig->useBbc();
+	simuTrig->useBemc();
+	simuTrig->useEemc();
+	simuTrig->bemc->setConfig(StBemcTriggerSimu::kOnline);
+    }
     StEmVertexMaker *emVertexMkr = new StEmVertexMaker("StEmVertexMaker");
     TString bbcSlewingData = TStar::gConfig->GetStarHome() + "/database/bbc_slewing_run15_pp200.dat"; 
     emVertexMkr->ReadBbcSlewing(bbcSlewingData.Data()); //CKim

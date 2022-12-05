@@ -5,6 +5,8 @@
 // URL: jlab.org/~latif
 
 #include <iostream>
+#include "EjAna.h"
+#include "EjCreateBinnedHistExtended.h"
 #include "RootInclude.h"
 #include "cppInclude.h"
 #include "BrightStInclude.h"
@@ -317,9 +319,20 @@ void EjCreateBinnedHist(Int_t fillNo, TString fileNamePrefix, TString det, Int_t
 		pt = jet->GetPt();
 		nPhotons = jet->GetNumberOfTowers();
 
+		if(det == "fms")
+		{
+		    pt = jet->GetPt() - jet->GetUedPt();
+
+		    pt = EjJetPtCorr(pt, eng);
+		    eng = EjJetEngCorr(eng);
+		}
+		
 		if(eta < etaMin || eta > etaMax) //Conside only EEMC and FMS coverage
 		    continue;
 
+		if(pt < EjAna::kPtMin)
+		    continue;
+		
 		//Trigger dependent Pt cuts: See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22.
 		for(Int_t t = 0; t < 9; ++t)
 		{
