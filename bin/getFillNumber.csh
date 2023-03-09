@@ -1,12 +1,12 @@
-#/bin/csh -f
+#!/bin/csh -f
 
 # Run this script with csh
     
 set List = $1
 
 set DBServer     = db04.star.bnl.gov
-# set DBPortRunLog = 3414 #For RUn 15
-set DBPortRunLog = 3416   #For Run 17
+set DBPortRunLog = 3414 #For Run 15
+# set DBPortRunLog = 3416   #For Run 17
 set DBName       = RunLog
 
 if (-f ${List}_FillNo.dat) then

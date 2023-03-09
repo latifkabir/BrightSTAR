@@ -300,7 +300,9 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 
 		//------- end of jet eng/pt correction ----
 		
-		if(pt < EjAna::kPtMin)
+		// if(pt < EjAna::kPtMin)
+		//     continue;
+		if(pt < 1 || pt > 2) //FIXIT: TEMPORARY for ssdmb-stream
 		    continue;
 		
 		LV.SetPtEtaPhiE(pt, eta, phi, eng);
@@ -308,7 +310,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 		
 		//h1Xf->Fill(xf); //Moved to the event loop
 		h1Eng->Fill(eng);
-		
+		/* //FIXIT: TEMPORARY for ssdmb-stream		
 		//Trigger dependent Pt cuts: See: Carl's e-mail to Cold QCD pwg mailing list on 2019-11-22.
 		for(Int_t t = 0; t < 9; ++t) 
 		{
@@ -336,7 +338,7 @@ void EjCreateBinnedHistExtended(Int_t fillNo, TString fileNamePrefix, TString de
 			continue;
 		}
 		//-- End of Trigger Selection --
-				
+		*/		
 		if(fabs(xf) < 0 || fabs(xf) > 1)
 		{
 		    //cout << "Unphysical x_F value. Investigate ...."<< "X_F: "<<xf <<"\t Eng: "<< eng <<endl;

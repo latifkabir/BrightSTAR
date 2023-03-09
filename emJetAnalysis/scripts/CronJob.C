@@ -18,8 +18,8 @@ void CronJob()
     sc->SetRunIncrement(100);  // Number of runs to be incremented (Fms stream)
     //sc->SetRunIncrement(160);  // aggresive Number of runs to be incremented
     // sc->SetMaxFilesPerJob(5); //Maximum number of files per job (physics stream)
-    sc->SetMaxFilesPerJob(2); //Maximum number of files per job (Fms stream)
-    
+    //sc->SetMaxFilesPerJob(2); //Maximum number of files per job (Fms stream)
+    sc->SetMaxFilesPerJob(5); //Maximum number of files per job (ssdmb stream)	
     //sc->CronJob("AnRunNanoDstMaker", gFirstRun, gFirstRun); // For Test
     //sc->CronJob("AnRunNanoDstMaker", 16093018, 16093018);
 

@@ -17,7 +17,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 {
     TStopwatch sw;
     sw.Start();
-
+    isMC = kTRUE; // !!!!!!!!!!!!! TEMPORARY for ssdmb stream. FIXIT!!!!!!!!!!!!!!!!!!!!
     TStar::gConfig->Print();
     EjAna::Print();
     
@@ -51,10 +51,10 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     StMuDbReader* muDstDb = StMuDbReader::instance();
     
     Int_t runNumber;    
-    if(!isMC)
+    // if(!isMC) // !!!!!!! TEMPORARY for ssdmb stream
 	runNumber = TStRunList::GetRunFromFileName((string)inFile);
-    else
-	runNumber = 16066000;
+    // else
+    // 	runNumber = 16066000;
     if(runNumber < 1)
     {
     	cout << "Unable to get run number" <<endl;
@@ -143,7 +143,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     StFmsPointMaker* fmsptMk  = new StFmsPointMaker();
 
     //Note that the default is already: fmsptMk->SetReadMuDst(0); fmshitMk->SetReadMuDst(0); fmsptMk->setMergeSmallToLarge(1);
-    
+    /* // !!!!!!!!! TEMPORARY for ssdmb strem !!!!!!!!!
     if(isMC)
     {
 	fmshitMk->SetReadMuDst(1);                //for simu set to 1
@@ -157,7 +157,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 	simuTrig->useBemc();
 	simuTrig->useEemc();
 	simuTrig->bemc->setConfig(StBemcTriggerSimu::kOnline);
-    }
+    } */
     StEmVertexMaker *emVertexMkr = new StEmVertexMaker("StEmVertexMaker");
     TString bbcSlewingData = TStar::gConfig->GetStarHome() + "/database/bbc_slewing_run15_pp200.dat"; 
     emVertexMkr->ReadBbcSlewing(bbcSlewingData.Data()); //CKim

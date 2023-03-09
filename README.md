@@ -25,6 +25,7 @@ This will create some directories required.
 
 - Compile the library:
 ```
+starver SL20a
 source setup.[c]sh
 make
 ```
@@ -36,8 +37,23 @@ root -l
 [0] help()
 ```
 
-- To take full advantage of the framework, update the configuration file `config/config.cfg` accordingly.
+- (Optional) To take full advantage of the framework, update the configuration file `config/config.cfg` accordingly.
 
+Selective Compilation
+----------------------
+
+- Using the command `make` will compile everything. It is possoble to compile only the selected libraries that you need.
+```
+make lib
+make cons
+make macro
+make ana
+make emj
+make diff
+make sim
+```
+The above commands will compile `libBrStar`, `StRoot`, `runMacros`, `analysis`, `emJetAnalysis`, `diffAnalysis`, `starSim` directories respectively. Next section explains the purpose of these directories.
+Depending on which analysis you are interested in, you can just do `make lib`, `make macros` and `make emj` (if you are doing Em-jet analysis).
 
 Directory Structure
 --------------------
