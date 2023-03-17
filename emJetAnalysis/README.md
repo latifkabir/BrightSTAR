@@ -3,7 +3,7 @@ EM-jet A_N Analysis
 
 - The relevant directory for EM-jet analysis is: `BrightSTAR/emJetAnalysis`
 
-- My analysis has four steps. Step-1 uses MuDst to generate NanoJetTree. Step-2 uses NanoJetTree from step-1 to gegerate hitogram in root file. Step-3 uses histograms in root file from Step-2 to calculate A_N and plot them. Step-4 uses the output from step-3 to add systematic error bars or other style to the plots.
+- My analysis has four steps. Step-1 uses MuDst to generate NanoJetTree. Step-2 uses NanoJetTree from step-1 to generate histogram in root file. Step-3 uses histograms in root file from Step-2 to calculate A_N and plot them. Step-4 uses the output from step-3 to add systematic error bars or other style to the plots.
 
 
 - Step-1: Generate DST files (EM-jet Trees)
