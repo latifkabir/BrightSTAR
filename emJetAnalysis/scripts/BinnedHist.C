@@ -1,0 +1,99 @@
+// Filename: BinnedHist.C
+// Description: 
+// Author: Latif Kabir < kabir@bnl.gov >
+// Created: Wed Jan 15 18:47:02 2020 (-0500)
+// URL: jlab.org/~latif
+
+// Make sure to change 3 places nummbered below
+
+void BinnedHist(Int_t firstRun = -1, Int_t lastRun = -1)
+{
+    vector <string> jobList;
+    //------- 1.Change Here Function Name ------------
+    TString funcName = "EjCreateBinnedHist";
+    //TString funcName = "EjCreateBinnedHistMerged";
+    // TString funcName = "EjCreateBinnedHistExtended";
+
+    //TString jobName = "EjCreateBinnedHisR17G11_17Pass0";
+    // TString jobName = "R15FmsEjCreateBinnedHistExtended_1to2GeVPt_ssdmb";
+    TString jobName = "R15FmsEjCreateBinnedHist";
+    
+    TStRunList *list = new TStRunList();
+    TEntryList *runList = list->GetRunList(firstRun, lastRun);
+    Int_t maxRuns = runList->GetN();
+    Int_t run = 0;
+    Int_t nRunsDone = 0;
+    TString fileName;
+
+    //------- 2.Change Here the path and file prefix ---------------
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmasking_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
+
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_";
+     TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/fms/nanoDst/NanoJetTree_EjRunEmJetTreeMaker_";
+
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/scratch/EmJetEEmcTowPass4Merged/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/EmJetWOmaskingUe_znFms/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run17/pass0/Run17FmsEmJetTree/NanoJetTree_EjRunEmJetTreeMaker_";
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass6_1GeVPtCut/fms/NanoJetTree_EjRunEmJetTreeMaker_";
+    // TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/ssdmd_stream/nano_dst/NanoJetTree_EjRunEmJetTreeMaker_";	
+    
+    //----------
+    
+    cout << "Total number of files to be processed: "<< maxRuns <<endl;
+
+    //-------
+    int runNo;
+    double timeDiff;
+    ifstream inFile("/star/u/kabir/GIT/BrightSTAR/database/Run15RunStartTimeSinceFillStartTime.txt");
+
+    if (!inFile)
+    {
+	cout << "Unable to open input file " << endl;
+	return;
+    }
+
+    while(!inFile.eof())
+    {
+	inFile >> runNo >> timeDiff;
+
+	// if (timeDiff <= 2.0)
+	//     continue;
+
+	cout << "Processing run" << runNo << " with time diff " << timeDiff << " hours "<<endl;
+
+	    
+    // //------------ Loop over runs --------------------------
+    // for (Int_t run_i = 0; run_i < maxRuns; ++run_i)
+    // {
+    	run = runNo; //runList->GetEntry(run_i);
+    	fileName = filePrefix;
+    	fileName += run;
+    	fileName += ".root";
+
+    	if(gSystem->AccessPathName(fileName))
+    	{
+    	    cout << "No DST file for run number "<< run <<" ... SKIPPED."<<endl;
+    	    continue;
+    	}
+    	// cout << "Processing run number: "<< run <<endl;
+
+    	//-------------- 4.Change Here to fit Function's argument ---------------
+    	TString argList = "(";
+    	argList += run;
+    	argList += ",\"";
+    	argList += filePrefix;
+    	argList += "\",\"fms\","; //<------ Change detector
+    	//argList += "\",\"eemc\","; //<------ Change detector
+    	argList += run;
+    	argList += ",";
+    	argList += run;
+    	argList += ")"; //<--------------- Update Here, min number of photon 
+    	// argList += ", 4)"; //<--------------- Update Here, min number of photon 
+	
+    	//---------------------------------------------------------------------
+    	EjCreateBinnedHist(run, filePrefix, "fms", run, run);
+    	//cout << (funcName + argList)<<endl;
+    }
+
+}

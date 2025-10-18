@@ -171,6 +171,7 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
     Int_t fillNoFmData;
     Int_t lastFillNoFmData = -1;
     Int_t evtTime;
+    Int_t firstEvtTime = -1;
     Double_t dT;
     Double_t pol_b;
     Double_t pol_y;
@@ -239,15 +240,15 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 	nPoints = 0;
 	    
 	Int_t nEntries = tree->GetEntries();
-	cout << "Processing run number: "<< runNumber <<endl;
-	cout << "Total events to be processed: "<< nEntries <<endl;
+	// cout << "Processing run number: "<< runNumber <<endl;
+	// cout << "Total events to be processed: "<< nEntries <<endl;
 
 	for(Int_t evt = 0; evt < nEntries; ++evt)
 	{
 	    jetEvent->Reset();
 	    
-	    if(evt % 5000 == 0)
-		cout << "Events processed: "<< evt <<endl;
+	    // if(evt % 5000 == 0)
+	    // 	cout << "Events processed: "<< evt <<endl;
 	
 	    tree->GetEntry(evt);
 
@@ -257,7 +258,9 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 	    spinY = skimEvent->GetSpinY();
 	    evtTime = skimEvent->GetUnixTime();
 	    eventAccepted = kFALSE;
-
+	    if(evt == 0)
+		firstEvtTime = evtTime;
+	    
 	    if(runNumber < 18000000)
 		sqrt_s = 200;        //Run 15
 	    else
@@ -436,8 +439,11 @@ void EjCreateBinnedHistMerged(Int_t fillNo, TString fileNamePrefix, TString det,
 		energy = startTime = stopTime = p_b = dp_b = dpdt_b = edpdt_b = p_y = dp_y = dpdt_y = edpdt_y = -1.0;
 		fillDb.GetFillPolarization(fillNoFmData, energy, startTime, stopTime, p_b, dp_b, dpdt_b, edpdt_b, p_y, dp_y, dpdt_y, edpdt_y);
 		
-		cout << fillNoFmData << "\t"<< energy << "\t"<< startTime << "\t"<< stopTime << "\t"<< p_b << "\t"<< dp_b << "\t"<< dpdt_b << "\t"<< edpdt_b << "\t"<< p_y << "\t"<< dp_y << "\t"<< dpdt_y << "\t"<< edpdt_y <<endl;
-		cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - startTime) / 3600.0 <<endl;
+		// cout << fillNoFmData << "\t"<< energy << "\t"<< startTime << "\t"<< stopTime << "\t"<< p_b << "\t"<< dp_b << "\t"<< dpdt_b << "\t"<< edpdt_b << "\t"<< p_y << "\t"<< dp_y << "\t"<< dpdt_y << "\t"<< edpdt_y <<endl;
+		// cout << "Fill No.: "<< fillNoFmData <<" Start time: "<< startTime << " Current Evernt Time: "<< evtTime << " Time Diff in hours: "<< (evtTime - startTime) / 3600.0 <<endl;
+
+		if(firstEvtTime != -1)
+		    cout << runNumber << "\t" << (firstEvtTime - startTime) / 3600.0 << endl;
 	    }
 
 	    if(p_b == -1 || p_y == -1)

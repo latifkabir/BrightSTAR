@@ -186,8 +186,8 @@
     dStyle->SetCanvasColor(0);
 
     //Stat box
-    // dStyle->SetOptFit(112);
-    // dStyle->SetOptStat(10); //entries only //mean/rms should be replaced with a fit
+    //dStyle->SetOptFit(112);
+    //dStyle->SetOptStat(10); //entries only //mean/rms should be replaced with a fit
 
     //Titles and Labels
     dStyle->SetLabelSize(0.05, "xyz");
@@ -230,8 +230,9 @@
            
     gStyle->SetPadGridX(kFALSE);
     gStyle->SetPadGridY(kFALSE);
-    gStyle->SetOptStat(0);
-        
+    //gStyle->SetOptStat(0);
+    ////gROOT->ForceStyle();
+    gStyle->SetOptStat(1111);    
     //-----------------------------------
     const Int_t NRGBs = 5;
     const Int_t NCont = 255;
@@ -244,5 +245,6 @@
     gStyle->SetNumberContours(NCont);
         
     using namespace TStar;
+    
 }
 

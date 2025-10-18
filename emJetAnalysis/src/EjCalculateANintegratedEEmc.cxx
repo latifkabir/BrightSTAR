@@ -1,4 +1,4 @@
-// Filename: EjCalculateANextended.cxx
+// Filename: EjCalculateANintegratedEEmc.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Fri May  8 15:08:25 2020 (-0400)
@@ -11,7 +11,7 @@
 #include "Hists.h"
 using namespace std;
 
-void EjCalculateANextended(TString inFileName, TString outName, TString det)
+void EjCalculateANintegratedEEmc(TString inFileName, TString outName, TString det)
 {
     /*
       We need to bin in: energy (5), number of photons (6), phi (16), spin (2), pt(6).
@@ -29,10 +29,10 @@ void EjCalculateANextended(TString inFileName, TString outName, TString det)
     const Int_t kSpinBins = 2;
     const Int_t kEnergyBins = 5;
     const Int_t kPhotonBins = 6;
-    const Int_t kXfBins = 10;
+    const Int_t kXfBins = 5;
     
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0}; //For info only
-    Double_t xfBins[] = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7};
+    Double_t xfBins[] =  {0.04, 0.06, 0.08, 0.10, 0.12, 0.15};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
     Double_t photonBins[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};   // Last bin contains 6 or more photons
     

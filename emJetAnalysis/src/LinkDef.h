@@ -20,9 +20,11 @@
 #pragma link C++ function EjCalculateAN;                // Calculate A_N from binned histograms *
 #pragma link C++ function EjPlotAn;                     // Example A_N plots in many panels
 #pragma link C++ function EjCreateBinnedHistExtended;   // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (with extended options) *
+#pragma link C++ function EjCreateBinnedHistIntegratedEEmc;   // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield. Integrated meaning, fewer xf bins. One energy bin. *
 #pragma link C++ function EjCreateBinnedHistMerged;     // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield (merge  number of Photons 1 & 2, 3, 4 &5 or more) *
 #pragma link C++ function EjCreateBinnedHistToCompare;  // Create binned histograms in pt, E, phi, #photons, spin, X_F bins to be used to extract yield and asymmetry to compare with Zhanwen and MMM results
 #pragma link C++ function EjCalculateANextended;        // Calculate A_N from binned histograms *
+#pragma link C++ function EjCalculateANintegratedEEmc;  // Calculate A_N from binned histograms for EEMC with fewer Xf bins *
 #pragma link C++ function EjCalculateFalseAN;           // Calculate false asymmetry (fit residual) for A_N using cross-ratio formula
 #pragma link C++ function EjCalculateBeamAsymmetry;     // Calculate beam asymmetry using sum method
 #pragma link C++ function EjCalculateANdirectMethod;    // Calculate A_N from binned histograms using usual asymmetry formula

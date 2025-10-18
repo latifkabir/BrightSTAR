@@ -23,8 +23,8 @@ Double_t EjAna:: kFmsEtaMax = 3.8;
 Double_t EjAna:: kEEmcEtaMin = 1.0;
 Double_t EjAna:: kEEmcEtaMax = 2.0;
 
-// Double_t EjAna::kPtMin = 2.0;
-Double_t EjAna::kPtMin = 1.0;
+Double_t EjAna::kPtMin = 2.0;
+// Double_t EjAna::kPtMin = 1.0;
 Double_t EjAna::kRMax = 0.7; 
 
 // FMS Photon energy cut

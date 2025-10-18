@@ -11,7 +11,7 @@ void AnalysisTreeQaJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     vector <string> jobList;
     //------- 1.Change Here Function Name ------------
     TString funcName = "EjAnalysisTreeQa";
-    TString jobName = "EjAnalysisTreeQaR15Pass6Fms";
+    TString jobName = "EjAnalysisTreeQaR15Pass4EEmc";
     //--------------------------------------
     
     TStRunList *list = new TStRunList();
@@ -22,11 +22,12 @@ void AnalysisTreeQaJobs(Int_t firstRun = -1, Int_t lastRun = -1)
     TString fileName;
     TString outName;
     //------- 2.Change Here the path and file prefix ---------------
+    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass6_1GeVPtCut/fms/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run17/pass0/Run17FmsEmJetGr1_10/NanoJetTree_EjRunEmJetTreeMaker_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass2/eemc/NanoJetTree_EjRunEmJetTreeMakerEEmcSmd_";
     //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/pass1/eemc/R15EmJetNanoTree/NanoJetTree_RunEmJetTreeMaker_"; //<--------- This is PASS 1 !!
-    TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/ssdmd_stream/nano_dst/NanoJetTree_EjRunEmJetTreeMaker_";	
+    //TString filePrefix = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/ssdmd_stream/nano_dst/NanoJetTree_EjRunEmJetTreeMaker_";	
 
     //----------
     
@@ -59,7 +60,8 @@ void AnalysisTreeQaJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	argList += ",\"";
 	argList += outName;
 	argList += "\"";
-	argList += ",\"fms\"";
+	//argList += ",\"fms\"";
+	argList += ",\"eemc\"";
 	argList += ")";	
 	//---------------------------------------------------------------------
 	
