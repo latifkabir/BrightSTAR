@@ -6,10 +6,6 @@
 
 #ifdef __CINT__
 
-#pragma link C++ function RunDeltaPhiMaker;                      // Read Track Info data (example/Demo)
-
-//RP
-#pragma link C++ function RunRpQAMaker;                          // Read RP QA Maker
 
 //EEMC
 #pragma link C++ function RunEEmcMakerEx1;                       // Read EEMC data (example/Demo)
@@ -27,17 +23,10 @@
 #pragma link C++ function RunFmsHotChQaMaker;                    // FMS QA Maker from StEvent (on the fly reconstruction)
 #pragma link C++ function RunFmsTreeMaker;                       // FMS reconstruction 
 
-//Emc
-#pragma link C++ function RunEmcTreeMaker;                       // Emc gamma, pi0 reconstruction 
-
-//TPC + BTOF
-#pragma link C++ function RunPidTreeMaker;                       // PID Treemaker using TPC and BTOF
 
 //Jet
 #pragma link C++ function RunJetFinder;                          // Run Jet tree maker. 
 
-//Nano Dst
-#pragma link C++ function RunNanoDstMaker;                       // Run Nano DST maker. 
 
 #endif
 

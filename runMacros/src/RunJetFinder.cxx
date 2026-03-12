@@ -10,7 +10,7 @@ The FMS part is added in this run macro, need benchmarking
 #include "StRootInclude.h"
 #include "TStTrigDef.h"
 #include "TStRunList.h"
-#include "StFmsJetAnalysisMaker/StFmsAnalysisMaker.h"
+//#include "StFmsJetAnalysisMaker/StFmsAnalysisMaker.h"
 
 using namespace std;
 
@@ -157,10 +157,10 @@ void RunJetFinder(TString inFile, TString outFilePostFix, Int_t nevents)
     jetmaker->addUeBranch("OffAxisConesR050", off050);
     jetmaker->addUeBranch("OffAxisConesR060", off060);
 
-    StFmsAnalysisMaker *fmsJetAnaMaker = new StFmsAnalysisMaker("StFmsAnalysisMaker", jetmaker);
-    TString fmsAnaFile = (TString)"FmsJetAnaTree_" + outFilePostFix;
-    Char_t* fmsAnaFile_ = (Char_t*)fmsAnaFile.Data();
-    fmsJetAnaMaker->SetOutputFile(fmsAnaFile_);
+    // StFmsAnalysisMaker *fmsJetAnaMaker = new StFmsAnalysisMaker("StFmsAnalysisMaker", jetmaker);
+    // TString fmsAnaFile = (TString)"FmsJetAnaTree_" + outFilePostFix;
+    // Char_t* fmsAnaFile_ = (Char_t*)fmsAnaFile.Data();
+    // fmsJetAnaMaker->SetOutputFile(fmsAnaFile_);
 	
     // Run
     chain->Init();

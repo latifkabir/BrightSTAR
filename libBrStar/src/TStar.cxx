@@ -153,34 +153,34 @@ void TStar::help()
     cout << "| Type 'help(\"function or class name\")' for details of any specific function or class     |"<<endl;
     cout<<  "-------------------------------------------------------------------------------------------" <<endl;  
 
-    str =  TStar::Config->GetStarHome() + (string)"/analysis/src/";
-    str = str + "LinkDef.h";
-    //cout << str <<endl;
+    // str =  TStar::Config->GetStarHome() + (string)"/analysis/src/";
+    // str = str + "LinkDef.h";
+    // //cout << str <<endl;
 
-    ifstream inFile2(str.c_str());
-    if(!inFile2)
-    {
-	cout << "Source file NOT found" <<endl;
-	return;
-    }
-    cout << "\t\t=================================================================================" <<endl;
+    // ifstream inFile2(str.c_str());
+    // if(!inFile2)
+    // {
+    // 	cout << "Source file NOT found" <<endl;
+    // 	return;
+    // }
+    // cout << "\t\t=================================================================================" <<endl;
 
-    cout << "\t\t|\t\t\t   Functions inside Analysis   \t\t\t\t|" <<endl;
-    cout << "\t\t=================================================================================" <<endl;
+    // cout << "\t\t|\t\t\t   Functions inside Analysis   \t\t\t\t|" <<endl;
+    // cout << "\t\t=================================================================================" <<endl;
   
-    while(getline(inFile2,str))
-    {
-	lineStr = str.c_str();
-	if(str[0]=='/' && str[1]=='/')
-	    continue;
-	if(str == "#endif")
-	    continue;
-	if(str == "#ifdef __CINT__")
-	    continue;
-	//cout << str <<endl;
-	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
-    }
-    inFile2.close();
+    // while(getline(inFile2,str))
+    // {
+    // 	lineStr = str.c_str();
+    // 	if(str[0]=='/' && str[1]=='/')
+    // 	    continue;
+    // 	if(str == "#endif")
+    // 	    continue;
+    // 	if(str == "#ifdef __CINT__")
+    // 	    continue;
+    // 	//cout << str <<endl;
+    // 	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
+    // }
+    // inFile2.close();
 
     str =  TStar::Config->GetStarHome() + (string)"/runMacros/src/";
     str = str + "LinkDef.h";
@@ -212,32 +212,32 @@ void TStar::help()
     inFile3.close();
 
 
-    str =  TStar::Config->GetStarHome() + (string)"/diffAnalysis/src/";
-    str = str + "LinkDef.h";
-    ifstream inFile4(str.c_str());
-    if(!inFile4)
-    {
-	cout << "Source file NOT found" <<endl;
-	return;
-    }
-    cout << "\t\t=================================================================================" <<endl;
+    // str =  TStar::Config->GetStarHome() + (string)"/diffAnalysis/src/";
+    // str = str + "LinkDef.h";
+    // ifstream inFile4(str.c_str());
+    // if(!inFile4)
+    // {
+    // 	cout << "Source file NOT found" <<endl;
+    // 	return;
+    // }
+    // cout << "\t\t=================================================================================" <<endl;
 
-    cout << "\t\t|\t\t\t   Classes/Functions inside diffAnalysis   \t\t|" <<endl;
-    cout << "\t\t=================================================================================" <<endl;
+    // cout << "\t\t|\t\t\t   Classes/Functions inside diffAnalysis   \t\t|" <<endl;
+    // cout << "\t\t=================================================================================" <<endl;
   
-    while(getline(inFile4,str))
-    {
-	lineStr = str.c_str();
-	if(str[0]=='/' && str[1]=='/')
-	    continue;
-	if(str == "#endif")
-	    continue;
-	if(str == "#ifdef __CINT__")
-	    continue;
-	//cout << str <<endl;
-	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
-    }
-    inFile4.close();
+    // while(getline(inFile4,str))
+    // {
+    // 	lineStr = str.c_str();
+    // 	if(str[0]=='/' && str[1]=='/')
+    // 	    continue;
+    // 	if(str == "#endif")
+    // 	    continue;
+    // 	if(str == "#ifdef __CINT__")
+    // 	    continue;
+    // 	//cout << str <<endl;
+    // 	cout << lineStr.ReplaceAll(";", "").ReplaceAll("#pragma link C++ ", "").ReplaceAll("//", " : ") <<endl;
+    // }
+    // inFile4.close();
 
     str =  TStar::Config->GetStarHome() + (string)"/emJetAnalysis/src/";
     str = str + "LinkDef.h";
@@ -306,12 +306,12 @@ void TStar::help(string file)
     str = str + file + ".h";
     ifstream inFile(str.c_str());
 
-    if(!inFile)
-    {
-	str =  TStar::Config->GetStarHome() + (string)"/analysis/src/";
-	str = str+file + ".h";
-        inFile.open(str.c_str());	
-    }
+    // if(!inFile)
+    // {
+    // 	str =  TStar::Config->GetStarHome() + (string)"/analysis/src/";
+    // 	str = str+file + ".h";
+    //     inFile.open(str.c_str());	
+    // }
 
     if(!inFile)
     {
@@ -320,12 +320,12 @@ void TStar::help(string file)
         inFile.open(str.c_str());	
     }
     
-    if(!inFile)
-    {
-	str =  TStar::Config->GetStarHome() + (string)"/diffAnalysis/src/";
-	str = str+file + ".h";
-        inFile.open(str.c_str());	
-    }
+    // if(!inFile)
+    // {
+    // 	str =  TStar::Config->GetStarHome() + (string)"/diffAnalysis/src/";
+    // 	str = str+file + ".h";
+    //     inFile.open(str.c_str());	
+    // }
 
     if(!inFile)
     {

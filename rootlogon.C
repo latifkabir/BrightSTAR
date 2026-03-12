@@ -135,18 +135,19 @@
     cout<<"\t\t done loading StRoot libraries ...."<<endl;
 
     cout << "\t\t  Attempting to load BrightSTAR libraries ... ";
-    //------ Bright Star Maker Modules-------------
-    gSystem->Load("BrTemplateMaker");
-    gSystem->Load("BrEEmcMaker");
-    gSystem->Load("BrRpMaker");
-    gSystem->Load("BrFmsMaker");    
-    gSystem->Load("BrEmcMaker");    
-    gSystem->Load("BrPidMaker");    
-    //gSystem->Load("BrPicoMaker");  //Need to load dependencies  
-    gSystem->Load("BrFemtoMaker");    
-    gSystem->Load("StFmsJetAnalysisMaker");    
+    // //------ Bright Star Maker Modules-------------
+    // gSystem->Load("BrTemplateMaker");
+    // gSystem->Load("BrEEmcMaker");
+    // gSystem->Load("BrRpMaker");
+    // gSystem->Load("BrFmsMaker");    
+    // gSystem->Load("BrEmcMaker");    
+    // gSystem->Load("BrPidMaker");    
+    // //gSystem->Load("BrPicoMaker");  //Need to load dependencies  
+    // gSystem->Load("BrFemtoMaker");    
+    // gSystem->Load("StFmsJetAnalysisMaker");
+    
     gSystem->Load("BrContainers");    
-    gSystem->Load("BrNanoDstMaker");    
+    // gSystem->Load("BrNanoDstMaker");    
     gSystem->Load("BrJetMaker");    
     gSystem->Load("BrFmsSimTreeMaker");
     
@@ -154,14 +155,14 @@
     //Use $STARHOME/<lib module>/lib/ prefix to load local version
 
     gSystem->Load("libBrStar.so");
-    gSystem->Load("libStAnalysis.so");
+    // gSystem->Load("libStAnalysis.so");
     gSystem->Load("libRunMacros.so");
     
     gSystem->Load("libEmJetAnalysis.so");
-    gSystem->Load("libDiffAnalysis.so");
+    // gSystem->Load("libDiffAnalysis.so");
     gSystem->Load("libStarSim.so");
     
-    gSystem->Load("libUcrAnalysis.so");
+    // gSystem->Load("libUcrAnalysis.so");
     
     cout << "attempt completed !!\n\n";
                       

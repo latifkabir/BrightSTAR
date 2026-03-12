@@ -1,7 +1,7 @@
 BrightSTAR
 ============
 
-Analysis framework (with brightness) for the STAR data at RHIC. The main features include:
+Analysis framework for the STAR data at RHIC. The main features include:
 
 - Many new modules (Maker classes) for different types of analyses
 - New scheduler workflow based on `HTCondor` which is itself integrated in `root`
@@ -13,9 +13,6 @@ Quick Start
 
 - Download or clone this repositiory on STAR RCF computer:
 
-```
-git clone https://github.com/latifkabir/BrightSTAR.git
-```
 
 - From the top level directory do:
 ```
@@ -47,21 +44,22 @@ Selective Compilation
 make lib
 make cons
 make macro
-make ana
 make emj
-make diff
 make sim
 ```
-The above commands will compile `libBrStar`, `StRoot`, `runMacros`, `analysis`, `emJetAnalysis`, `diffAnalysis`, `starSim` directories respectively. Next section explains the purpose of these directories.
-Depending on which analysis you are interested in, you can just do `make lib`, `make macros` and `make emj` (if you are doing Em-jet analysis).
+The above commands will compile `libBrStar`, `StRoot`, `runMacros`, `emJetAnalysis`, `starSim` directories respectively. Next section explains the purpose of these directories.
+Depending on which part of analysis you are interested in, you can just do `make lib`, `make macros` and `make emj`.
+
+EM-Jet Analysis Using FMS and EMC
+---------------------------------
+
+- Follow the instructions from here: `emJetAnalysis/README.md`.
 
 Directory Structure
 --------------------
 
 - `libBrStar`: Main Bright STAR classes. Functionality added on top on `StRoot`. Class name starts with `TSt`.
-- `StRoot`: StRoot classes. Based on StMaker design. Used to generate user defined pico DST.
-- `analysis`: Prototype analysis example for each detector. Detector specific scripts start with the acronym of the detector.
-- `diffAnalysis`: Main analysis scripts for the physics analysis. A_N specific scripts starts with `An`. 
+- `StRoot`: StRoot classes. Based on StMaker design. Used to generate user defined pico/nano DST.
 - `runMacros`: Compilable macros to run the Makers from StRoot.
 - `emJetAnalysis`: EM Jet Ananlysis with FMS and EEMC
 - `starSim`: Simulation work for STAR
@@ -142,12 +140,10 @@ Directory Tree
 ------------------
 ```
 .
-├── analysis
 ├── bin
 ├── condor
 ├── config
 ├── database
-├── diffAnalysis
 ├── dst 
 ├── emJetAnalysis
 ├── include
@@ -157,8 +153,6 @@ Directory Tree
 ├── libBrStar
 ├── Makefile
 ├── README.md
-├── resources
-├── results
 ├── rootlogon.C
 ├── runMacros
 ├── scratch 
@@ -168,11 +162,5 @@ Directory Tree
 ├── star
 ├── starSim
 ├── StRoot
-├── studentsAna
 ├── sums
 ```
-
-
-
-
-
