@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <job inputOrder="runnumber" splitBy="runnumber" maxFilesPerProcess="1" filesPerHour="3">
 
+	<shell>singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif</shell>
+	
 	<Generator>
 		<Location> &JOBOUTDIR; </Location>
 	</Generator>

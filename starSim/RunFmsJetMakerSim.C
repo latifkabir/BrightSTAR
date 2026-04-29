@@ -41,7 +41,7 @@ void RunFmsJetMakerSim(Int_t nEvents = -1, const char* inFile = "pythiaOut.MuDst
     // gSystem->Load("StJetSkimEvent");
     // gSystem->Load("StJets");
     // gSystem->Load("StJetEvent");
-    // //gSystem->Load(".sl73_gcc485/obj/StRoot/StJetMaker/StJetMaker.so");
+    // //gSystem->Load(".sl73_x8664_gcc485/obj/StRoot/StJetMaker/StJetMaker.so");
 
 
     // // Load your shared libraries here

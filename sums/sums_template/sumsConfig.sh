@@ -27,7 +27,7 @@ export MAXFILES=all
 #--------------------------------------------------------------------------
 export BASEOUTDIR=${STARHOME}/jobResults            # .root files directory. Relative to current directory
 export JOBOUTDIR=${STARHOME}/jobOutput       #stderr, stdout, report etc directory. Relative to current directory
-export SOURCE=${STARHOME}/.sl73_gcc485
+export SOURCE=${STARHOME}/.sl73_x8664_gcc485
 export ROOTSETUP=${STARHOME}/rootlogon.C
 export MACRO=${STARHOME}/jobs/$JOBNAME/jobMacro.C
 export SETUPFILE=${STARHOME}/setup.csh

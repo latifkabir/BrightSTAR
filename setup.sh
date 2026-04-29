@@ -10,7 +10,7 @@
 STARHOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export STARHOME
 
-export LD_LIBRARY_PATH=.sl73_gcc485/lib:lib:$STARHOME/.sl73_gcc485/lib:$STARHOME/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=.sl73_x8664_gcc485/lib:lib:$STARHOME/.sl73_x8664_gcc485/lib:$STARHOME/lib:$LD_LIBRARY_PATH
 export PATH=$PATH:$STARHOME:$STARHOME/bin
 
 

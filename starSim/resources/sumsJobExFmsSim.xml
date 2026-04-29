@@ -3,6 +3,8 @@
     nProcesses="11000"  
     filesPerHour="24"  
     simulateSubmission="false">
+  
+  <shell>singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif</shell>
 
   <stdout URL="file:./logs/$JOBID.log" />
   <stderr URL="file:./logs/$JOBID.err" />
