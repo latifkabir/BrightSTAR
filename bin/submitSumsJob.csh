@@ -9,7 +9,7 @@ set BASEDIR = `pwd`
 set BASEOUTDIR = jobResults     # .root files directory. Relative to current directory
 set JOBOUTDIR = jobOutput       #stderr, stdout, report etc directory. Relative to current directory
 set OUTNAME = 'jobOut'
-set SOURCE  = ${BASEDIR}/.sl73_gcc485
+set SOURCE  = ${BASEDIR}/.sl73_x8664_gcc485
 set ROOTSETUP  =  ${BASEDIR}/rootlogon.C
 
 #RUN11 pp500 (12079026 - 12098031), physics

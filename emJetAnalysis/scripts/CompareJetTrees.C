@@ -6,7 +6,7 @@
 
 void CompareJetTrees()
 {    
-    //gSystem->Load(".sl73_gcc485/lib/libBrJetMaker.so");
+    //gSystem->Load(".sl73_x8664_gcc485/lib/libBrJetMaker.so");
     
     TFile *file_l =  new TFile("/star/u/kabir/pwg/znTest/NanoJetTree_EjRunEmJetTreeMaker_16087001_addl_hot_ch_masking_disabled.root");
     TFile *file_z =  new TFile("/star/u/jiachen/jiachen/zwzhu/Gen/Run15_new/run16087001.root");

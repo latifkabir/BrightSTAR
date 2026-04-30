@@ -2,6 +2,8 @@
 <!-- Task description -->
 <job maxFilesPerProcess="5" filesPerHour="1" fileListSyntax="xrootd" simulateSubmission="false"     >
 
+  <shell>singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif</shell>
+  
   <!-- Decription of the task -->
   <command>
     stardev
@@ -13,7 +15,7 @@
   <SandBox installer="ZIP">
     <Package>
       <File>file:jobMacro.C</File>      
-      <File>file:.sl73_gcc485</File>
+      <File>file:.sl73_x8664_gcc485</File>
       <File>file:lib</File>
       <File>file:rootlogon.C</File>         
       <File>file:setup.csh</File>           

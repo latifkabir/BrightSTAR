@@ -99,7 +99,7 @@ void TStScheduler::SubmitJob(vector <string> jobList, TString jobName)
 	condorConfig_out << str <<endl;
     }
     if(mCopyToExeHost)
-	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_x8664_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_in.close();
 
     //======================= Get File Path and wtite to condor file descriptor ===================================
@@ -206,7 +206,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 	condorConfig_out << str <<endl;
     }
     if(mCopyToExeHost)
-	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_x8664_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -379,7 +379,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	condorConfig_out << str <<endl;
     }
     if(mCopyToExeHost)
-	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database"<< endl;
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_x8664_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database"<< endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -621,7 +621,7 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
 	condorConfig_out << str <<endl;
     }
     if(mCopyToExeHost)
-	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_x8664_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -716,7 +716,7 @@ void TStScheduler::SubmitGenericJob(TString functionWithArg, TString jobName)
 	condorConfig_out << str <<endl;
     }
     if(mCopyToExeHost)
-	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
+	condorConfig_out << "transfer_input_files =   " << starHome << "/.sl73_x8664_gcc485, " << starHome << "/lib, "<< starHome << "/rootlogon.C, "<< starHome << "/setup.sh, "<< starHome << "/setup.csh, "<< starHome << "/config, " << starHome << "/database" << endl;
     condorConfig_out << "Executable      = " << jobDir << "/condor.sh" <<endl;
     condorConfig_in.close();
 
@@ -1013,7 +1013,7 @@ void TStScheduler::DeleteTempFiles(TString inFileName)
     }
 
     if(gROOT->IsBatch())
-	gROOT->ProcessLine(".! rm -r  .sl73_gcc485 lib rootlogon.C setup.sh setup.csh config database FmsGainCorr.txt");
+	gROOT->ProcessLine(".! rm -r  .sl73_x8664_gcc485 lib rootlogon.C setup.sh setup.csh config database FmsGainCorr.txt");
 
     cout << "Done deleting all temporary files copied" <<endl;    
 }

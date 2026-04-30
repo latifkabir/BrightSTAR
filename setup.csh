@@ -26,5 +26,5 @@ else
     setenv STARHOME "$PWD"  #For SUMS jobs
 endif
     
-setenv LD_LIBRARY_PATH ".sl73_gcc485/lib:lib:${STARHOME}/lib:${STARHOME}/.sl73_gcc485/lib:${LD_LIBRARY_PATH}"
+setenv LD_LIBRARY_PATH ".sl73_x8664_gcc485/lib:lib:${STARHOME}/lib:${STARHOME}/.sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}"
 
