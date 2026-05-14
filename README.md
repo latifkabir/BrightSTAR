@@ -50,7 +50,7 @@ make sim
 The above commands will compile `libBrStar`, `StRoot`, `runMacros`, `emJetAnalysis`, `starSim` directories respectively. Next section explains the purpose of these directories.
 Depending on which part of analysis you are interested in, you can just do `make lib`, `make macros` and `make emj`.
 
-EM-Jet Analysis Using FMS and EMC
+EM-Jet Analysis Using FMS and EEMC
 ---------------------------------
 
 - Follow the instructions from here: `emJetAnalysis/README.md`.

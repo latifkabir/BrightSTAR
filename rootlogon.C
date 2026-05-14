@@ -119,7 +119,7 @@
     gSystem->Load("StTriggerFilterMaker");
     
     //------------- RP ------------------
-    gSystem->Load("StMuRpsUtil.so"); //RP Afterburner
+    //gSystem->Load("StMuRpsUtil.so"); //RP Afterburner
 
     //------------ Simulation ---------------
     gSystem->Load("StBfcTriggerFilterMaker");
