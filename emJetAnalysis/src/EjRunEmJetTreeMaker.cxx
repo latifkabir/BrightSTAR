@@ -17,15 +17,15 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 {
     TStopwatch sw;
     sw.Start();
-    isMC = kTRUE; // !!!!!!!!!!!!! TEMPORARY for ssdmb stream. FIXIT!!!!!!!!!!!!!!!!!!!!
+    isMC = kFALSE; 
     TStar::gConfig->Print();
     EjAna::Print();
     
-    if(gROOT->IsBatch())
-    {
-    	inFile = TStScheduler::CopyInputFiles(inFile);
-    	det = EjAna::kDefaultDet;
-    }
+    // if(gROOT->IsBatch())
+    // {
+    // 	inFile = TStScheduler::CopyInputFiles(inFile);
+    // 	det = EjAna::kDefaultDet;
+    // }
         
     if(!(det == "fms" || det == "eemc"))
     {
@@ -52,7 +52,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     
     Int_t runNumber;    
     // if(!isMC) // !!!!!!! TEMPORARY for ssdmb stream
-	runNumber = TStRunList::GetRunFromFileName((string)inFile);
+    runNumber = TStRunList::GetRunFromFileName((string)inFile);
     // else
     // 	runNumber = 16066000;
     if(runNumber < 1)
@@ -143,7 +143,6 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     StFmsPointMaker* fmsptMk  = new StFmsPointMaker();
 
     //Note that the default is already: fmsptMk->SetReadMuDst(0); fmshitMk->SetReadMuDst(0); fmsptMk->setMergeSmallToLarge(1);
-    /* // !!!!!!!!! TEMPORARY for ssdmb strem !!!!!!!!!
     if(isMC)
     {
 	fmshitMk->SetReadMuDst(1);                //for simu set to 1
@@ -157,7 +156,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
 	simuTrig->useBemc();
 	simuTrig->useEemc();
 	simuTrig->bemc->setConfig(StBemcTriggerSimu::kOnline);
-    } */
+    } 
     StEmVertexMaker *emVertexMkr = new StEmVertexMaker("StEmVertexMaker");
     TString bbcSlewingData = TStar::gConfig->GetStarHome() + "/database/bbc_slewing_run15_pp200.dat"; 
     emVertexMkr->ReadBbcSlewing(bbcSlewingData.Data()); //CKim
@@ -239,8 +238,8 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     sw.Stop();
     sw.Print();
 
-    if(gROOT->IsBatch() && inFile.Contains("/tmp/"))
-	TStScheduler::DeleteTempFiles(inFile);
+    // if(gROOT->IsBatch() && inFile.Contains("/tmp/"))
+    // 	TStScheduler::DeleteTempFiles(inFile);
 
     cout << "-----------> Deleting Original jet finder files !!! <--------------------" <<endl;
     gROOT->ProcessLine(".! rm jets_*.root ueoc_*root skim_*.root");

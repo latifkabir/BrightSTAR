@@ -4,8 +4,9 @@
 # Description: 
 # Author: Latif Kabir < kabir@bnl.gov >
 # Created: Sat Aug 10 18:35:07 2019 (-0400)
-# URL: jlab.org/~latif
+# URL: latifkabir.github.io
 
+starver SL20a    
 
 set called=($_)
 if ("$called" != "") then
@@ -28,3 +29,5 @@ endif
     
 setenv LD_LIBRARY_PATH ".sl73_x8664_gcc485/lib:lib:${STARHOME}/lib:${STARHOME}/.sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}"
 
+# Add path for fastjet after AL9 migration 
+setenv LD_LIBRARY_PATH "/star/nfs4/AFS/star/opt/star/sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}”
