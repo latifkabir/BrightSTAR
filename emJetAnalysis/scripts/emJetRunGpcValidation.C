@@ -25,19 +25,33 @@ Step 3B:
 EjCreateBinnedHistMerged(gFirstRun, "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_", "eemc", gFirstRun, gFirstRun)
 
 Step 3C:
-EjCreateBinnedHistExtended()
+EjCreateBinnedHistExtended(gFirstRun, "/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass5/fms/nanoDst/NanoJetTree_EjRunEmJetTreeMaker_", "fms", gFirstRun, gFirstRun)
 
 Step 3D:
-EjCreateBinnedHistIntegratedEEmc()
+EjCreateBinnedHistIntegratedEEmc(gFirstRun, "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_", "eemc", gFirstRun, gFirstRun)
 
 Step 4A:
-EjCalculateAN()
+EjCalculateAN("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass5/BinnedHist_Fms_Merged.root",  "R15FmsEmJetAN_Merged.root", "fms")
+
 
 Step 4B:
+EjCalculateAN("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass4/EEmcJetPass4_BinnedHist.root", "R15EEmcEmJetAN_Merged.root", "eemc")
+
+Step 4C:
+EjCalculateANextended("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass5/BinnedHist_ext_fms_2_eq_less.root",  "R15FmsEmJetAnExt_2ph_eq_less.root", "fms")
+
+Step 4D:
+EjCalculateANintegratedEEmc("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass4/EjCreateBinnedHistIntegratedEEmc.root", "eemcANintegrated.root", "eemc")
+
 
 Step 5A:
-EjReplotAn()
+EjReplotAn("R15FmsEmJetAN_Merged.root", "fms", 1)
 
 Step 5B:
+EjReplotAn("R15EEmcEmJetAN_Merged.root", "eemc", 1)
 
+Step 5C:
+EjRePlotAnExt("R15FmsEmJetAnExt_2ph_eq_less.root")
 
+Step 5D:
+EjRePlotAnExt("eemcANintegrated.root")
