@@ -289,7 +289,7 @@ void EjCreateBinnedHistIntegratedEEmc(Int_t fillNo, TString fileNamePrefix, TStr
 		eng = jet->GetE();
 		ptRaw = jet->GetPt();
 		if(det == "eemc")
-		    pt = jet->GetPt();            // !!!!!!!!!!! Currently no UE correction for EEMC
+		    pt = jet->GetPt();            
 		else
 		    pt = jet->GetPt() - jet->GetUedPt();
 		nPhotons = jet->GetNumberOfTowers();

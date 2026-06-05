@@ -51,7 +51,7 @@ void EjRunEmJetTreeMaker(TString inFile, TString outFile, TString det, Bool_t is
     StMuDbReader* muDstDb = StMuDbReader::instance();
     
     Int_t runNumber;    
-    // if(!isMC) // !!!!!!! TEMPORARY for ssdmb stream
+    // if(!isMC) 
     runNumber = TStRunList::GetRunFromFileName((string)inFile);
     // else
     // 	runNumber = 16066000;

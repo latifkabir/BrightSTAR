@@ -22,7 +22,7 @@ void EjGetAverageXf(TString fileName, TString det = "eemc")
 
     const Int_t kEnergyBins = 5;
     const Int_t nPtBins = 9;
-    // FIXIT: Update this for Run 17
+    // For Run 15
     Double_t ptBins[] = {2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 8.0, 10.0};
     Double_t engBins[] = {0.0, 20.0, 40.0, 60.0, 80.0, 100.0}; //For info only
     
@@ -50,7 +50,6 @@ void EjGetAverageXf(TString fileName, TString det = "eemc")
 	maxEbin = 4;
     }
 
-    // FIXIT: -------> This should be updated for Run 17 <-----------
     // Fms 
     float varMins[3] = { 1.9, 1.7, 2.0};
     float varMaxs[3] = { 5.2, 7.75, 10.0};

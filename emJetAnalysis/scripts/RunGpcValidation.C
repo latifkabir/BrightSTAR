@@ -5,8 +5,7 @@
 // URL: latifkabir.github.io
 
 void RunGpcValidation(TString _step)
-{
-    
+{    
     cout << "Running analysis step:" << _step << endl;
     if (_step == "1a")
     {
@@ -62,7 +61,7 @@ void RunGpcValidation(TString _step)
     else if (_step == "4c")
     {    
 	//Step 4c:
-	EjCalculateANextended("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass5/BinnedHist_ext_fms_2_eq_less.root",  "R15FmsEmJetAnExt_2ph_eq_less.root", "fms");
+	EjCalculateANextended("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass6_1GeVPtCut/binned_hist/BinnedHist_Extended_FmsEmJet_pass6.root", "Run15FmsEmJetAn_ext.root", "fms");
     }
     else if (_step == "4d")
     {    
@@ -72,22 +71,22 @@ void RunGpcValidation(TString _step)
     else if (_step == "5a")
     {    
 	//Step 5a:
-	EjReplotAn("R15FmsEmJetAN_Merged.root", "fms", 1);
+	EjRePlotAn("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass5/R15FmsEmJetAN_Merged.root", "fms", 1);
     }
     else if (_step == "5b")
     {    
 	//Step 5b:
-	EjReplotAn("R15EEmcEmJetAN_Merged.root", "eemc", 1);
+	EjRePlotAn("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass4/R15EEmcEmJetAN_Merged.root", "eemc", 1);
     }
     else if (_step == "5c")
     {    
 	//Step 5c:
-	EjRePlotAnExt("R15FmsEmJetAnExt_2ph_eq_less.root");
+	EjRePlotAnExt("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass6_1GeVPtCut/An/Run15FmsEmJetAn_ext.root");
     }
     else if (_step == "5d")
     {    
 	//Step 5d:
-	EjRePlotAnExt("eemcANintegrated.root");
+	EjRePlotAnExt("/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass4/eemcANintegrated.root");
     }
     else
     {

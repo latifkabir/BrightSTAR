@@ -66,7 +66,7 @@ void EjMakeAnalysisTree(
     Double_t mFmsZ = 735.0;
     Double_t fmsEtaMin = 2.0;
     Double_t fmsEtaMax = 4.5;
-    Double_t eemcEtaMin = -2.0;//0.8; //<----------- TEMPORARY, to match unintentional other trees
+    Double_t eemcEtaMin = -2.0;//0.8; // to match unintentional other trees
     Double_t eemcEtaMax = 6.0; //2.5;
     Double_t etaMin;
     Double_t etaMax;
