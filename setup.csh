@@ -30,4 +30,4 @@ endif
 setenv LD_LIBRARY_PATH ".sl73_x8664_gcc485/lib:lib:${STARHOME}/lib:${STARHOME}/.sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}"
 
 # Add path for fastjet after AL9 migration 
-setenv LD_LIBRARY_PATH "/star/nfs4/AFS/star/opt/star/sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}”
+setenv LD_LIBRARY_PATH "/star/nfs4/AFS/star/opt/star/sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}"
