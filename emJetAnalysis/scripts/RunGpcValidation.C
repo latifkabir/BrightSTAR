@@ -36,7 +36,7 @@ void RunGpcValidation(TString _step)
     else if (_step == "3b")
     {
 	//Step 3b:
-	EjCreateBinnedHistMerged(gFirstRun, "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_", "eemc", gFirstRun, gFirstRun);
+	EjCreateBinnedHistMerged(gFirstRun, "/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_", "eemc", gFirstRun, gFirstRun);
     }
     else if (_step == "3c")
     {    
@@ -46,7 +46,7 @@ void RunGpcValidation(TString _step)
     else if (_step == "3d")
     {    
 	//Step 3d:
-	EjCreateBinnedHistIntegratedEEmc(gFirstRun, "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_", "eemc", gFirstRun, gFirstRun);
+	EjCreateBinnedHistIntegratedEEmc(gFirstRun, "/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass4/eemcTow/NanoJetTree_EjRunEmJetTreeMaker_", "eemc", gFirstRun, gFirstRun);
     }
     else if (_step == "4a")
     {    

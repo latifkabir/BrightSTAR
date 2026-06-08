@@ -27,11 +27,11 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
     TString xFgraphPath;
     TFile *xfFile;
     if(rhicRun == 15 && det == "fms")
-	xFgraphPath = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root";
+	xFgraphPath = "/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass5/Fms_PtVsAvgXf.root";
     else if(rhicRun == 15 && det == "eemc")
-	xFgraphPath = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run15/pass4/EEmc_PtVsAvgXf.root";
+	xFgraphPath = "/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run15/pass4/EEmc_PtVsAvgXf.root";
     else if(rhicRun == 17 && det == "fms")
-	xFgraphPath = "/star/u/kabir/GIT/BrightSTAR/dst/emJet/run17/pass0/Fms_PtVsAvgXf.root";
+	xFgraphPath = "/gpfs/mnt/gpfs01/star/pwg/kabir/dst/emJet/run17/pass0/Fms_PtVsAvgXf.root";
     if(gSystem->AccessPathName(xFgraphPath))
     {
 	cout << "Unable to fine required average xF graph input file" <<endl;
