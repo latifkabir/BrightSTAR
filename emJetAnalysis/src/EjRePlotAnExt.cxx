@@ -156,6 +156,8 @@ void EjRePlotAnExt(TString fileName)
 
 	cout << i << "\t" << x << "\t" << y << "\t" << gr4OrMorePh->GetErrorX(i) << "\t" << gr4OrMorePh_sys->GetErrorX(i) << "\t\t" << gr4OrMorePh->GetErrorY(i) << "\t" << gr4OrMorePh_sys->GetErrorY(i) << endl;
     }
+
+    TCanvas *c1 = new TCanvas("c1");
     
     gr1And2Ph_sys->Draw();
     gr1And2Ph->Draw("same");
@@ -175,5 +177,7 @@ void EjRePlotAnExt(TString fileName)
     gr3Ph->SetDrawOption("p same");
 
     gr4OrMorePh_sys->SetDrawOption("2");
-    gr4OrMorePh->SetDrawOption("p same");    
+    gr4OrMorePh->SetDrawOption("p same");
+
+    c1->SaveAs("EmJet_AN_ext.root");
 }

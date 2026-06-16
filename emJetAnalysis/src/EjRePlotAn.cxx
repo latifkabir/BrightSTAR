@@ -286,6 +286,8 @@ void EjRePlotAn(TString fileName, TString det, Int_t isMerged)
    }
    
    C->cd();
+
+   C->SaveAs(Form("EmJet_AN_%s%s.root", det.Data(), (isMerged)? "_Merged" : ""));
 }
 
 void EjCanvasPartition(TCanvas *C,const Int_t Nx, const Int_t Ny,
