@@ -19,12 +19,10 @@ sched*.package
 sched*.dataset
 *.session.xml
 temp_gccflags.c
-*.dat
 temp/
 *.list
 .root_history
 .consign
-*.dat
 .project
 .cproject
 FmsCellStat.txt
@@ -34,11 +32,10 @@ schedTemplateExp.xml
 temp*.txt
 *_cxx.d
 jobs/
-
+prs*.txt
 
 *.fzd
 *.metafile
-*.txt
 
 last.kumacold
 
