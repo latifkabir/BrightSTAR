@@ -23,8 +23,6 @@ The Workflow:
 - **Step-8:** Analyzed embeded sample (that is a good representative of real data) to calculate various systematic effects.
 
 
-
-
 How to Run Examples
 --------------
 
@@ -33,7 +31,7 @@ How to Run Examples
 starsim -w 0 -b pythia.kumac NEVENTS=$1 CYCLE=$2 FILENAME=$3
 ```
 
-Replace $1 to $3 by appropriate armuments.
+Replace $1 to $3 by appropriate arguments.
 
 
 2. Convert to MuDst:

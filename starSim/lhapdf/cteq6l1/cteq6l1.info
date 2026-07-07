@@ -3,6 +3,7 @@ SetIndex: 10042
 Authors: J. Pumplin, D.R. Stump, J. Huston, H.L. Lai, P. Nadolsky, W.K. Tung
 Reference: hep-ph/0201195
 Format: lhagrid1
+Interpolator: logcubic
 DataVersion: 4
 NumMembers: 1
 Particle: 2212

@@ -16,6 +16,7 @@ MACRO geom tag=y2015a  NEVENTS=5000 PTmin=2 PTmax=80 RUN=1 CYCLE=0 CONFIG=QCD FI
    ** pdf files you need into your submission directory.  THEN COPY TO EACH JOB,
    ** and set the path to pick it up.
    **
+*   gexe /star/nfs4/AFS/star/opt/star/sl74_x8664_gcc485/lib/libLHAPDF.so
    gexe /opt/star/$STAR_HOST_SYS/lib/libLHAPDF.so
 *   gexe /opt/star/Xsl64_gcc482/lib/libLHAPDF.so
 
@@ -27,6 +28,7 @@ MACRO geom tag=y2015a  NEVENTS=5000 PTmin=2 PTmax=80 RUN=1 CYCLE=0 CONFIG=QCD FI
    ETAmin  =                        +1.0 
    ETAmax  =                        +5.0
    LHAPDF_DATA_PATH = ./lhapdf/
+*   LHAPDF_DATA_PATH = /star/u/kabir/GIT/EmJet-GPC-BrightSTAR/starSim/lhapdf/
    
    gfile o [FILE]
 
