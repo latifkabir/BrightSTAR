@@ -67,7 +67,7 @@ void AnalysisTreeQaJobs(Int_t firstRun = -1, Int_t lastRun = -1)
 	
 	cout << (funcName + argList)<<endl;
 	jobList.push_back(string(funcName + argList));
-	//break;
+	break;
     }
     TStScheduler::SubmitJob(jobList, jobName);
 }

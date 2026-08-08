@@ -26,8 +26,16 @@ if(! $?SUMS_USER) then
 else	
     setenv STARHOME "$PWD"  #For SUMS jobs
 endif
-    
-setenv LD_LIBRARY_PATH ".sl73_x8664_gcc485/lib:lib:${STARHOME}/lib:${STARHOME}/.sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}"
+
+# For condor jobs only     
+# setenv STARHOME "/star/u/kabir/GIT/EmJet-GPC-BrightSTAR"    
+
+    setenv LD_LIBRARY_PATH ".sl73_x8664_gcc485/lib:lib:${STARHOME}/lib:${STARHOME}/.sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}"
 
 # Add path for fastjet after AL9 migration 
 setenv LD_LIBRARY_PATH "/star/nfs4/AFS/star/opt/star/sl73_x8664_gcc485/lib:${LD_LIBRARY_PATH}"
+
+
+
+    
+    
