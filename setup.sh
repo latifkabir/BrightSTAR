@@ -14,6 +14,6 @@ export LD_LIBRARY_PATH=.sl73_x8664_gcc485/lib:lib:$STARHOME/.sl73_x8664_gcc485/l
 # Need to add path for fastjet after AL9 migration
 export LD_LIBRARY_PATH=/star/nfs4/AFS/star/opt/star/sl73_x8664_gcc485/lib:$LD_LIBRARY_PATH
 
-export PATH=$PATH:$STARHOME:$STARHOME/bin #:/star/nfs4/AFS/star/packages/SL20a/.sl73_x8664_gcc485/bin
+export PATH=$PATH:$STARHOME:$STARHOME/bin 
 
 
