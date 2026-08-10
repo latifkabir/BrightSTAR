@@ -109,7 +109,7 @@ void TStScheduler::SubmitJob(vector <string> jobList, TString jobName)
     resultDir = TStar::Config->GetJobResultsPath() + jobName + (TString)"/";
     gROOT->ProcessLine((TString)".! mkdir -p " + resultDir);
     condorConfig_out <<"Initialdir      = " << resultDir << endl; 		
-    condorConfig_out << "Executable       =  /bin/bash" << endl;
+    condorConfig_out << "Executable       =  /bin/env" << endl;
     condorConfig_out <<"Output          = "<<outFile<<endl;
     condorConfig_out <<"Error           = "<<errorFile<<endl;
     condorConfig_out <<"Log             = "<<logFile<<endl;
@@ -118,9 +118,9 @@ void TStScheduler::SubmitJob(vector <string> jobList, TString jobName)
 	rootCommand = jobList[job];
 	rootCommand.ReplaceAll("\"", "\\\"\"");
 	if(mCopyToExeHost)
-	    condorConfig_out << "Arguments   =  \"-c '" << "source setup.sh && echo \"\""<< rootCommand << "\"\" | root4star -l -b'\"" <<endl;
+	    condorConfig_out << "Arguments   =  \"singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif /bin/csh -c 'starver SL20a && /bin/bash -c '" << "source setup.sh && echo \"\""<< rootCommand << "\"\" | root4star -l -b'''\"" <<endl;
 	else
-	    condorConfig_out << "Arguments   =  \"-c '" << "source "<< starHome <<"/setup.sh && echo \"\""<< rootCommand << "\"\" | root4star -l -b "<< starHome<<"/rootlogon.C"<<" '\"" <<endl;
+	    condorConfig_out << "Arguments   =  \"singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif /bin/csh -c 'starver SL20a && /bin/bash -c ''" << "source "<< starHome <<"/setup.sh && echo \"\""<< rootCommand << "\"\" | root4star -l -b "<< starHome<<"/rootlogon.C"<<" '''\"" <<endl;
 	condorConfig_out << "Queue\n" << endl;
     }	    
     condorConfig_out.close();
