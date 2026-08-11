@@ -178,6 +178,7 @@ void TStScheduler::SubmitJob(TString functionName, Int_t firstRun,  Int_t lastRu
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
+    shell_out<<"singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif /bin/csh -c \"starver SL20a && /bin/bash\""<<endl;
     if(mCopyToExeHost)
 	shell_out<<"source setup.sh"<<endl;
     else
@@ -350,6 +351,7 @@ void TStScheduler::SubmitJob(Int_t maxFilesPerJob, TString functionName, Int_t f
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
+    shell_out<<"singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif /bin/csh -c \"starver SL20a && /bin/bash\""<<endl;
     if(mCopyToExeHost)
 	shell_out<<"source setup.sh"<<endl;
     else
@@ -593,6 +595,7 @@ void TStScheduler::SubmitJob(TString functionName, TString inFileName, TString o
 	return;
     }
     shell_out<<"#!/bin/bash"<<endl;
+    shell_out<<"singularity exec -e -B /direct -B /star -B /afs -B /gpfs -B /sdcc/lustre02 /cvmfs/star.sdcc.bnl.gov/containers/rhic_sl7.sif /bin/csh -c \"starver SL20a && /bin/bash\""<<endl;    
     if(mCopyToExeHost)
 	shell_out<<"source setup.sh"<<endl;
     else

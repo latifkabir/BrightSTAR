@@ -15,5 +15,5 @@ export LD_LIBRARY_PATH=.sl73_x8664_gcc485/lib:lib:$STARHOME/.sl73_x8664_gcc485/l
 export LD_LIBRARY_PATH=/star/nfs4/AFS/star/opt/star/sl73_x8664_gcc485/lib:$LD_LIBRARY_PATH
 
 export PATH=$PATH:$STARHOME:$STARHOME/bin 
-
+export LHAPDF_DATA_PATH=$STARHOME/starSim/lhapdf/
 

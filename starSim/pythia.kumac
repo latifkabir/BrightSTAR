@@ -40,7 +40,7 @@ MACRO geom tag=y2015a  NEVENTS=5000 PTmin=2 PTmax=80 RUN=1 CYCLE=0 CONFIG=QCD FI
   *  echo [RUN]+[CYCLE]
 *	rndm 576375713  1343222742
 *  exec  /star/data01/pwg/mriganka/simSL17d/StRoot/StMCFilter/loadlibs.kumac
-   exec /star/u/kabir/GIT/BrightSTAR/starSim/loadlibs.kumac	
+   exec /star/u/kabir/GIT/EmJet-GPC-BrightSTAR/starSim/loadlibs.kumac	
    
    GFILTER  exampleFmsJet
 *   GFILTER  exampleFmsPi0

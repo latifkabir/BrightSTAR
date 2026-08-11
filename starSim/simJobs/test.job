@@ -18,6 +18,6 @@ Output          = /star/u/kabir/GIT/EmJet-GPC-BrightSTAR/jobOutput/FmsSimPro$(Pr
 Error           = /star/u/kabir/GIT/EmJet-GPC-BrightSTAR/jobOutput/FmsSimPro$(Process).err
 Log             = /star/u/kabir/GIT/EmJet-GPC-BrightSTAR/jobOutput/FmsSimPro$(Process).log
 
-Arguments       = $(Process) 1000 	
-Queue 2500
+Arguments       = $(Process) 10 	
+Queue 2
 
