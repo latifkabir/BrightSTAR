@@ -40,3 +40,10 @@ jobRunList/
 RooUnfold/
 run17FmsGC/
 run17FmsGC_final/
+fpsgeom.txt
+prs.txt
+prs1map.txt
+prs2map.txt
+prs3map.txt
+prsCmap.txt
+*.fzd

@@ -153,13 +153,13 @@ void RunEEmcJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     anapars12->addJetCut(new StProtoJetCutEta(1,5)); //CKim, extend to FMS acceptance
 
     //-------------- Add MC particle and it's jet branch here -------------
-    //StAnaPars* anaparsPart = new StAnaPars;
-    //anaparsPart->useMonteCarlo = true; //<-------- This should not be use simultaneously with detertors enabled. //Latif. If not set, particles branch will not be filled. Note: By default the pythia tree is not synchronized if you used filter. Need to reproduce separate pythia tree that has only triggered events. Use that pythia tree to populate particle branch and jet from pythia particles. Check if used geant file whether that would still have synchronization issue. Seems geant file also have pythia particle info can can be used instead of pythia root file.
+    StAnaPars* anaparsPart = new StAnaPars;
+    anaparsPart->useMonteCarlo = true; //<-------- This should not be use simultaneously with detertors enabled. //Latif. If not set, particles branch will not be filled. Note: By default the pythia tree is not synchronized if you used filter. Need to reproduce separate pythia tree that has only triggered events. Use that pythia tree to populate particle branch and jet from pythia particles. Check if used geant file whether that would still have synchronization issue. Seems geant file also have pythia particle info can can be used instead of pythia root file.
     
     // MC cuts  
-    // anaparsPart->addMcCut(new StjMCParticleCutStatus(1)); // final state particles
-    // anaparsPart->addJetCut(new StProtoJetCutPt(0.001,200));
-    // anaparsPart->addMcCut(new StjMCParticleCutEta(2.4,4.3)); // final state particles 
+    anaparsPart->addMcCut(new StjMCParticleCutStatus(1)); // final state particles
+    anaparsPart->addJetCut(new StProtoJetCutPt(0.001,200));
+    anaparsPart->addMcCut(new StjMCParticleCutEta(2.4,4.3)); // final state particles 
     
     //Set anti-kt R=0.7 parameters
     StFastJetPars* AntiKtR070Pars = new StFastJetPars;
@@ -170,6 +170,7 @@ void RunEEmcJetFinderPro(TString inMuDstFile, TString outJetName, Int_t nEvents)
     AntiKtR070Pars->setPtMin(2);
 
     jetmaker->addBranch("AntiKtR070NHits12",anapars12,AntiKtR070Pars);
+    jetmaker->addBranch("AntiKtR070NHits12Part",anaparsPart,AntiKtR070Pars);
     //Add MC particle branch here
     
     chain->Init();
