@@ -4,6 +4,16 @@
 // Created: Thu May 14 00:11:49 2026 (-0400)
 // URL: latifkabir.github.io
 
+/*
+For full analysis, these are done using scheduler. See files under emJetAnalysis/scripts: 
+
+- CronJob.C
+- AnalysisTreeQaJobs.C
+- CreateBinnedHistJobs.C
+- GenericJobSubmission.C,
+*/
+
+
 void RunGpcValidation(TString _step)
 {    
     cout << "Running analysis step:" << _step << endl;
